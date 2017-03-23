@@ -1,0 +1,24 @@
+$production: false !default;
+@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,900,900i');
+
+@import 'variables';
+
+
+$screen-sm: 200px;
+$icon-font-path: "./../libs/bootstrap-sass/assets/fonts/bootstrap/";
+@import './../libs/bootstrap-sass/assets/stylesheets/bootstrap';
+
+
+
+// 0. Utils
+@import 'utils/**/*.scss';
+
+// 1. Layout
+@import 'layout/**/*.scss';
+
+// 2. Components
+@import 'components/**/*.scss';
+
+// 3. Pages
+
+@import 'pages/**/*.scss';

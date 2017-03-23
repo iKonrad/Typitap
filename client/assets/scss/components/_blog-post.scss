@@ -1,0 +1,42 @@
+.blog-post {
+
+  margin-top: 70px;
+
+  &__image {
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__title {
+      font-size: 30px;
+  }
+  &__content {
+    margin: 30px 0;
+    p {
+      font-size: 18px;
+      line-height: 1.7;
+      font-weight: 400;
+      text-align: justify;
+
+    }
+  }
+
+  &__meta {
+    &__avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-left: 5px;
+      margin-right: 2px;
+    }
+  }
+
+  &__comments {
+    margin: 50px 0;
+  }
+
+
+
+}

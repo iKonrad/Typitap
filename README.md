@@ -58,7 +58,7 @@ It's simple React application
 ```
 $ tree client
 client
-├── actions.js
+├── demoConstants.js
 ├── components
 │   ├── app
 │   │   ├── favicon.ico
@@ -79,7 +79,7 @@ client
 │   ├── index.js
 │   └── vars.js
 ├── index.js <-- main function declared here
-├── reducers.js
+├── index.js
 ├── router
 │   ├── index.js
 │   ├── routes.js

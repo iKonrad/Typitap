@@ -1,0 +1,38 @@
+textarea.form-control {
+  resize: vertical;
+}
+
+.form-control {
+  height: 40px;
+  padding: 15px 12px;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+
+.file-drop {
+  border: 2px dashed $blue-200!important;
+  border-radius: 5px;
+  background: white;
+  min-height: 0!important;
+  padding: 20px 0!important;
+  text-align: center;
+  cursor: pointer;
+
+}
+
+.form-group {
+  img {
+    max-width: 100%;
+  }
+
+  label {
+    width: 100%;
+  }
+
+
+  .chosen-container-single .chosen-single {
+    background: none;
+  }
+
+}

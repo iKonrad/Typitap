@@ -1,0 +1,38 @@
+.navbar {
+  //margin-bottom: 0;
+  z-index: 100;
+  background-color: transparent;
+  border: none;
+  margin-bottom: 0;
+  .navbar-nav {
+    li {
+      a {
+        padding-top: 22px;
+        padding-bottom: 20px;
+        font-size: 15px;
+      }
+    }
+  }
+
+  .navbar-brand {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .navbar-avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+}
+
+.dropdown-menu {
+  li {
+    a {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
+}
+
