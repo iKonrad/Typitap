@@ -1,0 +1,173 @@
+.btn {
+  min-height: 50px;
+  padding: 15px 15px;
+  font-size: 16px;
+  border: none;
+
+  &:hover {
+    border: none;
+  }
+  &.btn-round {
+    border-radius: 30px;
+    min-width: 80px;
+  }
+
+  transition: all $transition-speed ease-in-out;
+  font-family: 'Dosis', sans-serif;
+  font-weight: normal;
+
+  &.btn-small {
+    min-height: 20px;
+    padding: 5px 8px;
+  }
+
+  &-primary {
+    background: $brand-primary;
+  }
+
+
+  &:focus {
+    outline:none;
+    border-color: transparent;
+  }
+
+  //&.btn-primary {
+  //  border: none;
+  //  background-color: $brand-primary;
+  //
+  //  &:hover {
+  //    background-color: lighten($brand-primary, 2%);
+  //  }
+  //}
+
+  //&.btn-default {
+  //  border: none;
+  //  background-color: $jet;
+  //  color: white;
+  //
+  //  &:hover {
+  //    background-color: lighten($jet, 2%);
+  //  }
+  //}
+
+  &.btn-circle {
+    text-align: center;
+    padding: 11px 0;
+    font-size: 20px;
+    line-height: 1.42;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+  }
+
+  &.btn-facebook {
+    background-color: $facebook;
+    color: white;
+    &:hover {
+      background-color: lighten($facebook, 6%);
+    }
+  }
+
+  &.btn-twitter {
+    background-color: $twitter;
+    color: white;
+    &:hover {
+    background-color: lighten($twitter, 6%);
+    }
+  }
+
+  &.btn-reddit {
+    padding-top: 10px;
+    background-color: $reddit;
+    color: white;
+    &:hover {
+    background-color: lighten($reddit, 6%);
+    }
+  }
+
+}
+
+
+
+
+.btn-outline {
+  background-color: transparent;
+  color: inherit;
+  transition: all .5s;
+  border-width: 1px;
+}
+
+.btn-primary.btn-outline {
+  color: $brand-primary;
+  border: 1px solid $brand-primary;
+  &:hover {
+      border: 1px solid $brand-primary;
+  }
+}
+
+.btn-success.btn-outline {
+  color: $brand-success;
+  border: 1px solid $brand-success;
+  &:hover {
+      background-color: $brand-success;
+      border: 1px solid $brand-success;
+  }
+}
+
+.btn-info.btn-outline {
+  color: $brand-info;
+  border: 1px solid $brand-info;
+  &:hover {
+      background-color: $brand-info;
+      border: 1px solid $brand-info;
+  }
+}
+
+.btn-warning.btn-outline {
+  color: $brand-warning;
+  border: 1px solid $brand-warning;
+  &:hover {
+      background-color: $brand-warning;
+      border: 1px solid $brand-warning;
+  }
+}
+
+.btn-danger.btn-outline {
+  color: $brand-danger;
+  border: 1px solid $brand-danger;
+  &:hover {
+      background-color: $brand-danger;
+      border: 1px solid $brand-danger;
+  }
+}
+
+.btn-default.btn-outline {
+  color: $grey-200;
+  border: 1px solid $grey-200;
+  &:hover {
+      background-color: $grey-200;
+      border: 1px solid $grey-200;
+  }
+}
+
+.btn-default {
+  color: white;
+  background-color: $grey-300;
+  &:hover, &:focus, &:active {
+    background-color: darken($grey-200, 5%);
+  }
+
+  &.btn-outline {
+    background-color: transparent;
+  }
+}
+
+.btn-primary.btn-outline:hover,
+.btn-success.btn-outline:hover,
+.btn-info.btn-outline:hover,
+.btn-warning.btn-outline:hover,
+.btn-danger.btn-outline:hover,
+.btn-default.btn-outline:hover {
+  color: #fff;
+}

@@ -1,0 +1,24 @@
+.fade-enter {
+  opacity: 0.01;
+  transition: opacity 0.2s ease-in;
+  -webkit-transition: opacity 0.2s ease-in;
+  position: relative;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  -webkit-transition: opacity 0.2s ease-in;
+}
+
+.fade-leave {
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+  -webkit-transition: opacity 0.2s ease-in;
+}
+
+.fade-leave-active {
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+  -webkit-transition: opacity 0.2s ease-in;
+}
+

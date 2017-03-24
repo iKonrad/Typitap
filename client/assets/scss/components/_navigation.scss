@@ -1,38 +1,112 @@
+
 .navbar {
-  //margin-bottom: 0;
-  z-index: 100;
-  background-color: transparent;
+  background: $nav-color;
   border: none;
-  margin-bottom: 0;
-  .navbar-nav {
+
+  .navbar-btn {
+    margin: 10px;
+  }
+
+  &-header {
+    min-height: 70px;
+    font-family: Dosis, 'sans-serif';
+
+
+    .navbar-brand {
+      padding-top: 20px;
+    }
+  }
+
+
+  ul.navbar-nav {
     li {
       a {
-        padding-top: 22px;
-        padding-bottom: 20px;
-        font-size: 15px;
+
+        font-family: Dosis, 'sans-serif';
+        font-size: 17px;
+        transition: all 0.5s ease;
+        padding-top: 25px;
+        padding-bottom: 25px;
+        &:hover {
+          background-color: darken($nav-color, 5%);
+        }
+        &:focus {
+          background-color: darken($nav-color, 5%);
+          color: white;
+        }
+
+        &.dropdown-item {
+          color: $grey-500;
+          &:hover {
+            background: $grey-100;
+            color: $grey-500;
+          }
+        }
+      }
+
+      &.active {
+        a {
+          background-color: darken($nav-color, 10%);
+        }
+        .dropdown-item {
+          color: $grey-500;
+          background-color: $grey-100;
+          &:hover {
+            background-color: $grey-100;
+            color: $grey-500;
+          }
+        }
       }
     }
   }
 
-  .navbar-brand {
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
 
-  .navbar-avatar {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    margin-right: 5px;
-  }
-}
 
-.dropdown-menu {
-  li {
-    a {
-      padding-top: 10px;
-      padding-bottom: 10px;
+  &-collapse {
+    .navbar-nav {
+
+
+
+      li {
+
+        a {
+          height: 70px;
+          color: white;
+        }
+        &.active {
+          a { color: white; }
+          .navbar-btn {
+            a {
+              background-color: $brand-primary;
+            }
+          }
+
+        }
+
+
+        .navbar-btn {
+          a {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            height: auto;
+            color: white;
+
+            background-color: $brand-primary;
+            &:hover {
+              background-color: darken($brand-primary, 5%);
+            }
+
+          }
+        }
+        .dropdown-menu {
+          border: none;
+          border-radius: $border-radius;
+
+        }
+      }
     }
   }
 }
+
+
 

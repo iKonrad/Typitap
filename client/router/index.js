@@ -9,6 +9,11 @@ import {createStore, setAsCurrentStore} from './store';
 
 
 export function run() {
+
+
+    require('jquery');
+    require('assets/libs/bootstrap-sass/assets/javascripts/bootstrap.js');
+
     // init promise polyfill
     window.Promise = window.Promise || Promise;
     // init fetch polyfill
@@ -34,12 +39,15 @@ export const renderToString = toString;
 require('../css');
 require('assets/scss/main.scss');
 
+
+
+
 // Style live reloading
 if (module.hot) {
     let c = 0;
     module.hot.accept('../css', () => {
         require('../css');
-        require('../assets/main.scss');
+        require('assets/scss/main.scss');
         const a = document.createElement('a');
         const link = document.querySelector('link[rel="stylesheet"]');
         a.href = link.href;

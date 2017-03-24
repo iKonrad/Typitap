@@ -1,0 +1,126 @@
+
+$gray-base:              #000 !default;
+$gray-darker:            lighten($gray-base, 13.5%) !default; // #222
+$gray-dark:              #7b8a8b !default;   // #333
+$gray:                   #95a5a6 !default; // #555
+$gray-light:             #b4bcc2 !default;   // #999
+$gray-lighter:           #ecf0f1 !default; // #eee
+
+//$brand-primary:         #2C3E50 !default;
+//$brand-success:         #8de552 !default;
+//$brand-info:            #3498DB !default;
+//$brand-warning:         #F39C12 !default;
+//$brand-danger:          #E74C3C !default;
+
+$brand-primary:         #59C3C3 !default;
+$brand-success:         #8de552 !default;
+$brand-info:            #4062BB !default;
+$brand-warning:         #F39C12 !default;
+$brand-danger:          #F45B69 !default;
+$brand-grey: #EBEBEB;
+
+
+
+
+
+/* Brand colors */
+$jet: rgba(49, 62, 80, 1);
+$red: rgba(244, 96, 54, 1);
+$yellow: rgba(231, 226, 71, 1);
+$green: #80C31C;
+$dark-grey: #303030;
+$light-grey: #EFEFEF;
+
+
+// greens
+$turquoise-200:     #1abc9c;
+
+$green-200: #2ecc71;
+$green-100: lighten($green-200, 15%);
+$green-300: darken($green-200, 15%);
+$green-400: darken($green-200, 30%);
+$green-500: darken($green-200, 45%);
+
+// blues
+$blue-200:    #3498db;
+$blue-100:    lighten($blue-200, 10%);
+$blue-300:    darken($blue-200, 15%);
+$blue-400:    darken($blue-200, 30%);
+$blue-500:    darken($blue-200, 45%);
+
+
+$navy-300:    #34495e;
+$navy-400:    darken($navy-300, 15%);
+$navy-500:    darken($navy-300, 30%);
+
+
+// purples
+$purple-200:      #774a8a;
+$purple-300:      darken($purple-200, 15%);
+$purple-400:      darken($purple-200, 30%);
+$purple-500:      darken($purple-200, 45%);
+
+
+// oranges
+$yellow-200:     #f1c40f;
+$yellow-100:     lighten($yellow-200, 10%);
+$yellow-300:     darken($yellow-200, 15%);
+$yellow-400:     darken($yellow-200, 30%);
+$yellow-500:     darken($yellow-200, 45%);
+
+
+$orange-200:        #e67e22;
+$orange-300: darken($orange-200, 10%);
+$orange-400:        #f39c12;
+$orange-500:       #d35400;
+
+// reds
+$red-300:      #e74c3c;
+$red-400:   #c0392b;
+$red-500:   darken($red-400, 15%);
+
+// grays
+$clouds:        #ecf0f1;
+$silver:        #bdc3c7;
+$concrete:      #95a5a6;
+$asbestos:      #7f8c8d;
+
+$grey-500: $dark-grey;
+$grey-450: lighten($dark-grey, 15%);
+$grey-400: lighten($dark-grey, 30%);
+$grey-350: $asbestos;
+$grey-300: $concrete;
+$grey-200: $silver;
+$grey-150: lighten($dark-grey, 73%);
+$grey-100: $clouds;
+$grey-050: lighten($clouds, 4%);
+
+
+$nav-color: $purple-200;
+
+
+
+
+
+/* SOCIAL */
+$twitter: #00aced;
+$facebook: #3b5998;
+$googleplus: #dd4b39;
+$pinterest: #cb2027;
+$linkedin: #007bb6;
+$youtube: #bb0000;
+$vimeo: #aad450;
+$tumblr: #32506d;
+$instagram: #517fa4;
+$flickr: #ff0084;
+$dribbble: #ea4c89;
+$quora: #a82400;
+$foursquare: #0072b1;
+$forrst: #5B9A68;
+$vk: #45668e;
+$wordpress: #21759b;
+$stumbleupon: #EB4823;
+$yahoo: #7B0099;
+$blogger: #fb8f3d;
+$soundcloud: #ff3a00;
+$reddit: #FB2D08;

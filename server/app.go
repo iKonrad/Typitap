@@ -51,6 +51,7 @@ func NewApp(opts ...AppOptions) *App {
 	// Make an engine
 	engine := echo.New()
 
+
 	// Use precompiled embedded templates
 	engine.Renderer = NewTemplate()
 
@@ -63,6 +64,9 @@ func NewApp(opts ...AppOptions) *App {
 	engine.GET("/favicon.ico", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
 	})
+
+
+	engine.Static("/images", "static/images");
 
 	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
@@ -131,6 +135,8 @@ func NewApp(opts ...AppOptions) *App {
 		}
 	})
 
+
+
 	return app
 }
 
@@ -159,4 +165,6 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 // AppOptions is options struct
 type AppOptions struct{}
 
-func (ao *AppOptions) init() { /* write your own*/ }
+func (ao *AppOptions) init() {
+	/* write your own*/
+}

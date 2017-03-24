@@ -1,0 +1,128 @@
+.game {
+
+  &--text {
+    background-color: $grey-100;
+    padding: 30px;
+    font-size: 18px;
+    width: 100%;
+    border-radius: 6px;
+
+    span.word-error {
+      text-decoration: underline;
+      color: $red-300;
+    }
+
+    span.word-error--2 {
+      text-decoration: underline;
+      color: $brand-danger;
+    }
+
+    span.word-error--3 {
+      text-decoration: underline;
+      color: darken($brand-danger, 10%);
+    }
+
+    span.word-highlighted {
+      background-color: $yellow-200;
+      font-weight: bold;
+    }
+
+  }
+
+  &--countdown {
+    text-align: center;
+    font-size: 18px;
+
+    span {
+      font-weight: bold;
+      font-size: 20px;
+    }
+  }
+
+  &--input {
+    margin-top: 20px;
+  }
+
+  .game--input-field {
+    &--error {
+      background: $brand-danger;
+      color: white;
+      //@include placeholder {
+      //  color: white;
+      //}
+    }
+    &:focus, &:active {
+      outline: none;
+    }
+  }
+
+
+
+
+
+  &.game--complete {
+
+    .game--text {
+      opacity: 0.8;
+    }
+  }
+
+  &--score-label {
+    color: $grey-450;
+    background: $grey-100;
+    border-radius: $border-radius-large;
+    padding: 3px 5px;
+    margin: 0px 3px;
+  }
+
+
+  .game__progress {
+
+    &__name {
+      color: $grey-400;
+    }
+
+    .progress__result__wrapper {
+      position: relative;
+      .progress__result {
+        position: absolute;
+        width: 30px;
+        text-align: center;
+        top: -40px;
+        right: -5px;
+
+        &__icon {
+          font-size: 24px;
+          text-shadow:
+                  -1px -1px 0 $grey-500,
+                  1px -1px 0 $grey-500,
+                  -1px 1px 0 $grey-500,
+                  1px 1px 0 $grey-500;
+          &.place-1 {
+            color: $yellow-200;
+          }
+
+          &.place-2 {
+            color: $grey-150;
+          }
+
+          &.place-3 {
+            color: $yellow-500;
+          }
+
+          &.place-4, &.place-5 {
+            color: $grey-500;
+          }
+
+
+        }
+
+        &__place {
+          margin-top: -5px;
+          color: $grey-300;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}

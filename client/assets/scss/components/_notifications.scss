@@ -1,0 +1,223 @@
+$defaultWidth: 320px; // Used for calculations
+$defaultShadowOpacity: 0.9;
+$successColor: $green-200;
+$warningColor: $brand-warning;
+$errorColor: $brand-danger;
+$infoColor: $blue-200;
+$white: #ffffff;
+
+@mixin box-sizing {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+@mixin default-styles {
+  @include box-sizing;
+  font-family: inherit;
+  position: fixed;
+  width: $defaultWidth;
+  padding: 0 10px 10px 10px;
+  z-index: 9998;
+  height: auto;
+}
+
+.notifications-tl {
+  @include default-styles;
+  top: 0px;
+  bottom: auto;
+  left: 0px;
+  right: auto;
+}
+
+.notifications-tr {
+  @include default-styles;
+  top: 70px;
+  bottom: auto;
+  left: auto;
+  right: 0px;
+}
+
+.notifications-tc {
+  @include default-styles;
+  top: 0px;
+  bottom: auto;
+  margin: 0 auto;
+  left: 50%;
+  margin-left: -($defaultWidth / 2);
+}
+
+.notifications-bl {
+  @include default-styles;
+  top: auto;
+  bottom: 0px;
+  left: 0px;
+  right: auto;
+}
+
+.notifications-br {
+  @include default-styles;
+  top: auto;
+  bottom: 0px;
+  left: auto;
+  right: 0px;
+}
+
+.notifications-bc {
+  @include default-styles;
+  top: auto;
+  bottom: 0px;
+  margin: 0 auto;
+  left: 50%;
+  margin-left: -($defaultWidth / 2);
+}
+
+.notification {
+  @include box-sizing;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
+  margin: 10px 0 0;
+  padding: 10px;
+  display: block;
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+  &.notification-hidden {
+    opacity: 0;
+  }
+  &.notification-visible {
+    opacity: 1;
+  }
+  &.notification-success {
+    background-color: $successColor;
+    color: white;
+    -webkit-box-shadow: 0 0 1px rgba($successColor, $defaultShadowOpacity);
+    -moz-box-shadow: 0 0 1px rgba($successColor, $defaultShadowOpacity);
+    box-shadow: 0 0 1px rgba($successColor, $defaultShadowOpacity);
+
+    &:hover {
+      background-color: darken($successColor, 5%);
+    }
+  }
+  &.notification-error {
+    background-color: $errorColor;
+    color: white;
+    -webkit-box-shadow: 0 0 1px rgba($errorColor, $defaultShadowOpacity);
+    -moz-box-shadow: 0 0 1px rgba($errorColor, $defaultShadowOpacity);
+    box-shadow: 0 0 1px rgba($errorColor, $defaultShadowOpacity);
+
+    &:hover {
+      background-color: darken($errorColor, 5%);
+    }
+  }
+  &.notification-warning {
+    background-color: $warningColor;
+    color: white;
+    -webkit-box-shadow: 0 0 1px rgba($warningColor, $defaultShadowOpacity);
+    -moz-box-shadow: 0 0 1px rgba($warningColor, $defaultShadowOpacity);
+    box-shadow: 0 0 1px rgba($warningColor, $defaultShadowOpacity);
+
+    &:hover {
+      background-color: darken($warningColor, 5%);
+    }
+  }
+  &.notification-info {
+    background-color: $infoColor;
+    color: white;
+    -webkit-box-shadow: 0 0 1px rgba($infoColor, $defaultShadowOpacity);
+    -moz-box-shadow: 0 0 1px rgba($infoColor, $defaultShadowOpacity);
+    box-shadow: 0 0 1px rgba($infoColor, $defaultShadowOpacity);
+
+    &:hover {
+      background-color: darken($infoColor, 5%);
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+
+}
+
+.notification-title {
+  font-size: 18px;
+  margin: 0 0 5px 0;
+  padding: 0;
+  color: white;
+  font-weight: bold;
+}
+
+.notification-message {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+.notification-dismiss {
+  display: none;
+  font-size: 17px;
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  line-height: 15px;
+  background-color: #dededf;
+  color: $white;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  font-weight: bold;
+  text-align: center;
+  .notification-success & {
+    color: #f0f5ea;
+    background-color: #b0ca92;
+  }
+  .notification-error & {
+    color: #f4e9e9;
+    background-color: #e4bebe;
+  }
+  .notification-warning & {
+    color: #f9f6f0;
+    background-color: #e1cfac;
+  }
+  .notification-info & {
+    color: #e8f0f4;
+    background-color: #a4becb;
+  }
+}
+
+.notification-action-button {
+  background: $white;
+  border-radius: 2px;
+  padding: 6px 20px;
+  font-weight: bold;
+  margin: 10px 0 0 0;
+  border: 0;
+  .notification-success & {
+    background-color: $successColor;
+    color: $white;
+  }
+  .notification-error & {
+    background-color: $errorColor;
+    color: $white;
+  }
+  .notification-warning & {
+    background-color: $warningColor;
+    color: $white;
+  }
+  .notification-info & {
+    background-color: $infoColor;
+    color: $white;
+  }
+}
+
+.notification-action-wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+.notification-not-dismissible {
+  cursor: default;
+}

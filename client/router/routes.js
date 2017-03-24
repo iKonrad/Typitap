@@ -5,7 +5,7 @@ import Homepage from '#app/components/homepage';
 import Usage from '#app/components/usage';
 import NotFound from '#app/components/not-found';
 import Contact from '#app/pages/contact';
-
+import Base from 'pages/Base';
 
 /**
  * Returns configured routes for different
@@ -27,7 +27,7 @@ export default ({store, first}) => {
     };
   }
 
-  return <Route path="/" component={App}>
+  return <Route path="/" component={Base}>
     <IndexRoute component={Homepage} onEnter={w(Homepage.onEnter)}/>
     <Route path="/usage" component={Usage} onEnter={w(Usage.onEnter)}/>
     <Route path="/contact" component={Contact} onEnter={w(Usage.onEnter)}/>

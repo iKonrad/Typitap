@@ -1,113 +1,46 @@
+
+
 .panel {
-
-  border-radius: $border-radius-base;
-  overflow: hidden;
-
-  &.panel-white {
+  border: none;
+  margin: 20px 0px;
+  //box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border: 1px solid $grey-100;
+  &.panel-default {
     background-color: white;
-    .panel-heading {
-    }
-  }
-
-
-  .panel-heading {
-    background-color: white;
-    border: none;
-  }
-
-  &.panel-shadow-1 {
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.14);
-  }
-
-  .panel-image {
-    img, a img {
-      transition: all 0.3s ease;
-      width: 100%;
-      &:hover {
-        opacity: 0.9;
-      }
-    }
-  }
-
-  .panel-footer {
-    background-color: white;
-    border: none;
-  }
-
-
-
-  &.panel-grey {
-    background: $grey-100;
 
     .panel-heading {
-      background: $grey-100;
-    }
-  }
-
-
-
-
-
-  /* Blog version of the panel */
-  &.panel-blog {
-    margin: 40px 0;
-    &:first-child {
-      margin-top: 0px;
-    }
-
-
-
-
-    .panel-heading {
+      background: none;
+      color: $grey-500;
       border: none;
-
-      margin-bottom: 0;
-      padding: 25px;
-      padding-bottom: 0;
-
-      a {
-        color: black;
-        img {
-          width: 100%;
-          height: auto;
-
-        }
-      }
     }
-
-    .panel-body {
-      font-size: 16px;
-      padding: 25px;
-
-      margin-bottom: 15px;
-    }
-
     .panel-footer {
-      padding: 25px;
-      font-size: 16px;
-      a {
-        font-size: 16px;
-      }
+      background: none;
+      border: none;
     }
 
-    .panel-blog__meta {
-      color: $grey-400;
-      padding: 6px 0;
-      font-weight: 300;
+  }
 
-      img {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        margin-left: 5px;
-        margin-right: 2px;
-      }
-    }
-
-
-
+  .panel-borderless {
     border: none;
   }
 
+  &.panel--blue {
+    background-color: $blue-200;
+    color: white;
+    p, h1, h2, h3, h4 {
+      color: white;
+    }
+  }
 
+  &.panel--yellow {
+    background-color: $yellow-200;
+    color: white;
+    p, h1, h2, h3, h4 {
+      color: white;
+    }
+  }
+  &.panel--grey {
+    background-color: $grey-100;
+  }
 }
+

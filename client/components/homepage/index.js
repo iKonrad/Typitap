@@ -24,8 +24,8 @@ export default class Homepage extends Component {
                 Golang + React + Redux + Css-Modules
                 <br />Isomorphic Starter Kit</h1>
             <br />
-            <p className={p}>
-                Please take a look at <Link className={link} to='/docs'>usage</Link> page.
+            <p>
+                Please take a look at <Link className={link} to='/docs'>usage</Link> page. or <Link activeClassName={link} to="/contact">contact us</Link>
             </p>
         </div>;
     }

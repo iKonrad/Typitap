@@ -13,10 +13,18 @@ var postCssLoader = [
 ];
 
 
+const jQueryPlugin = new webpack.ProvidePlugin({
+    _: 'lodash',
+    $: 'jquery',
+    'jQuery'              : 'jquery',
+    'window.jQuery'       : 'jquery',
+});
+
 var plugins = [
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.DedupePlugin(),
     new ExtractTextPlugin('bundle.css'),
+    jQueryPlugin
 ];
 
 if (process.env.NODE_ENV === 'production') {
@@ -46,6 +54,7 @@ var config = {
     plugins: plugins,
     module: {
         loaders: [
+            { test: require.resolve('jquery'), loader: 'expose?$!expose?jQuery' },
             { test: /\.scss$/, loader: ExtractTextPlugin.extract('css-loader?minimize=true!sass-loader!import-glob-loader') }, // SASS & CSS FILES
             {test: /\.css/, loader: ExtractTextPlugin.extract('style-loader', postCssLoader.join(''))},
             {test: /\.(png|gif)$/, loader: 'url-loader?name=[name]@[hash].[ext]&limit=5000'},
@@ -65,6 +74,7 @@ var config = {
     resolve: {
         extensions: ['', '.js', '.jsx', '.css'],
         alias: {
+            jquery: "jquery/src/jquery",
             '#app': path.join(__dirname, 'client'),
             '#c': path.join(__dirname, 'client/components'),
             '#css': path.join(__dirname, 'client/css'),
