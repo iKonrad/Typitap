@@ -1,11 +1,13 @@
-import { applyMiddleware, createStore as reduxCreateStore } from 'redux';
+import {compose, applyMiddleware, createStore as reduxCreateStore } from 'redux';
 import reducers from './../reducers';
+import thunkMiddleware from 'redux-thunk';
 
 const middlewares = [];
 
 // Add state logger
 if (process.env.NODE_ENV !== 'production') {
   middlewares.push(require('redux-logger')());
+  middlewares.push(thunkMiddleware);
 }
 
 export function createStore(state) {

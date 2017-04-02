@@ -21,8 +21,10 @@ export default function (options, cbk) {
     meta: null,
     initial: null,
     error: null,
-    redirect: null
+    redirect: null,
+    test: null
   };
+
 
   const store = createStore();
   setAsCurrentStore(store);
@@ -30,6 +32,11 @@ export default function (options, cbk) {
   try {
     match({ routes: createRoutes({store, first: { time: false }}), location: options.url }, (error, redirectLocation, renderProps) => {
       try {
+
+
+
+
+
         if (error) {
           result.error = error;
 
@@ -37,20 +44,70 @@ export default function (options, cbk) {
           result.redirect = redirectLocation.pathname + redirectLocation.search;
 
         } else {
-          result.app = renderToString(
-            <Provider store={store}>
-              <RouterContext {...renderProps} />
-            </Provider>
-          );
-          const { title, meta } = Helmet.rewind();
-          result.title = title.toString();
-          result.meta = meta.toString();
-          result.initial = JSON.stringify(store.getState());
+
+
+
+                let { query, params } = renderProps;
+                let comp = renderProps.components[renderProps.components.length - 1].WrappedComponent;
+                let promise;
+
+                // Check if fetchData function is present
+            console.log("CHECKING AUTH: ", typeof(comp.checkAuth) !== 'undefined');
+                if (typeof(comp.checkAuth) !== 'undefined') {
+                    console.log('before promise');
+                    promise = comp.checkAuth(store);
+                    console.log(promise);
+
+                    promise.then(() => {
+                        console.log("AFTER AUTH");
+                        // Check if checkAuth function is present as well
+                        if (typeof(comp.fetchData) !== 'undefined') {
+                            promise = comp.fetchData({ query, params, store });
+                            promise.then(() => {
+                                renderComponent();
+                            });
+                        } else {
+                            renderComponent();
+                        }
+                    });
+                } else {
+                    // Check if checkAuth function is present as well
+                    if (typeof(comp.fetchData) !== 'undefined') {
+                        promise = comp.fetchData({ query, params, store });
+                        promise.then(() => {
+                            renderComponent();
+                        });
+                    } else {
+                        renderComponent();
+                    }
+
+                }
+
+                // Check if
+
+
+
+            function renderComponent() {
+                result.app = renderToString(
+                    <Provider store={store}>
+                        <RouterContext {...renderProps} />
+                    </Provider>
+                );
+                const { title, meta } = Helmet.rewind();
+
+                
+                result.title = title.toString();
+                result.meta = meta.toString();
+                result.initial = JSON.stringify(store.getState());
+                return cbk(result);
+            }
+
+
         }
       } catch (e) {
         result.error = e;
       }
-      return cbk(result);
+
     });
   } catch (e) {
     result.error = e;

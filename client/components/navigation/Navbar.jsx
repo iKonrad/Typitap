@@ -21,32 +21,32 @@ class Navbar extends Component {
                     url: '/signup',
                     authenticated: false
                 },
-                {
-                    label: 'Dashboard',
-                    type: 'link',
-                    url: '/',
-                    authenticated: true
-                },
-                {
-                    label: 'My account',
-                    type: 'dropdown',
-                    url: '#',
-                    authenticated: true,
-                    items: [
-                        {
-                            label: 'Account',
-                            type: 'link',
-                            url: '/account',
-                            authenticated: true
-                        },
-                        {
-                            label: 'Log out',
-                            type: 'logout',
-                            url: '/logout',
-                            authenticated: true
-                        },
-                    ]
-                },
+                // {
+                //     label: 'Dashboard',
+                //     type: 'link',
+                //     url: '/',
+                //     authenticated: true
+                // },
+                // {
+                //     label: 'My account',
+                //     type: 'dropdown',
+                //     url: '#',
+                //     authenticated: true,
+                //     items: [
+                //         {
+                //             label: 'Account',
+                //             type: 'link',
+                //             url: '/account',
+                //             authenticated: true
+                //         },
+                //         {
+                //             label: 'Log out',
+                //             type: 'logout',
+                //             url: '/logout',
+                //             authenticated: true
+                //         },
+                //     ]
+                // },
                 {
                     label: 'Play',
                     type: 'button',

@@ -1,24 +1,24 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import Helmet from 'react-helmet';
 import {IndexLink} from 'react-router';
 import {usage, todo} from './styles';
 import {example, p, link} from '../homepage/styles';
+import axios from 'axios';
 import Actions from '../../actions/demoActions';
+import AuthenticatedComponent from "components/modules/AuthenticatedComponent";
 
-class Usage extends Component {
+class Usage extends AuthenticatedComponent {
 
     /*eslint-disable */
     static onEnter({store, nextState, replaceState, callback}) {
-        fetch('/api/v1/conf').then((r) => {
-            return r.json();
-        }).then((conf) => {
-            console.log(Actions.setConfig(conf));
-            store.dispatch(Actions.setConfig(conf));
-            console.log('Faked connection latency! Please, take a look ---> `server/api.go:22`');
+        store.dispatch(Actions.setConfig());
+        super.checkAuth(store);
+        callback();
+    }
 
-            callback();
-        });
+    static fetchData ({query, params, store, history}) {
+        return store.dispatch(Actions.setConfig());
     }
 
     /*eslint-enable */

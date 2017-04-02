@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
+	"github.com/iKonrad/typitap/server/authentication"
 )
 
 // App struct.
@@ -22,6 +23,7 @@ type App struct {
 	Conf   *config.Config
 	React  *React
 	API    *API
+	Auth   *authentication.Authentication
 }
 
 // NewApp returns initialized struct
@@ -32,6 +34,9 @@ func NewApp(opts ...AppOptions) *App {
 		options = i
 		break
 	}
+
+
+
 
 	options.init()
 
@@ -94,6 +99,9 @@ func NewApp(opts ...AppOptions) *App {
 		}
 	})
 
+
+	//app.Engine.Use(authentication.Middleware.Handle);
+
 	// Bind api hadling for URL api.prefix
 	app.API.Bind(
 		app.Engine.Group(
@@ -107,6 +115,11 @@ func NewApp(opts ...AppOptions) *App {
 		AssetDir:  AssetDir,
 		AssetInfo: AssetInfo,
 	})
+
+
+	// Set up authentication module
+
+
 
 	// Serve static via bindata and handle via react app
 	// in case when static file was not found
@@ -159,6 +172,7 @@ func NewTemplate() *Template {
 
 // Render renders template
 func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 

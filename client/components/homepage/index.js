@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import Helmet from 'react-helmet';
 import {Link} from 'react-router';
 import {example, p, link} from './styles';
+import {connect} from 'react-redux'
 
-export default class Homepage extends Component {
+class Homepage extends Component {
     static onEnter({store, nextState, replaceState, callback}) {
-        console.log(callback);
         callback();
     }
 
@@ -31,3 +31,13 @@ export default class Homepage extends Component {
     }
 
 }
+
+
+
+const mapStateToProps = (state) => {
+    return {
+        demo: state.demo
+    }
+};
+
+export default connect(mapStateToProps)(Homepage);

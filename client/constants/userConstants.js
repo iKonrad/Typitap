@@ -1,0 +1,7 @@
+const Constants = {
+    LOGIN_USER_SUCCESS: "LOGIN_USER_SUCCESS",
+    SAVE_USER_DATA: "UPDATE_USER_DATA",
+    LOGOUT_USER_SUCCESS: "LOGOUT_USER_SUCCESS"
+};
+
+export default Constants;

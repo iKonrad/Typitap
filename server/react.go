@@ -71,12 +71,14 @@ func (r *React) Handle(c echo.Context) error {
 		"headers": map[string][]string(c.Request().Header),
 		"uuid":    UUID.String(),
 	}):
-		// Return vm back to the pool
+
+	// Return vm back to the pool
 		r.put(vm)
 
 		re.RenderTime = time.Since(start)
+		fmt.Println(re);
 
-		// Handle the Response
+	// Handle the Response
 		if len(re.Redirect) == 0 && len(re.Error) == 0 {
 			// If no redirection and no errors
 			c.Response().Header().Set("X-React-Render-Time", re.RenderTime.String())
@@ -90,7 +92,7 @@ func (r *React) Handle(c echo.Context) error {
 			return c.Render(http.StatusInternalServerError, "react.html", re)
 		}
 	case <-time.After(2 * time.Second):
-		// release the context
+	// release the context
 		r.drop(vm)
 		return c.Render(http.StatusInternalServerError, "react.html", Resp{
 			UUID:  UUID.String(),

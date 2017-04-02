@@ -20,6 +20,7 @@ export function run() {
     window.self = window;
     require('whatwg-fetch');
 
+    console.log("INITIAL", window['--app-initial']);
     const store = createStore(window['--app-initial']);
     setAsCurrentStore(store);
 
