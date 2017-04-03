@@ -3,7 +3,6 @@ package authentication
 import (
 	"github.com/gorilla/securecookie"
 	"net/http"
-	"fmt"
 )
 
 
@@ -47,7 +46,7 @@ func (cm CookieManager) CreateCookie(cookieName string, cookieValue string) (*ht
 
 
 	encoded, err := cm.secureCookie.Encode(cookieName, cookieValue)
-	fmt.Println(encoded);
+
 	if err == nil {
 		cookie := http.Cookie{
 			Name:  cookieName,

@@ -15,8 +15,9 @@ const Actions = {
             });
         }
     },
+
     logOut() {
-        return {type: Constants.LOGOUT_USER_SUCCESS}
+            return{type: Constants.LOGOUT_USER_SUCCESS};
     }
 };
 

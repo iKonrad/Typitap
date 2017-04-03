@@ -17,7 +17,7 @@ class Usage extends AuthenticatedComponent {
         callback();
     }
 
-    static fetchData ({query, params, store, history}) {
+    static fetchData ({query, params, store}) {
         return store.dispatch(Actions.setConfig());
     }
 

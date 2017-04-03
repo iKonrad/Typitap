@@ -65,6 +65,7 @@ func (r *React) Handle(c echo.Context) error {
 	vm := r.get()
 
 	start := time.Now()
+
 	select {
 	case re := <-vm.Handle(map[string]interface{}{
 		"url":     c.Request().URL.String(),
@@ -76,7 +77,7 @@ func (r *React) Handle(c echo.Context) error {
 		r.put(vm)
 
 		re.RenderTime = time.Since(start)
-		fmt.Println(re);
+
 
 	// Handle the Response
 		if len(re.Redirect) == 0 && len(re.Error) == 0 {
@@ -233,7 +234,8 @@ type JSVM struct {
 // Handle handles http requests
 func (r *JSVM) Handle(req map[string]interface{}) <-chan Resp {
 	r.EventLoop.RunOnLoop(func(vm *goja.Runtime) {
-		r.fn(nil, vm.ToValue(req), vm.ToValue("__goServerCallback__"))
+		v := vm.ToValue(req);
+		r.fn(nil, v, vm.ToValue("__goServerCallback__"))
 	})
 	return r.ch
 }

@@ -6,7 +6,6 @@ import Actions from 'actions/demoActions';
 class Contact extends Component {
 
     static onEnter({store, nextState, replaceState, callback}) {
-        console.log(store);
         callback();
     }
 
