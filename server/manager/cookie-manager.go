@@ -1,4 +1,4 @@
-package authentication
+package manager
 
 import (
 	"github.com/gorilla/securecookie"
@@ -13,6 +13,13 @@ type CookieManager struct {
 	secureCookie *securecookie.SecureCookie
 }
 
+
+var Cookie CookieManager;
+
+
+func init() {
+	Cookie = newCookieManager();
+}
 
 
 func newCookieManager() CookieManager {

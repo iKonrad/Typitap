@@ -11,6 +11,7 @@ import (
 	"log"
 	"strings"
 	"time"
+	"github.com/iKonrad/typitap/server/manager"
 )
 
 
@@ -49,7 +50,7 @@ func (m AuthenticationMiddleWare) Handle(next echo.HandlerFunc) echo.HandlerFunc
 		// Get cookie
 		cookie, err := c.Cookie("SESSION_ID");
 		if err == nil {
-			decodedValue, err := Auth.CookieManager.DecodeCookie(cookie);
+			decodedValue, err := manager.Cookie.DecodeCookie(cookie);
 			if (err == nil) {
 				fmt.Println("GOT THE COOKIE: " + decodedValue);
 			} else {
@@ -60,7 +61,7 @@ func (m AuthenticationMiddleWare) Handle(next echo.HandlerFunc) echo.HandlerFunc
 		} else {
 			log.Println(err);
 			fmt.Println("COOKIE NOT FOUND");
-			cookie, err = Auth.CookieManager.CreateCookie("SESSION_ID", "TESTVALUE")
+			cookie, err = manager.Cookie.CreateCookie("SESSION_ID", "TESTVALUE")
 		}
 
 

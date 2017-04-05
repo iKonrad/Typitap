@@ -11,7 +11,6 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
-	"github.com/iKonrad/typitap/server/authentication"
 )
 
 // App struct.
@@ -23,7 +22,6 @@ type App struct {
 	Conf   *config.Config
 	React  *React
 	API    *API
-	Auth   *authentication.Authentication
 }
 
 // NewApp returns initialized struct
@@ -34,8 +32,6 @@ func NewApp(opts ...AppOptions) *App {
 		options = i
 		break
 	}
-
-
 
 
 	options.init()
@@ -88,6 +84,7 @@ func NewApp(opts ...AppOptions) *App {
 			engine,
 		),
 	}
+
 
 	// Map app and uuid for every requests
 	app.Engine.Use(func(next echo.HandlerFunc) echo.HandlerFunc {

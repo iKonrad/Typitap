@@ -1,4 +1,4 @@
-package authentication
+package manager
 
 import "github.com/pkg/errors"
 
@@ -6,7 +6,14 @@ type SessionManager struct {
 	sessions map[string]string
 }
 
+var Session SessionManager;
 
+
+func init() {
+	Session = SessionManager{
+		sessions: make(map[string]string),
+	}
+}
 
 
 func (sm SessionManager) RetrieveToken(token string) (string, error) {
