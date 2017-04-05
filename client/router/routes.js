@@ -4,8 +4,8 @@ import App from '#app/components/app';
 import Homepage from '#app/components/homepage';
 import Usage from '#app/components/usage';
 import NotFound from '#app/components/not-found';
-import Contact from '#app/pages/contact';
-import Base from 'pages/Base';
+import Contact from 'containers/contact';
+import Base from 'containers/base';
 
 /**
  * Returns configured routes for different

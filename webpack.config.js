@@ -85,6 +85,7 @@ var config = {
             'pages': path.join(__dirname, 'client/pages'),
             'reducers': path.join(__dirname, 'client/reducers'),
             'router': path.join(__dirname, 'client/router'),
+            'containers': path.join(__dirname, 'client/containers'),
 
         }
     },

@@ -1,3 +1,4 @@
+import { reducer as formReducer } from 'redux-form'
 import { combineReducers } from 'redux';
 
 
@@ -14,7 +15,8 @@ import { initialState as userState } from 'reducers/userReducer';
 export default combineReducers({
     app: appReducer,
     demo: demoReducer,
-    user: userReducer
+    user: userReducer,
+    form: formReducer
 });
 
 export const initialStates = {
