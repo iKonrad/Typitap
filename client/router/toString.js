@@ -29,8 +29,9 @@ export default function (options, cbk) {
         test: null
     };
 
-
-    global.clientCookies = options.headers.Cookie[0];
+    if (typeof options.headers.Cookie == "array") {
+        global.clientCookies = options.headers.Cookie[0];
+    }
 
 
     const store = createStore();

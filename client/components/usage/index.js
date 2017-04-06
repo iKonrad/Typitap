@@ -6,7 +6,7 @@ import {usage, todo} from './styles';
 import {example, p, link} from '../homepage/styles';
 import axios from 'axios';
 import Actions from '../../actions/demoActions';
-import AuthenticatedComponent from "components/modules/AuthenticatedComponent";
+import AuthenticatedComponent from "components/modules/auth/AuthenticatedComponent";
 
 class Usage extends AuthenticatedComponent {
 

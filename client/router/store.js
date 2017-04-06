@@ -6,7 +6,7 @@ const middlewares = [];
 
 // Add state logger
 if (process.env.NODE_ENV !== 'production') {
-  // middlewares.push(require('redux-logger')());
+  middlewares.push(require('redux-logger')());
   middlewares.push(thunkMiddleware);
 }
 

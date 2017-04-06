@@ -19,7 +19,7 @@ func init() {
 	User = UserManager{};
 }
 
-func (um UserManager) NewUser(details map[string]interface{}) (entities.User, error) {
+func (um UserManager) CreateUser(details map[string]interface{}) (entities.User, error) {
 
 	isValid, _ := um.ValidateUser(details);
 
@@ -36,9 +36,9 @@ func (um UserManager) NewUser(details map[string]interface{}) (entities.User, er
 
 	newUser := entities.User{
 		Id: newId.String(),
-		FirstName: details["FirstName"].(string),
-		LastName: details["LastName"].(string),
-		Email: details["Email"].(string),
+		Name: details["name"].(string),
+		Email: details["email"].(string),
+		Username: details["username"].(string),
 
 	}
 
@@ -52,54 +52,47 @@ func (um UserManager) ValidateUser(details map[string]interface{}) (bool, map[st
 
 
 	// First name validation
-	firstName, err := details["FirstName"].(string)
-	if (err) {
-		errors["FirstName"] = "This field cannot be empty"
+	if firstName, ok := details["name"].(string); !ok {
+		errors["name"] = "This field cannot be empty"
 		isValid = false
 	} else {
 		if (len(firstName) < 3) {
-			errors["FirstName"] = "First name needs to be at least 3 characters long"
+			errors["name"] = "Name needs to be at least 3 characters long"
 			isValid = false
 		}
 	}
 
-	// Last name validation
-	lastName, err := details["LastName"].(string)
-	if (err) {
-		errors["LastName"] = "This field cannot be empty"
+
+	// First name validation
+	if username, ok := details["username"].(string); !ok {
+		errors["username"] = "This field cannot be empty"
 		isValid = false
 	} else {
-		if (len(lastName) < 3) {
-			errors["LastName"] = "Last name needs to be at least 3 characters long"
+		if (len(username) < 3) {
+			errors["username"] = "Username needs to be at least 3 characters long"
 			isValid = false
 		}
 	}
 
+
 	// Email validation
-	email, err := details["Email"].(string)
-	if (err) {
-		errors["Email"] = "This field cannot be empty"
+	if email, ok := details["email"].(string); !ok {
+		errors["email"] = "This field cannot be empty"
 		isValid = false
 	} else {
 		err := checkmail.ValidateFormat(email);
 		if (err != nil) {
-			errors["Email"] = "Invalid e-mail address";
-		} else {
-			err := checkmail.ValidateHost(email);
-			if (err != nil) {
-				errors["Email"] = "Invalid e-mail address"
-			}
+			errors["email"] = "Invalid e-mail address";
 		}
 	}
 
 	// Password validation
-	password, err := details["Password"].(string)
-	if (err) {
-		errors["Password"] = "Password cannot be empty"
+	if password, ok := details["password"].(string); !ok {
+		errors["password"] = "Password cannot be empty"
 		isValid = false
 	} else {
 		if (len(password) < 6) {
-			errors["Password"] = "Password needs to be at least 6 characters long"
+			errors["password"] = "Password needs to be at least 6 characters long"
 			isValid = false
 		}
 	}

@@ -1,11 +1,11 @@
 package entities;
 
 type User struct {
-	Id        string `gorethink:"id,omitempty"`
-	FirstName string `gorethink:"firstName"`
-	LastName  string `gorethink:"lastName"`
-	Email     string `gorethink:"email"`
-	Password  string `gorethink:"password"`
+	Id       string `gorethink:"id,omitempty"`
+	Name     string `gorethink:"firstName"`
+	Email    string `gorethink:"email"`
+	Password string `gorethink:"password"`
+	Username string `gorethink:"username"`
 }
 
 

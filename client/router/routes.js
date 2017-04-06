@@ -6,6 +6,7 @@ import Usage from '#app/components/usage';
 import NotFound from '#app/components/not-found';
 import Contact from 'containers/contact';
 import Base from 'containers/base';
+import LoginSignup from "containers/login-signup";
 
 /**
  * Returns configured routes for different
@@ -31,6 +32,8 @@ export default ({store, first}) => {
     <IndexRoute component={Homepage} onEnter={w(Homepage.onEnter)}/>
     <Route path="/usage" component={Usage} onEnter={w(Usage.onEnter)}/>
     <Route path="/contact" component={Contact} onEnter={w(Usage.onEnter)}/>
+    <Route path="/login" component={LoginSignup} onEnter={w(LoginSignup.onEnter)} />
+    <Route path="/signup" component={LoginSignup} onEnter={w(LoginSignup.onEnter)} />
     {/* Server redirect in action */}
     <Redirect from="/docs" to="/usage" />
     <Route path="*" component={NotFound} onEnter={w(NotFound.onEnter)}/>

@@ -13,7 +13,10 @@ type API struct{}
 // Bind attaches api routes
 func (api *API) Bind(group *echo.Group) {
 	group.GET("/v1/conf", api.ConfHandler)
-	group.GET("/v1/auth/check", handlers.AuthenticationH.TestHandler)
+
+	// Authentication routes
+	group.GET("/auth/check", handlers.AuthenticationH.TestHandler)
+	group.POST("/auth/signup", handlers.AuthenticationH.Signup)
 
 }
 

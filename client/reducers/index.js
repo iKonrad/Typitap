@@ -22,5 +22,5 @@ export default combineReducers({
 export const initialStates = {
     appState,
     demoState,
-    userState
+    userState,
 };
