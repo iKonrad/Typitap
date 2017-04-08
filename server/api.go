@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/labstack/echo"
-	"github.com/iKonrad/typitap/server/api/handlers"
+	"github.com/iKonrad/typitap/server/api/controller"
 )
 
 // API is a defined as struct bundle
@@ -15,8 +15,8 @@ func (api *API) Bind(group *echo.Group) {
 	group.GET("/v1/conf", api.ConfHandler)
 
 	// Authentication routes
-	group.GET("/auth/check", handlers.AuthenticationH.TestHandler)
-	group.POST("/auth/signup", handlers.AuthenticationH.Signup)
+	group.GET("/auth/check", controllers.AuthenticationC.TestHandler)
+	group.POST("/auth/signup", controllers.AuthenticationC.Signup)
 
 }
 

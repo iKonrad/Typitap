@@ -1,46 +1,25 @@
 package manager
 
 import (
-	"github.com/pkg/errors"
+	"github.com/gorilla/sessions"
 )
 
 type SessionManager struct {
-	sessions map[string]string
+	Store *sessions.CookieStore
 }
 
 var Session SessionManager;
 
-
 func init() {
+
+	//sessionSecret, err := uuid.NewV4();
+	//
+	//if (err != nil) {
+	//	panic("Error while creating session secret!");
+	//}
+
 	Session = SessionManager{
-		sessions: make(map[string]string),
+		Store: sessions.NewCookieStore([]byte("UVHY!!NSeWFXN@W5EQTTnBiM%33jNURiMjly%8YVdYX2d3TUJB#UT^FUWlhOemFX")),
 	}
 }
 
-
-func (sm SessionManager) RetrieveToken(token string) (string, error) {
-
-	for index, element := range sm.sessions {
-		if index == token {
-			return element, nil
-		}
-	}
-
-	return "", errors.New("Token not found")
-}
-
-func (sm SessionManager) RemoveSession(token string)  {
-
-	if _, ok := sm.sessions[token]; ok {
-		delete(sm.sessions, token);
-	}
-}
-
-
-func (sm SessionManager) CreateSession(token string, value string) {
-
-	if _, ok := sm.sessions[token]; !ok {
-		sm.sessions[token] = value;
-	}
-
-}

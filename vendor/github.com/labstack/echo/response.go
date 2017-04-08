@@ -10,7 +10,7 @@ type (
 	// Response wraps an http.ResponseWriter and implements its interface to be used
 	// by an HTTP handler to construct an HTTP response.
 	// See: https://golang.org/pkg/net/http/#ResponseWriter
-	Response struct {
+	 Response struct {
 		Writer    http.ResponseWriter
 		Status    int
 		Size      int64

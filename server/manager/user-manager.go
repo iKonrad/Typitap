@@ -14,12 +14,6 @@ type UserManager struct {
 
 var User UserManager;
 
-// Stores a current Logged in user. Otherwise nil
-var currentUser *entities.User
-
-// Stores value about the logged in status
-var isLoggedIn bool = false;
-
 
 func init() {
 	User = UserManager{};
@@ -45,7 +39,7 @@ func (um UserManager) CreateUser(details map[string]interface{}) (entities.User,
 		Name: details["name"].(string),
 		Email: details["email"].(string),
 		Username: details["username"].(string),
-
+		Active: false,
 	}
 
 	return newUser, nil;

@@ -67,9 +67,8 @@ func NewApp(opts ...AppOptions) *App {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
 	})
 
-	authenticationMiddleware := authentication.AuthenticationMiddleWare{}
 
-	engine.Use(authenticationMiddleware.CheckAuth)
+	engine.Use(authentication.CheckAuthHandler)
 
 	engine.Static("/images", "static/images");
 
