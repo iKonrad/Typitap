@@ -37,7 +37,7 @@ func CheckAuthHandler(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 
-		session, err := manager.Session.Store.Get(c.Request(), "SESSION_ID");
+		session, err := manager.Rethink.Get(c.Request(), "SESSION_ID");
 
 		if (err != nil) {
 			fmt.Println("Error while fetching a session", err);

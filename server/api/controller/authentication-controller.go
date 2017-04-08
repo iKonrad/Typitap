@@ -56,12 +56,15 @@ func (api *AuthenticationController) Signup(c echo.Context) error {
 	}
 
 	// Now, that we have a user, we can log in automatically
-	session, err := manager.Session.Store.Get(c.Request(), "SESSION_ID");
 
+	session, err := manager.Rethink.Get(c.Request(), "SESSION_ID");
 	if (err != nil) {
 		log.Println("Error when generating a session", err);
 	}
 
+	if (!session.IsNew) {
+		return c.JSON(200, map[string]interface{}{"success": false, "error": "You are logged in"})
+	}
 
 	sessionCookie := entities.SessionCookie{
 		UserId: newUser.Id,

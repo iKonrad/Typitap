@@ -25,8 +25,6 @@ func CreateDatabase() *DB {
 
 	var err error
 
-
-
 	session, err := r.Connect(r.ConnectOpts{
 		Address:    "localhost:28015",
 		MaxOpen:    MAX_OPEN,
@@ -36,11 +34,8 @@ func CreateDatabase() *DB {
 		log.Fatalln(err.Error())
 	}
 
-
 	return &DB{
 		session: session,
 	}
 
 }
-
-// Adrian Dobrowolski
