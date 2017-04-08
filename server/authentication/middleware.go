@@ -29,7 +29,7 @@ func newMiddleWare() AuthenticationMiddleWare {
 }
 
 
-func (m AuthenticationMiddleWare) Handle(next echo.HandlerFunc) echo.HandlerFunc {
+func (m AuthenticationMiddleWare) CheckAuth(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
 		// Ignore static file requests
@@ -38,6 +38,7 @@ func (m AuthenticationMiddleWare) Handle(next echo.HandlerFunc) echo.HandlerFunc
 		}
 
 
+		// For debug
 		fmt.Println("Cookies for path: " + c.Request().URL.Path);
 		for _, cookie := range c.Cookies() {
 			fmt.Print("Name: ");
@@ -47,7 +48,7 @@ func (m AuthenticationMiddleWare) Handle(next echo.HandlerFunc) echo.HandlerFunc
 		}
 
 
-		// Get cookie
+		// Get Session Cookie
 		cookie, err := c.Cookie("SESSION_ID");
 		if err == nil {
 			decodedValue, err := manager.Cookie.DecodeCookie(cookie);
@@ -56,16 +57,16 @@ func (m AuthenticationMiddleWare) Handle(next echo.HandlerFunc) echo.HandlerFunc
 			} else {
 				// We've found some unrecognized cookie. It's safe to delete
 				cookie.Expires = time.Now().Add(-1 * time.Second);
+				c.SetCookie(cookie);
 			}
-
-		} else {
-			log.Println(err);
-			fmt.Println("COOKIE NOT FOUND");
-			cookie, err = manager.Cookie.CreateCookie("SESSION_ID", "TESTVALUE")
 		}
 
 
-		c.SetCookie(cookie);
+		if (err != nil) {
+			next(c);
+		}
+
+
 
 		return next(c);
 	}

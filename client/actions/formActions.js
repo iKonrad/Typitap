@@ -28,12 +28,17 @@ const FormActions = {
                 body: formData,
                 credentials: "same-origin",
             }).then((response) => {
-                console.log(response);
                 return response.json();
             }).then((response) => {
-                // Check if login was successful
                 console.log(response);
-                throw new SubmissionError(response.errors);
+                // Check if login was successful
+                if (response.errors) {
+                    console.log(response.errors);
+                    throw new SubmissionError(response.errors);
+                }
+
+                console.log("SIGNUP SUCCESSFUL");
+
             });
     }
 };

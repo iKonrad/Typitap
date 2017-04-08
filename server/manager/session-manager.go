@@ -1,6 +1,8 @@
 package manager
 
-import "github.com/pkg/errors"
+import (
+	"github.com/pkg/errors"
+)
 
 type SessionManager struct {
 	sessions map[string]string

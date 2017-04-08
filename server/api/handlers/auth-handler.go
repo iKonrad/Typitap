@@ -27,6 +27,9 @@ func (api *AuthenticationHandler) TestHandler(c echo.Context) error {
 
 func (api *AuthenticationHandler) Signup(c echo.Context) error {
 
+	// Check if user is logged in first
+
+
 	// Get form data
 	details := map[string]interface{}{
 		"name": c.FormValue("name"),
@@ -50,8 +53,9 @@ func (api *AuthenticationHandler) Signup(c echo.Context) error {
 	_, err := manager.User.CreateUser(details);
 
 	if (err != nil) {
-
+		log.Println(err);
 	}
+
 	return c.JSON(200, map[string]interface{}{"success": true})
 
 	// Validate data

@@ -14,6 +14,12 @@ type UserManager struct {
 
 var User UserManager;
 
+// Stores a current Logged in user. Otherwise nil
+var currentUser *entities.User
+
+// Stores value about the logged in status
+var isLoggedIn bool = false;
+
 
 func init() {
 	User = UserManager{};
@@ -29,7 +35,7 @@ func (um UserManager) CreateUser(details map[string]interface{}) (entities.User,
 
 	newId, error := uuid.NewV4();
 
-	if (error == nil) {
+	if (error != nil) {
 		log.Println("Error while creating a user UUID", error);
 		return entities.User{}, errors.New("Issue while creating a UUID key");
 	}
@@ -83,6 +89,7 @@ func (um UserManager) ValidateUser(details map[string]interface{}) (bool, map[st
 		err := checkmail.ValidateFormat(email);
 		if (err != nil) {
 			errors["email"] = "Invalid e-mail address";
+			isValid = false
 		}
 	}
 

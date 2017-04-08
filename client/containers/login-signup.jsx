@@ -30,11 +30,11 @@ class LoginSignup extends Component {
 
         if (this.props.route.path === '/signup') {
             return (
-                <SignupForm handleSubmit={ (e) => { this.handleSignup(e); } }/>
+                <SignupForm />
             );
         } else {
             return (
-                <LoginForm handleSubmit={ (e) => { this.handleLogin(e); } }/>
+                <LoginForm />
             );
         }
 

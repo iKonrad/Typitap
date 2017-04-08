@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
+	"github.com/iKonrad/typitap/server/authentication"
 )
 
 // App struct.
@@ -66,6 +67,9 @@ func NewApp(opts ...AppOptions) *App {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
 	})
 
+	authenticationMiddleware := authentication.AuthenticationMiddleWare{}
+
+	engine.Use(authenticationMiddleware.CheckAuth)
 
 	engine.Static("/images", "static/images");
 
