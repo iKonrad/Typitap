@@ -1,6 +1,6 @@
-import { reducer as formReducer } from 'redux-form'
 import { combineReducers } from 'redux';
-
+import { reducer as formReducer } from 'redux-form'
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 import appReducer from 'reducers/appReducer';
 import demoReducer from 'reducers/demoReducer';
@@ -16,7 +16,8 @@ export default combineReducers({
     app: appReducer,
     demo: demoReducer,
     user: userReducer,
-    form: formReducer
+    form: formReducer,
+    routing: routerReducer,
 });
 
 export const initialStates = {

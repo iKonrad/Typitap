@@ -6,6 +6,7 @@ import toString from './toString';
 import {Promise} from 'when';
 import createRoutes from './routes';
 import {createStore, setAsCurrentStore} from './store';
+import { syncHistoryWithStore } from 'react-router-redux'
 
 
 export function run() {
@@ -23,9 +24,11 @@ export function run() {
     const store = createStore(window['--app-initial']);
     setAsCurrentStore(store);
 
+    let history = syncHistoryWithStore(browserHistory, store);
+
     render(
         <Provider store={store}>
-            <Router history={browserHistory}>{createRoutes({store, first: {time: true}})}</Router>
+            <Router history={history}>{createRoutes({store, first: {time: true}})}</Router>
         </Provider>,
         document.getElementById('app')
     );
