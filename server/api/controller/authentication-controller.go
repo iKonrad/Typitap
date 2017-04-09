@@ -7,6 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
+	"github.com/iKonrad/typitap/server/config"
 )
 
 type AuthenticationController struct {
@@ -174,6 +175,8 @@ func (ac AuthenticationController) HandleLogout (c echo.Context) error {
 	if err != nil {
 		log.Println("Error while fetching the session", err);
 	}
+
+	config.Get("LOL");
 
 	session.Options.MaxAge = -1;
 	session.Save(c.Request(), c.Response().Writer);
