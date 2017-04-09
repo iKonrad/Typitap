@@ -9,6 +9,8 @@ import LoginSignup from "containers/login-signup";
 import Home from 'containers/home';
 import Logout from 'containers/logout';
 
+import Permissions from 'utils/permissions';
+
 /**
  * Returns configured routes for different
  * environments. `w` - wrapper that helps skip
@@ -29,12 +31,13 @@ export default ({store, first}) => {
         };
     }
 
+
     return <Route path="/" component={Base}>
         <IndexRoute component={Home} onEnter={w(Home.onEnter)}/>
         <Route path="/usage" component={Usage} onEnter={w(Usage.onEnter)}/>
         <Route path="/contact" component={Contact} onEnter={w(Usage.onEnter)}/>
-        <Route path="/login" component={LoginSignup} onEnter={w(LoginSignup.onEnter)}/>
-        <Route path="/signup" component={LoginSignup} onEnter={w(LoginSignup.onEnter)}/>
+        <Route path="/login" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
+        <Route path="/signup" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
         <Route path="/logout" component={Logout} onEnter={w(Logout.onEnter)} />
 
         {/* Server redirect in action */}

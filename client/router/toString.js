@@ -1,11 +1,11 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {renderToString} from 'react-dom/server';
-import { createMemoryHistory, match, RouterContext } from 'react-router'
+import {createMemoryHistory, match, RouterContext} from 'react-router'
 import Helmet from 'react-helmet';
 import createRoutes from './routes';
 import {createStore, setAsCurrentStore} from './store';
-import { syncHistoryWithStore } from 'react-router-redux'
+import {syncHistoryWithStore} from 'react-router-redux'
 
 var clientCookies;
 
@@ -34,8 +34,6 @@ export default function (options, cbk) {
     }
 
 
-
-
     var currentState = {};
     if (options.state !== undefined) {
         currentState = options.state;
@@ -44,6 +42,7 @@ export default function (options, cbk) {
     const memoryHistory = createMemoryHistory(options.url)
     const store = createStore(currentState, memoryHistory);
     setAsCurrentStore(store);
+
 
     try {
         match({
@@ -84,7 +83,6 @@ export default function (options, cbk) {
 
 
                     // Check if
-
 
 
                     function renderComponent() {

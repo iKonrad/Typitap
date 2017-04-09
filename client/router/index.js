@@ -21,7 +21,7 @@ export function run() {
     window.self = window;
     require('whatwg-fetch');
 
-    const store = createStore(window['--app-initial']);
+    const store = createStore(window['--app-initial'], browserHistory);
     setAsCurrentStore(store);
 
     let history = syncHistoryWithStore(browserHistory, store);
