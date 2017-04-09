@@ -2,8 +2,7 @@ package entities
 
 import (
 	"encoding/gob"
-);
-
+)
 
 type SessionCookie struct {
 	UserId string
@@ -11,6 +10,5 @@ type SessionCookie struct {
 }
 
 func init() {
-	gob.Register(&SessionCookie{});
+	gob.Register(&SessionCookie{})
 }
-

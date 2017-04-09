@@ -1,7 +1,6 @@
-package entities;
+package entities
 
 type User struct {
-
 	Id       string `gorethink:"id,omitempty"`
 	Name     string `gorethink:"firstName"`
 	Email    string `gorethink:"email"`
@@ -10,5 +9,3 @@ type User struct {
 
 	Active bool `gorethink:"active"`
 }
-
-

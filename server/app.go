@@ -6,12 +6,12 @@ import (
 	"net/http"
 
 	"github.com/elazarl/go-bindata-assetfs"
+	middlewares "github.com/iKonrad/typitap/server/middleware"
 	"github.com/itsjamie/go-bindata-templates"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
-	"github.com/iKonrad/typitap/server/authentication"
 )
 
 // App struct.
@@ -34,7 +34,6 @@ func NewApp(opts ...AppOptions) *App {
 		break
 	}
 
-
 	options.init()
 
 	// Parse config yaml string from ./conf.go
@@ -53,7 +52,6 @@ func NewApp(opts ...AppOptions) *App {
 	// Make an engine
 	engine := echo.New()
 
-
 	// Use precompiled embedded templates
 	engine.Renderer = NewTemplate()
 
@@ -67,11 +65,11 @@ func NewApp(opts ...AppOptions) *App {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
 	})
 
-
-	engine.Use(authentication.CheckAuthHandler)
-
-	engine.Static("/images", "static/images");
-
+	// Register authentication middleware
+	engine.Use(middlewares.CheckAuthHandler)
+	// Register Redux State generator middleware
+	engine.Use(middlewares.GenerateStateHandler)
+	engine.Static("/images", "static/images")
 	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
 	}))
@@ -88,7 +86,6 @@ func NewApp(opts ...AppOptions) *App {
 		),
 	}
 
-
 	// Map app and uuid for every requests
 	app.Engine.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -98,7 +95,6 @@ func NewApp(opts ...AppOptions) *App {
 			return next(c)
 		}
 	})
-
 
 	//app.Engine.Use(authentication.Middleware.Handle);
 
@@ -116,10 +112,7 @@ func NewApp(opts ...AppOptions) *App {
 		AssetInfo: AssetInfo,
 	})
 
-
 	// Set up authentication module
-
-
 
 	// Serve static via bindata and handle via react app
 	// in case when static file was not found
@@ -147,8 +140,6 @@ func NewApp(opts ...AppOptions) *App {
 			return err
 		}
 	})
-
-
 
 	return app
 }

@@ -7,9 +7,6 @@ var (
 	commitHash string
 )
 
-
-
-
 // Most easiest way to configure
 // an application is define config as
 // yaml string and then parse it into

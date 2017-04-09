@@ -5,22 +5,17 @@ import (
 	"net/http"
 )
 
-
-
 type CookieManager struct {
-	hashKey []byte
-	blockKey []byte
+	hashKey      []byte
+	blockKey     []byte
 	secureCookie *securecookie.SecureCookie
 }
 
-
-var Cookie CookieManager;
-
+var Cookie CookieManager
 
 func init() {
-	Cookie = newCookieManager();
+	Cookie = newCookieManager()
 }
-
 
 func newCookieManager() CookieManager {
 
@@ -28,29 +23,24 @@ func newCookieManager() CookieManager {
 	blockKey := securecookie.GenerateRandomKey(16)
 
 	cookieManager := CookieManager{
-		hashKey: hashKey,
-		blockKey: nil,
-		secureCookie:
-		securecookie.New(hashKey, blockKey),
-	};
-	return cookieManager;
+		hashKey:      hashKey,
+		blockKey:     nil,
+		secureCookie: securecookie.New(hashKey, blockKey),
+	}
+	return cookieManager
 }
-
 
 // DecodeCookie decodes the cookie and returns the decoded value as a string
 func (cm CookieManager) DecodeCookie(cookie *http.Cookie) (string, error) {
-	var value string;
-	err := cm.secureCookie.Decode(cookie.Name, cookie.Value, &value);
+	var value string
+	err := cm.secureCookie.Decode(cookie.Name, cookie.Value, &value)
 
-	return value, err;
+	return value, err
 
 }
 
-
 // CreateCookie creates a secure cookie with gorilla securecookies
 func (cm CookieManager) CreateCookie(cookieName string, cookieValue string) (*http.Cookie, error) {
-
-
 
 	encoded, err := cm.secureCookie.Encode(cookieName, cookieValue)
 
@@ -64,6 +54,6 @@ func (cm CookieManager) CreateCookie(cookieName string, cookieValue string) (*ht
 		return &cookie, nil
 	}
 
-	return nil, err;
+	return nil, err
 
 }

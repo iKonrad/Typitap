@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/labstack/echo"
 	"github.com/iKonrad/typitap/server/api/controller"
+	"github.com/labstack/echo"
 )
 
 // API is a defined as struct bundle
@@ -26,4 +26,3 @@ func (api *API) ConfHandler(c echo.Context) error {
 	app := c.Get("app").(*App)
 	return c.JSON(200, app.Conf.Root)
 }
-

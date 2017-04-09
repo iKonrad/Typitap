@@ -73,13 +73,12 @@ func (r *React) Handle(c echo.Context) error {
 		"uuid":    UUID.String(),
 	}):
 
-	// Return vm back to the pool
+		// Return vm back to the pool
 		r.put(vm)
 
 		re.RenderTime = time.Since(start)
 
-
-	// Handle the Response
+		// Handle the Response
 		if len(re.Redirect) == 0 && len(re.Error) == 0 {
 			// If no redirection and no errors
 			c.Response().Header().Set("X-React-Render-Time", re.RenderTime.String())
@@ -93,7 +92,7 @@ func (r *React) Handle(c echo.Context) error {
 			return c.Render(http.StatusInternalServerError, "react.html", re)
 		}
 	case <-time.After(2 * time.Second):
-	// release the context
+		// release the context
 		r.drop(vm)
 		return c.Render(http.StatusInternalServerError, "react.html", Resp{
 			UUID:  UUID.String(),
@@ -234,7 +233,7 @@ type JSVM struct {
 // Handle handles http requests
 func (r *JSVM) Handle(req map[string]interface{}) <-chan Resp {
 	r.EventLoop.RunOnLoop(func(vm *goja.Runtime) {
-		v := vm.ToValue(req);
+		v := vm.ToValue(req)
 		r.fn(nil, v, vm.ToValue("__goServerCallback__"))
 	})
 	return r.ch
