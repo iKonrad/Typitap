@@ -7,6 +7,7 @@ import Contact from 'containers/contact';
 import Base from 'containers/base';
 import LoginSignup from "containers/login-signup";
 import Home from 'containers/home';
+import Logout from 'containers/logout';
 
 /**
  * Returns configured routes for different
@@ -34,9 +35,13 @@ export default ({store, first}) => {
         <Route path="/contact" component={Contact} onEnter={w(Usage.onEnter)}/>
         <Route path="/login" component={LoginSignup} onEnter={w(LoginSignup.onEnter)}/>
         <Route path="/signup" component={LoginSignup} onEnter={w(LoginSignup.onEnter)}/>
+        <Route path="/logout" component={Logout} onEnter={w(Logout.onEnter)} />
 
         {/* Server redirect in action */}
         <Redirect from="/docs" to="/usage"/>
-        <Route path="*" component={NotFound} onEnter={w(NotFound.onEnter)}/>
+        <Route path="*" component={Home} onEnter={w(Home.onEnter)}/>
     </Route>;
 };
+
+
+

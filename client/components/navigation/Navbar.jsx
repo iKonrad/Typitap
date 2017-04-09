@@ -27,31 +27,37 @@ class Navbar extends Component {
                 //     url: '/',
                 //     authenticated: true
                 // },
-                // {
-                //     label: 'My account',
-                //     type: 'dropdown',
-                //     url: '#',
-                //     authenticated: true,
-                //     items: [
-                //         {
-                //             label: 'Account',
-                //             type: 'link',
-                //             url: '/account',
-                //             authenticated: true
-                //         },
-                //         {
-                //             label: 'Log out',
-                //             type: 'logout',
-                //             url: '/logout',
-                //             authenticated: true
-                //         },
-                //     ]
-                // },
+                {
+                    label: 'My account',
+                    type: 'dropdown',
+                    url: '#',
+                    authenticated: true,
+                    items: [
+                        {
+                            label: 'Account',
+                            type: 'link',
+                            url: '/account',
+                            authenticated: true
+                        },
+                        {
+                            label: 'Log out',
+                            type: 'link',
+                            url: '/logout',
+                            authenticated: true
+                        },
+                    ]
+                },
                 {
                     label: 'Play',
                     type: 'button',
                     url: '/play',
                     authenticated: false
+                },
+                {
+                    label: 'Play',
+                    type: 'button',
+                    url: '/play',
+                    authenticated: true
                 },
             ]
         };
@@ -70,29 +76,25 @@ class Navbar extends Component {
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav pull-right">
                             { this.state.menu.map((obj, index) => {
+                                if (obj.authenticated === this.props.user.loggedIn) {
 
-                                if (obj.type == 'link') {
-                                    return <NavLink to={obj.url} key={'menu-item-' + index}>{ obj.label }</NavLink>;
-                                } else if (obj.type == 'button') {
-                                    return <NavLink to={obj.url} key={'menu-item-' + index}
-                                                    type="button">{ obj.label }</NavLink>;
-                                } else if (obj.type == 'dropdown') {
-                                    return (
-                                        <li className="dropdown" key={'dropdown-' + index}>
-                                            <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{ obj.label } <span className="caret" style={{marginLeft: '5px'}}></span></a>
-                                            <ul className="dropdown-menu">
-                                                { obj.items.map((item, index) => {
-                                                    return <NavLink className='dropdown-item' to={item.url}  key={'menu-dropdown-item-' + index}>{ item.label }</NavLink>;
-                                                }) }
-                                            </ul>
-                                        </li>
-                                    );
-                                } else if (obj.type == 'logout') {
-                                    return (
-                                        <li>
-                                            <a href='/logout'>Log out</a>
-                                        </li>
-                                    );
+                                    if (obj.type === 'link') {
+                                        return <NavLink to={obj.url} key={'menu-item-' + index}>{ obj.label }</NavLink>;
+                                    } else if (obj.type === 'button') {
+                                        return <NavLink to={obj.url} key={'menu-item-' + index}
+                                                        type="button">{ obj.label }</NavLink>;
+                                    } else if (obj.type === 'dropdown') {
+                                        return (
+                                            <li className="dropdown" key={'dropdown-' + index}>
+                                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{ obj.label } <span className="caret" style={{marginLeft: '5px'}}></span></a>
+                                                <ul className="dropdown-menu">
+                                                    { obj.items.map((item, index) => {
+                                                        return <NavLink className='dropdown-item' to={item.url}  key={'menu-dropdown-item-' + index}>{ item.label }</NavLink>;
+                                                    }) }
+                                                </ul>
+                                            </li>
+                                        );
+                                    }
                                 }
                             })}
                         </ul>
@@ -106,7 +108,9 @@ class Navbar extends Component {
 
 
 let mapStateToProps = (state) => {
-    return state.demo;
+    return {
+        user: state.user
+    };
 };
 
 // export default connect(mapStateToProps, mapDispatchToProps, null, {pure:false})(Sidebar);

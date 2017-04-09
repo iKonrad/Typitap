@@ -16,9 +16,32 @@ const Actions = {
         }
     },
 
-    logOut() {
-            return{type: Constants.LOGOUT_USER_SUCCESS};
+    loginUser(user) {
+        return (dispatch) => {
+            dispatch({type: Constants.LOGIN_USER_SUCCESS, user});
+        }
+    },
+    logoutUser() {
+
+        return (dispatch) => {
+
+            return fetch("/api/auth/logout", {
+                method: "POST",
+                credentials: "same-origin"
+            }).then((response) => {
+                return response.json();
+            }).then((response) => {
+                console.log("RES", JSON.stringify(response));
+                if (response.success) {
+                    return dispatch({type: Constants.LOGOUT_USER_SUCCESS});
+                }
+            });
+
+        }
+
     }
+
+
 };
 
 export default Actions;

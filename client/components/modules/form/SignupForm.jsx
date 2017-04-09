@@ -1,15 +1,19 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
+import { browserHistory } from 'react-router';
+
 import Input from "./fields/Input";
-
-
-import FormAction from 'actions/formActions';
-
+import FormActions from 'actions/formActions';
+import UserActions from 'actions/userActions';
 
 class SignupForm extends Component {
 
     handleSubmitForm(values) {
-        return FormAction.submitSignup(values);
+        return FormActions.submitSignup(values).then((details) => {
+            this.props.dispatch(UserActions.loginUser(details.user))
+        }).then(() => {
+            browserHistory.push("/");
+        });
     }
 
     render() {

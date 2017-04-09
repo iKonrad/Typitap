@@ -11,13 +11,12 @@ export default function userReducer(state = {}, action) {
     switch (action.type) {
         case Constants.LOGIN_USER_SUCCESS:
                 return {
-                    ...state,
+                    loggedIn: true,
                     ...action.user
-                }
+                };
         case Constants.LOGOUT_USER_SUCCESS:
                 return {
-                    ...state,
-                    user: {}
+                    loggedIn: false
                 };
         case Constants.SAVE_USER_DATA:
                 return {

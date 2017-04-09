@@ -18,7 +18,7 @@ func (api *API) Bind(group *echo.Group) {
 	group.GET("/auth/check", controllers.AuthenticationC.TestHandler)
 	group.POST("/auth/signup", controllers.AuthenticationC.HandleSignup)
 	group.POST("/auth/login", controllers.AuthenticationC.HandleLogin)
-
+	group.POST("/auth/logout", controllers.AuthenticationC.HandleLogout);
 }
 
 // ConfHandler handle the app config, for example

@@ -24,8 +24,7 @@ func (api *AuthenticationController) TestHandler(c echo.Context) error {
 
 func (a *AuthenticationController) HandleSignup(c echo.Context) error {
 
-	// @TODO: Check if user is logged in first
-
+	// Check if user is logged in first
 	if c.Get("IsLoggedIn").(bool) {
 		return c.JSON(200, map[string]interface{}{"success": false, "error": "You are logged in"})
 	}
@@ -148,6 +147,8 @@ func (ac AuthenticationController) HandleLogin(c echo.Context) error {
 		Role:   "ADMIN", // @TODO: Replace this when roles are implemented
 	}
 
+	session.Options.MaxAge = 60 * 60 * 24 * 14;
+
 	session.Save(c.Request(), c.Response().Writer)
 
 	return c.JSON(200, map[string]interface{}{
@@ -158,6 +159,27 @@ func (ac AuthenticationController) HandleLogin(c echo.Context) error {
 			"email": user.Email,
 		},
 	})
+}
+
+
+func (ac AuthenticationController) HandleLogout (c echo.Context) error {
+
+	// Check if user is already logged in
+	if !c.Get("IsLoggedIn").(bool) {
+		return c.JSON(200, map[string]interface{}{"success": true})
+	}
+
+	session, err := manager.Session.Get(c.Request(), "SESSION_ID");
+
+	if err != nil {
+		log.Println("Error while fetching the session", err);
+	}
+
+	session.Options.MaxAge = -1;
+	session.Save(c.Request(), c.Response().Writer);
+
+	return c.JSON(200, map[string]interface{}{"success": true});
+
 }
 
 func (ac AuthenticationController) validateLoginForm(username string, password string) (bool, map[string]string) {

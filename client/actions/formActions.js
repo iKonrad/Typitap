@@ -24,9 +24,10 @@ const FormActions = {
                 throw new SubmissionError({_error: response.error, username: response.error, password: ""});
             }
 
-            // Logged in
-            return {type: Constants.LOGIN_USER_SUCCESS, user: response.user};
+            console.log("RESPONSE", response);
 
+            // Logged in
+            return {user: response.user};
         });
     },
 
@@ -50,11 +51,7 @@ const FormActions = {
                 throw new SubmissionError(response.errors);
             }
 
-            return (dispatch) => {
-                dispatch({type: Constants.LOGIN_USER_SUCCESS, user: response.user});
-            }
-            // Signed up and logged in
-
+            return {user: response.user};
         });
     }
 };

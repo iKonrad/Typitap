@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import FormActions from 'actions/formActions';
+import UserActions from 'actions/userActions';
 import Input from './fields/Input';
 import { browserHistory } from 'react-router';
 
@@ -8,8 +9,8 @@ class LoginForm extends Component {
 
 
     handleSubmitForm(values) {
-        return FormActions.submitLogin(values).then((action) => {
-            this.props.dispatch(action);
+        return FormActions.submitLogin(values).then((details) => {
+            this.props.dispatch(UserActions.loginUser(details.user));
         }).then(() => {
             browserHistory.push("/");
         });
