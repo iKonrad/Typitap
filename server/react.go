@@ -66,12 +66,17 @@ func (r *React) Handle(c echo.Context) error {
 
 	start := time.Now()
 
-	select {
-	case re := <-vm.Handle(map[string]interface{}{
+	fmt.Println(c.Get("Store"))
+
+	params := map[string]interface{}{
 		"url":     c.Request().URL.String(),
 		"headers": map[string][]string(c.Request().Header),
 		"uuid":    UUID.String(),
-	}):
+		"state": c.Get("State"),
+	}
+
+	select {
+	case re := <-vm.Handle(params):
 
 		// Return vm back to the pool
 		r.put(vm)

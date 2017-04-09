@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import FormActions from 'actions/formActions';
 import Input from './fields/Input';
-
+import { browserHistory } from 'react-router';
 
 class LoginForm extends Component {
 
@@ -10,6 +10,8 @@ class LoginForm extends Component {
     handleSubmitForm(values) {
         return FormActions.submitLogin(values).then((action) => {
             this.props.dispatch(action);
+        }).then(() => {
+            browserHistory.push("/");
         });
     };
 

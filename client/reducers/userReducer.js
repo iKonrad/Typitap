@@ -1,8 +1,9 @@
 import Constants from '../constants/userConstants';
 
 export const initialState = {
-    firstName: null,
-    lastName: null,
+    name: null,
+    username: null,
+    email: null,
     loggedIn: false,
 };
 

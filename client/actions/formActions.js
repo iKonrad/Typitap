@@ -24,8 +24,6 @@ const FormActions = {
                 throw new SubmissionError({_error: response.error, username: response.error, password: ""});
             }
 
-            console.log("RES", response.user);
-
             // Logged in
             return {type: Constants.LOGIN_USER_SUCCESS, user: response.user};
 

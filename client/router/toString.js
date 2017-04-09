@@ -34,7 +34,13 @@ export default function (options, cbk) {
     }
 
 
-    const store = createStore();
+
+
+    var currentState = {};
+    if (options.state !== undefined) {
+        currentState = options.state;
+    }
+    const store = createStore(currentState);
     setAsCurrentStore(store);
 
     try {

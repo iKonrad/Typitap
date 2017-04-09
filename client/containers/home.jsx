@@ -9,8 +9,6 @@ class Home extends Component {
     }
 
     render() {
-
-        console.log(this.props.user);
         return (
             <div className="container">
                 <div className="row">
