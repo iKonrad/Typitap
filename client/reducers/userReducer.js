@@ -9,7 +9,10 @@ export const initialState = {
 export default function userReducer(state = {}, action) {
     switch (action.type) {
         case Constants.LOGIN_USER_SUCCESS:
-                return state;
+                return {
+                    ...state,
+                    ...action.user
+                }
         case Constants.LOGOUT_USER_SUCCESS:
                 return {
                     ...state,

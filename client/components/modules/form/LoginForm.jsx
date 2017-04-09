@@ -8,7 +8,9 @@ class LoginForm extends Component {
 
 
     handleSubmitForm(values) {
-        return FormActions.submitLogin(values);
+        return FormActions.submitLogin(values).then((action) => {
+            this.props.dispatch(action);
+        });
     };
 
 

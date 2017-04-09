@@ -1,12 +1,12 @@
 import React from 'react';
-import { Route, IndexRoute, Redirect } from 'react-router';
+import {Route, IndexRoute, Redirect} from 'react-router';
 import App from '#app/components/app';
-import Homepage from '#app/components/homepage';
 import Usage from '#app/components/usage';
 import NotFound from '#app/components/not-found';
 import Contact from 'containers/contact';
 import Base from 'containers/base';
 import LoginSignup from "containers/login-signup";
+import Home from 'containers/home';
 
 /**
  * Returns configured routes for different
@@ -17,25 +17,26 @@ import LoginSignup from "containers/login-signup";
  */
 export default ({store, first}) => {
 
-  // Make a closure to skip first request
-  function w(loader) {
-    return (nextState, replaceState, callback) => {
-      if (first.time) {
-        first.time = false;
-        return callback();
-      }
-      return loader ? loader({store, nextState, replaceState, callback}) : callback();
-    };
-  }
+    // Make a closure to skip first request
+    function w(loader) {
+        return (nextState, replaceState, callback) => {
+            if (first.time) {
+                first.time = false;
+                return callback();
+            }
+            return loader ? loader({store, nextState, replaceState, callback}) : callback();
+        };
+    }
 
-  return <Route path="/" component={Base}>
-    <IndexRoute component={Homepage} onEnter={w(Homepage.onEnter)}/>
-    <Route path="/usage" component={Usage} onEnter={w(Usage.onEnter)}/>
-    <Route path="/contact" component={Contact} onEnter={w(Usage.onEnter)}/>
-    <Route path="/login" component={LoginSignup} onEnter={w(LoginSignup.onEnter)} />
-    <Route path="/signup" component={LoginSignup} onEnter={w(LoginSignup.onEnter)} />
-    {/* Server redirect in action */}
-    <Redirect from="/docs" to="/usage" />
-    <Route path="*" component={NotFound} onEnter={w(NotFound.onEnter)}/>
-  </Route>;
+    return <Route path="/" component={Base}>
+        <IndexRoute component={Home} onEnter={w(Home.onEnter)}/>
+        <Route path="/usage" component={Usage} onEnter={w(Usage.onEnter)}/>
+        <Route path="/contact" component={Contact} onEnter={w(Usage.onEnter)}/>
+        <Route path="/login" component={LoginSignup} onEnter={w(LoginSignup.onEnter)}/>
+        <Route path="/signup" component={LoginSignup} onEnter={w(LoginSignup.onEnter)}/>
+
+        {/* Server redirect in action */}
+        <Redirect from="/docs" to="/usage"/>
+        <Route path="*" component={NotFound} onEnter={w(NotFound.onEnter)}/>
+    </Route>;
 };

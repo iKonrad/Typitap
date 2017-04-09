@@ -10,6 +10,9 @@ import (
 	//"net/http"
 	"strings"
 	"github.com/iKonrad/typitap/server/manager"
+	r "gopkg.in/gorethink/gorethink.v3"
+	"github.com/iKonrad/typitap/server/entities"
+	db "github.com/iKonrad/typitap/server/database"
 )
 
 
@@ -26,48 +29,31 @@ func CheckAuthHandler(next echo.HandlerFunc) echo.HandlerFunc {
 			return next(c);
 		}
 
-
-		// For debug
-		fmt.Println("Cookies for path: " + c.Request().URL.Path);
-		for _, cookie := range c.Cookies() {
-			fmt.Print("Name: ");
-			fmt.Println(cookie.Name)
-			fmt.Print("Value: ");
-			fmt.Println(cookie.Value)
-		}
-
-
-		session, err := manager.Rethink.Get(c.Request(), "SESSION_ID");
+		session, err := manager.Session.Get(c.Request(), "SESSION_ID");
 
 		if (err != nil) {
 			fmt.Println("Error while fetching a session", err);
 		}
 
-		fmt.Println("SESSION: ", session.IsNew, session.Values);
+		c.Set("User", entities.User{});
+		c.Set("IsLoggedIn", false);
 
-		//
-		//// Get Session Cookie
-		//cookie, err := c.Cookie("SESSION_ID");
-		//var tokenId string;
-		//if err == nil {
-		//	tokenId, err = manager.Cookie.DecodeCookie(cookie);
-		//	if (err == nil) {
-		//		fmt.Println("GOT THE COOKIE: " + tokenId);
-		//	} else {
-		//		// We've found an invalid cookie. It's safe to delete
-		//		cookie.Expires = time.Now().Add(-1 * time.Second);
-		//		c.SetCookie(cookie);
-		//		return next(c);
-		//	}
-		//}
+		// Get the user for the session
+		if (!session.IsNew) {
 
+			userId := session.Values["SessionCookie"].(*entities.SessionCookie).UserId;
 
-		// @TODO: We've got the cookie. Now we need to find out if it points to a valid session
+			res, err := r.Table("users").Get(userId).Run(db.Session);
 
-
-		//if (err != nil) {
-		//	next(c);
-		//}
+			if (err == nil) {
+				var currentUser entities.User;
+				err = res.One(&currentUser);
+				if (err == nil) {
+					c.Set("User", currentUser);
+					c.Set("IsLoggedIn", true);
+				}
+			}
+		}
 
 		return next(c);
 	}

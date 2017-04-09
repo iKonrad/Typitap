@@ -5,37 +5,35 @@ import (
 	"log"
 )
 
-type DB struct {
+type Database struct {
 	session *r.Session
 }
 
-func (this DB) Run(term r.Term) (*r.Cursor, error) {
+func (this Database) Run(term r.Term) (*r.Cursor, error) {
 	return term.Run(this.session);
 }
 
-func (this DB) Exec(term r.Term) error {
+func (this Database) Exec(term r.Term) error {
 	return term.Exec(this.session);
 }
 
 const (
 	MAX_OPEN = 30
+	DB_NAME = "typitap"
 )
 
-func CreateDatabase() *DB {
+var Session *r.Session
 
-	var err error
 
-	session, err := r.Connect(r.ConnectOpts{
+func init() {
+	var err error;
+	Session, err = r.Connect(r.ConnectOpts{
 		Address:    "localhost:28015",
 		MaxOpen:    MAX_OPEN,
-
+		Database: DB_NAME,
 	})
+
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-
-	return &DB{
-		session: session,
-	}
-
 }

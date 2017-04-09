@@ -16,7 +16,8 @@ func (api *API) Bind(group *echo.Group) {
 
 	// Authentication routes
 	group.GET("/auth/check", controllers.AuthenticationC.TestHandler)
-	group.POST("/auth/signup", controllers.AuthenticationC.Signup)
+	group.POST("/auth/signup", controllers.AuthenticationC.HandleSignup)
+	group.POST("/auth/login", controllers.AuthenticationC.HandleLogin)
 
 }
 
