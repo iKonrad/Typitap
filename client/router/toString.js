@@ -1,11 +1,11 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {renderToString} from 'react-dom/server';
-import {match, RouterContext} from 'react-router';
+import { createMemoryHistory, match, RouterContext } from 'react-router'
 import Helmet from 'react-helmet';
 import createRoutes from './routes';
 import {createStore, setAsCurrentStore} from './store';
-import cookie from 'react-cookie';
+import { syncHistoryWithStore } from 'react-router-redux'
 
 var clientCookies;
 
@@ -40,7 +40,9 @@ export default function (options, cbk) {
     if (options.state !== undefined) {
         currentState = options.state;
     }
-    const store = createStore(currentState);
+
+    const memoryHistory = createMemoryHistory(options.url)
+    const store = createStore(currentState, memoryHistory);
     setAsCurrentStore(store);
 
     try {
@@ -84,7 +86,12 @@ export default function (options, cbk) {
                     // Check if
 
 
+
                     function renderComponent() {
+                        console.log("PRPS", JSON.stringify(renderProps));
+
+                        renderProps["history"] = syncHistoryWithStore(memoryHistory, store);
+
                         result.app = renderToString(
                             <Provider store={store}>
                                 <RouterContext {...renderProps} />
