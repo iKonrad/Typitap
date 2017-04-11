@@ -3,33 +3,22 @@ package database
 import (
 	r "gopkg.in/gorethink/gorethink.v3"
 	"log"
+	"github.com/iKonrad/typitap/server/config"
 )
 
-type Database struct {
-	session *r.Session
-}
-
-func (this Database) Run(term r.Term) (*r.Cursor, error) {
-	return term.Run(this.session)
-}
-
-func (this Database) Exec(term r.Term) error {
-	return term.Exec(this.session)
-}
-
-const (
-	MAX_OPEN = 30
-	DB_NAME  = "typitap"
-)
 
 var Session *r.Session
 
 func init() {
 	var err error
+
+	databaseHost := config.GetString("database_host") + ":" + config.GetString("database_port")
+	databaseName := config.GetString("database_name");
+
 	Session, err = r.Connect(r.ConnectOpts{
-		Address:  "localhost:28015",
-		MaxOpen:  MAX_OPEN,
-		Database: DB_NAME,
+		Address:  databaseHost,
+		MaxOpen:  30,
+		Database: databaseName,
 	})
 
 	if err != nil {

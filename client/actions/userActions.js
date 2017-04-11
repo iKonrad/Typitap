@@ -39,6 +39,21 @@ const Actions = {
 
         }
 
+    },
+
+    activateUser(token) {
+        return (dispatch) => {
+            return fetch("/api/auth/activate/" + token, {
+                method: "POST",
+                credentials: "same-origin"
+            }).then((response) => {
+                return response.json()
+            }).then((response) => {
+                if (response.success) {
+                    return dispatch ({type: Constants.ACTIVATE_USER_SUCCESS});
+                }
+            });
+        }
     }
 
 

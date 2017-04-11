@@ -18,13 +18,10 @@ export default function userReducer(state = {}, action) {
                 return {
                     loggedIn: false
                 };
-        case Constants.SAVE_USER_DATA:
+        case Constants.ACTIVATE_USER_SUCCESS:
                 return {
                     ...state,
-                    user: {
-                        ...action.data,
-                        loggedIn: true
-                    }
+                    active: true,
                 }
     }
 

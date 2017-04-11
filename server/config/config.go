@@ -11,7 +11,7 @@ var data map[string]interface{}
 
 func init() {
 
-	fileName, _ := filepath.Abs("config/config.yml");
+	fileName, _ := filepath.Abs("server/data/config/config.yml")
 	configBytes := getConfigFileContent(fileName)
 
 	err := yaml.Unmarshal(configBytes, &data)
@@ -30,17 +30,22 @@ func getConfigFileContent(path string) []byte {
 	return content
 }
 
-func Get(key string) (interface{}, bool) {
+func Get(key string) (interface{}) {
 
 	if value, ok := data[key]; !ok {
-		return "", false
+		return false
 	} else {
-		return value, true
+		return value
 	}
 }
 
 // Convenience method for Get
 func GetString(key string) string {
-	value, _ := Get(key);
-	return value.(string);
+	value := Get(key)
+	return value.(string)
+}
+
+func GetBool(key string) bool {
+	value := Get(key);
+	return value.(bool)
 }

@@ -10,6 +10,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	r "gopkg.in/gorethink/gorethink.v3"
 	"log"
+	"time"
 )
 
 type UserManager struct {
@@ -197,4 +198,90 @@ func (um UserManager) FindUserBy(key string, value string) (entities.User, bool)
 	}
 
 	return returnedUser, true
+}
+
+
+func (um UserManager) GenerateUserToken(tokenType string, user entities.User) (string, bool) {
+
+	// Generate activation token
+	tokenString, _ := uuid.NewV4();
+	expiresDate := time.Now();
+	expiresDate.AddDate(0, 1, 0);
+
+	token := entities.UserToken{
+		User: user,
+		Token: tokenString.String(),
+		Expires: expiresDate,
+		Used: false,
+		Type: tokenType,
+	}
+
+	res, err := r.Table("tokens").Insert(token).Run(db.Session);
+	defer res.Close();
+
+	if err != nil {
+		return "", false
+	}
+
+
+	return tokenString.String(), true
+
+}
+
+func (um UserManager) GetUserToken(token string, tokenType string) (entities.UserToken, bool) {
+
+	res, err := r.Table("tokens").Filter(map[string]interface{}{
+		"token": token,
+		"type": tokenType,
+		"used": false, // @TODO: Add expires condition
+	}).Merge(func (p r.Term) interface {} {
+		return map[string]interface{} {
+			"userId": r.Table("users").Get(p.Field("userId")),
+		}
+	}).Run(db.Session);
+
+	if err != nil {
+		log.Println(err);
+		return entities.UserToken{}, false
+	}
+
+	var tokenObject entities.UserToken;
+	err = res.One(&tokenObject);
+
+	if err != nil {
+		log.Println(err);
+		return entities.UserToken{}, false
+	}
+
+	return tokenObject, true
+
+}
+
+func (um UserManager) UseUserToken(token string, tokenType string) bool {
+
+	res, err := r.Table("tokens").Filter(map[string]interface{}{
+		"token": token,
+		"type": tokenType,
+		"used": false,
+	}).Update(map[string]interface{}{
+		"used": true,
+	}).Run(db.Session)
+
+	defer res.Close()
+
+	if err != nil {
+		return false
+	}
+
+	return true
+}
+
+
+func (um UserManager) ActivateUser(userId string) bool {
+
+	err := r.Table("users").Get(userId).Update(map[string]interface{}{
+		"active": true,
+	}).Exec(db.Session);
+
+	return err == nil
 }

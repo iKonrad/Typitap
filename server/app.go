@@ -12,6 +12,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
+	"github.com/iKonrad/typitap/server/routes"
 )
 
 // App struct.
@@ -22,7 +23,6 @@ type App struct {
 	Engine *echo.Echo
 	Conf   *config.Config
 	React  *React
-	API    *API
 }
 
 // NewApp returns initialized struct
@@ -58,8 +58,7 @@ func NewApp(opts ...AppOptions) *App {
 	// Set up echo debug level
 	engine.Debug = conf.UBool("debug")
 
-	// Regular middlewares
-	engine.Use(middleware.Recover())
+
 
 	engine.GET("/favicon.ico", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
@@ -79,7 +78,6 @@ func NewApp(opts ...AppOptions) *App {
 	app := &App{
 		Conf:   conf,
 		Engine: engine,
-		API:    &API{},
 		React: NewReact(
 			conf.UString("duktape.path"),
 			conf.UBool("debug"),
@@ -100,11 +98,16 @@ func NewApp(opts ...AppOptions) *App {
 	//app.Engine.Use(authentication.Middleware.Handle);
 
 	// Bind api hadling for URL api.prefix
-	app.API.Bind(
+	api := routes.APIRoutes{}
+	api.Bind(
 		app.Engine.Group(
 			app.Conf.UString("api.prefix"),
 		),
 	)
+
+
+	// Regular middlewares
+	engine.Use(middleware.Recover())
 
 	// Create file http server from bindata
 	fileServerHandler := http.FileServer(&assetfs.AssetFS{

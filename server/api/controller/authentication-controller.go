@@ -19,11 +19,11 @@ func init() {
 	AuthenticationC = AuthenticationController{}
 }
 
-func (api *AuthenticationController) TestHandler(c echo.Context) error {
+func (ac *AuthenticationController) TestHandler(c echo.Context) error {
 	return c.JSON(200, "{'error': 'Nice, it worked'}")
 }
 
-func (a *AuthenticationController) HandleSignup(c echo.Context) error {
+func (ac *AuthenticationController) HandleSignup(c echo.Context) error {
 
 	// Check if user is logged in first
 	if c.Get("IsLoggedIn").(bool) {
@@ -56,8 +56,28 @@ func (a *AuthenticationController) HandleSignup(c echo.Context) error {
 		log.Println(err)
 	}
 
-	// Now, that we have a user, we can log in automatically
 
+	// Generate an activation token for the confirmation e-mail
+	token, ok := manager.User.GenerateUserToken("activate", newUser);
+
+	if !ok {
+
+		return c.JSON(500, map[string]interface{}{
+			"success": false,
+			"error": "Your account has been created, but there was a problem with your activation token. Please get in touch with us for more information",
+		});
+	}
+
+	// Send confirmation e-mail with an activation link
+	emailTags := map[string]interface{}{
+		"name": newUser.Name,
+		"action_url": "http://" + c.Request().Host + "/activate/" + token,
+		"username": newUser.Username,
+	};
+
+	manager.Mail.SendEmail(newUser.Email, "NEW_ACCOUNT", emailTags)
+
+	// Now, that we have a user, we can log in automatically
 	session, err := manager.Session.Get(c.Request(), "SESSION_ID")
 	if err != nil {
 		// The session is incorrect. We should remove the cookie.
@@ -70,10 +90,7 @@ func (a *AuthenticationController) HandleSignup(c echo.Context) error {
 		return c.JSON(200, map[string]interface{}{"success": false, "error": "An error occurred while logging in. Please try again"})
 	}
 
-	if !session.IsNew {
-		return c.JSON(200, map[string]interface{}{"success": false, "error": "You are logged in"})
-	}
-
+	// Create user data for the session
 	sessionCookie := entities.SessionCookie{
 		UserId: newUser.Id,
 		Role:   "ADMIN", // @TODO: Replace this when roles are implemented
@@ -182,6 +199,41 @@ func (ac AuthenticationController) HandleLogout (c echo.Context) error {
 	session.Save(c.Request(), c.Response().Writer);
 
 	return c.JSON(200, map[string]interface{}{"success": true});
+
+}
+
+
+func (ac AuthenticationController) HandleActivate(c echo.Context) error {
+
+	// Check if user is logged in
+	if c.Get("IsLoggedIn").(bool) {
+		return c.JSON(202, map[string]interface{}{
+			"success": false,
+			"message": "You are logged in",
+		});
+	}
+
+
+	token := c.Param("token");
+
+	userToken, ok := manager.User.GetUserToken(token, "activate");
+
+	if !ok {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"success": false,
+			"message": "Token not found or has already been used",
+		});
+	}
+
+	// Activate the user
+	activated := manager.User.ActivateUser(userToken.User.Id);
+
+	// Mark the token as used
+	manager.User.UseUserToken(userToken.Token, "activate");
+
+	return c.JSON(200, map[string]interface{}{
+		"success": activated,
+	})
 
 }
 

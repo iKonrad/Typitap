@@ -16,7 +16,7 @@ func main() {
 func Run(args []string) {
 	app := cli.NewApp()
 	app.Name = "app"
-	app.Usage = "React server application"
+	app.Usage = "Typitap Server"
 
 	app.Commands = []cli.Command{
 		{

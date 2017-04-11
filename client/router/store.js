@@ -19,7 +19,10 @@ export function createStore(state, history) {
     return reduxCreateStore(
         reducers,
         state,
-        applyMiddleware.apply(null, middlewares)
+        compose(
+            applyMiddleware.apply(null, middlewares),
+            typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+        )
     );
 }
 

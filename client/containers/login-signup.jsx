@@ -13,14 +13,12 @@ class LoginSignup extends Component {
 
     handleLogin(e, values) {
         e.preventDefault();
-        console.log("LOGIN TRIGGERED");
         var values = this.props.form.login.values;
     }
 
 
     handleSignup(e) {
         e.preventDefault();
-        console.log("SIGNUP TRIGGERED");
         var values = this.props.form.signup.values;
         return FormActions.submitSignup(values);
     }

@@ -39,6 +39,8 @@ export default function (options, cbk) {
         currentState = options.state;
     }
 
+    console.log("AMERE");
+
     const memoryHistory = createMemoryHistory(options.url)
     const store = createStore(currentState, memoryHistory);
     setAsCurrentStore(store);
@@ -73,6 +75,7 @@ export default function (options, cbk) {
 
                     // Check if checkAuth function is present as well
                     if (typeof(comp.fetchData) !== 'undefined') {
+                        console.log("YES");
                         promise = comp.fetchData({query, params, store});
                         promise.then(() => {
                             renderComponent();

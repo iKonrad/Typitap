@@ -8,6 +8,7 @@ import Base from 'containers/base';
 import LoginSignup from "containers/login-signup";
 import Home from 'containers/home';
 import Logout from 'containers/logout';
+import Activate from 'containers/activate';
 
 import Permissions from 'utils/permissions';
 
@@ -39,6 +40,7 @@ export default ({store, first}) => {
         <Route path="/login" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
         <Route path="/signup" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
         <Route path="/logout" component={Logout} onEnter={w(Logout.onEnter)} />
+        <Route path="/activate/:token" component={Activate} onEnter={w(Activate.onEnter)}/>
 
         {/* Server redirect in action */}
         <Redirect from="/docs" to="/usage"/>

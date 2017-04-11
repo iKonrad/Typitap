@@ -6,16 +6,20 @@ package manager
 
 import (
 	s "github.com/boj/rethinkstore"
+	"github.com/iKonrad/typitap/server/config"
 )
 
 var Session *s.RethinkStore
 
 func init() {
 
+	databaseHost := config.GetString("database_host") + ":" + config.GetString("database_port")
+	databaseName := config.GetString("database_name");
 	// Fetch new store.
 	var err error
-	Session, err = s.NewRethinkStore("127.0.0.1:28015",
-		"typitap",
+	Session, err = s.NewRethinkStore(
+		databaseHost,
+		databaseName,
 		"sessions",
 		5,  /*MaxIdle*/
 		10, /*MaxOpen*/
