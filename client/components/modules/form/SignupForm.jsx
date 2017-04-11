@@ -5,14 +5,18 @@ import { browserHistory } from 'react-router';
 import Input from "./fields/Input";
 import FormActions from 'actions/formActions';
 import UserActions from 'actions/userActions';
-
+import Notifications from 'react-notification-system-redux';
 class SignupForm extends Component {
 
     handleSubmitForm(values) {
         return FormActions.submitSignup(values).then((details) => {
-            this.props.dispatch(UserActions.loginUser(details.user))
-        }).then(() => {
-            browserHistory.push("/");
+            this.props.dispatch(UserActions.loginUser(details.user));
+            return details;
+        }).then((details) => {
+            if (details && details.user && details.user.id) {
+                this.props.dispatch(Notifications.success({'message': `We have sent you an e-mail with activation link to activate your account`, 'title': 'Account created'}));
+                browserHistory.push("/");
+            }
         });
     }
 

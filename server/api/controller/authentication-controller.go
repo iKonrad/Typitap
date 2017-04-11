@@ -98,6 +98,7 @@ func (ac *AuthenticationController) HandleSignup(c echo.Context) error {
 
 	session.Values["SessionCookie"] = sessionCookie
 
+	session.Options.MaxAge = 60 * 60 * 24 * 14;
 	err = session.Save(c.Request(), c.Response().Writer)
 
 	if err != nil {

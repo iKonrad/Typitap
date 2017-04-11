@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Navbar from 'components/navigation/Navbar';
+import Notifications from 'react-notification-system-redux';
 
 class Base extends Component {
 
@@ -14,6 +15,9 @@ class Base extends Component {
                     <div id="react-container" className="main-content">
                         { this.props.children }
                     </div>
+                    <Notifications
+                        notifications={this.props.notifications} ref="notificationSystem" style={ false }
+                    />
                 </div>
             </div>
         );
@@ -23,7 +27,8 @@ class Base extends Component {
 
 const mapStatsToProps = (state) => {
     return {
-        demo: state.demo
+        demo: state.demo,
+        notifications: state.notifications,
     };
 };
 

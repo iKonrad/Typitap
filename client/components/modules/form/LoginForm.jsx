@@ -4,13 +4,14 @@ import FormActions from 'actions/formActions';
 import UserActions from 'actions/userActions';
 import Input from './fields/Input';
 import { browserHistory } from 'react-router';
-
+import Notifications from 'react-notification-system-redux';
 class LoginForm extends Component {
 
 
     handleSubmitForm(values) {
         return FormActions.submitLogin(values).then((details) => {
             this.props.dispatch(UserActions.loginUser(details.user));
+            this.props.dispatch(Notifications.info({'message': `Welcome back, ${details.user.name}!`}));
         }).then(() => {
             browserHistory.push("/");
         });

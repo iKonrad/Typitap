@@ -4,6 +4,7 @@ import FormActions from 'actions/formActions';
 import LoginForm from 'components/modules/form/LoginForm';
 import SignupForm from 'components/modules/form/SignupForm';
 
+
 class LoginSignup extends Component {
 
     static onEnter({store, nextState, replaceState, callback}) {
@@ -13,6 +14,7 @@ class LoginSignup extends Component {
 
     handleLogin(e, values) {
         e.preventDefault();
+
         var values = this.props.form.login.values;
     }
 
