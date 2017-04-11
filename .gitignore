@@ -10,3 +10,5 @@
 /.idea
 /client/assets/libs/
 /vendor/
+/server/config/bindata.go
+/vendor/*

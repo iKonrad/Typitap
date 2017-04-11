@@ -51,6 +51,7 @@ restart: $(BINDATA) kill $(TARGET)
 
 $(BINDATA):
 	$(GO_BINDATA) $(BINDATA_FLAGS) -o=$@ server/data/...
+	$(GO_BINDATA) -pkg=config -prefix=server/data/ -o=server/config/bindata.go server/data/config/...
 
 lint:
 	@npm run eslint || true
