@@ -77,7 +77,7 @@
           a { color: white; }
           .navbar-btn {
             a {
-              background-color: $brand-primary;
+              background-color: $brand-secondary;
             }
           }
 
@@ -91,9 +91,9 @@
             height: auto;
             color: white;
 
-            background-color: $brand-primary;
+            background-color: $brand-secondary;
             &:hover {
-              background-color: darken($brand-primary, 5%);
+              background-color: darken($brand-secondary, 5%);
             }
 
           }

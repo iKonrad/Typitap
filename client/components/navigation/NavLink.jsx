@@ -18,7 +18,7 @@ export default class NavLink extends Component {
             return (
                 <li className={className}>
                     <div className="navbar-btn">
-                        <Link {...this.props} className='btn btn-primary btn-round'>
+                        <Link {...this.props} className='btn btn-secondary btn-round'>
                             {this.props.children}
                         </Link>
                     </div>

@@ -54,7 +54,7 @@ class PasswordResetForm extends Component {
                         <Field name="password" component={ Input } type="password" label="Password"/>
                         <Field name="password-confirm" component={ Input } type="password" label="Confirm Password"/>
                         <div className="form-group">
-                            <button type="submit" disabled={pristine || submitting} className="btn btn-primary btn-block">Reset Password</button>
+                            <button type="submit" disabled={pristine || submitting} className="btn btn-secondary btn-block">Reset Password</button>
                         </div>
                     </form>
                 </div>

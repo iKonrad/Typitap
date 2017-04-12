@@ -27,7 +27,7 @@ class PasswordForgotForm extends Component {
                         <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
                             <Field name="email" component={ Input } type="email" label="E-mail"/>
                             <div className="form-group">
-                                <button type="submit" disabled={pristine || submitting} className="btn btn-primary btn-block">Reset Password</button>
+                                <button type="submit" disabled={pristine || submitting} className="btn btn-secondary btn-block">Reset Password</button>
                             </div>
                         </form>
                     </div>

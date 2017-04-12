@@ -41,7 +41,7 @@ class SignupForm extends Component {
 
                             <div className="form-group">
                                 <button type="submit" disabled={pristine || submitting}
-                                        className="btn btn-primary btn-block">Sign up
+                                        className="btn btn-secondary btn-block">Sign up
                                 </button>
                             </div>
                         </form>

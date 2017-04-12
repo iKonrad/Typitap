@@ -1,14 +1,11 @@
 import React from 'react';
 import {Route, IndexRoute, Redirect} from 'react-router';
-import App from '#app/components/app';
-import Usage from '#app/components/usage';
-import NotFound from '#app/components/not-found';
-import Contact from 'containers/contact';
 import Base from 'containers/base';
 import LoginSignup from "containers/login-signup";
 import Home from 'containers/home';
 import Logout from 'containers/logout';
 import Activate from 'containers/activate';
+import GameWindow from 'containers/game-window';
 
 import Permissions from 'utils/permissions';
 
@@ -35,17 +32,15 @@ export default ({store, first}) => {
 
     return <Route path="/" component={Base}>
         <IndexRoute component={Home} onEnter={w(Home.onEnter)}/>
-        <Route path="/usage" component={Usage} onEnter={w(Usage.onEnter)}/>
-        <Route path="/contact" component={Contact} onEnter={w(Usage.onEnter)}/>
         <Route path="/login" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
         <Route path="/signup" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
         <Route path="/password/reset/:token" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)} />
         <Route path="/password/forgot" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)} />
         <Route path="/logout" component={Logout} onEnter={w(Logout.onEnter)} />
         <Route path="/activate/:token" component={Activate} onEnter={w(Activate.onEnter)}/>
+        <Route path="/play" component={GameWindow} onEnter={w(GameWindow.onEnter)} />
 
-        {/* Server redirect in action */}
-        <Redirect from="/docs" to="/usage"/>
+        {/* Replace with 404 */}
         <Route path="*" component={Home} onEnter={w(Home.onEnter)}/>
     </Route>;
 };
