@@ -9,6 +9,7 @@ import (
 
 var Templates = map[string]int64 {
 	"NEW_ACCOUNT": 1028961,
+	"PASSWORD_RESET": 1495121,
 }
 
 type MailManager struct {

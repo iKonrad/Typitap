@@ -39,11 +39,7 @@ func (um UserManager) CreateUser(details map[string]interface{}) (entities.User,
 		return entities.User{}, errors.New("Issue while creating a UUID key: " + error.Error())
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(details["password"].(string)), bcrypt.DefaultCost)
-
-	if err != nil {
-		return entities.User{}, errors.New("Error occured while hashing a password: " + err.Error())
-	}
+	hashedPassword := um.generatePassword(details["password"].(string));
 
 	newUser := entities.User{
 		Id:       newId.String(),
@@ -51,7 +47,7 @@ func (um UserManager) CreateUser(details map[string]interface{}) (entities.User,
 		Email:    details["email"].(string),
 		Username: details["username"].(string),
 		Active:   false,
-		Password: string(hashedPassword[:]),
+		Password: hashedPassword,
 	}
 
 	cursor, err := r.Table("users").Insert(newUser).Run(db.Session)
@@ -131,6 +127,11 @@ func (um UserManager) ValidateUser(details map[string]interface{}) (bool, map[st
 
 }
 
+func (um UserManager) generatePassword(password string) string{
+	generatedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost);
+	return string(generatedPassword[:])
+}
+
 // Checks if there's already an account with provided e-mail address
 func (um UserManager) IsEmailAvailable(email string) bool {
 
@@ -186,7 +187,7 @@ func (um UserManager) FindUserBy(key string, value string) (entities.User, bool)
 
 	defer res.Close()
 
-	if err != nil {
+	if res.IsNil() {
 		return entities.User{}, false
 	}
 
@@ -194,6 +195,7 @@ func (um UserManager) FindUserBy(key string, value string) (entities.User, bool)
 	err = res.One(&returnedUser)
 
 	if err != nil {
+		log.Println(err);
 		return entities.User{}, false
 	}
 
@@ -220,6 +222,7 @@ func (um UserManager) GenerateUserToken(tokenType string, user entities.User) (s
 	defer res.Close();
 
 	if err != nil {
+		log.Println(err);
 		return "", false
 	}
 
@@ -284,4 +287,34 @@ func (um UserManager) ActivateUser(userId string) bool {
 	}).Exec(db.Session);
 
 	return err == nil
+}
+
+
+func (um UserManager) ValidatePassword(password string) (bool, map[string]interface{}) {
+	var err = map[string]interface{}{}
+	isValid := true
+
+	if password == "" {
+		err["password"] = "Password cannot be empty"
+		isValid = false
+	} else {
+		if len(password) < 6 {
+			err["password"] = "Password needs to be at least 6 characters long"
+			isValid = false
+		}
+	}
+	return isValid, err
+}
+
+
+func (um UserManager) UpdateUserPassword(password string, user entities.User) bool {
+
+	hashedPassword := um.generatePassword(password);
+
+
+	r.Table("users").Get(user.Id).Update(map[string]interface{}{
+		"password": hashedPassword,
+	}).Exec(db.Session);
+
+	return true
 }

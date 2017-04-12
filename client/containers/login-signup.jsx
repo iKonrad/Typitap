@@ -3,26 +3,14 @@ import {connect} from 'react-redux';
 import FormActions from 'actions/formActions';
 import LoginForm from 'components/modules/form/LoginForm';
 import SignupForm from 'components/modules/form/SignupForm';
-
+import PasswordResetForm from 'components/modules/form/PasswordResetForm';
+import PasswordForgotForm from 'components/modules/form/PasswordForgotForm';
 
 class LoginSignup extends Component {
 
     static onEnter({store, nextState, replaceState, callback}) {
 
         callback();
-    }
-
-    handleLogin(e, values) {
-        e.preventDefault();
-
-        var values = this.props.form.login.values;
-    }
-
-
-    handleSignup(e) {
-        e.preventDefault();
-        var values = this.props.form.signup.values;
-        return FormActions.submitSignup(values);
     }
 
 
@@ -32,15 +20,18 @@ class LoginSignup extends Component {
             return (
                 <SignupForm />
             );
-        } else {
+        } else if (this.props.route.path === '/login') {
             return (
                 <LoginForm />
             );
+        } else if (this.props.route.path === '/password/forgot') {
+            return (<PasswordForgotForm/>);
+        } else {
+            return (
+                <PasswordResetForm token={ this.props.params.token } />
+            );
         }
-
-
     }
-
 
     render() {
         return (

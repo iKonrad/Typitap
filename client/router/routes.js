@@ -39,6 +39,8 @@ export default ({store, first}) => {
         <Route path="/contact" component={Contact} onEnter={w(Usage.onEnter)}/>
         <Route path="/login" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
         <Route path="/signup" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
+        <Route path="/password/reset/:token" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)} />
+        <Route path="/password/forgot" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)} />
         <Route path="/logout" component={Logout} onEnter={w(Logout.onEnter)} />
         <Route path="/activate/:token" component={Activate} onEnter={w(Activate.onEnter)}/>
 

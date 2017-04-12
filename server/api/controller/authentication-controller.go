@@ -238,6 +238,149 @@ func (ac AuthenticationController) HandleActivate(c echo.Context) error {
 
 }
 
+
+func (ac AuthenticationController) HandlePasswordForgot(c echo.Context) error {
+
+	// Check if logged in
+	if (c.Get("IsLoggedIn").(bool)) {
+		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
+			"success": false,
+			"errors": map[string]string {
+				"_error": "You are logged in",
+			},
+		});
+	}
+
+	emailAddress := c.FormValue("email");
+
+	// Check if user exists for this e-mail
+
+	user, ok := manager.User.FindUserBy("email", emailAddress);
+
+	if !ok {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"success": false,
+			"errors": map[string]string{
+				"email": "We couldn't find an account for this e-mail address",
+			},
+		});
+	}
+
+	// Create a userToken for that user
+	userToken, ok := manager.User.GenerateUserToken("password", user);
+
+	if (!ok) {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"success": false,
+			"errors": map[string]string {
+				"_error": "An error occured while generating your token. Please try again later",
+			},
+		});
+	}
+
+	// Send the token to the e-mail address
+	emailTags := map[string]interface{}{
+		"name": user.Name,
+		"action_url": "http://" + c.Request().Host + "/reset/" + userToken,
+		"username": user.Username,
+	};
+
+	manager.Mail.SendEmail(user.Email, "PASSWORD_RESET", emailTags);
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": true,
+	});
+
+}
+
+
+func (ac AuthenticationController) HandlePasswordReset(c echo.Context) error {
+
+	// Check if logged in
+	if (c.Get("IsLoggedIn").(bool)) {
+		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
+			"success": false,
+			"errors": map[string]string {
+				"_error": "You are logged in",
+			},
+		});
+	}
+
+	tokenString := c.FormValue("token");
+	password := c.FormValue("password");
+	passwordConfirm := c.FormValue("password-confirm");
+
+	userToken, ok := manager.User.GetUserToken(tokenString, "password");
+
+	if !ok {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"success": false,
+			"errors": map[string]string{
+				"_error": "Token is invalid or expired. Please try requesting a password reset again",
+			},
+		});
+	}
+
+	// We've got the token, now we can validate the password
+	isPasswordValid, _ := manager.User.ValidatePassword(password);
+
+	if !isPasswordValid {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"success": false,
+			"errors": map[string]string{
+				"password": "Invalid Password",
+			},
+		});
+	}
+
+	if password != passwordConfirm {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"success": false,
+			"errors": map[string]string{
+				"password-confirm": "Passwords do not match",
+			},
+		});
+	}
+
+
+	// Otherwise we can update the password
+	isUpdated := manager.User.UpdateUserPassword(password, userToken.User);
+
+	if !isUpdated {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"success": false,
+			"errors": map[string]string{
+				"password": "There was an issue with updating your password. Please try again later",
+			},
+		});
+	}
+
+
+	// Now we can mark the token as used
+	manager.User.UseUserToken(userToken.Token, "password");
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": true,
+	});
+
+}
+
+
+func (ac AuthenticationController) HandleValidatePasswordToken(c echo.Context) error {
+
+	tokenString := c.Param("token");
+
+	_, ok := manager.User.GetUserToken(tokenString, "password");
+
+	return c.JSON(200, map[string]interface{}{
+		"success": true,
+		"valid": ok,
+	});
+
+}
+
+
+
 func (ac AuthenticationController) validateLoginForm(username string, password string) (bool, map[string]string) {
 
 	errors := map[string]string{}
@@ -258,3 +401,5 @@ func (ac AuthenticationController) validateLoginForm(username string, password s
 	return isValid, errors
 
 }
+
+
