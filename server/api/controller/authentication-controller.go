@@ -220,7 +220,7 @@ func (ac AuthenticationController) HandleActivate(c echo.Context) error {
 	userToken, ok := manager.User.GetUserToken(token, "activate");
 
 	if !ok {
-		return c.JSON(http.StatusNotFound, map[string]interface{}{
+		return c.JSON(http.StatusOK, map[string]interface{}{
 			"success": false,
 			"message": "Token not found or has already been used",
 		});
@@ -281,7 +281,7 @@ func (ac AuthenticationController) HandlePasswordForgot(c echo.Context) error {
 	// Send the token to the e-mail address
 	emailTags := map[string]interface{}{
 		"name": user.Name,
-		"action_url": "http://" + c.Request().Host + "/reset/" + userToken,
+		"action_url": "http://" + c.Request().Host + "/password/reset/" + userToken,
 		"username": user.Username,
 	};
 

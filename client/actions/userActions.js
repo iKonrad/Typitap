@@ -49,9 +49,11 @@ const Actions = {
             }).then((response) => {
                 return response.json()
             }).then((response) => {
+                console.log("RESP", response);
                 if (response.success) {
-                    return dispatch ({type: Constants.ACTIVATE_USER_SUCCESS});
+                    dispatch ({type: Constants.ACTIVATE_USER_SUCCESS});
                 }
+                return response;
             });
         }
     }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { browserHistory } from 'react-router';
+import {  push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import UserActions from 'actions/userActions';
-
+import Notifications from 'react-notification-system-redux';
 
 class Activate extends Component {
 
@@ -11,14 +11,15 @@ class Activate extends Component {
     }
 
 
-    static fetchData({query, params, store}) {
-        // return store.
-
-        return store.dispatch(UserActions.activateUser(params.token));
-    }
-
     componentDidMount(props) {
-        browserHistory.push('/');
+        return store.dispatch(UserActions.activateUser(this.props.params.token)).then((data) => {
+            if (data.success) {
+                this.props.dispatch(Notifications.success({message: "You can now log in using your username and password", title: "Account activated"}))
+            } else {
+                this.props.dispatch(Notifications.error({message: data.message, title: "Error"}))
+            }
+            this.props.dispatch(push("/login"));
+        });
     }
 
     render() {

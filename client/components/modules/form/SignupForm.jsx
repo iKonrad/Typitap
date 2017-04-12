@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
-import { browserHistory } from 'react-router';
-
+import {browserHistory} from 'react-router';
+import { Link } from 'react-router';
 import Input from "./fields/Input";
 import FormActions from 'actions/formActions';
 import UserActions from 'actions/userActions';
@@ -14,7 +14,10 @@ class SignupForm extends Component {
             return details;
         }).then((details) => {
             if (details && details.user && details.user.id) {
-                this.props.dispatch(Notifications.success({'message': `We have sent you an e-mail with activation link to activate your account`, 'title': 'Account created'}));
+                this.props.dispatch(Notifications.success({
+                    'message': `We have sent you an e-mail with activation link to activate your account`,
+                    'title': 'Account created'
+                }));
                 browserHistory.push("/");
             }
         });
@@ -24,22 +27,28 @@ class SignupForm extends Component {
         const {handleSubmit, pristine, reset, submitting} = this.props;
 
         return (
-            <div className="panel panel-default card-login">
-                <div className="panel-heading"><h2>Sign up</h2></div>
-                <div className="panel-body">
-                    <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
 
-                        <Field name="username" component={ Input } type="text" label="Username"/>
-                        <Field name="email" component={ Input } type="text" label="E-mail"/>
-                        <Field name="name" component={ Input } type="text" label="Name"/>
-                        <Field name="password" component={ Input } type="password" label="Password"/>
+            <div className="">
+                <div className="panel panel-default card-login">
+                    <div className="panel-heading"><h2>Sign up</h2></div>
+                    <div className="panel-body">
+                        <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
 
-                        <div className="form-group">
-                            <button type="submit" disabled={pristine || submitting}
-                                    className="btn btn-primary btn-block">Sign up
-                            </button>
-                        </div>
-                    </form>
+                            <Field name="username" component={ Input } type="text" label="Username"/>
+                            <Field name="email" component={ Input } type="text" label="E-mail"/>
+                            <Field name="name" component={ Input } type="text" label="Name"/>
+                            <Field name="password" component={ Input } type="password" label="Password"/>
+
+                            <div className="form-group">
+                                <button type="submit" disabled={pristine || submitting}
+                                        className="btn btn-primary btn-block">Sign up
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div className="text-center">
+                    <Link to="/password/forgot">Forgot password?</Link> | Have an account? <Link to="/login">Log in</Link>
                 </div>
             </div>
         );

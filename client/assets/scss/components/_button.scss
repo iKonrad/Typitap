@@ -25,6 +25,14 @@
     background: $brand-primary;
   }
 
+  &-secondary {
+    background: $brand-secondary;
+    color: white;
+    &:hover {
+      background: darken($brand-secondary, 5%);
+    }
+  }
+
 
   &:focus {
     outline:none;
@@ -171,3 +179,12 @@
 .btn-default.btn-outline:hover {
   color: #fff;
 }
+
+
+a {
+  color: $brand-secondary;
+  &:hover {
+    color: $brand-secondary;
+  }
+}
+
