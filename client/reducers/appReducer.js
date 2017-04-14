@@ -11,6 +11,11 @@ export default function appReducer(state = {}, action) {
             ...state,
             websocket: action.websocket
         }
+        case Constants.SET_RESPONSE:
+            return {
+                ...state,
+                response: action.payload
+            }
     }
 
     return state;

@@ -6,6 +6,8 @@ import Helmet from 'react-helmet';
 import createRoutes from './routes';
 import {createStore, setAsCurrentStore} from './store';
 import {syncHistoryWithStore} from 'react-router-redux'
+import AppActions from 'actions/appActions';
+
 
 var clientCookies;
 
@@ -39,7 +41,7 @@ export default function (options, cbk) {
         currentState = options.state;
     }
 
-    console.log("AMERE");
+
 
     const memoryHistory = createMemoryHistory(options.url)
     const store = createStore(currentState, memoryHistory);
@@ -67,19 +69,28 @@ export default function (options, cbk) {
                     let comp = renderProps.components[renderProps.components.length - 1].WrappedComponent;
                     let promise;
 
-
-                    if (typeof(comp.checkAuth) !== 'undefined') {
-                        comp.checkAuth(store);
+                    let responseData = [];
+                    if (options.response !== undefined) {
+                        responseData = options.response;
                     }
+
+                    console.log("RES", JSON.stringify(responseData));
+
+                    store.dispatch(AppActions.setResponse(responseData));
 
 
                     // Check if checkAuth function is present as well
-                    if (typeof(comp.fetchData) !== 'undefined') {
-                        console.log("YES");
-                        promise = comp.fetchData({query, params, store});
-                        promise.then(() => {
+                    if (typeof(comp.initialize) !== 'undefined') {
+                        promise = comp.initialize(responseData, params, store);
+
+                        if (promise.then !== undefined && typeof promise.then === 'function') {
+                            promise.then(() => {
+                                renderComponent();
+                            });
+                        } else {
                             renderComponent();
-                        });
+                        }
+
                     } else {
                         renderComponent();
                     }
@@ -93,14 +104,16 @@ export default function (options, cbk) {
 
                         renderProps["history"] = syncHistoryWithStore(memoryHistory, store);
 
+                        console.log("33", JSON.stringify(renderProps));
+                        console.log("4", JSON.stringify(store));
                         result.app = renderToString(
                             <Provider store={store}>
                                 <RouterContext {...renderProps} />
                             </Provider>
                         );
+
+
                         const {title, meta} = Helmet.rewind();
-
-
                         result.title = title.toString();
                         result.meta = meta.toString();
                         result.initial = JSON.stringify(store.getState());

@@ -1,36 +1,52 @@
-import React, { Component } from 'react'
-import {  push } from 'react-router-redux';
-import { connect } from 'react-redux';
-import UserActions from 'actions/userActions';
+import React, {Component} from 'react'
+import {push} from 'react-router-redux';
+import {connect} from 'react-redux';
+
 import Notifications from 'react-notification-system-redux';
+import AppActions from 'actions/appActions';
 
 class Activate extends Component {
+
+    constru
 
     static onEnter({store, next, replace, callback}) {
         callback();
     }
 
 
-    componentDidMount(props) {
-        return store.dispatch(UserActions.activateUser(this.props.params.token)).then((data) => {
-            if (data.success) {
-                this.props.dispatch(Notifications.success({message: "You can now log in using your username and password", title: "Account activated"}))
-            } else {
-                this.props.dispatch(Notifications.error({message: data.message, title: "Error"}))
-            }
-            this.props.dispatch(push("/login"));
-        });
+    renderSuccessMessage() {
+        return "Your account has been activated. You can now log in using your login and password";
     }
 
+    renderErrorMessage() {
+        return this.props.app.response.error ? this.props.app.response.error : "An error occurred while fetching your token.";
+    }
+
+
     render() {
-        return (<div>Activating...</div>);
+        let response = this.props.app.response;
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                        <div className="panel panel-default card-login">
+                            <div className="panel-heading"><h2>Account activation</h2></div>
+                            <div className="panel-body">
+                                { response.success ? this.renderSuccessMessage() : this.renderErrorMessage() }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
 }
 
 let mapStateToProps = (state) => {
     return {
-        user: state.user
+        user: state.user,
+        app: state.app,
     };
 };
 

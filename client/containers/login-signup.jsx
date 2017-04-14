@@ -24,11 +24,15 @@ class LoginSignup extends Component {
             return (
                 <LoginForm />
             );
-        } else if (this.props.route.path === '/password/forgot') {
+        } else if (this.props.route.path === '/auth/password/forgot') {
             return (<PasswordForgotForm/>);
         } else {
+
+            let response = this.props.app.response;
+            let isValid = response.success && response.valid;
+
             return (
-                <PasswordResetForm token={ this.props.params.token } />
+                <PasswordResetForm token={ this.props.params.token } isValid={ isValid } />
             );
         }
     }
@@ -50,9 +54,9 @@ class LoginSignup extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        demo: state.demo,
         user: state.user,
         form: state.form,
+        app: state.app,
     }
 };
 

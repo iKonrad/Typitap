@@ -30,19 +30,24 @@ export default ({store, first}) => {
     }
 
 
-    return <Route path="/" component={Base}>
-        <IndexRoute component={Home} onEnter={w(Home.onEnter)}/>
-        <Route path="/login" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
-        <Route path="/signup" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
-        <Route path="/password/reset/:token" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)} />
-        <Route path="/password/forgot" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)} />
-        <Route path="/logout" component={Logout} onEnter={w(Logout.onEnter)} />
-        <Route path="/activate/:token" component={Activate} onEnter={w(Activate.onEnter)}/>
-        <Route path="/play" component={GameWindow} onEnter={w(GameWindow.onEnter)} />
+    return (
+        <Route path="/" component={Base}>
+            <IndexRoute component={Home} onEnter={w(Home.onEnter)}/>
+            <Route path="/login" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
+            <Route path="/signup" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
+            <Route path="/auth/password/reset/:token" component={Permissions.OnlyAnonymous(LoginSignup)}
+                   onEnter={w(LoginSignup.onEnter)}/>
+            <Route path="/auth/password/forgot" component={Permissions.OnlyAnonymous(LoginSignup)}
+                   onEnter={w(LoginSignup.onEnter)}/>
 
-        {/* Replace with 404 */}
-        <Route path="*" component={Home} onEnter={w(Home.onEnter)}/>
-    </Route>;
+            <Route path="/play" component={GameWindow} onEnter={w(GameWindow.onEnter)}/>
+
+            <Route path="/auth/activate/:token" component={Activate} onEnter={w(Activate.onEnter)}/>
+            <Route path="auth/logout" component={Logout} onEnter={w(Logout.onEnter)}/>
+            {/* Replace with 404 */}
+            <Route path="*" component={Home} onEnter={w(Home.onEnter)}/>
+        </Route>
+    );
 };
 
 

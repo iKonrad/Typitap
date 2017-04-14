@@ -1,4 +1,4 @@
-package main
+package middleware
 
 import (
 	crand "crypto/rand"
@@ -16,6 +16,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/gojax/fetch"
+	"github.com/iKonrad/typitap/server/assets"
 )
 
 // React struct is contains JS vms
@@ -27,6 +28,9 @@ type React struct {
 	debug bool
 	path  string
 }
+
+var ReactJS *React;
+
 
 // NewReact initialized React struct
 func NewReact(filePath string, debug bool, proxy http.Handler) *React {
@@ -73,6 +77,7 @@ func (r *React) Handle(c echo.Context) error {
 		"headers": map[string][]string(c.Request().Header),
 		"uuid":    UUID.String(),
 		"state": c.Get("State"),
+		"response": c.Get("Response"),
 	}
 
 	select {
@@ -192,7 +197,7 @@ func newJSVM(filePath string, proxy http.Handler) *JSVM {
 
 	vm.EventLoop.Start()
 	fetch.Enable(vm.EventLoop, proxy)
-	bundle := MustAsset(filePath)
+	bundle := assets.MustAsset(filePath)
 
 	vm.EventLoop.RunOnLoop(func(_vm *goja.Runtime) {
 		var seed int64

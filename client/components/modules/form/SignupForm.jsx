@@ -48,7 +48,7 @@ class SignupForm extends Component {
                     </div>
                 </div>
                 <div className="text-center">
-                    <Link to="/password/forgot">Forgot password?</Link> | Have an account? <Link to="/login">Log in</Link>
+                    <Link to="/auth/password/forgot">Forgot password?</Link> | Have an account? <Link to="/login">Log in</Link>
                 </div>
             </div>
         );

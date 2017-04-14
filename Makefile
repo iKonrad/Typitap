@@ -3,10 +3,10 @@ ON            = $(BIN)/on
 GO_BINDATA    = $(BIN)/go-bindata
 NODE_BIN      = $(shell npm bin)
 PID           = .pid
-GO_FILES      = $(filter-out ./server/bindata.go, $(shell find ./server  -type f -name "*.go"))
+GO_FILES      = $(filter-out ./server/assets/bindata.go, $(shell find ./server  -type f -name "*.go"))
 TEMPLATES     = $(wildcard server/data/templates/*.html)
-BINDATA       = server/bindata.go
-BINDATA_FLAGS = -pkg=main -prefix=server/data
+BINDATA       = server/assets/bindata.go
+BINDATA_FLAGS = -pkg=assets -prefix=server/data
 BUNDLE        = server/data/static/build/bundle.js
 APP           = $(shell find client -type f)
 IMPORT_PATH   = $(shell pwd | sed "s|^$(GOPATH)/src/||g")
@@ -50,8 +50,7 @@ restart: $(BINDATA) kill $(TARGET)
 	@$(TARGET) run & echo $$! > $(PID)
 
 $(BINDATA):
-	$(GO_BINDATA) $(BINDATA_FLAGS) -o=$@ server/data/...
-	$(GO_BINDATA) -pkg=config -prefix=server/data/ -o=server/config/bindata.go server/data/config/...
+	$(GO_BINDATA) $(BINDATA_FLAGS) -o=server/assets/bindata.go server/data/...
 
 lint:
 	@npm run eslint || true

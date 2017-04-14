@@ -8,20 +8,8 @@ import { push } from 'react-router-redux';
 import Notifications from 'react-notification-system-redux';
 class PasswordResetForm extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isTokenValid: false,
-            isLoading: true,
-        };
-    }
 
 
-    componentWillMount() {
-
-        this.validateToken(this.props.token);
-    }
 
     handleSubmitForm(values) {
         return FormActions.submitPasswordReset(values).then((details) => {
@@ -31,54 +19,44 @@ class PasswordResetForm extends Component {
         });
     };
 
-    validateToken(token) {
-        let that = this;
-        FormActions.validateToken(token).then((isValid) => {
-            let state = this.state;
-            state.isTokenValid = isValid;
-            state.isLoading = false;
-            this.setState(state);
-            this.props.change("token", that.props.token);
-        });
+    componentDidMount(props) {
+
+        this.props.change("token", this.props.token);
     }
+
 
 
     renderForm() {
-        const { handleSubmit, pristine, reset, submitting } = this.props;
+        const { handleSubmit, pristine, reset, submitting, error, token } = this.props;
+
         return (
-            <div className="panel panel-default card-login">
-                <div className="panel-heading"><h2>Reset your password</h2></div>
-                <div className="panel-body">
-                    <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
-                        <Field name="token" component="hidden" type="hidden" />
-                        <Field name="password" component={ Input } type="password" label="Password"/>
-                        <Field name="password-confirm" component={ Input } type="password" label="Confirm Password"/>
-                        <div className="form-group">
-                            <button type="submit" disabled={pristine || submitting} className="btn btn-secondary btn-block">Reset Password</button>
-                        </div>
-                    </form>
+            <div className="">
+                {error && <strong>{error}</strong>}
+                <div className="panel panel-default card-login">
+                    <div className="panel-heading"><h2>Reset your password</h2></div>
+                    <div className="panel-body">
+                        <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
+
+                            <Field name="token" component="hidden" type="hidden" />
+                            <Field name="password" component={ Input } type="password" label="Password"/>
+                            <Field name="password-confirm" component={ Input } type="password" label="Confirm Password"/>
+                            <div className="form-group">
+                                <button type="submit" disabled={pristine || submitting} className="btn btn-secondary btn-block">Reset Password</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         );
     }
 
-    renderLoading() {
-        return (
-            <div className="panel panel-default card-login">
-                <div className="panel-heading"><h2>Loading...</h2></div>
-                <div className="panel-body">
-                    We are verifying your token. This shouldn't take long
-                </div>
-            </div>
-        );
-    }
 
     renderTokenInvalid() {
         return (
             <div className="panel panel-default card-login">
                 <div className="panel-heading"><h2>Ooops</h2></div>
                 <div className="panel-body">
-                    Your token is invalid. Please use the <Link to="/password/forgot">forgot password</Link> feature again.
+                    Your token is invalid. Please use the <Link to="/auth/password/forgot">forgot password</Link> feature again.
                 </div>
             </div>
         );
@@ -87,10 +65,8 @@ class PasswordResetForm extends Component {
 
     render() {
 
-        if (this.state.isTokenValid) {
+        if (this.props.isValid) {
             return this.renderForm();
-        } else if (this.state.isLoading) {
-            return this.renderLoading();
         } else {
             return this.renderTokenInvalid();
         }

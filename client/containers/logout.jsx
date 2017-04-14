@@ -10,7 +10,7 @@ class Logout extends Component {
         callback();
     }
 
-    static fetchData({query, params, store}) {
+    static initialize({query, params, store}) {
         return store.dispatch(UserActions.logoutUser());
     }
 

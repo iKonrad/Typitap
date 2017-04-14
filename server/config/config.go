@@ -4,6 +4,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
+	"github.com/iKonrad/typitap/server/assets"
 )
 
 var data map[string]interface{}
@@ -11,7 +12,7 @@ var data map[string]interface{}
 func init() {
 
 
-	configBytes, err := Asset("config/config.yml")
+	configBytes, err := assets.Asset("config/config.yml")
 
 	if (err != nil){
 		panic(err);

@@ -2,7 +2,7 @@ package routes
 
 
 import (
-"github.com/iKonrad/typitap/server/api/controller"
+"github.com/iKonrad/typitap/server/controller"
 "github.com/labstack/echo"
 )
 
@@ -14,14 +14,13 @@ type APIRoutes struct{}
 // Bind attaches api routes
 func (api *APIRoutes) Bind(group *echo.Group) {
 	// Authentication routes
-	group.GET("/auth/check", controllers.AuthenticationC.TestHandler)
-	group.POST("/auth/signup", controllers.AuthenticationC.HandleSignup)
-	group.POST("/auth/login", controllers.AuthenticationC.HandleLogin)
-	group.POST("/auth/logout", controllers.AuthenticationC.HandleLogout);
-	group.POST("/auth/password/forgot", controllers.AuthenticationC.HandlePasswordForgot);
-	group.POST("/auth/password/reset", controllers.AuthenticationC.HandlePasswordReset);
-	group.POST("/auth/password/validate/:token", controllers.AuthenticationC.HandleValidatePasswordToken);
-	group.POST("/auth/activate/:token", controllers.AuthenticationC.HandleActivate);
+	group.GET("/auth/check", controller.AuthenticationAPI.TestHandler)
+	group.POST("/auth/signup", controller.AuthenticationAPI.HandleSignup)
+	group.POST("/auth/login", controller.AuthenticationAPI.HandleLogin)
+	group.POST("/auth/logout", controller.AuthenticationAPI.HandleLogout);
+	group.POST("/auth/password/forgot", controller.AuthenticationAPI.HandlePasswordForgot);
+	group.POST("/auth/password/reset", controller.AuthenticationAPI.HandlePasswordReset);
+
 }
 
 

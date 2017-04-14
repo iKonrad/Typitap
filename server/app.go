@@ -13,6 +13,7 @@ import (
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 	"github.com/iKonrad/typitap/server/routes"
+	"github.com/iKonrad/typitap/server/assets"
 )
 
 // App struct.
@@ -22,7 +23,6 @@ import (
 type App struct {
 	Engine *echo.Echo
 	Conf   *config.Config
-	React  *React
 }
 
 // NewApp returns initialized struct
@@ -78,12 +78,13 @@ func NewApp(opts ...AppOptions) *App {
 	app := &App{
 		Conf:   conf,
 		Engine: engine,
-		React: NewReact(
-			conf.UString("duktape.path"),
-			conf.UBool("debug"),
-			engine,
-		),
 	}
+
+	middlewares.ReactJS = middlewares.NewReact(
+		conf.UString("duktape.path"),
+		conf.UBool("debug"),
+		engine,
+	)
 
 	// Map app and uuid for every requests
 	app.Engine.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
@@ -101,7 +102,14 @@ func NewApp(opts ...AppOptions) *App {
 	api := routes.APIRoutes{}
 	api.Bind(
 		app.Engine.Group(
-			app.Conf.UString("api.prefix"),
+			"/api",
+		),
+	)
+
+	authRoutes := routes.AuthenticationRoutes{}
+	authRoutes.Bind(
+		app.Engine.Group(
+			"/auth",
 		),
 	)
 
@@ -111,10 +119,14 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Create file http server from bindata
 	fileServerHandler := http.FileServer(&assetfs.AssetFS{
-		Asset:     Asset,
-		AssetDir:  AssetDir,
-		AssetInfo: AssetInfo,
+		Asset:     assets.Asset,
+		AssetDir:  assets.AssetDir,
+		AssetInfo: assets.AssetInfo,
 	})
+
+	// /Users/konrad/Projects/Go/bin/go-bindata -pkg=main -prefix=server/data -debug -o=server/bindata.go server/data/...
+	// /Users/konrad/Projects/Go/bin/go-bindata -pkg=config -prefix=server/data/ -o=server/config/bindata.go server/data/config/...
+
 
 	// Set up authentication module
 
@@ -130,14 +142,14 @@ func NewApp(opts ...AppOptions) *App {
 				if ok && httpErr.Code == http.StatusNotFound {
 					// check if file exists
 					// omit first `/`
-					if _, err := Asset(c.Request().URL.Path[1:]); err == nil {
+					if _, err := assets.Asset(c.Request().URL.Path[1:]); err == nil {
 						fileServerHandler.ServeHTTP(
 							c.Response().Writer,
 							c.Request())
 						return nil
 					}
 					// if static file not found handle request via react application
-					return app.React.Handle(c)
+					return middlewares.ReactJS.Handle(c)
 				}
 			}
 			// Move further if err is not `Not Found`
@@ -161,7 +173,7 @@ type Template struct {
 // NewTemplate creates a new template
 func NewTemplate() *Template {
 	return &Template{
-		templates: binhtml.New(Asset, AssetDir).MustLoadDirectory("templates"),
+		templates: binhtml.New(assets.Asset, assets.AssetDir).MustLoadDirectory("templates"),
 	}
 }
 

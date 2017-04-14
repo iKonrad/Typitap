@@ -15,6 +15,7 @@ const FormActions = {
         }).then((response) => {
             return response.json();
         }).then((response) => {
+            console.log(response);
             // Check if login was successful
             if (response.errors) {
                 throw new SubmissionError(response.errors);

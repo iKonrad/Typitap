@@ -1,4 +1,4 @@
-package controllers
+package controller
 
 import (
 	"github.com/iKonrad/typitap/server/entities"
@@ -7,23 +7,22 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
-	"github.com/iKonrad/typitap/server/config"
 )
 
-type AuthenticationController struct {
+type AuthenticationAPIController struct {
 }
 
-var AuthenticationC AuthenticationController
+var AuthenticationAPI AuthenticationAPIController
 
 func init() {
-	AuthenticationC = AuthenticationController{}
+	AuthenticationAPI = AuthenticationAPIController{}
 }
 
-func (ac *AuthenticationController) TestHandler(c echo.Context) error {
+func (ac *AuthenticationAPIController) TestHandler(c echo.Context) error {
 	return c.JSON(200, "{'error': 'Nice, it worked'}")
 }
 
-func (ac *AuthenticationController) HandleSignup(c echo.Context) error {
+func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 
 	// Check if user is logged in first
 	if c.Get("IsLoggedIn").(bool) {
@@ -71,7 +70,7 @@ func (ac *AuthenticationController) HandleSignup(c echo.Context) error {
 	// Send confirmation e-mail with an activation link
 	emailTags := map[string]interface{}{
 		"name": newUser.Name,
-		"action_url": "http://" + c.Request().Host + "/activate/" + token,
+		"action_url": "http://" + c.Request().Host + "/auth/activate/" + token,
 		"username": newUser.Username,
 	};
 
@@ -115,7 +114,7 @@ func (ac *AuthenticationController) HandleSignup(c echo.Context) error {
 	})
 }
 
-func (ac AuthenticationController) HandleLogin(c echo.Context) error {
+func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 
 	// Check if user is already logged in
 	if c.Get("IsLoggedIn").(bool) {
@@ -181,7 +180,10 @@ func (ac AuthenticationController) HandleLogin(c echo.Context) error {
 }
 
 
-func (ac AuthenticationController) HandleLogout (c echo.Context) error {
+
+
+
+func (ac AuthenticationAPIController) HandleLogout (c echo.Context) error {
 
 	// Check if user is already logged in
 	if !c.Get("IsLoggedIn").(bool) {
@@ -194,7 +196,6 @@ func (ac AuthenticationController) HandleLogout (c echo.Context) error {
 		log.Println("Error while fetching the session", err);
 	}
 
-	config.Get("LOL");
 
 	session.Options.MaxAge = -1;
 	session.Save(c.Request(), c.Response().Writer);
@@ -204,42 +205,8 @@ func (ac AuthenticationController) HandleLogout (c echo.Context) error {
 }
 
 
-func (ac AuthenticationController) HandleActivate(c echo.Context) error {
 
-	// Check if user is logged in
-	if c.Get("IsLoggedIn").(bool) {
-		return c.JSON(202, map[string]interface{}{
-			"success": false,
-			"message": "You are logged in",
-		});
-	}
-
-
-	token := c.Param("token");
-
-	userToken, ok := manager.User.GetUserToken(token, "activate");
-
-	if !ok {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"success": false,
-			"message": "Token not found or has already been used",
-		});
-	}
-
-	// Activate the user
-	activated := manager.User.ActivateUser(userToken.User.Id);
-
-	// Mark the token as used
-	manager.User.UseUserToken(userToken.Token, "activate");
-
-	return c.JSON(200, map[string]interface{}{
-		"success": activated,
-	})
-
-}
-
-
-func (ac AuthenticationController) HandlePasswordForgot(c echo.Context) error {
+func (ac AuthenticationAPIController) HandlePasswordForgot(c echo.Context) error {
 
 	// Check if logged in
 	if (c.Get("IsLoggedIn").(bool)) {
@@ -281,7 +248,7 @@ func (ac AuthenticationController) HandlePasswordForgot(c echo.Context) error {
 	// Send the token to the e-mail address
 	emailTags := map[string]interface{}{
 		"name": user.Name,
-		"action_url": "http://" + c.Request().Host + "/password/reset/" + userToken,
+		"action_url": "http://" + c.Request().Host + "/auth/password/reset/" + userToken,
 		"username": user.Username,
 	};
 
@@ -294,7 +261,7 @@ func (ac AuthenticationController) HandlePasswordForgot(c echo.Context) error {
 }
 
 
-func (ac AuthenticationController) HandlePasswordReset(c echo.Context) error {
+func (ac AuthenticationAPIController) HandlePasswordReset(c echo.Context) error {
 
 	// Check if logged in
 	if (c.Get("IsLoggedIn").(bool)) {
@@ -366,22 +333,10 @@ func (ac AuthenticationController) HandlePasswordReset(c echo.Context) error {
 }
 
 
-func (ac AuthenticationController) HandleValidatePasswordToken(c echo.Context) error {
-
-	tokenString := c.Param("token");
-
-	_, ok := manager.User.GetUserToken(tokenString, "password");
-
-	return c.JSON(200, map[string]interface{}{
-		"success": true,
-		"valid": ok,
-	});
-
-}
 
 
 
-func (ac AuthenticationController) validateLoginForm(username string, password string) (bool, map[string]string) {
+func (ac AuthenticationAPIController) validateLoginForm(username string, password string) (bool, map[string]string) {
 
 	errors := map[string]string{}
 	isValid := true

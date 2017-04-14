@@ -41,8 +41,8 @@ class Navbar extends Component {
                         },
                         {
                             label: 'Log out',
-                            type: 'link',
-                            url: '/logout',
+                            type: 'logout',
+                            url: '/auth/logout',
                             authenticated: true
                         },
                     ]
@@ -94,6 +94,8 @@ class Navbar extends Component {
                                                 </ul>
                                             </li>
                                         );
+                                    } else if (obj.type === "logout") {
+                                        return (<a href="/auth/logout" key={ 'menu-item' + index }>Log out</a>);
                                     }
                                 }
                             })}
