@@ -1,5 +1,11 @@
+/*
+    GameWindow.jsx
+    GameWindow is a presentational component that shows the Game page
+
+ */
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import Game from 'components/game/Game';
 
 class GameWindow extends Component {
 
@@ -11,7 +17,13 @@ class GameWindow extends Component {
     render() {
 
         return (
-            <div className="">Game</div>
+            <div className="container">
+                <div className="row">
+                    <div className="col col-xs-12 col-md-8 col-md-offset-2">
+                        <Game />
+                    </div>
+                </div>
+            </div>
         );
 
     }
