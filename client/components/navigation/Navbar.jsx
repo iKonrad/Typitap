@@ -67,7 +67,7 @@ class Navbar extends Component {
 
 
         return (
-            <nav className="navbar navbar-fixed-top">
+            <nav className="navbar">
                 <div className="container">
                     <div className="navbar-header">
                         <Link className="navbar-brand" to="/"><img src="/static/images/identity/logo-white-sm.png"

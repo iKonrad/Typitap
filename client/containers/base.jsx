@@ -9,9 +9,11 @@ class Base extends Component {
     render() {
 
         return (
-            <div id="main-container" className="main-container">
-                <div id="wrap" className="container">
-                    <Navbar />
+                <div>
+
+                        <Navbar />
+
+
                     <div id="react-container" className="main-content">
                         { this.props.children }
                     </div>
@@ -19,7 +21,6 @@ class Base extends Component {
                         notifications={this.props.notifications} ref="notificationSystem" style={ false }
                     />
                 </div>
-            </div>
         );
     }
 
