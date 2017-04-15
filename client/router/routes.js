@@ -1,11 +1,11 @@
 import React from 'react';
 import {Route, IndexRoute, Redirect} from 'react-router';
-import Base from 'containers/base';
-import LoginSignup from "containers/login-signup";
-import Home from 'containers/home';
-import Logout from 'containers/logout';
-import Activate from 'containers/activate';
-import GameWindow from 'containers/game-window';
+import Base from 'scenes/base';
+import Auth from "scenes/Auth";
+import Home from 'scenes/Home';
+import Logout from 'scenes/Auth/scenes/Logout';
+import Activate from 'scenes/Auth/scenes/Activate';
+import GameWindow from 'scenes/Game';
 
 import Permissions from 'utils/permissions';
 
@@ -33,12 +33,12 @@ export default ({store, first}) => {
     return (
         <Route path="/" component={Base}>
             <IndexRoute component={Home} onEnter={w(Home.onEnter)}/>
-            <Route path="/login" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
-            <Route path="/signup" component={Permissions.OnlyAnonymous(LoginSignup)} onEnter={w(LoginSignup.onEnter)}/>
-            <Route path="/auth/password/reset/:token" component={Permissions.OnlyAnonymous(LoginSignup)}
-                   onEnter={w(LoginSignup.onEnter)}/>
-            <Route path="/auth/password/forgot" component={Permissions.OnlyAnonymous(LoginSignup)}
-                   onEnter={w(LoginSignup.onEnter)}/>
+            <Route path="/login" component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.onEnter)}/>
+            <Route path="/signup" component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.onEnter)}/>
+            <Route path="/auth/password/reset/:token" component={Permissions.OnlyAnonymous(Auth)}
+                   onEnter={w(Auth.onEnter)}/>
+            <Route path="/auth/password/forgot" component={Permissions.OnlyAnonymous(Auth)}
+                   onEnter={w(Auth.onEnter)}/>
 
             <Route path="/play" component={GameWindow} onEnter={w(GameWindow.onEnter)}/>
 

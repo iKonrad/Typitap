@@ -5,7 +5,7 @@ import {Provider} from 'react-redux';
 import toString from './toString';
 import {Promise} from 'when';
 import createRoutes from './routes';
-import {createStore, setAsCurrentStore} from './store';
+import {createStore, setAsCurrentStore} from 'store/store';
 import { syncHistoryWithStore } from 'react-router-redux'
 
 
@@ -39,22 +39,20 @@ export function run() {
 // https://github.com/olebedev/go-starter-kit/blob/master/src/app/server/react.go#L65
 export const renderToString = toString;
 
-require('../css');
 require('assets/scss/main.scss');
 
 
 
 
 // Style live reloading
-if (module.hot) {
-    let c = 0;
-    module.hot.accept('../css', () => {
-        require('../css');
-        require('assets/scss/main.scss');
-        const a = document.createElement('a');
-        const link = document.querySelector('link[rel="stylesheet"]');
-        a.href = link.href;
-        a.search = '?' + c++;
-        link.href = a.href;
-    });
-}
+// if (module.hot) {
+//     let c = 0;
+//     module.hot.accept('assets/scss', () => {
+//         require('assets/scss/main.scss');
+//         const a = document.createElement('a');
+//         const link = document.querySelector('link[rel="stylesheet"]');
+//         a.href = link.href;
+//         a.search = '?' + c++;
+//         link.href = a.href;
+//     });
+// }

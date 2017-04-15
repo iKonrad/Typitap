@@ -1,5 +1,5 @@
 import { UserAuthWrapper } from 'redux-auth-wrapper'
-import { routerReducer, syncHistoryWithStore, routerActions, routerMiddleware } from 'react-router-redux'
+import { routerActions } from 'react-router-redux'
 
 
 const Permissions = {

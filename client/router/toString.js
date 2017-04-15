@@ -4,9 +4,9 @@ import {renderToString} from 'react-dom/server';
 import {createMemoryHistory, match, RouterContext} from 'react-router'
 import Helmet from 'react-helmet';
 import createRoutes from './routes';
-import {createStore, setAsCurrentStore} from './store';
+import {createStore, setAsCurrentStore} from 'store/store';
 import {syncHistoryWithStore} from 'react-router-redux'
-import AppActions from 'actions/appActions';
+import * as AppActions from 'store/modules/appModule';
 
 
 var clientCookies;
