@@ -38,7 +38,9 @@
       </div>
     {{end}}
     <div id="app">{{ .HTMLApp }}</div>
-    <script >window['--app-initial'] = JSON.parse("{{if .Initial}}{{ .Initial }}{{else}}{}{{end}}");</script>
+
+    <script src="https://use.fontawesome.com/2ac0766c6c.js"></script>
+    <script onload="this.parentElement.removeChild(this)">window['--app-initial'] = JSON.parse("{{if .Initial}}{{ .Initial }}{{else}}{}{{end}}");</script>
     <script async defer src="/static/build/bundle.js" onload="this.parentElement.removeChild(this)"></script>
   </body>
 </html>

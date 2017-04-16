@@ -74,8 +74,6 @@ export default function (options, cbk) {
                         responseData = options.response;
                     }
 
-                    console.log("RES", JSON.stringify(responseData));
-
                     store.dispatch(AppActions.setResponse(responseData));
 
 
@@ -100,18 +98,13 @@ export default function (options, cbk) {
 
 
                     function renderComponent() {
-                        console.log("PRPS", JSON.stringify(renderProps));
 
                         renderProps["history"] = syncHistoryWithStore(memoryHistory, store);
-
-                        console.log("33", JSON.stringify(renderProps));
-                        console.log("4", JSON.stringify(store));
                         result.app = renderToString(
                             <Provider store={store}>
                                 <RouterContext {...renderProps} />
                             </Provider>
                         );
-
 
                         const {title, meta} = Helmet.rewind();
                         result.title = title.toString();

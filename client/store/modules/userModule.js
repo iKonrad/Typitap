@@ -58,7 +58,6 @@ export function logoutUser() {
         }).then((response) => {
             return response.json();
         }).then((response) => {
-            console.log("RES", JSON.stringify(response));
             if (response.success) {
                 return dispatch({type: LOGOUT_USER_SUCCESS});
             }
@@ -77,7 +76,6 @@ export function activateUser(token) {
         }).then((response) => {
             return response.json()
         }).then((response) => {
-            console.log("RESP", response);
             if (response.success) {
                 dispatch ({type: ACTIVATE_USER_SUCCESS});
             }

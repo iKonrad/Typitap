@@ -1,11 +1,12 @@
 .game {
 
-  &--text {
+  &__text {
     background-color: $grey-100;
     padding: 30px;
     font-size: 18px;
     width: 100%;
     border-radius: 6px;
+    box-shadow: inset 0 1px 6px 0 hsla(0,0%,81%,.5);
 
     span.word-error {
       text-decoration: underline;
@@ -29,7 +30,31 @@
 
   }
 
-  &--countdown {
+  &__bar {
+    margin-bottom: 15px;
+
+    &__label {
+      display: inline-block;
+      width: 60px;
+      color: $grey-450;
+      background: $grey-100;
+      border-radius: $border-radius-large;
+      padding: 3px 5px;
+      margin: 0px 3px;
+      text-align: center;
+      /* Rectangle 8: */
+      box-shadow: inset 0 1px 6px 0 rgba(207,207,207,0.50);
+
+    }
+
+    &__icon {
+      font-size: 20px!important;
+      margin: 0 5px;
+      color: $grey-500;
+    }
+  }
+
+  &__countdown {
     text-align: center;
     font-size: 18px;
 
@@ -39,41 +64,41 @@
     }
   }
 
-  &--input {
+  &__input {
     margin-top: 20px;
-  }
 
-  .game--input-field {
+    input {
+      &:focus, &:active {
+        outline: none;
+      }
+    }
+
     &--error {
-      background: $brand-danger;
-      color: white;
-      //@include placeholder {
-      //  color: white;
-      //}
-    }
-    &:focus, &:active {
-      outline: none;
+      input {
+        border-color: $brand-danger;
+        color: $brand-danger;
+
+        &:focus, &:active {
+          border-color: $brand-danger;
+        }
+      }
     }
   }
-
-
 
 
 
   &.game--complete {
-
-    .game--text {
+    .game__text {
       opacity: 0.8;
     }
   }
 
-  &--score-label {
-    color: $grey-450;
-    background: $grey-100;
-    border-radius: $border-radius-large;
-    padding: 3px 5px;
-    margin: 0px 3px;
+  &__controls {
+    margin-top: 15px;
   }
+
+
+
 
 
   .game__progress {

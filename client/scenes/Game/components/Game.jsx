@@ -4,24 +4,55 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import PlayerList from './PlayerList';
+import GamePlayerList from './GamePlayerList';
+import GameInput from './GameInput'
+import GameText from './GameText';
+import GameBar from './GameBar';
+import GameEngine from './../utils/gameEngine';
+import GameControls from './GameControls';
+import * as GameActions from 'store/modules/gameModule';
 
 class Game extends Component {
 
+    constructor(props) {
+        super(props);
+        this.engine = new GameEngine();
+    }
+
+
+
+    renderBottomRow() {
+        if (this.props.game.started && !this.props.game.finished) {
+            return <GameInput onGameFinish={ this.handleGameFinish.bind(this) }/>;
+        } else {
+            return <GameControls onGameStart={ this.handleGameStart.bind(this) } />
+        }
+    }
+
+    handleGameStart() {
+        this.props.dispatch(GameActions.startGame("This is a test"));
+        this.engine.startTimer();
+    }
+
+    handleGameFinish() {
+        this.engine.finishGame();
+    }
+
+
     render() {
         return (
-            <div id="game" className="game-container">
-                <PlayerList />
+            <div id="game" className="game">
+                <GamePlayerList />
                 <div className="panel panel-default">
                     <div className="panel-body">
-
+                        <GameBar />
+                        <GameText />
+                        { this.renderBottomRow() }
                     </div>
                 </div>
             </div>
-
         )
     }
-
 }
 
 

@@ -12,3 +12,4 @@
 /vendor/
 /server/config/bindata.go
 /vendor/*
+/rethinkdb_data
