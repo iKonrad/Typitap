@@ -10,6 +10,7 @@ import GameText from './GameText';
 import GameBar from './GameBar';
 import GameEngine from './../utils/gameEngine';
 import GameControls from './GameControls';
+import GameCountdown from './GameCountdown';
 import * as GameActions from 'store/modules/gameModule';
 
 class Game extends Component {
@@ -25,13 +26,20 @@ class Game extends Component {
         if (this.props.game.started && !this.props.game.finished) {
             return <GameInput onGameFinish={ this.handleGameFinish.bind(this) }/>;
         } else {
-            return <GameControls onGameStart={ this.handleGameStart.bind(this) } />
+            if (this.props.game.countdown) {
+                return <GameCountdown />
+            } else {
+                return <GameControls onGameStart={ this.handleGameStart.bind(this) } />
+            }
+
         }
     }
 
     handleGameStart() {
-        this.props.dispatch(GameActions.startGame("This is a test"));
-        this.engine.startTimer();
+        this.engine.startCountdown(() => {
+            this.props.dispatch(GameActions.startGame("This is a test"));
+            this.engine.startTimer();
+        });
     }
 
     handleGameFinish() {
@@ -42,7 +50,6 @@ class Game extends Component {
     render() {
         return (
             <div id="game" className="game">
-                <GamePlayerList />
                 <div className="panel panel-default">
                     <div className="panel-body">
                         <GameBar />

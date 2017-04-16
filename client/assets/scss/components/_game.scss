@@ -55,11 +55,12 @@
   }
 
   &__countdown {
+    margin-top: 15px;
     text-align: center;
     font-size: 18px;
 
     span {
-      font-weight: bold;
+      font-weight: 400;
       font-size: 20px;
     }
   }

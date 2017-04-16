@@ -4,6 +4,8 @@ const UPDATE_INPUT = "UPDATE_INPUT";
 const FINISH_WORD = "FINISH_WORD";
 const MAKE_WORD_MISTAKE = "ERROR_WORD";
 const TICK_TIME = "TICK_TIME";
+const START_COUNTDOWN = "START_COUNTDOWN";
+const TICK_COUNTDOWN = "TICK_COUNTDOWN";
 
 const initialState = {
     text: '',
@@ -13,6 +15,8 @@ const initialState = {
     inputValue: '',
     mistakes: {},
     time: 0,
+    countdown: false,
+    countdownSeconds: 5,
 };
 
 export default function reducer(state = initialState, action) {
@@ -21,7 +25,8 @@ export default function reducer(state = initialState, action) {
             return {
                 ...initialState,
                 started: true,
-                text: action.text
+                text: action.text,
+                countdown: false,
             };
         case UPDATE_INPUT:
             return {
@@ -58,11 +63,22 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 mistakes
-            }
+            };
         case TICK_TIME:
             return {
                 ...state,
                 time: state.time + 1,
+            }
+        case START_COUNTDOWN:
+            return {
+                ...state,
+                countdown: true,
+                countdownSeconds: initialState.countdownSeconds
+            }
+        case TICK_COUNTDOWN:
+            return {
+                ...state,
+                countdownSeconds: state.countdownSeconds - 1
             }
     }
 
@@ -105,5 +121,17 @@ export function makeMistake() {
 export function tickTime() {
     return {
         type: TICK_TIME
+    }
+}
+
+export function startCountdown() {
+    return {
+        type: START_COUNTDOWN
+    }
+}
+
+export function tickCountdown() {
+    return {
+        type: TICK_COUNTDOWN
     }
 }

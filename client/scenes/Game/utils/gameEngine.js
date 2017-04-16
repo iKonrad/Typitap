@@ -12,14 +12,9 @@ class GameEngine {
 
     startTimer() {
 
-        let secondTimer = 0;
         this.timer = setInterval(() => {
 
-            if (this.store.getState().game.started && !this.store.getState().game.finished) {
-                this.store.dispatch(GameActions.tickTime());
-            } else {
-                this.stopTimer();
-            }
+            this.store.dispatch(GameActions.tickTime());
 
         }, 1000);
     }
@@ -74,6 +69,24 @@ class GameEngine {
         }));
 
     }
+
+
+    startCountdown(callback) {
+
+        this.store.dispatch(GameActions.startCountdown());
+
+        this.countdownTimer = setInterval(() => {
+
+            if (this.store.getState().game.countdownSeconds === 1) {
+                clearInterval(this.countdownTimer);
+                callback();
+                return;
+            }
+
+            this.store.dispatch(GameActions.tickCountdown());
+        }, 1000);
+    }
+
 
 
 }
