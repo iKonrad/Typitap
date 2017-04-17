@@ -53,18 +53,20 @@ class GameEngine {
             'time': seconds,
             'wpm': speed,
             'accuracy': accuracy,
-            'mistakes': state.mistakes
+            'mistakes': JSON.stringify(state.mistakes),
+            'sessionId': state.sessionId,
         };
 
         // Post the results to the server
-        // GameActions.submitGameResults(this.props.sessionid, results).then();
+        this.postGameResultData(results);
 
         let mistakesCount = state.mistakes === undefined ? '0' : Object.keys(state.mistakes).length;
 
+
         // Show notification with the results to the user
         this.store.dispatch(Notifications.success({
-            children: (
-                <p>Game finished in {seconds} seconds with score <strong>{speed}</strong> wpm. Your accuracy:
+                    children: (
+                        <p>Game finished in {seconds} seconds with score <strong>{speed}</strong> wpm. Your accuracy:
                     <strong>{ accuracy }%</strong> ({mistakesCount} mistakes)</p>)
         }));
 
@@ -88,6 +90,31 @@ class GameEngine {
     }
 
 
+    resetGame() {
+        clearInterval(this.timer);
+        clearInterval(this.countdownTimer);
+        this.store.dispatch(GameActions.resetGame());
+    }
+
+
+    postGameResultData(results) {
+
+        const formData = new FormData();
+        for (var i in results) {
+            formData.append(i, results[i]);
+        }
+
+        fetch("/api/game/session/result", {
+            method: "POST",
+            credentials: "same-origin",
+            body: formData,
+        }).then((response) => {
+            return response.json();
+        }).then((response) => {
+             console.log("WUT", response);
+        });
+
+    }
 
 }
 

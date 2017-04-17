@@ -35,10 +35,17 @@ class Game extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.engine.resetGame();
+
+    }
+
     handleGameStart() {
         this.engine.startCountdown(() => {
-            this.props.dispatch(GameActions.startGame("This is a test"));
-            this.engine.startTimer();
+            this.props.dispatch(GameActions.startOffline()).then(() => {
+                this.engine.startTimer();
+            });
+
         });
     }
 

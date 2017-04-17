@@ -55,6 +55,8 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 		log.Println(err)
 	}
 
+	newUser.Password = "";
+
 
 	// Generate an activation token for the confirmation e-mail
 	token, ok := manager.User.GenerateUserToken("activate", newUser);
@@ -106,11 +108,7 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 
 	return c.JSON(200, map[string]interface{}{
 		"success": true,
-		"user": map[string]interface{}{
-			"id":    newUser.Id,
-			"name":  newUser.Name,
-			"email": newUser.Email,
-		},
+		"user": newUser,
 	})
 }
 

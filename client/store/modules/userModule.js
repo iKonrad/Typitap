@@ -5,21 +5,28 @@ const ACTIVATE_USER_FAILURE =  "ACTIVATE_USER_FAILURE";
 const SAVE_USER_DATA =  "SAVE_USER_DATA";
 
 
+
 export default function reducer(state = {}, action) {
     switch (action.type) {
         case LOGIN_USER_SUCCESS:
             return {
                 loggedIn: true,
-                ...action.user
+                data:  {
+                    ...action.user
+                }
             };
         case LOGOUT_USER_SUCCESS:
             return {
-                loggedIn: false
+                loggedIn: false,
+                data: {},
             };
         case ACTIVATE_USER_SUCCESS:
             return {
                 ...state,
-                active: true,
+                data: {
+                    ...state.data,
+                    Active: true,
+                }
             }
     }
 

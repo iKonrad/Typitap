@@ -99,10 +99,17 @@ func NewApp(opts ...AppOptions) *App {
 	//app.Engine.Use(authentication.Middleware.Handle);
 
 	// Bind api hadling for URL api.prefix
-	api := routes.APIRoutes{}
+	api := routes.AuthenticationAPIRoutes{}
 	api.Bind(
 		app.Engine.Group(
-			"/api",
+			"/api/auth",
+		),
+	)
+
+	gameApi := routes.GameAPIRoutes{}
+	gameApi.Bind(
+		app.Engine.Group(
+			"/api/game",
 		),
 	)
 

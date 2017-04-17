@@ -18,16 +18,14 @@ func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
 		// Get the logged in user if exists
 		if c.Get("IsLoggedIn").(bool) {
 			user := c.Get("User").(entities.User)
+			user.Password = "";
 			newStore["user"] = map[string]interface{}{
+				"data": user,
 				"loggedIn": true,
-				"id":       user.Id,
-				"email":    user.Email,
-				"active":   user.Active,
-				"username": user.Username,
-				"name":     user.Name,
 			}
 		} else {
 			newStore["user"] = map[string]interface{}{
+				"data": map[string]interface{}{},
 				"loggedIn": false,
 			}
 		}

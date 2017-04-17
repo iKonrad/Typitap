@@ -6,6 +6,7 @@ const MAKE_WORD_MISTAKE = "ERROR_WORD";
 const TICK_TIME = "TICK_TIME";
 const START_COUNTDOWN = "START_COUNTDOWN";
 const TICK_COUNTDOWN = "TICK_COUNTDOWN";
+const RESET_GAME = "RESET_GAME";
 
 const initialState = {
     text: '',
@@ -17,6 +18,8 @@ const initialState = {
     time: 0,
     countdown: false,
     countdownSeconds: 5,
+    online: false,
+    sessionId: "",
 };
 
 export default function reducer(state = initialState, action) {
@@ -27,6 +30,8 @@ export default function reducer(state = initialState, action) {
                 started: true,
                 text: action.text,
                 countdown: false,
+                online: action.online,
+                sessionId: action.sessionId
             };
         case UPDATE_INPUT:
             return {
@@ -80,16 +85,39 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 countdownSeconds: state.countdownSeconds - 1
             }
+        case RESET_GAME:
+            return initialState
     }
 
     return state;
 }
 
+
+export function startOffline() {
+
+    return (dispatch) => {
+        return fetch("/api/game/session/offline", {
+            credentials: "same-origin",
+        }).then((response) => {
+            return response.json();
+        }).then((response) => {
+            console.log("RES", response);
+            if (response.success) {
+                dispatch(startGame(response.text, false, response.sessionId ));
+            }
+        });
+    }
+
+
+}
+
 // Game Actions
-export function startGame(gameText) {
+export function startGame(gameText, online, sessionId) {
     return {
         type: START_GAME,
-        text: gameText
+        text: gameText,
+        online,
+        sessionId
     };
 }
 
@@ -133,5 +161,11 @@ export function startCountdown() {
 export function tickCountdown() {
     return {
         type: TICK_COUNTDOWN
+    }
+}
+
+export function resetGame() {
+    return {
+        type: RESET_GAME
     }
 }
