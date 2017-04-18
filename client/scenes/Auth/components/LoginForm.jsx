@@ -12,7 +12,7 @@ class LoginForm extends Component {
     handleSubmitForm(values) {
         return FormActions.submitLogin(values).then((details) => {
             this.props.dispatch(UserActions.loginUser(details.user));
-            this.props.dispatch(Notifications.info({'message': `Welcome back, ${details.user.name}!`}));
+            this.props.dispatch(Notifications.info({'message': `Welcome back, ${details.user.Name}!`}));
         }).then(() => {
             this.props.dispatch(push("/"));
         });
