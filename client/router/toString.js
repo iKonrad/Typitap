@@ -31,10 +31,9 @@ export default function (options, cbk) {
         test: null
     };
 
-    if (typeof options.headers.Cookie == "array") {
+    if (typeof options.headers.Cookie === "object" || typeof options.headers.Cookie === "array") {
         global.clientCookies = options.headers.Cookie[0];
     }
-
 
     var currentState = {};
     if (options.state !== undefined) {
@@ -76,14 +75,11 @@ export default function (options, cbk) {
 
                     store.dispatch(AppActions.setResponse(responseData));
 
-
                     // Check if checkAuth function is present as well
-                    if (typeof(comp.initialize) !== 'undefined') {
-                        promise = comp.initialize(responseData, params, store);
+                    if (typeof(comp.initialize) !== 'undefined') {promise = comp.initialize(responseData, params, store);
 
                         if (promise.then !== undefined && typeof promise.then === 'function') {
-                            promise.then(() => {
-                                renderComponent();
+                            promise.then(() => {renderComponent();
                             });
                         } else {
                             renderComponent();
@@ -109,8 +105,7 @@ export default function (options, cbk) {
                         const {title, meta} = Helmet.rewind();
                         result.title = title.toString();
                         result.meta = meta.toString();
-                        result.initial = JSON.stringify(store.getState());
-                        return cbk(result);
+                        result.initial = JSON.stringify(store.getState());return cbk(result);
                     }
 
 

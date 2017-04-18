@@ -37,6 +37,7 @@ func (ac AuthenticationController) HandleActivate(c echo.Context) error {
 		"success": activated,
 		"error":   "Token not found or has already been used",
 	});
+
 	return middleware.ReactJS.Handle(c);
 }
 

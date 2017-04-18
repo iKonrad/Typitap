@@ -242,6 +242,7 @@ func (um UserManager) GetUserToken(token string, tokenType string) (entities.Use
 			"userId": r.Table("users").Get(p.Field("userId")),
 		}
 	}).Run(db.Session);
+	defer res.Close();
 
 	if err != nil {
 		log.Println(err);
@@ -255,6 +256,8 @@ func (um UserManager) GetUserToken(token string, tokenType string) (entities.Use
 		log.Println(err);
 		return entities.UserToken{}, false
 	}
+
+
 
 	return tokenObject, true
 

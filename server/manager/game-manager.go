@@ -48,7 +48,7 @@ func (gm GameManager) CreateOfflineSession(user *entities.User) (entities.GameSe
 	}
 
 	// Save object in the database
-	r.Table("game_sessions").Insert(gameSession).Run(db.Session);
+	r.Table("game_sessions").Insert(gameSession).Exec(db.Session);
 
 	return gameSession, nil
 
@@ -57,6 +57,7 @@ func (gm GameManager) CreateOfflineSession(user *entities.User) (entities.GameSe
 func (gm GameManager) getRandomGameText() (entities.GameText, error) {
 
 	resp, err := r.Table("game_texts").Sample(1).Run(db.Session)
+	defer resp.Close();
 
 	if err != nil {
 		log.Println("No text found" + err.Error())
@@ -81,6 +82,7 @@ func (gm GameManager) getGameText(textId int) (entities.GameText, error) {
 
 	// Fetch the game text
 	resp, err := r.Table("game_texts").Get(textId).Run(db.Session);
+	defer resp.Close();
 
 	if err != nil {
 		log.Println("No Text found for ID" + err.Error());
@@ -171,6 +173,14 @@ func (gm GameManager) validateGameResult(details map[string]interface{}) (map[st
 }
 
 
+func (gm GameManager) MarkSessionFinished(sessionId string) {
+
+	r.Table("game_sessions").Get(sessionId).Update(map[string]interface{}{
+		"finished": true,
+	}).Exec(db.Session);
+
+}
+
 func (gm GameManager) DeleteOldSessionsForUser(userId string) {
 
 	r.Table("game_sessions").Filter(map[string]interface{}{
@@ -191,6 +201,8 @@ func (gm GameManager) GetSession(sessionId string) (entities.GameSession, error)
 			"userIds": r.Table("users").GetAll(r.Args(p.Field("userIds"))).CoerceTo("array"),
 		}
 	}).Run(db.Session);
+
+	defer resp.Close();
 
 
 	if err != nil {

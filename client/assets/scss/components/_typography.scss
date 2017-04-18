@@ -1,3 +1,9 @@
+@mixin Font() {
+  font-family: "Dosis", sans-serif;
+}
+
+
+
 body {
   color: $grey-500;
 }
@@ -20,3 +26,11 @@ body {
   color: $grey-300;
   margin-top: -15px;
 }
+
+
+
+h3 {
+  font-size: 22px;
+}
+
+

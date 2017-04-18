@@ -25,6 +25,8 @@ func CheckAuthHandler(next echo.HandlerFunc) echo.HandlerFunc {
 			return next(c)
 		}
 
+		fmt.Println("HH", c.Request().Header);
+
 		session, err := manager.Session.Get(c.Request(), "SESSION_ID")
 
 		if err != nil {
@@ -40,6 +42,8 @@ func CheckAuthHandler(next echo.HandlerFunc) echo.HandlerFunc {
 			userId := session.Values["SessionCookie"].(*entities.SessionCookie).UserId
 
 			res, err := r.Table("users").Get(userId).Run(db.Session)
+
+			defer res.Close();
 
 			if err == nil {
 				var currentUser entities.User

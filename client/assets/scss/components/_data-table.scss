@@ -1,11 +1,11 @@
 .data-table {
 
   &--row {
-    padding: 10px 0;
-    border-bottom: 1px solid $grey-100;
+    padding: 15px 0;
     transition: all 0.3s ease;
     &:hover {
       background: $grey-050;
+
     }
 
     &--cell {

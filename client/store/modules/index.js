@@ -5,7 +5,7 @@ import {reducer as notificationsReducer} from 'react-notification-system-redux';
 import appReducer from './appModule';
 import userReducer from './userModule';
 import gameReducer from './gameModule';
-
+import dashboardReducer from './dashboardModule';
 
 
 
@@ -15,6 +15,7 @@ export default combineReducers({
     user: userReducer,
     form: formReducer,
     game: gameReducer,
+    dashboard: dashboardReducer,
     routing: routerReducer,
     notifications: notificationsReducer,
 });

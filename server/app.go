@@ -113,6 +113,13 @@ func NewApp(opts ...AppOptions) *App {
 		),
 	)
 
+	userApi := routes.UserAPIRoutes{}
+	userApi.Bind(
+		app.Engine.Group(
+			"/api/user",
+		),
+	)
+
 	authRoutes := routes.AuthenticationRoutes{}
 	authRoutes.Bind(
 		app.Engine.Group(

@@ -34,21 +34,6 @@ export default function reducer(state = {}, action) {
 }
 
 
-export function checkToken(sessionToken) {
-
-    return (dispatch) => {
-        return fetch("/api/v1/auth/check", {
-            method: "POST",
-            credentials: "include"
-        }).then((data) => {
-            return r.json();
-        }).then((data) => {
-            dispatch({type: SAVE_USER_DATA, data});
-        });
-    }
-};
-
-
 export function loginUser(user) {
     return (dispatch) => {
         dispatch({type: LOGIN_USER_SUCCESS, user});
@@ -61,7 +46,8 @@ export function logoutUser() {
 
         return fetch("/api/auth/logout", {
             method: "POST",
-            credentials: "same-origin"
+            credentials: "same-origin",
+            headers: global.clientCookies
         }).then((response) => {
             return response.json();
         }).then((response) => {
@@ -74,19 +60,8 @@ export function logoutUser() {
 
 };
 
+export function fetchGameResults() {
 
-export function activateUser(token) {
-    return (dispatch) => {
-        return fetch("/api/auth/activate/" + token, {
-            method: "POST",
-            credentials: "same-origin"
-        }).then((response) => {
-            return response.json()
-        }).then((response) => {
-            if (response.success) {
-                dispatch ({type: ACTIVATE_USER_SUCCESS});
-            }
-            return response;
-        });
-    }
-};
+
+
+}

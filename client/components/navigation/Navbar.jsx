@@ -64,7 +64,7 @@ class Navbar extends Component {
     }
 
     render() {
-        console.log(this.props.user);
+        console.log("USS", this.props.user);
 
         return (
             <nav className="navbar">
@@ -76,7 +76,7 @@ class Navbar extends Component {
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav pull-right">
                             { this.state.menu.map((obj, index) => {
-                                if (obj.authenticated === this.props.user.loggedIn) {
+                                if (this.props.user && obj.authenticated === this.props.user.loggedIn) {
 
                                     if (obj.type === 'link') {
                                         return <NavLink to={obj.url} key={'menu-item-' + index}>{ obj.label }</NavLink>;

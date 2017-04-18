@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+import Dashboard from './scenes/Dashboard';
+import Homepage from './scenes/Homepage';
+
 
 class Home extends Component {
 
@@ -8,17 +11,21 @@ class Home extends Component {
         callback();
     }
 
+    static initialize(response, params, store) {
+
+        if (store.getState().user.loggedIn) {
+            return Dashboard.initialize(response, params, store);
+        }
+
+    }
+
     render() {
-        return (
-            <div className="container">
-                <div className="row">
-                    <div className="col col-xs-12">
-                        <p>Dashboard</p>
-                        { this.props.user.name  ? this.props.user.name : "Anonymous" }
-                    </div>
-                </div>
-            </div>
-        );
+        if (this.props.user.loggedIn) {
+            return (<Dashboard />);
+        } else {
+            return (<Homepage />)
+        }
+
     }
 
 }
