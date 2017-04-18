@@ -110,8 +110,6 @@ class GameEngine {
             body: formData,
         }).then((response) => {
             return response.json();
-        }).then((response) => {
-             console.log("WUT", response);
         });
 
     }

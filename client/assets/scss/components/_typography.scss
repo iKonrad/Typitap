@@ -13,6 +13,10 @@ body {
   color: $grey-300;
 }
 
+.text-md {
+  font-size: 1.1em;
+}
+
 .text-lg {
   font-size: 1.2em;
 }
@@ -22,9 +26,10 @@ body {
 }
 
 .text-caption {
-  font-size: 1.1em;
+  font-size: 1.05em;
   color: $grey-300;
   margin-top: -15px;
+  font-weight: 300;
 }
 
 
@@ -34,3 +39,8 @@ h3 {
 }
 
 
+
+
+.text-bold {
+  font-weight: 500;
+}

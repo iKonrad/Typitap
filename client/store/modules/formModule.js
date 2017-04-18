@@ -22,7 +22,6 @@ export function submitLogin(data) {
         if (response.error) {
             throw new SubmissionError({_error: response.error, username: response.error, password: ""});
         }
-
         // Logged in
         return {user: response.user};
     });

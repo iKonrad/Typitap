@@ -165,15 +165,13 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 
 	session.Options.MaxAge = 60 * 60 * 24 * 14;
 
+	user.Password = "";
+
 	session.Save(c.Request(), c.Response().Writer)
 
 	return c.JSON(200, map[string]interface{}{
 		"success": true,
-		"user": map[string]interface{}{
-			"id":    user.Id,
-			"name":  user.Name,
-			"email": user.Email,
-		},
+		"user": user,
 	})
 }
 

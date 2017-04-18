@@ -1,0 +1,50 @@
+.profile-page {
+  &__picture {
+    height: 120px;
+    img {
+      min-height: 120px;
+    }
+  }
+
+  &__info {
+    @include Font();
+    &__name {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 35px 0 0 0;
+    }
+
+    &__username {
+      font-size: 14px;
+      margin: 0 0;
+      font-weight: 200;
+      color: $grey-200;
+    }
+
+    &__details {
+      text-align: center;
+
+      @media screen and (min-width: $screen-sm-min) {
+        text-align: left;
+        margin-left: -45px;
+      }
+      @media screen and (min-width: $screen-md-min) {
+        text-align: left;
+        margin-left: -25px;
+      }
+      @media screen and (min-width: $screen-lg-min) {
+        text-align: left;
+        margin-left: -45px;
+      }
+    }
+
+    &__details--right {
+      text-align: center;
+      margin-top: 35px;
+      @media screen and (min-width: $screen-sm-min) {
+        text-align: right;
+
+      }
+    }
+  }
+}

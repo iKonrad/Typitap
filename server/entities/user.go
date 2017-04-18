@@ -1,5 +1,7 @@
 package entities
 
+import "time"
+
 type User struct {
 	Id       string `gorethink:"id,omitempty"`
 	Name     string `gorethink:"firstName"`
@@ -8,4 +10,6 @@ type User struct {
 	Username string `gorethink:"username"`
 
 	Active bool `gorethink:"active"`
+
+	Created time.Time `gorethink:"created"`
 }

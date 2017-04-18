@@ -15,6 +15,8 @@ class Home extends Component {
 
         if (store.getState().user.loggedIn) {
             return Dashboard.initialize(response, params, store);
+        } else {
+            return "";
         }
 
     }

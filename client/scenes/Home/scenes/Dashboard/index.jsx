@@ -26,7 +26,7 @@ class Dashboard extends Component {
 
     render() {
         return (
-            <div className="container">
+            <div className="container profile-page">
                 <div className="row">
                     <div className="col col-xs-12 col-md-8">
                         <div className="row">

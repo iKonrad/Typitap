@@ -14,19 +14,18 @@ class RecentGames extends Component {
 
     renderItems() {
 
-        if (this.props.dashboard.games !== undefined) {
+        if (this.props.dashboard.games && this.props.dashboard.games.length > 0) {
             let items = this.props.dashboard.games.map((item, index) => {
-                let date = new Date(item.created);
-                date = parseInt(date.getTime()/1000|0);
+
                 return (
                     <RecentGamesRow perfect={ Object.keys(item.mistakes).length < 1 ? 1 : 0 }
-                                    key={ 'activity-item-' + index } date={ date }
+                                    key={ 'activity-item-' + index } date={ new Date(item.created) }
                                     name={item.session.online ? "Online race" : "Offline race"} score={item.wpm}/>
                 );
             });
             return items;
         } else {
-            return "";
+            return (<div className="panel-body text-muted text-center">You haven't played any games yet.</div>);
         }
 
     }

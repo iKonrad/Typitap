@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
-import {browserHistory} from 'react-router';
+import {push} from 'react-router-redux';
 import { Link } from 'react-router';
 import Input from 'components/form/fields/Input';
 import * as FormActions from 'store/modules/formModule';
@@ -13,12 +13,12 @@ class SignupForm extends Component {
             this.props.dispatch(UserActions.loginUser(details.user));
             return details;
         }).then((details) => {
-            if (details && details.user && details.user.id) {
+            if (details && details.user && details.user.Id) {
                 this.props.dispatch(Notifications.success({
                     'message': `We have sent you an e-mail with activation link to activate your account`,
                     'title': 'Account created'
                 }));
-                browserHistory.push("/");
+                this.props.dispatch(push("/"));
             }
         });
     }
