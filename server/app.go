@@ -183,6 +183,18 @@ func NewApp(opts ...AppOptions) *App {
 	return app
 }
 
+
+func NoJsRender(c echo.Context) error {
+
+	response := map[string]interface{}{
+		"uuid":  c.Get("uuid").(*uuid.UUID).String(),
+		"title": "TYPITAP TEST",
+		"meta":  "my meta tags to add at the head of the page",
+	}
+
+	return c.Render(http.StatusOK, "react.html", response);
+}
+
 // Run runs the app
 func (app *App) Run() {
 	Must(app.Engine.Start(":" + app.Conf.UString("port")))

@@ -26,6 +26,7 @@ export function createStore(state, history) {
         middlewares.push(createLogger({
             duration: true,
             diff: true,
+            collapsed: true,
         }));
     }
 
