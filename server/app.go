@@ -14,6 +14,8 @@ import (
 	"github.com/olebedev/config"
 	"github.com/iKonrad/typitap/server/routes"
 	"github.com/iKonrad/typitap/server/assets"
+	"github.com/gorilla/websocket"
+	ws "github.com/iKonrad/typitap/server/websocket"
 )
 
 // App struct.
@@ -21,15 +23,17 @@ import (
 // all variables defined locally inside
 // this struct.
 type App struct {
-	Engine *echo.Echo
-	Conf   *config.Config
+	Engine   *echo.Echo
+	Conf     *config.Config
+	Upgrader websocket.Upgrader
 }
 
 // NewApp returns initialized struct
 // of main server application.
 func NewApp(opts ...AppOptions) *App {
 	options := AppOptions{}
-	for _, i := range opts {
+	for _, i :=
+	range opts {
 		options = i
 		break
 	}
@@ -57,8 +61,6 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Set up echo debug level
 	engine.Debug = conf.UBool("debug")
-
-
 
 	engine.GET("/favicon.ico", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
@@ -96,6 +98,16 @@ func NewApp(opts ...AppOptions) *App {
 		}
 	})
 
+	app.Upgrader = websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
+
+	go ws.Hub.Run();
+
 	//app.Engine.Use(authentication.Middleware.Handle);
 
 	// Bind api hadling for URL api.prefix
@@ -127,6 +139,7 @@ func NewApp(opts ...AppOptions) *App {
 		),
 	)
 
+	engine.GET("/ws", app.handleWebsocket);
 
 	// Regular middlewares
 	engine.Use(middleware.Recover())
@@ -137,10 +150,6 @@ func NewApp(opts ...AppOptions) *App {
 		AssetDir:  assets.AssetDir,
 		AssetInfo: assets.AssetInfo,
 	})
-
-	// /Users/konrad/Projects/Go/bin/go-bindata -pkg=main -prefix=server/data -debug -o=server/bindata.go server/data/...
-	// /Users/konrad/Projects/Go/bin/go-bindata -pkg=config -prefix=server/data/ -o=server/config/bindata.go server/data/config/...
-
 
 	// Set up authentication module
 
@@ -177,6 +186,11 @@ func NewApp(opts ...AppOptions) *App {
 // Run runs the app
 func (app *App) Run() {
 	Must(app.Engine.Start(":" + app.Conf.UString("port")))
+}
+
+func (app *App) handleWebsocket(c echo.Context) error {
+	ws.ServeWs(c.Response(), c.Request());
+	return nil;
 }
 
 // Template is custom renderer for Echo, to render html from bindata

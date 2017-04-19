@@ -20,7 +20,6 @@ func init() {
 
 func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 
-	log.Println("HEADERS", c.Request().Header);
 
 	// Check if user is logged in
 	if !c.Get("IsLoggedIn").(bool) {

@@ -11,7 +11,7 @@ class RecentGamesRow extends Component {
             <div className="data-table--row row">
                 <div className="col col-xs-8 data-table--cell">
                     <p className="text-md">{ this.props.name }</p>
-                    <div className="text-caption"><small><TimeAgo datetime={ this.props.date } live={ false } /></small></div>
+                    <div className="text-caption"><small><TimeAgo datetime={ this.props.date } /></small></div>
                 </div>
                 <div className="col col-xs-4 data-table--cell">
                     <div className="pull-right text-xl" >
