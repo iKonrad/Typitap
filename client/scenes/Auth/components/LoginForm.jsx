@@ -6,14 +6,26 @@ import Input from 'components/form/fields/Input';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux'
 import Notifications from 'react-notification-system-redux';
+import { connect } from 'react-redux';
+import * as socketActions from "store/modules/socketModule";
+
+
 class LoginForm extends Component {
 
 
     handleSubmitForm(values) {
+
+
+        // Attach identifier to the form so we can reconnect the websocket on login
+        if (this.props.socket.connected) {
+            values.identifier = this.props.socket.identifier;
+        }
+
         return FormActions.submitLogin(values).then((details) => {
             this.props.dispatch(UserActions.loginUser(details.user));
             this.props.dispatch(Notifications.info({'message': `Welcome back, ${details.user.Name}!`}));
         }).then(() => {
+            this.props.dispatch(socketActions.reconnect());
             this.props.dispatch(push("/"));
         });
     };
@@ -45,6 +57,16 @@ class LoginForm extends Component {
 
 }
 
-export default reduxForm({
+
+
+function mapStateToProps(state) {
+    return {
+        socket: state.socket
+    };
+}
+
+LoginForm = reduxForm({
     form: 'login', // a unique name for this form
 })(LoginForm);
+
+export default LoginForm = connect(mapStateToProps)(LoginForm);

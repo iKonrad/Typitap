@@ -6,9 +6,18 @@ import Input from 'components/form/fields/Input';
 import * as FormActions from 'store/modules/formModule';
 import * as UserActions from 'store/modules/userModule';
 import Notifications from 'react-notification-system-redux';
+import * as socketActions from "store/modules/socketModule";
+import { connect } from 'react-redux';
+
 class SignupForm extends Component {
 
     handleSubmitForm(values) {
+
+        // Attach identifier to the form so we can reconnect the websocket on login
+        if (this.props.socket.connected) {
+            values.identifier = this.props.socket.identifier;
+        }
+
         return FormActions.submitSignup(values).then((details) => {
             this.props.dispatch(UserActions.loginUser(details.user));
             return details;
@@ -18,6 +27,7 @@ class SignupForm extends Component {
                     'message': `We have sent you an e-mail with activation link to activate your account`,
                     'title': 'Account created'
                 }));
+                this.props.dispatch(socketActions.reconnect());
                 this.props.dispatch(push("/"));
             }
         });
@@ -55,6 +65,15 @@ class SignupForm extends Component {
     }
 }
 
-export default reduxForm({
-    form: "signup"
+
+function mapStateToProps(state) {
+    return {
+        socket: state.socket
+    };
+}
+
+SignupForm = reduxForm({
+    form: 'signup', // a unique name for this form
 })(SignupForm);
+
+export default SignupForm = connect(mapStateToProps)(SignupForm);

@@ -1,18 +1,25 @@
 import * as socketActions from "store/modules/socketModule";
 
+const CODE_RECONNECT = 5001;
+const CODE_DISCONNECT = 5000;
 
 const socketMiddleware = (function(){
     let socket = null;
 
 
     const onOpen = (ws,store,token) => evt => {
-        //Tell the store we're connected
+
+        console.log("CONN", evt);
         store.dispatch(socketActions.connected());
     };
 
     const onClose = (ws,store) => evt => {
         //Tell the store we've disconnected
+        console.log("DISC", evt);
         store.dispatch(socketActions.disconnected());
+        if (evt.code === CODE_RECONNECT) {
+            store.dispatch(socketActions.connect());
+        }
     };
 
     const onMessage = (ws,store) => evt => {
@@ -20,11 +27,16 @@ const socketMiddleware = (function(){
         var msg = JSON.parse(evt.data);
         console.log("MESSAGE RECEIVED", msg);
 
-        if (msg.type === "RECONNECT")  {
-            // reconnect();
+
+        if (msg.type === "CONNECTED") {
+            store.dispatch(socketActions.setIdentifier(msg.data.identifier));
         }
         // Do some logic based on the message type
     };
+
+    const onError = (ws, store) => evt => {
+        console.log("ERR", evt);
+    }
 
     const reconnect = (ws, store) => {
 
@@ -51,6 +63,8 @@ const socketMiddleware = (function(){
                 socket.onmessage = onMessage(socket,store);
                 socket.onclose = onClose(socket,store);
                 socket.onopen = onOpen(socket,store,action.token);
+                socket.onerror = onError(socket, store);
+
 
                 break;
 
@@ -66,6 +80,16 @@ const socketMiddleware = (function(){
                 break;
 
             //This action is irrelevant to us, pass it on to the next middleware
+            case socketActions.RECONNECT:
+
+                if(socket !== null) {
+                    socket.close();
+                }
+                socket = null;
+                store.dispatch(socketActions.disconnected());
+
+                store.dispatch(socketActions.connect());
+                break;
             default:
                 return next(action);
         }
