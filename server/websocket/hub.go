@@ -13,6 +13,11 @@ const (
 	TYPE_LOGOUT = "LOGOUT"
 )
 
+const (
+	CODE_RECONNECT = 5001;
+	CODE_DISCONNECT = 5000;
+)
+
 type SocketHub struct {
 	clients    map[string]*Client
 	broadcastChannel  chan string;
@@ -90,17 +95,25 @@ func BroadcastMessage(messageType string, message interface{}) {
 }
 
 
+func ReconnectClient(identifier string) {
+
+	client, ok := hub.clients[identifier]
+	if ok {
+		log.Println("RECONNECTING");
+		client.ws.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(CODE_RECONNECT, "Login/Logout"))
+		defer delete(hub.clients, identifier);
+		defer client.ws.Close();
+	}
+
+}
+
 func DisconnectClient(identifier string) {
 
 	client, ok := hub.clients[identifier]
 	if ok {
-		closingMessage := map[string]interface{}{
-			"type": TYPE_LOGOUT,
-		};
-		encoded, _ := json.Marshal(closingMessage);
-		client.ws.WriteMessage(websocket.CloseMessage, encoded);
+		client.ws.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(CODE_DISCONNECT, "Disconnect"))
+		defer delete(hub.clients, identifier);
 		defer client.ws.Close();
-		delete(hub.clients, identifier);
 	}
 
 }

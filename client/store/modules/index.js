@@ -6,6 +6,7 @@ import appReducer from './appModule';
 import userReducer from './userModule';
 import gameReducer from './gameModule';
 import dashboardReducer from './dashboardModule';
+import socketReducer from './socketModule';
 
 
 
@@ -18,4 +19,5 @@ export default combineReducers({
     dashboard: dashboardReducer,
     routing: routerReducer,
     notifications: notificationsReducer,
+    socket: socketReducer
 });

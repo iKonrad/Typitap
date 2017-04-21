@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router';
 import * as UserActions from 'store/modules/userModule';
 import { connect } from 'react-redux';
 import Notifications from 'react-notification-system-redux';
+import * as socketActions from 'store/modules/socketModule';
 class Logout extends Component {
 
     static onEnter({store, next, replace, callback}) {
@@ -16,6 +17,7 @@ class Logout extends Component {
 
     componentDidMount(props) {
         this.props.dispatch(Notifications.success({'message': 'You have been logged out', 'title': 'Log out'}));
+        this.props.dispatch(socketActions.reconnect());
         browserHistory.push('/');
     }
 
