@@ -7,6 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
+	ws "github.com/iKonrad/typitap/server/websocket"
 )
 
 type AuthenticationAPIController struct {
@@ -114,6 +115,18 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 
 func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 
+
+	stuff := map[string]interface{}{
+		"type": "LOGIN",
+		"message": "Someone wants to log in",
+	}
+
+
+
+	ws.BroadcastMessage(ws.TYPE_GAME_START, stuff);
+
+	ws.BroadcastMessage(ws.TYPE_GAME_START, "LOL");
+
 	// Check if user is already logged in
 	if c.Get("IsLoggedIn").(bool) {
 		return c.JSON(200, map[string]interface{}{"success": false, "error": "You are already logged in"})
@@ -192,6 +205,8 @@ func (ac AuthenticationAPIController) HandleLogout (c echo.Context) error {
 		log.Println("Error while fetching the session", err);
 	}
 
+	// Close websocket connection if exists
+	ws.DisconnectClient(c.Get("User").(entities.User).Username);
 
 	session.Options.MaxAge = -1;
 	session.Save(c.Request(), c.Response().Writer);

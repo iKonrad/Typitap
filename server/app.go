@@ -106,7 +106,7 @@ func NewApp(opts ...AppOptions) *App {
 		},
 	}
 
-	go ws.Hub.Run();
+	go ws.GetHub().Run()
 
 	//app.Engine.Use(authentication.Middleware.Handle);
 
@@ -201,7 +201,7 @@ func (app *App) Run() {
 }
 
 func (app *App) handleWebsocket(c echo.Context) error {
-	ws.ServeWs(c.Response(), c.Request());
+	ws.ServeWs(c);
 	return nil;
 }
 

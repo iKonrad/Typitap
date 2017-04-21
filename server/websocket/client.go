@@ -5,6 +5,11 @@ import (
 	"github.com/gorilla/websocket"
 	"net/http"
 	"log"
+	"github.com/labstack/echo"
+	"github.com/iKonrad/typitap/server/entities"
+	"math/rand"
+	"strconv"
+	"encoding/json"
 )
 
 const (
@@ -15,6 +20,7 @@ const (
 )
 
 type Client struct {
+	identifier string
 	ws *websocket.Conn
 	send chan []byte
 }
@@ -32,25 +38,41 @@ func init() {
 	}
 }
 
-func ServeWs (w http.ResponseWriter, r *http.Request) {
+func ServeWs (context echo.Context) {
 
-	if r.Method != "GET" {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed);
+	if context.Request().Method != "GET" {
+		http.Error(context.Response().Writer, "Method not allowed", http.StatusMethodNotAllowed);
 		return
 	}
 
-	ws, err := upgrader.Upgrade(w, r, nil);
+	ws, err := upgrader.Upgrade(context.Response().Writer, context.Request(), nil);
 	if err != nil {
 		log.Println(err);
 		return
 	}
 
+	// Check if user exists. If exists, use username as a identifier. Otherwise, create an anonymous ID
+
+	var identifier string;
+	if context.Get("IsLoggedIn").(bool) {
+		user := context.Get("User").(entities.User)
+		identifier = user.Username
+	} else {
+		randomNumber := rand.Int();
+		identifier = "guest-" + strconv.Itoa(randomNumber);
+	}
+
 	c := &Client {
+		identifier: identifier,
 		send: make(chan []byte, MAX_MESSAGE_SIZE),
 		ws: ws,
 	}
 
-	Hub.registerChannel <- c;
+	hub.registerChannel <- c;
+
+	c.SendMessage(TYPE_CONNECTED, map[string]interface{}{
+		"identifier": identifier,
+	})
 
 	go c.writePump()
 	c.readPump()
@@ -61,7 +83,7 @@ func ServeWs (w http.ResponseWriter, r *http.Request) {
 func (c *Client) readPump() {
 
 	defer func() {
-		Hub.unregisterChannel <- c
+		hub.unregisterChannel <- c
 		c.ws.Close();
 	}()
 
@@ -82,7 +104,7 @@ func (c *Client) readPump() {
 			break
 		}
 
-		Hub.broadcastChannel <- string(message)
+		hub.broadcastChannel <- string(message)
 	}
 }
 
@@ -116,4 +138,21 @@ func (c *Client) writePump() {
 func (c *Client) write(mt int, message []byte) error {
 	c.ws.SetWriteDeadline(time.Now().Add(WRITE_WAIT));
 	return c.ws.WriteMessage(mt, message)
+}
+
+
+func (c *Client) SendMessage(messageType string, message interface{}) {
+
+
+	messageObject := map[string]interface{}{
+		"type": messageType,
+		"data": message,
+	}
+
+	encoded, err := json.Marshal(messageObject);
+	if  err != nil {
+		log.Println("Error while encoding a payload")
+	}
+	c.write(websocket.TextMessage, encoded);
+
 }

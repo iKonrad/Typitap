@@ -19,7 +19,18 @@ const socketMiddleware = (function(){
         //Parse the JSON message received on the websocket
         var msg = JSON.parse(evt.data);
         console.log("MESSAGE RECEIVED", msg);
+
+        if (msg.type === "RECONNECT")  {
+            // reconnect();
+        }
         // Do some logic based on the message type
+    };
+
+    const reconnect = (ws, store) => {
+
+        socket.close();
+        store.dispatch(socketActions.disconnected());
+        store.dispatch(socketActions.connect());
     };
 
     return store => next => action => {
