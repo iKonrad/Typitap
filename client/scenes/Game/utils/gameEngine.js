@@ -72,6 +72,10 @@ class GameEngine {
 
     }
 
+    startOffline() {
+
+    }
+
 
     startCountdown(callback) {
 

@@ -5,7 +5,8 @@ const CONNECTING = "@@socket/CONNECTING";
 
 const CONNECTED = "@@socket/CONNECTED";
 const DISCONNECTED = "@@socket/DISCONNECTED";
-const SET_IDENTIFIER = "@@socket/SET_IDENTIFIER";
+export const SET_IDENTIFIER = "@@socket/SET_IDENTIFIER";
+
 
 
 

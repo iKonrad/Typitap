@@ -9,13 +9,11 @@ const socketMiddleware = (function(){
 
     const onOpen = (ws,store,token) => evt => {
 
-        console.log("CONN", evt);
         store.dispatch(socketActions.connected());
     };
 
     const onClose = (ws,store) => evt => {
         //Tell the store we've disconnected
-        console.log("DISC", evt);
         store.dispatch(socketActions.disconnected());
         if (evt.code === CODE_RECONNECT) {
             store.dispatch(socketActions.connect());
@@ -25,12 +23,12 @@ const socketMiddleware = (function(){
     const onMessage = (ws,store) => evt => {
         //Parse the JSON message received on the websocket
         var msg = JSON.parse(evt.data);
-        console.log("MESSAGE RECEIVED", msg);
-
 
         if (msg.type === "CONNECTED") {
             store.dispatch(socketActions.setIdentifier(msg.data.identifier));
+            return;
         }
+        console.log("MESSAGE RECEIVED", msg);
         // Do some logic based on the message type
     };
 
@@ -79,7 +77,7 @@ const socketMiddleware = (function(){
                 store.dispatch(socketActions.disconnected());
                 break;
 
-            //This action is irrelevant to us, pass it on to the next middleware
+
             case socketActions.RECONNECT:
 
                 if(socket !== null) {
@@ -90,6 +88,15 @@ const socketMiddleware = (function(){
 
                 store.dispatch(socketActions.connect());
                 break;
+            case "FIND_SESSION":
+
+                if (socket !== null) {
+                    socket.send(JSON.stringify({
+                        type: "FIND_SESSION",
+                        lol: "test"
+                    }));
+                }
+
             default:
                 return next(action);
         }

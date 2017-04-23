@@ -180,6 +180,7 @@ func NewApp(opts ...AppOptions) *App {
 		}
 	})
 
+
 	return app
 }
 

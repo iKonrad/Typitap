@@ -7,7 +7,7 @@ const TICK_TIME = "TICK_TIME";
 const START_COUNTDOWN = "START_COUNTDOWN";
 const TICK_COUNTDOWN = "TICK_COUNTDOWN";
 const RESET_GAME = "RESET_GAME";
-
+const FIND_SESSION = "FIND_SESSION";
 const initialState = {
     text: '',
     started: false,
@@ -93,18 +93,19 @@ export default function reducer(state = initialState, action) {
 }
 
 
-export function startOffline() {
+
+
+export function getSession(online) {
+
+    let isOnline = online ? "online" : "offline";
 
     return (dispatch) => {
-        return fetch("/api/game/session/offline", {
+        return fetch("/api/game/session/" + isOnline, {
             credentials: "same-origin",
         }).then((response) => {
             return response.json();
         }).then((response) => {
-            console.log("RES", response);
-            if (response.success) {
-                dispatch(startGame(response.text, false, response.sessionId ));
-            }
+            return response;
         });
     }
 
@@ -167,5 +168,12 @@ export function tickCountdown() {
 export function resetGame() {
     return {
         type: RESET_GAME
+    }
+}
+
+
+export function findSession() {
+    return {
+        type: FIND_SESSION
     }
 }

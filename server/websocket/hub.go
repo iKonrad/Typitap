@@ -20,7 +20,7 @@ const (
 
 type SocketHub struct {
 	clients    map[string]*Client
-	broadcastChannel  chan string;
+	broadcastChannel  chan string
 	registerChannel   chan *Client
 	unregisterChannel chan *Client
 
@@ -38,6 +38,8 @@ func GetHub() *SocketHub {
 			unregisterChannel: make(chan *Client),
 			clients:    make(map[string]*Client),
 		}
+
+
 	})
 	return hub
 }
@@ -78,6 +80,8 @@ func (h *SocketHub) broadcastMessage(message string) {
 	}
 }
 
+
+
 func BroadcastMessage(messageType string, message interface{}) {
 
 
@@ -85,6 +89,8 @@ func BroadcastMessage(messageType string, message interface{}) {
 		"type": messageType,
 		"data": message,
 	}
+
+
 
 	encoded, err := json.Marshal(messageObject);
 	if  err != nil {

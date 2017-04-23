@@ -22,7 +22,7 @@ func init() {
 }
 
 
-func (gm GameManager) CreateOfflineSession(user *entities.User) (entities.GameSession, error) {
+func (gm GameManager) CreateSession(user *entities.User, online bool) (entities.GameSession, error) {
 
 	// Get random text from the database
 	gameText, err := gm.getRandomGameText();
@@ -38,12 +38,12 @@ func (gm GameManager) CreateOfflineSession(user *entities.User) (entities.GameSe
 	gameSession := entities.GameSession{
 		Id: sessionId.String(),
 		Created: time.Now(),
-		Online: false,
-		Open: false,
+		Online: online,
+		Open: true,
 		Text: gameText,
 	};
 
-	if user != nil {
+	if user != nil && user.Id != "" {
 		gameSession.Users = []entities.User{*user};
 	}
 
@@ -221,3 +221,49 @@ func (gm GameManager) GetSession(sessionId string) (entities.GameSession, error)
 	return gameSession, nil
 
 }
+
+
+func (gm GameManager) GetOnlineSession(user *entities.User) (entities.GameSession, error) {
+
+	// Fetch the game text
+	resp, err := r.Table("game_sessions").Filter(map[string]interface{}{
+		"online": true,
+		"open": true,
+	}).Merge(func (p r.Term) interface{} {
+		return map[string]interface{} {
+			"textId": r.Table("game_texts").Get(p.Field("textId")),
+			"userIds": r.Table("users").GetAll(r.Args(p.Field("userIds"))).CoerceTo("array"),
+		}
+	}).Run(db.Session)
+
+	if err != nil {
+		return entities.GameSession{}, err
+	}
+
+	var session entities.GameSession
+
+	// check if session exists
+
+	if !resp.IsNil() {
+		resp.One(&session)
+		// Assign the user to the session if exists
+		if user != nil {
+			session.Users = append(session.Users, *user);
+			r.Table("game_sessions").Get(session.Id).Update(session).Exec(db.Session);
+		}
+
+		// Session returned
+		return session, nil
+	}
+
+	// Create new session
+	session, err = gm.CreateSession(user, true);
+
+	if err != nil {
+		return entities.GameSession{}, err;
+	}
+
+	return session, nil;
+
+}
+

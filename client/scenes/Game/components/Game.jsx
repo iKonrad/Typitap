@@ -41,12 +41,24 @@ class Game extends Component {
     }
 
     handleGameStart() {
-        this.engine.startCountdown(() => {
-            this.props.dispatch(GameActions.startOffline()).then(() => {
-                this.engine.startTimer();
-            });
 
+        // Check if offline or online game
+
+        this.props.dispatch(GameActions.findSession());
+
+        this.props.dispatch(GameActions.getSession(false)).then((response) => {
+            if (response.success) {
+                this.engine.startCountdown(() => {
+                    this.props.dispatch(GameActions.startGame(response.text, false, response.sessionId ));
+                    this.engine.startTimer();
+                });
+            }
+            else {
+                // @TODO: Handle error for end user
+                alert("Ooops. Error while fetching a session.");
+            }
         });
+
     }
 
     handleGameFinish() {

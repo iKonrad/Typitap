@@ -11,6 +11,7 @@ import (
 	r "gopkg.in/gorethink/gorethink.v3"
 	"log"
 	"time"
+	"strings"
 )
 
 type UserManager struct {
@@ -84,6 +85,9 @@ func (um UserManager) ValidateUser(details map[string]interface{}) (bool, map[st
 	} else {
 		if len(username) < 3 {
 			errors["username"] = "Username needs to be at least 3 characters long"
+			isValid = false
+		} else if strings.HasPrefix(username, "guest-") {
+			errors["username"] = "This username is not available"
 			isValid = false
 		} else {
 			isAvailable := um.IsUsernameAvailable(username)

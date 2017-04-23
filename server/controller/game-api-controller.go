@@ -30,7 +30,7 @@ func (ac *GameAPIController) JoinOffline(c echo.Context) error {
 	}
 
 	// Create the session and return it
-	newSession, err := manager.Game.CreateOfflineSession(&user);
+	newSession, err := manager.Game.CreateSession(&user, false);
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
