@@ -121,15 +121,20 @@ func (c *Client) parseMessage(identifier string, message map[string]interface{})
 	case "SET_IDENTIFIER":
 		log.Println("Change identifier after logging in/out")
 		// Do some logic
-	case "FIND_SESSION":
-		log.Println("Finding session", identifier);
-		game.GetEngine().EnrolUserToSession(identifier);
+	case "JOIN_ROOM":
+		roomId, ok := message["room"];
+		if ok {
+			game.GetEngine().JoinRoom(identifier, roomId.(string));
+		} else {
+			c.SendMessage("ERROR", map[string]string{
+				"error": "Room ID is missing",
+			});
+		}
+
 	default:
 		log.Println("Unsupported message type: ", message["type"])
 	}
-
 }
-
 
 func (c *Client) writePump() {
 	ticker := time.NewTicker(PING_PERIOD)

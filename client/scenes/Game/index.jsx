@@ -1,6 +1,6 @@
 /*
     GameWindow.jsx
-    GameWindow is a presentational component that shows the Game page
+    GameWindow is a presentational component that shows the game window
 
  */
 import React, {Component} from 'react';
@@ -20,7 +20,7 @@ class GameWindow extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col col-xs-12 col-md-8 col-md-offset-2">
-                        <Game />
+                        <Game online={ this.props.params.type === "online" } />
                     </div>
                 </div>
             </div>

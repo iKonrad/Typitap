@@ -14,8 +14,6 @@ type GameAPIRoutes struct{}
 // Bind attaches api routes
 func (api *GameAPIRoutes) Bind(group *echo.Group) {
 	// Authentication routes
-	group.GET("/session/offline", controller.GameAPI.JoinOffline)
-	group.POST("/session/result", controller.GameAPI.SaveResult);
+	group.GET("/session/:type", controller.GameAPI.JoinSession)
+	group.POST("/session/result", controller.GameAPI.SaveResult)
 }
-
-

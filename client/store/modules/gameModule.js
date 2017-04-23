@@ -7,7 +7,8 @@ const TICK_TIME = "TICK_TIME";
 const START_COUNTDOWN = "START_COUNTDOWN";
 const TICK_COUNTDOWN = "TICK_COUNTDOWN";
 const RESET_GAME = "RESET_GAME";
-const FIND_SESSION = "FIND_SESSION";
+const START_ONLINE_SEARCH = "START_ONLINE_SEARCH";
+
 const initialState = {
     text: '',
     started: false,
@@ -26,13 +27,19 @@ export default function reducer(state = initialState, action) {
     switch (action.type) {
         case START_GAME:
             return {
-                ...initialState,
+                ...state,
                 started: true,
                 text: action.text,
                 countdown: false,
                 online: action.online,
                 sessionId: action.sessionId
             };
+        case START_ONLINE_SEARCH:
+            return {
+                ...state,
+                online: true,
+                sessionId: action.sessionId
+            }
         case UPDATE_INPUT:
             return {
                 ...state,
@@ -171,9 +178,9 @@ export function resetGame() {
     }
 }
 
-
-export function findSession() {
+export function startOnlineSearch(sessionId) {
     return {
-        type: FIND_SESSION
+        type: START_ONLINE_SEARCH,
+        sessionId
     }
 }

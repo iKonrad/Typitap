@@ -19,7 +19,10 @@ func init() {
 
 
 
-func (ac *GameAPIController) JoinOffline(c echo.Context) error {
+func (ac *GameAPIController) JoinSession(c echo.Context) error {
+
+	sessionType := c.Param("type");
+
 
 	var user entities.User;
 	// Check if user is logged in
@@ -30,7 +33,7 @@ func (ac *GameAPIController) JoinOffline(c echo.Context) error {
 	}
 
 	// Create the session and return it
-	newSession, err := manager.Game.CreateSession(&user, false);
+	newSession, err := manager.Game.CreateSession(&user, sessionType == "online");
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -46,6 +49,7 @@ func (ac *GameAPIController) JoinOffline(c echo.Context) error {
 	});
 
 }
+
 
 
 func (ac *GameAPIController) SaveResult(c echo.Context) error {

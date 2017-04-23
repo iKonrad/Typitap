@@ -12,6 +12,7 @@ import GameEngine from './../utils/gameEngine';
 import GameControls from './GameControls';
 import GameCountdown from './GameCountdown';
 import * as GameActions from 'store/modules/gameModule';
+import * as SocketActions from 'store/modules/socketModule';
 
 class Game extends Component {
 
@@ -21,37 +22,46 @@ class Game extends Component {
     }
 
 
-
     renderBottomRow() {
         if (this.props.game.started && !this.props.game.finished) {
             return <GameInput onGameFinish={ this.handleGameFinish.bind(this) }/>;
         } else {
             if (this.props.game.countdown) {
                 return <GameCountdown />
-            } else {
-                return <GameControls onGameStart={ this.handleGameStart.bind(this) } />
+            } else if (this.props.game.finished) {
+                return <GameControls onGameStart={ this.handleGameStart.bind(this) }/>
             }
 
         }
     }
 
+    componentWillMount() {
+        this.handleGameStart();
+    }
+
     componentWillUnmount() {
         this.engine.resetGame();
-
     }
 
     handleGameStart() {
 
+        console.log("ONLINE?", this.props.online);
         // Check if offline or online game
 
-        this.props.dispatch(GameActions.findSession());
-
-        this.props.dispatch(GameActions.getSession(false)).then((response) => {
+        let that = this;
+        this.props.dispatch(GameActions.getSession(this.props.online)).then((response) => {
             if (response.success) {
-                this.engine.startCountdown(() => {
-                    this.props.dispatch(GameActions.startGame(response.text, false, response.sessionId ));
-                    this.engine.startTimer();
-                });
+                // We're added to the session, now, join the room and wait for the players
+                this.props.dispatch(SocketActions.joinRoom(response.sessionId));
+
+                this.props.dispatch(GameActions.startOnlineSearch(response.sessionId));
+
+                if (!that.props.online) {
+                    this.engine.startCountdown(() => {
+                        this.props.dispatch(GameActions.startGame(response.text, that.props.online, response.sessionId));
+                        this.engine.startTimer();
+                    });
+                }
             }
             else {
                 // @TODO: Handle error for end user
@@ -65,6 +75,36 @@ class Game extends Component {
         this.engine.finishGame();
     }
 
+    renderMain() {
+        console.log("ON", this.props.game.online);
+        if (this.props.game.online) {
+            // If online, display the text when the game is started or countdown has started
+            if (this.props.game.started || this.props.game.countdown) {
+                return (
+                    <div>
+                        <GameText />
+                        { this.renderBottomRow() }
+                    </div>
+                );
+            } else {
+                // Otherwise, display a waiting for players message
+                return (
+                    <div className="text-center">
+                        Searching for players...
+                    </div>
+                );
+            }
+        } else {
+            // For offline game, show the game screen immediately
+            return (
+                <div>
+                    <GameText />
+                    { this.renderBottomRow() }
+                </div>
+            );
+        }
+    }
+
 
     render() {
         return (
@@ -72,8 +112,7 @@ class Game extends Component {
                 <div className="panel panel-default">
                     <div className="panel-body">
                         <GameBar />
-                        <GameText />
-                        { this.renderBottomRow() }
+                        { this.renderMain() }
                     </div>
                 </div>
             </div>

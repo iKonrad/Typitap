@@ -7,6 +7,7 @@ const CONNECTED = "@@socket/CONNECTED";
 const DISCONNECTED = "@@socket/DISCONNECTED";
 export const SET_IDENTIFIER = "@@socket/SET_IDENTIFIER";
 
+export const JOIN_ROOM = "@@socket/JOIN_ROOM";
 
 
 
@@ -77,4 +78,8 @@ export function disconnected() {
 
 export function reconnect() {
     return {type: RECONNECT};
+}
+
+export function joinRoom(roomId) {
+    return {type: JOIN_ROOM, roomId}
 }

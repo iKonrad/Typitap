@@ -88,12 +88,12 @@ const socketMiddleware = (function(){
 
                 store.dispatch(socketActions.connect());
                 break;
-            case "FIND_SESSION":
+            case socketActions.JOIN_ROOM:
 
                 if (socket !== null) {
                     socket.send(JSON.stringify({
-                        type: "FIND_SESSION",
-                        lol: "test"
+                        type: "JOIN_ROOM",
+                        room: action.roomId
                     }));
                 }
 

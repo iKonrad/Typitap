@@ -7,7 +7,6 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/iKonrad/typitap/server/manager"
 	"log"
-	"strings"
 )
 
 type Engine struct {
@@ -16,7 +15,7 @@ type Engine struct {
 }
 
 const (
-	ROOM_EXPIRY_TIME = 3600
+	ROOM_EXPIRY_TIME = 3600 * 24
 )
 
 var engine *Engine
@@ -48,40 +47,20 @@ func (e *Engine) findOpenSession(user *entities.User) (entities.GameSession, err
 	return session, nil;
 }
 
-func (e *Engine) EnrolUserToSession(identifier string) (bool) {
-
-	// Check if identifier belongs to any user
-	// First, check if username starts with guest-
-	var user entities.User;
-	if !strings.HasPrefix(identifier, "guest-") {
-		// User is logged in - get the user and pass it to the function
-		userFound, ok := manager.User.FindUserBy("username", identifier);
-		if ok {
-			// User found - assign it now
-			user = userFound
-		}
-	}
-
-	// Get the next open session
-	session, err := manager.Game.GetOnlineSession(&user);
-	if err != nil {
-		log.Println("Error while fetching an online session", err);
-		return false;
-	}
+func (e *Engine) JoinRoom(identifier string, sessionId string) (bool) {
 
 	// Check if there's a room for that session
-	exists := e.roomExists(session.Id);
+	exists := e.roomExists(sessionId);
 
 	//val2, err := client.Get("key2").Result()
 
 	if !exists {
 		// Room doesn't exists, create a new one
-		e.createNewRoom(session.Id);
+		e.createNewRoom(sessionId);
 	}
 
-
 	// Add identifier to the current room
-	e.addPlayerToRoom(session.Id, identifier);
+	e.addPlayerToRoom(sessionId, identifier);
 
 	return true;
 
@@ -127,8 +106,6 @@ func (e *Engine) addPlayerToRoom(sessionId string, clientIdentifier string) bool
 		log.Println("Error while adding a user to the room --" + "rooms:" + sessionId + ":players:" + clientIdentifier, err);
 		return false;
 	}
-
-	e.redis.Expire("rooms:" + sessionId + ":players:" + clientIdentifier, ROOM_EXPIRY_TIME)
 
 	// Now, we need to add player-room association to the index
 	e.redis.HSet("player:" + clientIdentifier, "roomId", sessionId);

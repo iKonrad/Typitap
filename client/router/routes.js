@@ -5,6 +5,7 @@ import Auth from "scenes/Auth";
 import Home from 'scenes/Home';
 import Logout from 'scenes/Auth/scenes/Logout';
 import Activate from 'scenes/Auth/scenes/Activate';
+import Play from 'scenes/Play';
 import GameWindow from 'scenes/Game';
 
 import Permissions from 'utils/permissions';
@@ -40,7 +41,8 @@ export default ({store, first}) => {
             <Route path="/auth/password/forgot" component={Permissions.OnlyAnonymous(Auth)}
                    onEnter={w(Auth.onEnter)}/>
 
-            <Route path="/play" component={GameWindow} onEnter={w(GameWindow.onEnter)}/>
+            <Route path="/play" component={Play} onEnter={w(Play.onEnter)}/>
+            <Route path="/play/:type" component={GameWindow} onEnter={w(GameWindow.onEnter)}/>
 
             <Route path="/auth/activate/:token" component={Activate} onEnter={w(Activate.onEnter)}/>
             <Route path="auth/logout" component={Logout} onEnter={w(Logout.onEnter)}/>
