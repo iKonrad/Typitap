@@ -51,9 +51,8 @@ class Game extends Component {
         let that = this;
         this.props.dispatch(GameActions.getSession(this.props.online)).then((response) => {
             if (response.success) {
-                // We're added to the session, now, join the room and wait for the players
-                this.props.dispatch(SocketActions.joinRoom(response.sessionId));
 
+                // We're added to the session, now, join the room and wait for the players
                 this.props.dispatch(GameActions.startOnlineSearch(response.sessionId));
 
                 if (!that.props.online) {
@@ -61,6 +60,8 @@ class Game extends Component {
                         this.props.dispatch(GameActions.startGame(response.text, that.props.online, response.sessionId));
                         this.engine.startTimer();
                     });
+                } else {
+                    this.props.dispatch(SocketActions.joinRoom(response.sessionId));
                 }
             }
             else {
@@ -76,7 +77,6 @@ class Game extends Component {
     }
 
     renderMain() {
-        console.log("ON", this.props.game.online);
         if (this.props.game.online) {
             // If online, display the text when the game is started or countdown has started
             if (this.props.game.started || this.props.game.countdown) {

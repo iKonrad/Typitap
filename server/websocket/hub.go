@@ -9,24 +9,25 @@ import (
 
 const (
 	TYPE_GAME_START = "GAME_START"
-	TYPE_CONNECTED = "CONNECTED"
-	TYPE_LOGOUT = "LOGOUT"
+	TYPE_CONNECTED  = "CONNECTED"
+	TYPE_LOGOUT     = "LOGOUT"
+	TYPE_ERROR      = "ERROR"
 )
 
 const (
-	CODE_RECONNECT = 5001;
+	CODE_RECONNECT  = 5001;
 	CODE_DISCONNECT = 5000;
 )
 
 type SocketHub struct {
-	clients    map[string]*Client
+	clients           map[string]*Client
 	broadcastChannel  chan string
 	registerChannel   chan *Client
 	unregisterChannel chan *Client
-
 }
 
 var hub *SocketHub;
+
 var once sync.Once
 
 // Singleton pattern
@@ -36,9 +37,8 @@ func GetHub() *SocketHub {
 			broadcastChannel:  make(chan string),
 			registerChannel:   make(chan *Client),
 			unregisterChannel: make(chan *Client),
-			clients:    make(map[string]*Client),
+			clients:           make(map[string]*Client),
 		}
-
 
 	})
 	return hub
@@ -66,7 +66,7 @@ func (h *SocketHub) Run() {
 }
 
 func (h *SocketHub) broadcastMessage(message string) {
-	for id,client := range h.clients {
+	for id, client := range h.clients {
 
 		select {
 		case client.send <- []byte("{\"name\":\"" + id + "\"}"):
@@ -80,26 +80,47 @@ func (h *SocketHub) broadcastMessage(message string) {
 	}
 }
 
-
-
-func BroadcastMessage(messageType string, message interface{}) {
-
+func (h *SocketHub) SendMessageToClient(identifier string, messageType string, message interface{}) bool {
 
 	messageObject := map[string]interface{}{
 		"type": messageType,
 		"data": message,
 	}
 
-
+	if !isClientConnected(identifier) {
+		return false
+	}
 
 	encoded, err := json.Marshal(messageObject);
-	if  err != nil {
+	if err != nil {
+		log.Println("Error while encoding a payload")
+	}
+
+	h.clients[identifier].SendMessage(messageType, encoded);
+	return true;
+}
+
+func isClientConnected(identifier string) bool {
+
+	_, ok := GetHub().clients[identifier];
+	return ok
+
+}
+
+func BroadcastMessage(messageType string, message interface{}) {
+
+	messageObject := map[string]interface{}{
+		"type": messageType,
+		"data": message,
+	}
+
+	encoded, err := json.Marshal(messageObject);
+	if err != nil {
 		log.Println("Error while encoding a payload")
 	}
 	hub.broadcastMessage(string(encoded))
 
 }
-
 
 func ReconnectClient(identifier string) {
 

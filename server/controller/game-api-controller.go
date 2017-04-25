@@ -32,8 +32,13 @@ func (ac *GameAPIController) JoinSession(c echo.Context) error {
 		manager.Game.DeleteOldSessionsForUser(user.Id);
 	}
 
+	isOnline := sessionType == "online";
+	session, ok := manager.Game.FindOpenSession(isOnline, &user);
 	// Create the session and return it
-	newSession, err := manager.Game.CreateSession(&user, sessionType == "online");
+	var err error;
+	if !ok {
+		session, err = manager.Game.CreateSession(isOnline, &user);
+	}
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -44,8 +49,8 @@ func (ac *GameAPIController) JoinSession(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
-		"sessionId": newSession.Id,
-		"text": newSession.Text.Text,
+		"sessionId": session.Id,
+		"text": session.Text.Text,
 	});
 
 }

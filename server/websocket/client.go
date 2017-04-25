@@ -10,7 +10,6 @@ import (
 	"math/rand"
 	"strconv"
 	"encoding/json"
-	"github.com/iKonrad/typitap/server/game"
 )
 
 const (
@@ -101,11 +100,8 @@ func (c *Client) readPump() {
 		if err != nil {
 			break
 		}
-
-		log.Println("MESS", message);
 		var decodedMessage map[string]interface{};
 		json.Unmarshal(message, &decodedMessage);
-		log.Println("TEEST", decodedMessage);
 		c.parseMessage(c.identifier, decodedMessage);
 
 	}
@@ -115,25 +111,8 @@ func (c *Client) parseMessage(identifier string, message map[string]interface{})
 
 	log.Println("Message received: ", message)
 
-	switch message["type"] {
-	case "":
-		log.Println("Empty message sent")
-	case "SET_IDENTIFIER":
-		log.Println("Change identifier after logging in/out")
-		// Do some logic
-	case "JOIN_ROOM":
-		roomId, ok := message["room"];
-		if ok {
-			game.GetEngine().JoinRoom(identifier, roomId.(string));
-		} else {
-			c.SendMessage("ERROR", map[string]string{
-				"error": "Room ID is missing",
-			});
-		}
+	GetEngine().parseMessage(identifier, message);
 
-	default:
-		log.Println("Unsupported message type: ", message["type"])
-	}
 }
 
 func (c *Client) writePump() {

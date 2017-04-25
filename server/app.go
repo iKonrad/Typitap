@@ -6,16 +6,16 @@ import (
 	"net/http"
 
 	"github.com/elazarl/go-bindata-assetfs"
+	"github.com/gorilla/websocket"
+	"github.com/iKonrad/typitap/server/assets"
 	middlewares "github.com/iKonrad/typitap/server/middleware"
+	"github.com/iKonrad/typitap/server/routes"
+	ws "github.com/iKonrad/typitap/server/websocket"
 	"github.com/itsjamie/go-bindata-templates"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
-	"github.com/iKonrad/typitap/server/routes"
-	"github.com/iKonrad/typitap/server/assets"
-	"github.com/gorilla/websocket"
-	ws "github.com/iKonrad/typitap/server/websocket"
 )
 
 // App struct.
@@ -32,8 +32,7 @@ type App struct {
 // of main server application.
 func NewApp(opts ...AppOptions) *App {
 	options := AppOptions{}
-	for _, i :=
-	range opts {
+	for _, i := range opts {
 		options = i
 		break
 	}
@@ -107,6 +106,7 @@ func NewApp(opts ...AppOptions) *App {
 	}
 
 	go ws.GetHub().Run()
+	go ws.GetEngine().Run()
 
 	//app.Engine.Use(authentication.Middleware.Handle);
 
@@ -139,7 +139,7 @@ func NewApp(opts ...AppOptions) *App {
 		),
 	)
 
-	engine.GET("/ws", app.handleWebsocket);
+	engine.GET("/ws", app.handleWebsocket)
 
 	// Regular middlewares
 	engine.Use(middleware.Recover())
@@ -180,10 +180,8 @@ func NewApp(opts ...AppOptions) *App {
 		}
 	})
 
-
 	return app
 }
-
 
 func NoJsRender(c echo.Context) error {
 
@@ -193,7 +191,7 @@ func NoJsRender(c echo.Context) error {
 		"meta":  "my meta tags to add at the head of the page",
 	}
 
-	return c.Render(http.StatusOK, "react.html", response);
+	return c.Render(http.StatusOK, "react.html", response)
 }
 
 // Run runs the app
@@ -202,8 +200,8 @@ func (app *App) Run() {
 }
 
 func (app *App) handleWebsocket(c echo.Context) error {
-	ws.ServeWs(c);
-	return nil;
+	ws.ServeWs(c)
+	return nil
 }
 
 // Template is custom renderer for Echo, to render html from bindata
