@@ -8,6 +8,9 @@ const START_COUNTDOWN = "START_COUNTDOWN";
 const TICK_COUNTDOWN = "TICK_COUNTDOWN";
 const RESET_GAME = "RESET_GAME";
 const START_ONLINE_SEARCH = "START_ONLINE_SEARCH";
+export const JOINED_ROOM = "JOINED_ROOM";
+export const LEFT_ROOM = "LEFT_ROOM";
+
 
 const initialState = {
     text: '',
@@ -20,7 +23,10 @@ const initialState = {
     countdown: false,
     countdownSeconds: 5,
     online: false,
-    sessionId: "",
+    room: {
+        id: '',
+        players: {},
+    },
 };
 
 export default function reducer(state = initialState, action) {
@@ -50,6 +56,19 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 inputValue: '',
                 currentIndex: state.currentIndex + 1,
+            };
+        case JOINED_ROOM:
+            return {
+                ...state,
+                room: {
+                    id: action.roomId,
+                    players: action.players,
+                }
+            };
+        case LEFT_ROOM:
+            return {
+                ...state,
+                room: {}
             };
         case FINISH_GAME:
             return {
@@ -94,6 +113,7 @@ export default function reducer(state = initialState, action) {
             }
         case RESET_GAME:
             return initialState
+
     }
 
     return state;
@@ -183,4 +203,18 @@ export function startOnlineSearch(sessionId) {
         type: START_ONLINE_SEARCH,
         sessionId
     }
+}
+
+export function joinedRoom(roomId, players) {
+
+    return {
+        type: JOINED_ROOM,
+        roomId,
+        players
+    }
+
+}
+
+export function leftRoom() {
+    return { type: LEFT_ROOM }
 }

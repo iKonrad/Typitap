@@ -243,7 +243,6 @@ func (gm GameManager) FindOpenSession(online bool, user *entities.User) (entitie
 	var session entities.GameSession
 
 	// check if session exists
-
 	if !resp.IsNil() {
 		resp.One(&session)
 		// Assign the user to the session if exists

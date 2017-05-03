@@ -1,4 +1,5 @@
 import * as socketActions from "store/modules/socketModule";
+import * as gameActions from "store/modules/gameModule";
 
 const CODE_RECONNECT = 5001;
 const CODE_DISCONNECT = 5000;
@@ -24,11 +25,19 @@ const socketMiddleware = (function(){
         //Parse the JSON message received on the websocket
         var msg = JSON.parse(evt.data);
 
-        if (msg.type === "CONNECTED") {
-            store.dispatch(socketActions.setIdentifier(msg.data.identifier));
-            return;
+        switch(msg.type) {
+            case "CONNECTED":
+                store.dispatch(socketActions.setIdentifier(msg.data.identifier));
+                break;
+            case "JOINED_ROOM":
+                store.dispatch(gameActions.joinedRoom(msg.data.roomId, msg.data.players));
+                break;
+            case "LEFT_ROOM":
+                store.dispatch(gameActions.leftRoom());
+                break;
+
         }
-        console.log("MESSAGE RECEIVED", msg);
+
         // Do some logic based on the message type
     };
 
@@ -96,6 +105,15 @@ const socketMiddleware = (function(){
                         room: action.roomId
                     }));
                 }
+                break;
+            case socketActions.LEAVE_ROOM:
+
+                if (socket !== null) {
+                    socket.send(JSON.stringify({
+                            type: "LEAVE_ROOM"
+                    }));
+                }
+                break;
 
             default:
                 return next(action);

@@ -8,10 +8,8 @@ import (
 )
 
 const (
-	TYPE_GAME_START = "GAME_START"
-	TYPE_CONNECTED  = "CONNECTED"
-	TYPE_LOGOUT     = "LOGOUT"
-	TYPE_ERROR      = "ERROR"
+	TYPE_CONNECTED  = "CONNECTED" // Used after successful connection to the websocket server
+	TYPE_ERROR      = "ERROR" // Generic error type for any unsuccessful action
 )
 
 const (
@@ -81,22 +79,7 @@ func (h *SocketHub) broadcastMessage(message string) {
 }
 
 func (h *SocketHub) SendMessageToClient(identifier string, messageType string, message interface{}) bool {
-
-	messageObject := map[string]interface{}{
-		"type": messageType,
-		"data": message,
-	}
-
-	if !isClientConnected(identifier) {
-		return false
-	}
-
-	encoded, err := json.Marshal(messageObject);
-	if err != nil {
-		log.Println("Error while encoding a payload")
-	}
-
-	h.clients[identifier].SendMessage(messageType, encoded);
+	h.clients[identifier].SendMessage(messageType, message);
 	return true;
 }
 

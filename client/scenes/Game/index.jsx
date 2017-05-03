@@ -7,12 +7,13 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Game from './components/Game';
 
+
+
 class GameWindow extends Component {
 
     static onEnter({state, nextState, replaceState, callback}) {
         callback();
     }
-
 
     render() {
 

@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import GamePlayerList from './GamePlayerList';
+
 import GameInput from './GameInput'
 import GameText from './GameText';
 import GameBar from './GameBar';
@@ -41,12 +41,10 @@ class Game extends Component {
 
     componentWillUnmount() {
         this.engine.resetGame();
+        this.props.dispatch(SocketActions.leaveRoom());
     }
 
     handleGameStart() {
-
-        console.log("ONLINE?", this.props.online);
-        // Check if offline or online game
 
         let that = this;
         this.props.dispatch(GameActions.getSession(this.props.online)).then((response) => {

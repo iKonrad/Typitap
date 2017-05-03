@@ -150,7 +150,6 @@ func (c *Client) SendMessage(messageType string, message interface{}) {
 
 	messageObject := map[string]interface{}{
 		"type": messageType,
-
 		"data": message,
 	}
 

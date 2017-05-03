@@ -36,8 +36,8 @@ func (r *Room) AddPlayer(identifier string) {
 }
 
 func (r *Room) RemovePlayer(identifier string) {
-	GetEngine().redis.HDel("rooms:"+r.Id+":players:"+identifier, "id")
-	GetEngine().redis.HDel("rooms:"+r.Id+":players:"+identifier, "score")
+	GetEngine().redis.HDel("rooms:"+r.Id+":players:"+identifier, "id", "score")
+	GetEngine().redis.HDel("player:"+identifier, "roomId")
 }
 
 

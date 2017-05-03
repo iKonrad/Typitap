@@ -8,6 +8,7 @@ const DISCONNECTED = "@@socket/DISCONNECTED";
 export const SET_IDENTIFIER = "@@socket/SET_IDENTIFIER";
 
 export const JOIN_ROOM = "@@socket/JOIN_ROOM";
+export const LEAVE_ROOM = "@@socket/LEAVE_ROOM";
 
 
 
@@ -80,6 +81,12 @@ export function reconnect() {
     return {type: RECONNECT};
 }
 
+//
 export function joinRoom(roomId) {
     return {type: JOIN_ROOM, roomId}
 }
+
+export function leaveRoom() {
+    return { type: LEAVE_ROOM }
+}
+

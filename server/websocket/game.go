@@ -6,8 +6,7 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/iKonrad/typitap/server/config"
-	"github.com/iKonrad/typitap/server/entities"
-	"github.com/iKonrad/typitap/server/manager"
+	"github.com/pkg/errors"
 )
 
 type Engine struct {
@@ -18,6 +17,8 @@ type Engine struct {
 
 const (
 	ROOM_EXPIRY_TIME = 3600 * 24
+	TYPE_LEFT_ROOM = "LEFT_ROOM" // Sent to user after successful room leaving
+	TYPE_JOINED_ROOM = "JOINED_ROOM"
 )
 
 var engine *Engine
@@ -51,19 +52,56 @@ func (e *Engine) Run() {
 
 }
 
+// Picks up the received message and checks if game module needs to respond to it
 func (e *Engine) parseMessage(identifier string, message map[string]interface{}) {
 
 	switch message["type"] {
 	case "JOIN_ROOM":
 		roomId, ok := message["room"]
 		if ok {
-			GetEngine().JoinRoom(identifier, roomId.(string))
+			if ok = GetEngine().handleJoinRoom(identifier, roomId.(string)); ok {
+				GetHub().SendMessageToClient(
+					identifier,
+					TYPE_JOINED_ROOM,
+					map[string]interface{}{
+						"roomId": roomId,
+						"players": map[string]interface{}{}, // @TODO: Return list of players in the room
+					},
+				)
+			} else {
+				GetHub().SendMessageToClient(
+					identifier,
+					TYPE_ERROR,
+					map[string]interface{}{
+						"error": "An error occurred while joining the room",
+					},
+				)
+			}
 		} else {
 			GetHub().SendMessageToClient(
 				identifier,
 				TYPE_ERROR,
-				map[string]string{
+				map[string]interface{}{
 					"error": "Room ID is missing",
+				},
+			)
+		}
+	case "LEAVE_ROOM":
+		err := e.handleLeaveRoom(identifier);
+		if err != nil {
+			GetHub().SendMessageToClient(
+				identifier,
+				TYPE_ERROR,
+				map[string]interface{}{
+					"error": "Could not leave room",
+				},
+			)
+		} else {
+			GetHub().SendMessageToClient(
+				identifier,
+				TYPE_LEFT_ROOM,
+				map[string]interface{}{
+					"error": "User " + identifier + "left room",
 				},
 			)
 		}
@@ -71,18 +109,22 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 
 }
 
-func (e *Engine) findOpenSession(user *entities.User) (entities.GameSession, error) {
+// Handles the player leaving the room
+func (e *Engine) handleLeaveRoom(identifier string) error {
 
-	// Get online session if there's any open
-	session, ok := manager.Game.FindOpenSession(true, user)
-	if !ok {
-		session, _ = manager.Game.CreateSession( true, user);
+	roomId, ok := e.getRoomForClientId(identifier);
+
+	if ok {
+		e.rooms[roomId].RemovePlayer(identifier);
+		return nil;
 	}
 
-	return session, nil
+	return errors.New("Room with ID " + roomId + " has not been found")
 }
 
-func (e *Engine) JoinRoom(identifier string, sessionId string) bool {
+
+// Adds client ID to the room if exists. If no room is found, it creates a new one
+func (e *Engine) handleJoinRoom(identifier string, sessionId string) bool {
 
 	// Check if there's a room for that session
 	exists := e.roomExists(sessionId)
@@ -101,6 +143,20 @@ func (e *Engine) JoinRoom(identifier string, sessionId string) bool {
 	return true
 }
 
+// Helper function that fetches the RoomID (SessionID) for a given Client identifier
+func (e *Engine) getRoomForClientId(identifier string) (sessionId string, ok bool) {
+
+	sessionId = e.redis.HGet("player:"+identifier, "roomId").String()
+	ok = false
+
+	if e.roomExists(sessionId) {
+		ok = true
+	}
+
+	return;
+}
+
+// Helper method that checks if room exists for given ID
 func (e *Engine) roomExists(sessionId string) bool {
 	if len(e.rooms) == 0 {
 		return false
@@ -108,3 +164,4 @@ func (e *Engine) roomExists(sessionId string) bool {
 	_, ok := e.rooms[sessionId]
 	return ok
 }
+
