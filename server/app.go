@@ -173,6 +173,7 @@ func NewApp(opts ...AppOptions) *App {
 					}
 					// if static file not found handle request via react application
 					return middlewares.ReactJS.Handle(c)
+					//return NoJsRender(c);
 				}
 			}
 			// Move further if err is not `Not Found`

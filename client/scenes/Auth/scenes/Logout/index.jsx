@@ -13,7 +13,7 @@ class Logout extends Component {
 
 
     componentDidMount(props) {
-        return store.dispatch(UserActions.logoutUser()).then(() => {
+        return this.props.dispatch(UserActions.logoutUser()).then(() => {
             this.props.dispatch(Notifications.success({'message': 'You have been logged out', 'title': 'Log out'}));
             this.props.dispatch(socketActions.reconnect());
             this.props.dispatch(push("/"));

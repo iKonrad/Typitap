@@ -3,7 +3,7 @@ import reducers from './modules';
 import thunkMiddleware from 'redux-thunk';
 import {routerMiddleware} from 'react-router-redux'
 import socketMiddleware from "./middlewares/socketMiddleware";
-import createLogger from "redux-logger";
+import { createLogger } from 'redux-logger'
 const middlewares = [];
 
 

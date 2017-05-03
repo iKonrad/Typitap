@@ -208,7 +208,9 @@ func newJSVM(filePath string, proxy http.Handler) *JSVM {
 
 		_, err := _vm.RunScript("bundle.js", string(bundle))
 		if err != nil {
-			panic(err)
+			if exception, ok := err.(*goja.Exception); ok {
+				panic(exception.String());
+			}
 		}
 
 		if fn, ok := goja.AssertFunction(_vm.Get("main")); ok {

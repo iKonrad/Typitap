@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router';
+import PropTypes from 'prop-types';
 
 export default class NavLink extends Component {
 
@@ -14,7 +15,7 @@ export default class NavLink extends Component {
     render() {
         let className = this.state.active ? 'active' : '';
 
-        if (this.props.type == 'button') {
+        if (this.props.type === 'button') {
             return (
                 <li className={className}>
                     <div className="navbar-btn">
@@ -37,6 +38,7 @@ export default class NavLink extends Component {
 }
 
 NavLink.contextTypes = {
-    router: function() { return React.PropTypes.func.isRequired; }
+    router: PropTypes.object.isRequired
 };
+
 

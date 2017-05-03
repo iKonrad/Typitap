@@ -10,7 +10,7 @@ imports:
   subpackages:
   - syntax
 - name: github.com/dop251/goja
-  version: 8fa3e12080cd5ea59bef506c70aaacdf4e03ed70
+  version: d382686fd20bf93d9c4cf2ea0234ae2d353e23cb
   subpackages:
   - ast
   - file
