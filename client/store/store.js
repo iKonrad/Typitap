@@ -22,7 +22,7 @@ export function createStore(state, history) {
     middlewares.push(socketMiddleware);
 
     // Add state logger
-    if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
+    if (typeof window !== 'undefined') {
         middlewares.push(createLogger({
             duration: true,
             diff: true,

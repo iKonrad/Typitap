@@ -1,15 +1,17 @@
-const START_GAME = "START_GAME";
-const FINISH_GAME = "FINISH_GAME";
-const UPDATE_INPUT = "UPDATE_INPUT";
-const FINISH_WORD = "FINISH_WORD";
-const MAKE_WORD_MISTAKE = "ERROR_WORD";
-const TICK_TIME = "TICK_TIME";
-const START_COUNTDOWN = "START_COUNTDOWN";
-const TICK_COUNTDOWN = "TICK_COUNTDOWN";
-const RESET_GAME = "RESET_GAME";
-const START_ONLINE_SEARCH = "START_ONLINE_SEARCH";
-export const JOINED_ROOM = "JOINED_ROOM";
-export const LEFT_ROOM = "LEFT_ROOM";
+const START_GAME = "@@game/START_GAME";
+const FINISH_GAME = "@@game/FINISH_GAME";
+const UPDATE_INPUT = "@@game/UPDATE_INPUT";
+const FINISH_WORD = "@@game/FINISH_WORD";
+const MAKE_WORD_MISTAKE = "@@game/ERROR_WORD";
+const TICK_TIME = "@@game/TICK_TIME";
+const START_COUNTDOWN = "@@game/START_COUNTDOWN";
+const TICK_COUNTDOWN = "@@game/TICK_COUNTDOWN";
+const RESET_GAME = "@@game/RESET_GAME";
+const START_ONLINE_SEARCH = "@@game/START_ONLINE_SEARCH";
+const PLAYER_JOINED_ROOM = "@@game/PLAYER_JOINED_ROOM";
+const PLAYER_LEFT_ROOM = "@@game/PLAYER_LEFT_ROOM";
+export const JOINED_ROOM = "@@game/JOINED_ROOM";
+export const LEFT_ROOM = "@@game/LEFT_ROOM";
 
 
 const initialState = {
@@ -29,7 +31,14 @@ const initialState = {
     },
 };
 
+
 export default function reducer(state = initialState, action) {
+
+    Object.filter = (obj, predicate) =>
+        Object.keys(obj)
+            .filter( key => predicate(obj[key]) )
+            .reduce( (res, key) => (res[key] = obj[key], res), {} );
+
     switch (action.type) {
         case START_GAME:
             return {
@@ -65,6 +74,33 @@ export default function reducer(state = initialState, action) {
                     players: action.players,
                 }
             };
+        case PLAYER_JOINED_ROOM:
+
+            // Check if player doesn't already exists
+            if (state.room.players[action.player.identifier] !== undefined) {
+                return state;
+            }
+
+            // Otherwise, add player to the room
+            let players = {
+                ...state.room.players,
+            };
+
+            players[action.player.identifier] = action.player;
+
+            return {
+                ...state,
+                room: {
+                    players
+                }
+            };
+        case PLAYER_LEFT_ROOM:
+            return {
+                ...state,
+                room: {
+                    players: Object.filter(state.room.players, player => player.identifier !== action.identifier)
+                }
+            };
         case LEFT_ROOM:
             return {
                 ...state,
@@ -84,7 +120,6 @@ export default function reducer(state = initialState, action) {
             }
 
             currentMistakes++;
-
             let mistakes = {
                 ...state.mistakes
             };
@@ -118,8 +153,6 @@ export default function reducer(state = initialState, action) {
 
     return state;
 }
-
-
 
 
 export function getSession(online) {
@@ -198,6 +231,7 @@ export function resetGame() {
     }
 }
 
+
 export function startOnlineSearch(sessionId) {
     return {
         type: START_ONLINE_SEARCH,
@@ -216,5 +250,13 @@ export function joinedRoom(roomId, players) {
 }
 
 export function leftRoom() {
-    return { type: LEFT_ROOM }
+    return {type: LEFT_ROOM}
+}
+
+export function playerJoinedRoom(player) {
+    return {type: PLAYER_JOINED_ROOM, player}
+}
+
+export function playerLeftdRoom(identifier) {
+    return {type: PLAYER_LEFT_ROOM, identifier}
 }

@@ -11,6 +11,8 @@ import GameBar from './GameBar';
 import GameEngine from './../utils/gameEngine';
 import GameControls from './GameControls';
 import GameCountdown from './GameCountdown';
+import WaitPlayersModal from './WaitPlayersModal';
+
 import * as GameActions from 'store/modules/gameModule';
 import * as SocketActions from 'store/modules/socketModule';
 
@@ -19,6 +21,7 @@ class Game extends Component {
     constructor(props) {
         super(props);
         this.engine = new GameEngine();
+        this.onUnload = this.resetGame.bind(this)
     }
 
 
@@ -37,9 +40,24 @@ class Game extends Component {
 
     componentWillMount() {
         this.handleGameStart();
+
+        // Leave rooms when the browser is closed
+        if (typeof window !== "undefined") {
+            window.addEventListener('beforeunload', this.onUnload);
+        }
+
     }
 
     componentWillUnmount() {
+
+        if (typeof window !== "undefined") {
+            window.removeEventListener('beforeunload', this.onUnload);
+        }
+
+        this.resetGame();
+    }
+
+    resetGame() {
         this.engine.resetGame();
         this.props.dispatch(SocketActions.leaveRoom());
     }
@@ -51,7 +69,9 @@ class Game extends Component {
             if (response.success) {
 
                 // We're added to the session, now, join the room and wait for the players
-                this.props.dispatch(GameActions.startOnlineSearch(response.sessionId));
+
+
+
 
                 if (!that.props.online) {
                     this.engine.startCountdown(() => {
@@ -59,6 +79,7 @@ class Game extends Component {
                         this.engine.startTimer();
                     });
                 } else {
+                    this.props.dispatch(GameActions.startOnlineSearch(response.sessionId));
                     this.props.dispatch(SocketActions.joinRoom(response.sessionId));
                 }
             }
@@ -88,6 +109,7 @@ class Game extends Component {
                 // Otherwise, display a waiting for players message
                 return (
                     <div className="text-center">
+                        <WaitPlayersModal/>
                         Searching for players...
                     </div>
                 );
@@ -104,11 +126,13 @@ class Game extends Component {
     }
 
 
+
     render() {
         return (
             <div id="game" className="game">
                 <div className="panel panel-default">
                     <div className="panel-body">
+
                         <GameBar />
                         { this.renderMain() }
                     </div>

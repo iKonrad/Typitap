@@ -79,6 +79,12 @@ func (h *SocketHub) broadcastMessage(message string) {
 }
 
 func (h *SocketHub) SendMessageToClient(identifier string, messageType string, message interface{}) bool {
+
+	if _, ok := h.clients[identifier]; !ok {
+		log.Println("Could not find client with ID " + identifier);
+		return false;
+	}
+
 	h.clients[identifier].SendMessage(messageType, message);
 	return true;
 }

@@ -152,3 +152,62 @@
     }
   }
 }
+
+.game-modal {
+
+  .modal-title {
+    text-align: center;
+  }
+
+  .modal-footer {
+    text-align: center;
+  }
+
+  .player-waiting {
+    @include Font();
+    margin: 30px 0;
+
+    &__icon {
+      border-radius: 50%;
+      background-color: $grey-150;
+      width: 35px;
+      height: 35px;
+       .fa {
+         color: white;
+         text-align: center;
+         padding: 8px 11px;
+         font-size: 18px;
+       }
+    }
+
+    &__name {
+      font-size: 16px;
+      font-weight: 200;
+      color: $grey-200;
+
+    }
+
+    &__identifier {
+
+      color: $grey-100;
+      font-size: 14px;
+      font-weight: 100;
+    }
+
+    &__details {
+      margin-top: 6px;
+    }
+
+
+    &--joined {
+      .player-waiting__icon {
+        background-color: $blue-300;
+      }
+
+      .player-waiting__name {
+        color: $grey-400;
+      }
+    }
+  }
+
+}

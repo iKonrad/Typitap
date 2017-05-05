@@ -19,6 +19,8 @@ const (
 	ROOM_EXPIRY_TIME = 3600 * 24
 	TYPE_LEFT_ROOM = "LEFT_ROOM" // Sent to user after successful room leaving
 	TYPE_JOINED_ROOM = "JOINED_ROOM"
+	TYPE_PLAYER_JOINED_ROOM = "PLAYER_JOINED_ROOM"
+	TYPE_PLAYER_LEFT_ROOM = "PLAYER_LEFT_ROOM"
 )
 
 var engine *Engine
@@ -60,14 +62,6 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 		roomId, ok := message["room"]
 		if ok {
 			if ok = GetEngine().handleJoinRoom(identifier, roomId.(string)); ok {
-				GetHub().SendMessageToClient(
-					identifier,
-					TYPE_JOINED_ROOM,
-					map[string]interface{}{
-						"roomId": roomId,
-						"players": map[string]interface{}{}, // @TODO: Return list of players in the room
-					},
-				)
 			} else {
 				GetHub().SendMessageToClient(
 					identifier,
@@ -89,6 +83,7 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 	case "LEAVE_ROOM":
 		err := e.handleLeaveRoom(identifier);
 		if err != nil {
+			log.Println("Leave room issue", err);
 			GetHub().SendMessageToClient(
 				identifier,
 				TYPE_ERROR,
@@ -100,9 +95,7 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 			GetHub().SendMessageToClient(
 				identifier,
 				TYPE_LEFT_ROOM,
-				map[string]interface{}{
-					"error": "User " + identifier + "left room",
-				},
+				map[string]interface{}{},
 			)
 		}
 	}
@@ -116,6 +109,12 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 
 	if ok {
 		e.rooms[roomId].RemovePlayer(identifier);
+
+		// Send message to everyone that the player has joined the room
+		e.rooms[roomId].SendMessage(TYPE_PLAYER_LEFT_ROOM, map[string]interface{}{
+			"identifier": identifier,
+		});
+
 		return nil;
 	}
 
@@ -140,13 +139,31 @@ func (e *Engine) handleJoinRoom(identifier string, sessionId string) bool {
 
 	// Add player to the room
 	room.AddPlayer(identifier)
+
+	// Send message to the new player with a list of players
+	GetHub().SendMessageToClient(
+		identifier,
+		TYPE_JOINED_ROOM,
+		map[string]interface{}{
+			"roomId": room.Id,
+			"players": room.GetPlayers(), // @TODO: Return list of players in the room
+		},
+	)
+
+	playerData := room.GetPlayer(identifier);
+
+	// Send message to everyone that the player has joined the room
+	room.SendMessage(TYPE_PLAYER_JOINED_ROOM, map[string]interface{}{
+		"player": playerData,
+	});
+
 	return true
 }
 
 // Helper function that fetches the RoomID (SessionID) for a given Client identifier
 func (e *Engine) getRoomForClientId(identifier string) (sessionId string, ok bool) {
 
-	sessionId = e.redis.HGet("player:"+identifier, "roomId").String()
+	sessionId = e.redis.HGet("player:"+identifier, "roomId").Val();
 	ok = false
 
 	if e.roomExists(sessionId) {

@@ -24,6 +24,7 @@ const socketMiddleware = (function(){
     const onMessage = (ws,store) => evt => {
         //Parse the JSON message received on the websocket
         var msg = JSON.parse(evt.data);
+        console.log("[SocketMessage] ", msg);
 
         switch(msg.type) {
             case "CONNECTED":
@@ -34,6 +35,12 @@ const socketMiddleware = (function(){
                 break;
             case "LEFT_ROOM":
                 store.dispatch(gameActions.leftRoom());
+                break;
+            case "PLAYER_JOINED_ROOM":
+                store.dispatch(gameActions.playerJoinedRoom(msg.data.player));
+                break;
+            case "PLAYER_LEFT_ROOM":
+                store.dispatch(gameActions.playerLeftdRoom(msg.data.identifier));
                 break;
 
         }
