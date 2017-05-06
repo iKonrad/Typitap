@@ -54,7 +54,6 @@ func (gm GameManager) GetSession(sessionId string) (entities.GameSession, error)
 	resp, err := r.Table("game_sessions").Get(sessionId).Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
 			"textId":  r.Table("game_texts").Get(p.Field("textId")),
-			"userIds": r.Table("users").GetAll(r.Args(p.Field("userIds"))).CoerceTo("array"),
 		}
 	}).Run(db.Session)
 	defer resp.Close()
@@ -100,7 +99,7 @@ func (gm GameManager) FindOpenSession(online bool, user *entities.User) (entitie
 		return entities.GameSession{}, false
 	}
 
-	if err != nil {
+	if err != nil || session.Id == "" {
 		return entities.GameSession{}, false
 	}
 
