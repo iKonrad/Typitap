@@ -7,26 +7,44 @@ import * as socketActions from 'store/modules/socketModule';
 class Base extends Component {
 
 
+    constructor(props) {
+        super(props)
+        this.onUnload = this.disconnectWebsocket.bind(this)
+    }
+
     componentDidMount() {
         this.props.dispatch(socketActions.connect());
+        if (typeof window !== "undefined") {
+            window.addEventListener('beforeunload', this.onUnload);
+        }
     }
+
+    componentWillUnmount() {
+        if (typeof window !== "undefined") {
+            window.removeEventListener('beforeunload', this.onUnload);
+        }
+        this.disconnectWebsocket();
+    }
+
+    disconnectWebsocket() {
+        this.props.dispatch(socketActions.leaveRoom());
+        this.props.dispatch(socketActions.disconnect());
+    }
+
 
     render() {
 
         return (
-                <div>
-
-                        <Navbar />
-
-
-                    <div id="react-container" className="main-content">
-                        { this.props.children }
-                    </div>
-                    <Notifications
-                        notifications={this.props.notifications} ref="notificationSystem" style={ false }
-                    />
-
+            <div>
+                <Navbar />
+                <div id="react-container" className="main-content">
+                    { this.props.children }
                 </div>
+                <Notifications
+                    notifications={this.props.notifications} ref="notificationSystem" style={ false }
+                />
+
+            </div>
         );
     }
 

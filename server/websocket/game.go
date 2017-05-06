@@ -7,6 +7,7 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/iKonrad/typitap/server/config"
 	"github.com/pkg/errors"
+	"github.com/iKonrad/typitap/server/manager"
 )
 
 type Engine struct {
@@ -36,6 +37,11 @@ func GetEngine() *Engine {
 				Password: "",                                 // no password set
 				DB:       config.Get("redis_database").(int), // use default DB
 			}),
+		}
+
+		if config.GetBool("debug") {
+			// Flush redis database
+			engine.redis.FlushDb();
 		}
 	})
 	return engine
@@ -107,7 +113,12 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 
 	roomId, ok := e.getRoomForClientId(identifier);
 
+
+
 	if ok {
+
+		var shouldOpen = len(e.rooms[roomId].Players) >= 5;
+
 		e.rooms[roomId].RemovePlayer(identifier);
 
 		// Send message to everyone that the player has joined the room
@@ -115,8 +126,17 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 			"identifier": identifier,
 		});
 
+		log.Println("Player left. Now players: ", len(e.rooms[roomId].Players))
+		if shouldOpen {
+			log.Println("Opening back the session");
+			manager.Game.OpenGameSession(roomId);
+		}
+
 		return nil;
 	}
+
+
+
 
 	return errors.New("Room with ID " + roomId + " has not been found")
 }
@@ -139,6 +159,14 @@ func (e *Engine) handleJoinRoom(identifier string, sessionId string) bool {
 
 	// Add player to the room
 	room.AddPlayer(identifier)
+
+	// If room is full, close the room
+	log.Println("Player joined. Players now:", len(room.Players));
+
+	if len(room.Players) >= 5 {
+		log.Println("We've got enough players. Closing the session");
+		manager.Game.CloseGameSession(room.Id);
+	}
 
 	// Send message to the new player with a list of players
 	GetHub().SendMessageToClient(
@@ -182,3 +210,12 @@ func (e *Engine) roomExists(sessionId string) bool {
 	return ok
 }
 
+func (e *Engine) GetRoom(sessionId string) (*Room, bool) {
+
+	if !e.roomExists(sessionId) {
+		return &Room{}, false
+	}
+
+	return e.rooms[sessionId], true
+
+}

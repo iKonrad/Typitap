@@ -5,6 +5,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+import { push } from 'react-router-redux';
 import GameInput from './GameInput'
 import GameText from './GameText';
 import GameBar from './GameBar';
@@ -15,6 +16,8 @@ import WaitPlayersModal from './WaitPlayersModal';
 
 import * as GameActions from 'store/modules/gameModule';
 import * as SocketActions from 'store/modules/socketModule';
+
+import Notifications from 'react-notification-system-redux';
 
 class Game extends Component {
 
@@ -39,7 +42,20 @@ class Game extends Component {
     }
 
     componentWillMount() {
-        this.handleGameStart();
+        // Check if the client is connected to the websocket.
+
+        if (!this.props.socket.connected || this.props.socket.identifier === "") {
+            let timeOut = setTimeout(() => {
+                if (this.props.socket.connected) {
+                    this.handleGameStart();
+                } else {
+                    this.props.dispatch(Notifications.warning({'message': "You're not connected to the server. Refresh the page and try again.", 'title': "Connection issue"}));
+                    this.props.dispatch(push("/play"));
+                }
+            }, 1000);
+        } else {
+            this.handleGameStart();
+        }
 
         // Leave rooms when the browser is closed
         if (typeof window !== "undefined") {
@@ -58,6 +74,7 @@ class Game extends Component {
     }
 
     resetGame() {
+        console.log("resetting...");
         this.engine.resetGame();
         this.props.dispatch(SocketActions.leaveRoom());
     }
@@ -65,14 +82,12 @@ class Game extends Component {
     handleGameStart() {
 
         let that = this;
+        console.log("before", this.props);
         this.props.dispatch(GameActions.getSession(this.props.online)).then((response) => {
+            console.log("RED", response);
             if (response.success) {
 
                 // We're added to the session, now, join the room and wait for the players
-
-
-
-
                 if (!that.props.online) {
                     this.engine.startCountdown(() => {
                         this.props.dispatch(GameActions.startGame(response.text, that.props.online, response.sessionId));
@@ -147,6 +162,7 @@ const mapStateToProps = (state) => {
     return {
         app: state.app,
         game: state.game,
+        socket: state.socket,
     }
 };
 

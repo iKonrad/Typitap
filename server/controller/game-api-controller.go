@@ -19,7 +19,7 @@ func init() {
 
 
 
-func (ac *GameAPIController) JoinSession(c echo.Context) error {
+func (ac *GameAPIController) GetSession(c echo.Context) error {
 
 	sessionType := c.Param("type");
 
@@ -37,7 +37,7 @@ func (ac *GameAPIController) JoinSession(c echo.Context) error {
 	// Create the session and return it
 	var err error;
 	if !ok {
-		session, err = manager.Game.CreateSession(isOnline, &user);
+		session, err = manager.Game.CreateSession(isOnline);
 	}
 
 	if err != nil {
