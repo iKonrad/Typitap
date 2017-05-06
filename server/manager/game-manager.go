@@ -74,7 +74,7 @@ func (gm GameManager) GetSession(sessionId string) (entities.GameSession, error)
 }
 
 // Fetches the open session from database if exists
-func (gm GameManager) FindOpenSession(online bool, user *entities.User) (entities.GameSession, bool) {
+func (gm GameManager) FindOpenSession(online bool) (entities.GameSession, bool) {
 
 	// Fetch the game text
 	resp, err := r.Table("game_sessions").Filter(map[string]interface{}{

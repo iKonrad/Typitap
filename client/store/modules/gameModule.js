@@ -44,16 +44,13 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 started: true,
-                text: action.text,
                 countdown: false,
                 online: action.online,
-                sessionId: action.sessionId
             };
         case START_ONLINE_SEARCH:
             return {
                 ...state,
                 online: true,
-                sessionId: action.sessionId
             }
         case UPDATE_INPUT:
             return {
@@ -69,6 +66,7 @@ export default function reducer(state = initialState, action) {
         case JOINED_ROOM:
             return {
                 ...state,
+                text: action.text,
                 room: {
                     id: action.roomId,
                     players: action.players,
@@ -91,6 +89,7 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 room: {
+                    ...state.room,
                     players
                 }
             };
@@ -98,6 +97,7 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 room: {
+                    ...state.room,
                     players: Object.filter(state.room.players, player => player.identifier !== action.identifier)
                 }
             };
@@ -155,30 +155,12 @@ export default function reducer(state = initialState, action) {
 }
 
 
-export function getSession(online) {
-
-    let isOnline = online ? "online" : "offline";
-
-    return (dispatch) => {
-        return fetch("/api/game/session/" + isOnline, {
-            credentials: "same-origin",
-        }).then((response) => {
-            return response.json();
-        }).then((response) => {
-            return response;
-        });
-    }
-
-
-}
 
 // Game Actions
-export function startGame(gameText, online, sessionId) {
+export function startGame(online) {
     return {
         type: START_GAME,
-        text: gameText,
         online,
-        sessionId
     };
 }
 
@@ -232,19 +214,23 @@ export function resetGame() {
 }
 
 
-export function startOnlineSearch(sessionId) {
+export function startOnlineSearch() {
     return {
-        type: START_ONLINE_SEARCH,
-        sessionId
+        type: START_ONLINE_SEARCH
     }
 }
 
-export function joinedRoom(roomId, players) {
+export function joinedRoom(roomId, players, text) {
+
+    if (players === undefined) {
+        players = {};
+    }
 
     return {
         type: JOINED_ROOM,
         roomId,
-        players
+        players,
+        text
     }
 
 }
@@ -257,6 +243,6 @@ export function playerJoinedRoom(player) {
     return {type: PLAYER_JOINED_ROOM, player}
 }
 
-export function playerLeftdRoom(identifier) {
+export function playerLeftRoom(identifier) {
     return {type: PLAYER_LEFT_ROOM, identifier}
 }

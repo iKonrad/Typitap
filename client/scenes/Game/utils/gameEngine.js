@@ -54,14 +54,13 @@ class GameEngine {
             'wpm': speed,
             'accuracy': accuracy,
             'mistakes': JSON.stringify(state.mistakes),
-            'sessionId': state.sessionId,
+            'sessionId': state.room.id,
         };
 
         // Post the results to the server
         this.postGameResultData(results);
 
         let mistakesCount = state.mistakes === undefined ? '0' : Object.keys(state.mistakes).length;
-
 
         // Show notification with the results to the user
         this.store.dispatch(Notifications.success({

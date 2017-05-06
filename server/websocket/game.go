@@ -6,8 +6,8 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/iKonrad/typitap/server/config"
-	"github.com/pkg/errors"
 	"github.com/iKonrad/typitap/server/manager"
+	"github.com/pkg/errors"
 )
 
 type Engine struct {
@@ -17,11 +17,11 @@ type Engine struct {
 }
 
 const (
-	ROOM_EXPIRY_TIME = 3600 * 24
-	TYPE_LEFT_ROOM = "LEFT_ROOM" // Sent to user after successful room leaving
-	TYPE_JOINED_ROOM = "JOINED_ROOM"
+	ROOM_EXPIRY_TIME        = 3600 * 24
+	TYPE_LEFT_ROOM          = "LEFT_ROOM" // Sent to user after successful room leaving
+	TYPE_JOINED_ROOM        = "JOINED_ROOM"
 	TYPE_PLAYER_JOINED_ROOM = "PLAYER_JOINED_ROOM"
-	TYPE_PLAYER_LEFT_ROOM = "PLAYER_LEFT_ROOM"
+	TYPE_PLAYER_LEFT_ROOM   = "PLAYER_LEFT_ROOM"
 )
 
 var engine *Engine
@@ -41,7 +41,7 @@ func GetEngine() *Engine {
 
 		if config.GetBool("debug") {
 			// Flush redis database
-			engine.redis.FlushDb();
+			engine.redis.FlushDb()
 		}
 	})
 	return engine
@@ -65,9 +65,10 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 
 	switch message["type"] {
 	case "JOIN_ROOM":
-		roomId, ok := message["room"]
+		online, ok := message["online"]
+		log.Println("MSG", message);
 		if ok {
-			if ok = GetEngine().handleJoinRoom(identifier, roomId.(string)); ok {
+			if ok = GetEngine().handleJoinRoom(identifier, online.(bool)); ok {
 			} else {
 				GetHub().SendMessageToClient(
 					identifier,
@@ -87,9 +88,9 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 			)
 		}
 	case "LEAVE_ROOM":
-		err := e.handleLeaveRoom(identifier);
+		err := e.handleLeaveRoom(identifier)
 		if err != nil {
-			log.Println("Leave room issue", err);
+			log.Println("Leave room issue", err)
 			GetHub().SendMessageToClient(
 				identifier,
 				TYPE_ERROR,
@@ -108,97 +109,112 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 
 }
 
-// Handles the player leaving the room
-func (e *Engine) handleLeaveRoom(identifier string) error {
+// Adds client ID to the room if exists. If no room is found, it creates a new one
+func (e *Engine) handleJoinRoom(identifier string, online bool) bool {
 
-	roomId, ok := e.getRoomForClientId(identifier);
-
-
-
-	if ok {
-
-		var shouldOpen = len(e.rooms[roomId].Players) >= 5;
-
-		e.rooms[roomId].RemovePlayer(identifier);
-
-		// Send message to everyone that the player has joined the room
-		e.rooms[roomId].SendMessage(TYPE_PLAYER_LEFT_ROOM, map[string]interface{}{
-			"identifier": identifier,
-		});
-
-		log.Println("Player left. Now players: ", len(e.rooms[roomId].Players))
-		if shouldOpen {
-			log.Println("Opening back the session");
-			manager.Game.OpenGameSession(roomId);
+	// Get the next session
+	session, ok := manager.Game.FindOpenSession(online)
+	if !ok {
+		var err error
+		session, err = manager.Game.CreateSession(online)
+		if err != nil {
+			return false
 		}
-
-		return nil;
 	}
 
+	// If the session is offline, send the message back to the client with sessionId
+	if !online {
+		// Send message to the new player with a list of players
+		GetHub().SendMessageToClient(
+			identifier,
+			TYPE_JOINED_ROOM,
+			map[string]interface{}{
+				"roomId": session.Id,
+				"text": session.Text.Text,
+			},
+		)
+		return true;
+	}
 
-
-
-	return errors.New("Room with ID " + roomId + " has not been found")
-}
-
-
-// Adds client ID to the room if exists. If no room is found, it creates a new one
-func (e *Engine) handleJoinRoom(identifier string, sessionId string) bool {
-
+	// For online game, join the room or create a new one
 	// Check if there's a room for that session
-	exists := e.roomExists(sessionId)
+	exists := e.roomExists(session.Id)
 
 	var room *Room
 	if !exists {
 		// Room doesn't exists, create a new one
-		room = NewRoom(sessionId)
+		room = NewRoom(session.Id)
 		e.newRoomChannel <- room
 	} else {
-		room = e.rooms[sessionId]
+		room = e.rooms[session.Id]
 	}
 
 	// Add player to the room
 	room.AddPlayer(identifier)
 
 	// If room is full, close the room
-	log.Println("Player joined. Players now:", len(room.Players));
-
+	log.Println("Player joined. Players now:", len(room.Players))
 	if len(room.Players) >= 5 {
-		log.Println("We've got enough players. Closing the session");
-		manager.Game.CloseGameSession(room.Id);
+		log.Println("We've got enough players. Closing the session")
+		manager.Game.CloseGameSession(room.Id)
 	}
 
-	// Send message to the new player with a list of players
+	// Send message to the new player with a list of players and game text
 	GetHub().SendMessageToClient(
 		identifier,
 		TYPE_JOINED_ROOM,
 		map[string]interface{}{
-			"roomId": room.Id,
+			"roomId":  room.Id,
 			"players": room.GetPlayers(), // @TODO: Return list of players in the room
+			"text": session.Text.Text,
 		},
 	)
 
-	playerData := room.GetPlayer(identifier);
+	playerData := room.GetPlayer(identifier)
 
 	// Send message to everyone that the player has joined the room
 	room.SendMessage(TYPE_PLAYER_JOINED_ROOM, map[string]interface{}{
 		"player": playerData,
-	});
-
+	})
 	return true
+}
+
+// Handles the player leaving the room
+func (e *Engine) handleLeaveRoom(identifier string) error {
+
+	roomId, ok := e.getRoomForClientId(identifier)
+	if ok {
+
+		var shouldOpen = len(e.rooms[roomId].Players) >= 5
+		e.rooms[roomId].RemovePlayer(identifier)
+
+		// Send message to everyone that the player has joined the room
+		e.rooms[roomId].SendMessage(TYPE_PLAYER_LEFT_ROOM, map[string]interface{}{
+			"identifier": identifier,
+		})
+		log.Println("Player left. Now players: ", len(e.rooms[roomId].Players))
+		if shouldOpen {
+			log.Println("Opening back the session")
+			manager.Game.OpenGameSession(roomId)
+		}
+
+		return nil
+	}
+
+	return errors.New("Room with ID " + roomId + " has not been found")
 }
 
 // Helper function that fetches the RoomID (SessionID) for a given Client identifier
 func (e *Engine) getRoomForClientId(identifier string) (sessionId string, ok bool) {
 
-	sessionId = e.redis.HGet("player:"+identifier, "roomId").Val();
+	sessionId = e.redis.HGet("player:"+identifier, "roomId").Val()
 	ok = false
 
 	if e.roomExists(sessionId) {
 		ok = true
 	}
 
-	return;
+	return
 }
 
 // Helper method that checks if room exists for given ID

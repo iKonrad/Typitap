@@ -5,7 +5,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import { push } from 'react-router-redux';
+import {push} from 'react-router-redux';
 import GameInput from './GameInput'
 import GameText from './GameText';
 import GameBar from './GameBar';
@@ -49,7 +49,10 @@ class Game extends Component {
                 if (this.props.socket.connected) {
                     this.handleGameStart();
                 } else {
-                    this.props.dispatch(Notifications.warning({'message': "You're not connected to the server. Refresh the page and try again.", 'title': "Connection issue"}));
+                    this.props.dispatch(Notifications.warning({
+                        'message': "You're not connected to the server. Refresh the page and try again.",
+                        'title': "Connection issue"
+                    }));
                     this.props.dispatch(push("/play"));
                 }
             }, 1000);
@@ -80,34 +83,27 @@ class Game extends Component {
     }
 
     handleGameStart() {
-
-        let that = this;
-        console.log("before", this.props);
-        this.props.dispatch(GameActions.getSession(this.props.online)).then((response) => {
-            console.log("RED", response);
-            if (response.success) {
-
-                // We're added to the session, now, join the room and wait for the players
-                if (!that.props.online) {
-                    this.engine.startCountdown(() => {
-                        this.props.dispatch(GameActions.startGame(response.text, that.props.online, response.sessionId));
-                        this.engine.startTimer();
-                    });
-                } else {
-                    this.props.dispatch(GameActions.startOnlineSearch(response.sessionId));
-                    this.props.dispatch(SocketActions.joinRoom(response.sessionId));
-                }
-            }
-            else {
-                // @TODO: Handle error for end user
-                alert("Ooops. Error while fetching a session.");
-            }
-        });
-
+        this.props.dispatch(SocketActions.joinRoom(this.props.online));
     }
 
     handleGameFinish() {
         this.engine.finishGame();
+    }
+
+
+    componentWillReceiveProps(newProps) {
+        // Check if the room ID has been passed over
+        if ((!this.props.game.room.id || this.props.game.room.id === "") && newProps.game.room.id !== "") {
+            // We've got the room ID, we can now proceed to start the game
+            if (!this.props.online) {
+                this.engine.startCountdown(() => {
+                    this.props.dispatch(GameActions.startGame(this.props.online));
+                    this.engine.startTimer();
+                });
+            } else {
+                this.props.dispatch(GameActions.startOnlineSearch());
+            }
+        }
     }
 
     renderMain() {
@@ -139,7 +135,6 @@ class Game extends Component {
             );
         }
     }
-
 
 
     render() {

@@ -82,8 +82,8 @@ export function reconnect() {
 }
 
 //
-export function joinRoom(roomId) {
-    return {type: JOIN_ROOM, roomId}
+export function joinRoom(online) {
+    return {type: JOIN_ROOM, online}
 }
 
 export function leaveRoom() {

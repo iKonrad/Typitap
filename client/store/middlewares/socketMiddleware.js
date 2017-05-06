@@ -31,7 +31,7 @@ const socketMiddleware = (function(){
                 store.dispatch(socketActions.setIdentifier(msg.data.identifier));
                 break;
             case "JOINED_ROOM":
-                store.dispatch(gameActions.joinedRoom(msg.data.roomId, msg.data.players));
+                store.dispatch(gameActions.joinedRoom(msg.data.roomId, msg.data.players, msg.data.text));
                 break;
             case "LEFT_ROOM":
                 store.dispatch(gameActions.leftRoom());
@@ -40,7 +40,7 @@ const socketMiddleware = (function(){
                 store.dispatch(gameActions.playerJoinedRoom(msg.data.player));
                 break;
             case "PLAYER_LEFT_ROOM":
-                store.dispatch(gameActions.playerLeftdRoom(msg.data.identifier));
+                store.dispatch(gameActions.playerLeftRoom(msg.data.identifier));
                 break;
 
         }
@@ -105,11 +105,10 @@ const socketMiddleware = (function(){
                 store.dispatch(socketActions.connect());
                 break;
             case socketActions.JOIN_ROOM:
-
                 if (socket !== null) {
                     socket.send(JSON.stringify({
                         type: "JOIN_ROOM",
-                        room: action.roomId
+                        online: action.online
                     }));
                 }
                 break;

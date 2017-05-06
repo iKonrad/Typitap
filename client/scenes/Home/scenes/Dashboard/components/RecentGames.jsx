@@ -16,8 +16,6 @@ class RecentGames extends Component {
 
         if (this.props.dashboard.games && this.props.dashboard.games.length > 0) {
             let items = this.props.dashboard.games.map((item, index) => {
-                console.log(item);
-
                 return (
                     <RecentGamesRow perfect={ Object.keys(item.mistakes).length < 1 ? 1 : 0 }
                                     key={ 'activity-item-' + index } date={ new Date(item.created) }
