@@ -27,7 +27,9 @@ class Base extends Component {
     }
 
     disconnectWebsocket() {
-        this.props.dispatch(socketActions.leaveRoom());
+        if (this.props.game.online) {
+            this.props.dispatch(socketActions.leaveRoom());
+        }
         this.props.dispatch(socketActions.disconnect());
     }
 
@@ -52,7 +54,7 @@ class Base extends Component {
 
 const mapStatsToProps = (state) => {
     return {
-        demo: state.demo,
+        game: state.game,
         notifications: state.notifications,
     };
 };

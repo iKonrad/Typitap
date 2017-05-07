@@ -6,8 +6,14 @@ const MAKE_WORD_MISTAKE = "@@game/ERROR_WORD";
 const TICK_TIME = "@@game/TICK_TIME";
 const START_COUNTDOWN = "@@game/START_COUNTDOWN";
 const TICK_COUNTDOWN = "@@game/TICK_COUNTDOWN";
+const SET_COUNTDOWN = "@@game/SET_COUNTDOWN";
+const STOP_COUNTDOWN = "@@game/STOP_COUNTDOWN";
+const START_WAIT_COUNTDOWN = "@@game/START_WAIT_COUNTDOWN";
+const TICK_WAIT_COUNTDOWN = "@@game/TICK_WAIT_COUNTDOWN";
+const SET_WAIT_COUNTDOWN = "@@game/SET_WAIT_COUNTDOWN";
+const STOP_WAIT_COUNTDOWN = "@@game/STOP_WAIT_COUNTDOWN";
 const RESET_GAME = "@@game/RESET_GAME";
-const START_ONLINE_SEARCH = "@@game/START_ONLINE_SEARCH";
+const START_MATCHMAKING = "@@game/START_MATCHMAKING";
 const PLAYER_JOINED_ROOM = "@@game/PLAYER_JOINED_ROOM";
 const PLAYER_LEFT_ROOM = "@@game/PLAYER_LEFT_ROOM";
 export const JOINED_ROOM = "@@game/JOINED_ROOM";
@@ -24,6 +30,8 @@ const initialState = {
     time: 0,
     countdown: false,
     countdownSeconds: 5,
+    waitCountdown: false,
+    waitCountdownSeconds: 10,
     online: false,
     room: {
         id: '',
@@ -47,7 +55,7 @@ export default function reducer(state = initialState, action) {
                 countdown: false,
                 online: action.online,
             };
-        case START_ONLINE_SEARCH:
+        case START_MATCHMAKING:
             return {
                 ...state,
                 online: true,
@@ -139,12 +147,45 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 countdown: true,
-                countdownSeconds: initialState.countdownSeconds
+                countdownSeconds: action.seconds !== undefined ? action.seconds : initialState.countdownSeconds
             }
         case TICK_COUNTDOWN:
             return {
                 ...state,
                 countdownSeconds: state.countdownSeconds - 1
+            }
+        case SET_COUNTDOWN:
+            return {
+                ...state,
+                countdownSeconds: action.seconds,
+            }
+        case STOP_COUNTDOWN:
+            return {
+                ...state,
+                countdown: false,
+                countdownSeconds: 0,
+            }
+        case START_WAIT_COUNTDOWN:
+            return {
+                ...state,
+                waitCountdown: true,
+                waitCountdownSeconds: action.seconds !== undefined ? action.seconds : initialState.waitCountdownSeconds
+            }
+        case TICK_WAIT_COUNTDOWN:
+            return {
+                ...state,
+                waitCountdownSeconds: state.waitCountdownSeconds - 1
+            }
+        case SET_WAIT_COUNTDOWN:
+            return {
+                ...state,
+                waitCountdownSeconds: action.seconds,
+            }
+        case STOP_WAIT_COUNTDOWN:
+            return {
+                ...state,
+                waitCountdown: false,
+                waitCountdownSeconds: 0,
             }
         case RESET_GAME:
             return initialState
@@ -195,9 +236,10 @@ export function tickTime() {
     }
 }
 
-export function startCountdown() {
+export function startCountdown(seconds) {
     return {
-        type: START_COUNTDOWN
+        type: START_COUNTDOWN,
+        seconds
     }
 }
 
@@ -207,6 +249,49 @@ export function tickCountdown() {
     }
 }
 
+export function setCountdown(seconds) {
+    return {
+        type: SET_COUNTDOWN,
+        seconds
+    }
+}
+
+export function stopCountdown() {
+    return {
+        type: STOP_COUNTDOWN
+    }
+}
+
+
+export function startWaitCountdown(seconds) {
+    return {
+        type: START_WAIT_COUNTDOWN,
+        seconds
+    }
+}
+
+export function tickWaitCountdown() {
+    return {
+        type: TICK_WAIT_COUNTDOWN
+    }
+}
+
+export function setWaitCountdown(seconds) {
+    return {
+        type: SET_WAIT_COUNTDOWN,
+        seconds
+    }
+}
+
+export function stopWaitCountdown() {
+    return {
+        type: STOP_WAIT_COUNTDOWN
+    }
+}
+
+
+
+
 export function resetGame() {
     return {
         type: RESET_GAME
@@ -214,9 +299,9 @@ export function resetGame() {
 }
 
 
-export function startOnlineSearch() {
+export function startMatchmaking() {
     return {
-        type: START_ONLINE_SEARCH
+        type: START_MATCHMAKING
     }
 }
 

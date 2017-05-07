@@ -97,8 +97,6 @@ func (c *Client) readPump() {
 	for {
 		_, message, err := c.ws.ReadMessage()
 
-		log.Println("HERRRROO", message);
-
 		if err != nil {
 			break
 		}

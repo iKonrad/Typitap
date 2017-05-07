@@ -42,6 +42,28 @@ const socketMiddleware = (function(){
             case "PLAYER_LEFT_ROOM":
                 store.dispatch(gameActions.playerLeftRoom(msg.data.identifier));
                 break;
+            case "START_COUNTDOWN":
+                store.dispatch(gameActions.startCountdown(msg.data.seconds));
+                break;
+            case "TICK_COUNTDOWN":
+                store.dispatch(gameActions.setCountdown(msg.data.seconds));
+                break;
+            case "STOP_COUNTDOWN":
+                store.dispatch(gameActions.stopCountdown());
+                break;
+            case "START_WAIT_COUNTDOWN":
+                store.dispatch(gameActions.startWaitCountdown(msg.data.seconds));
+                break;
+            case "TICK_WAIT_COUNTDOWN":
+                store.dispatch(gameActions.setWaitCountdown(msg.data.seconds));
+                break;
+            case "STOP_WAIT_COUNTDOWN":
+                store.dispatch(gameActions.stopWaitCountdown());
+                break;
+
+            case "START_GAME":
+                store.dispatch(gameActions.startGame(true));
+                break;
 
         }
 

@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 import WaitPlayer from './WaitPlayer';
 import Modal from 'react-bootstrap/lib/Modal';
-
 
 
 class WaitPlayersModal extends Component {
@@ -68,13 +67,32 @@ class WaitPlayersModal extends Component {
     }
 
 
+    renderCountdown() {
+
+        if (this.props.game.waitCountdown) {
+            return (
+                <div className="row">
+                    <div className="wait-countdown">
+                        00:{ this.props.game.waitCountdownSeconds >= 10 ? this.props.game.waitCountdownSeconds : "0" + this.props.game.waitCountdownSeconds }
+                    </div>
+                </div>
+            );
+        }
+
+        return "";
+    }
+
+
     render() {
         return (
             <div>
-                <Modal show={this.state.showModal}  className="game-modal">
+                <Modal show={this.state.showModal} className="game-modal">
                     <Modal.Header>
                         <Modal.Title><i className="fa fa-cog fa-spin fa-fw text-primary"> </i>{ this.renderTitle() }
                         </Modal.Title>
+                        <div className="text-center">
+                            { this.renderCountdown() }
+                        </div>
                     </Modal.Header>
                     <Modal.Body>
                         <div className="row">
@@ -115,13 +133,22 @@ class WaitPlayersModal extends Component {
 
 }
 
-const mapStateToProps = (state) => {
-    return {
-        game: state.game,
-        socket: state.socket,
-    }
-};
+const
+    mapStateToProps = (state) => {
+        return {
+            game: state.game,
+            socket: state.socket,
+        }
+    };
 
-export default connect(mapStateToProps)(WaitPlayersModal);
+export
+default
+
+connect(mapStateToProps)
+
+(
+    WaitPlayersModal
+)
+;
 
 

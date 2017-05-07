@@ -22,6 +22,17 @@ const (
 	TYPE_JOINED_ROOM        = "JOINED_ROOM"
 	TYPE_PLAYER_JOINED_ROOM = "PLAYER_JOINED_ROOM"
 	TYPE_PLAYER_LEFT_ROOM   = "PLAYER_LEFT_ROOM"
+
+	TYPE_START_COUNTDOWN = "START_COUNTDOWN"
+	TYPE_STOP_COUNTDOWN = "STOP_COUNTDOWN"
+	TYPE_TICK_COUNTDOWN = "TICK_COUNTDOWN"
+
+	TYPE_START_WAIT_COUNTDOWN = "START_WAIT_COUNTDOWN"
+	TYPE_STOP_WAIT_COUNTDOWN = "STOP_WAIT_COUNTDOWN"
+	TYPE_TICK_WAIT_COUNTDOWN = "TICK_WAIT_COUNTDOWN"
+
+	TYPE_START_GAME = "START_GAME"
+	TYPE_FINISH_GAME = "FINISH_GAME"
 )
 
 var engine *Engine
@@ -66,27 +77,10 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 	switch message["type"] {
 	case "JOIN_ROOM":
 		online, ok := message["online"]
-		log.Println("MSG", message);
-		if ok {
-			if ok = GetEngine().handleJoinRoom(identifier, online.(bool)); ok {
-			} else {
-				GetHub().SendMessageToClient(
-					identifier,
-					TYPE_ERROR,
-					map[string]interface{}{
-						"error": "An error occurred while joining the room",
-					},
-				)
-			}
-		} else {
-			GetHub().SendMessageToClient(
-				identifier,
-				TYPE_ERROR,
-				map[string]interface{}{
-					"error": "Room ID is missing",
-				},
-			)
+		if !ok {
+			online = false;
 		}
+		_, ok = GetEngine().handleJoinRoom(identifier, online.(bool))
 	case "LEAVE_ROOM":
 		err := e.handleLeaveRoom(identifier)
 		if err != nil {
@@ -110,7 +104,7 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 }
 
 // Adds client ID to the room if exists. If no room is found, it creates a new one
-func (e *Engine) handleJoinRoom(identifier string, online bool) bool {
+func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
 
 	// Get the next session
 	session, ok := manager.Game.FindOpenSession(online)
@@ -118,7 +112,14 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) bool {
 		var err error
 		session, err = manager.Game.CreateSession(online)
 		if err != nil {
-			return false
+			GetHub().SendMessageToClient(
+				identifier,
+				TYPE_ERROR,
+				map[string]interface{}{
+					"error": "An error occurred while joining the room",
+				},
+			)
+			return "", false
 		}
 	}
 
@@ -130,10 +131,10 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) bool {
 			TYPE_JOINED_ROOM,
 			map[string]interface{}{
 				"roomId": session.Id,
-				"text": session.Text.Text,
+				"text":   session.Text.Text,
 			},
 		)
-		return true;
+		return session.Id, true;
 	}
 
 	// For online game, join the room or create a new one
@@ -166,17 +167,22 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) bool {
 		map[string]interface{}{
 			"roomId":  room.Id,
 			"players": room.GetPlayers(), // @TODO: Return list of players in the room
-			"text": session.Text.Text,
+			"text":    session.Text.Text,
 		},
 	)
 
-	playerData := room.GetPlayer(identifier)
-
 	// Send message to everyone that the player has joined the room
+	playerData := room.GetPlayer(identifier)
 	room.SendMessage(TYPE_PLAYER_JOINED_ROOM, map[string]interface{}{
 		"player": playerData,
 	})
-	return true
+
+	// Start the countdown if amount of players is at least 2
+	if len(room.Players) > 1 {
+		room.restartWaitCountdown()
+	}
+
+	return room.Id, true
 }
 
 // Handles the player leaving the room
@@ -196,6 +202,11 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 		if shouldOpen {
 			log.Println("Opening back the session")
 			manager.Game.OpenGameSession(roomId)
+		}
+
+		// If there's less than 2 players, stop the countdown ticker if it runs
+		if len(e.rooms[roomId].Players) < 2 {
+			e.rooms[roomId].stopWaitCountdown();
 		}
 
 		return nil

@@ -79,7 +79,9 @@ class Game extends Component {
     resetGame() {
         console.log("resetting...");
         this.engine.resetGame();
-        this.props.dispatch(SocketActions.leaveRoom());
+        if (this.props.game.online) {
+            this.props.dispatch(SocketActions.leaveRoom());
+        }
     }
 
     handleGameStart() {
@@ -101,7 +103,7 @@ class Game extends Component {
                     this.engine.startTimer();
                 });
             } else {
-                this.props.dispatch(GameActions.startOnlineSearch());
+                this.props.dispatch(GameActions.startMatchmaking());
             }
         }
     }

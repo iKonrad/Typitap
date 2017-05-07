@@ -78,7 +78,7 @@ class GameEngine {
 
     startCountdown(callback) {
 
-        this.store.dispatch(GameActions.startCountdown());
+        this.store.dispatch(GameActions.startCountdown(5));
 
         this.countdownTimer = setInterval(() => {
 

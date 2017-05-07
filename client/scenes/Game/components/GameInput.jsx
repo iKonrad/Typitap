@@ -17,7 +17,6 @@ class GameInput extends Component {
             return;
         }
 
-
         let field = this.refs[FIELD_REF];
         let inputValue = field.value.replace(/ /g, '');
 

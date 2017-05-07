@@ -15,6 +15,9 @@ $icon-font-path: "./../libs/bootstrap-sass/assets/fonts/bootstrap/";
 // 1. Layout
 //@import 'layout/**/*.scss';
 
+// 1. Mixins
+@import 'mixins/**/*.scss';
+
 // 2. Components
 @import 'components/**/*.scss';
 
