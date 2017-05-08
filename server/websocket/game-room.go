@@ -233,6 +233,11 @@ func (r *Room) startGame() {
 					"players": playersData,
 				},
 			)
+
+			if r.time == FINISH_GAME_SECONDS {
+				r.SendMessage(TYPE_FINISH_GAME, map[string]interface{}{});
+				GetEngine().RemoveRoom(r.Id);
+			}
 		}
 	}()
 

@@ -71,7 +71,13 @@ class PlayerList extends Component {
     render() {
 
         let words = this.props.game.text.split(" ").length;
-        let current = this.props.game.finished ? words : this.props.game.currentIndex;
+        let current = 0;
+        if (this.props.game.online) {
+            current = this.props.game.finished && this.props.game.room.players[this.props.socket.identifier].completed ? words : this.props.game.currentIndex;
+        } else {
+            current = this.props.game.finished ? words : this.props.game.currentIndex;;
+        }
+
         let place = 0;
         if (this.props.game.room.players !== undefined && this.props.game.room.players[this.props.socket.identifier] !== undefined) {
             place = this.props.game.room.players[this.props.socket.identifier].place;

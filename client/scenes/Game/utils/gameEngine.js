@@ -21,6 +21,10 @@ class GameEngine {
                 this.store.dispatch(GameActions.updatePlayerData(this.store.getState().game.currentIndex))
             }
 
+            if (this.store.getState().game.finished) {
+                this.stopTimer();
+            }
+
         }, 1000);
     }
 

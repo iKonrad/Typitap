@@ -37,6 +37,7 @@ const (
 	TYPE_UPDATE_PLAYERS_DATA = "UPDATE_PLAYERS_DATA"
 
 	WAIT_SECONDS = 3; // How many seconds should the room count down for other players
+	FINISH_GAME_SECONDS = 120 // How many seconds must pass before the game automatically closes
 )
 
 var engine *Engine
@@ -114,8 +115,7 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 
 			// Check if all players completed game. If yes, then shut the timer and remove the room
 			if e.rooms[roomId].haveAllPlayersCompletedGame() {
-				e.rooms[roomId].finishGame();
-				delete(e.rooms, roomId);
+				e.RemoveRoom(roomId)
 			}
 		}
 		break;
@@ -230,8 +230,7 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 		}
 
 		if len(e.rooms[roomId].Players) < 1 {
-			e.rooms[roomId].resetRoom()
-			delete(e.rooms, roomId)
+			e.RemoveRoom(roomId)
 		}
 
 		return nil
@@ -270,4 +269,9 @@ func (e *Engine) GetRoom(sessionId string) (*Room, bool) {
 
 	return e.rooms[sessionId], true
 
+}
+
+func (e *Engine) RemoveRoom(roomId string) {
+	e.rooms[roomId].finishGame();
+	delete(e.rooms, roomId);
 }

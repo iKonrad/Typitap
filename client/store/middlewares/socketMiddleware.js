@@ -25,7 +25,7 @@ const socketMiddleware = (function(){
     const onMessage = (ws,store) => evt => {
         //Parse the JSON message received on the websocket
         var msg = JSON.parse(evt.data);
-        console.log("[SocketMessage] ", msg);
+        // console.log("[SocketMessage] ", msg);
 
         switch(msg.type) {
             case "CONNECTED":
@@ -69,6 +69,9 @@ const socketMiddleware = (function(){
                 break;
             case "START_GAME":
                 store.dispatch(gameActions.startingGame(true));
+                break;
+            case "FINISH_GAME":
+                store.dispatch(gameActions.finishGame());
                 break;
 
         }
