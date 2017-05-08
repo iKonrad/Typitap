@@ -29,19 +29,6 @@ class Game extends Component {
     }
 
 
-    renderBottomRow() {
-        if (this.props.game.started && !this.props.game.finished) {
-            return <GameInput onGameFinish={ this.handleGameFinish.bind(this) }/>;
-        } else {
-            if (this.props.game.countdown) {
-                return <GameCountdown />
-            } else if (this.props.game.finished) {
-                return <GameControls onGameStart={ this.handleGameStart.bind(this) }/>
-            }
-
-        }
-    }
-
     componentWillMount() {
         // Check if the client is connected to the websocket.
 
@@ -82,6 +69,7 @@ class Game extends Component {
     }
 
     handleGameStart() {
+        this.resetGame();
         this.props.dispatch(SocketActions.joinRoom(this.props.online));
     }
 
@@ -92,7 +80,15 @@ class Game extends Component {
 
     componentWillReceiveProps(newProps) {
         // Check if the room ID has been passed over
-        if ((!this.props.game.room.id || this.props.game.room.id === "") && newProps.game.room.id !== "") {
+
+
+        if (Object.keys(newProps).length === 0) {
+            return;
+        }
+
+        if ((!this.props.game.room.id || this.props.game.room.id === "") && newProps.game.room.id !== undefined && newProps.game.room.id !== "") {
+            console.log("PREV", this.props);
+            console.log("NEXT", newProps);
             // We've got the room ID, we can now proceed to start the game
             if (!this.props.online) {
                 this.engine.startCountdown(() => {
@@ -135,6 +131,19 @@ class Game extends Component {
                     { this.renderBottomRow() }
                 </div>
             );
+        }
+    }
+
+    renderBottomRow() {
+        if (this.props.game.started && !this.props.game.finished) {
+            return <GameInput onGameFinish={ this.handleGameFinish.bind(this) }/>;
+        } else {
+            if (this.props.game.countdown) {
+                return <GameCountdown />
+            } else if (this.props.game.finished) {
+                return <GameControls onGameStart={ this.handleGameStart.bind(this) }/>
+            }
+
         }
     }
 

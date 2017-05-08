@@ -59,11 +59,9 @@ class GameEngine {
 
 
     finishGame() {
+
         // Stop the game timer
         this.stopTimer();
-
-
-
 
         // Mark the game as finished
         this.store.dispatch(GameActions.finishGame());

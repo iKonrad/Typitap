@@ -54,6 +54,7 @@ func (r *Room) AddPlayer(identifier string) {
 	defer pipeline.Close()
 	pipeline.HSet("rooms:"+r.Id+":players:"+identifier, "score", 0)
 	pipeline.HSet("rooms:"+r.Id+":players:"+identifier, "place", 0)
+	pipeline.HSet("rooms:"+r.Id+":players:"+identifier, "completed", false)
 	pipeline.HSet("player:"+identifier, "roomId", r.Id)
 	_, err = pipeline.Exec()
 	r.Players[identifier] = true
@@ -113,7 +114,7 @@ func (r *Room) restartWaitCountdown() {
 	r.SendMessage(
 		TYPE_START_WAIT_COUNTDOWN,
 		map[string]interface{}{
-			"seconds": 10,
+			"seconds": WAIT_SECONDS,
 		},
 	)
 
@@ -123,7 +124,7 @@ func (r *Room) restartWaitCountdown() {
 
 	r.ticker = time.NewTicker(time.Millisecond * 1000)
 	r.waitCountdownStarted = true
-	r.waitCountdownSeconds = 10
+	r.waitCountdownSeconds = WAIT_SECONDS
 
 	go func() {
 		for range r.ticker.C {
@@ -268,8 +269,12 @@ func (r *Room) getPlayersData() map[string]interface{} {
 
 // This function stops the game timer
 func (r *Room) finishGame() {
-	if r.gameStarted {
+	if r.gameStarted || r.waitCountdownStarted || r.countdownStarted {
 		r.ticker.Stop()
+
+		for identifier := range r.Players {
+			r.RemovePlayer(identifier);
+		}
 	}
 }
 
@@ -288,16 +293,43 @@ func (r *Room) handlePlayerUpdate(identifier string, score float64) {
 
 // Handles the player finishing the game: sets the finished flag, sends a message @TODO: Automatically post a game result
 func (r *Room) handlePlayerCompleted(identifier string) {
+
 	if r.gameStarted {
 		GetEngine().redis.HSet("rooms:"+r.Id+":players:"+identifier, "completed", true)
 		r.SendMessage(
-			TYPE_PLAYER_FINISHED_GAME,
+			TYPE_PLAYER_COMPLETED_GAME,
 			map[string]interface{}{
+				"identifier": identifier,
 				"place": r.nextPlace,
 			},
 		)
 
+
 		// Increment next place
 		r.nextPlace++
 	}
+}
+
+func (r *Room) haveAllPlayersCompletedGame() bool {
+	// Check if all players have finished
+	pipeline := GetEngine().redis.Pipeline()
+	defer pipeline.Close()
+
+	var parsedResults = make(map[string]*redis.StringCmd)
+	for identifier := range r.Players {
+		parsedResults[identifier] = pipeline.HGet("rooms:" + r.Id + ":players:" + identifier, "completed");
+	}
+
+	_, err := pipeline.Exec()
+	if err != nil {
+		log.Println("Errow while fetching players data", err)
+	}
+
+	for _, data := range parsedResults {
+		if data.Val() == "0" {
+			return false;
+		}
+	}
+
+	return true;
 }

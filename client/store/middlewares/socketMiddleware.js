@@ -64,8 +64,10 @@ const socketMiddleware = (function(){
             case "UPDATE_PLAYERS_DATA":
                 store.dispatch(gameActions.updatePlayersData(msg.data.players));
                 break;
+            case "PLAYER_COMPLETED_GAME":
+                store.dispatch(gameActions.setPlayerCompleted(msg.data.identifier, msg.data.place));
+                break;
             case "START_GAME":
-
                 store.dispatch(gameActions.startingGame(true));
                 break;
 
@@ -164,6 +166,8 @@ const socketMiddleware = (function(){
                         }));
                     }
                 }
+
+                next(action);
                 break;
             default:
                 return next(action);

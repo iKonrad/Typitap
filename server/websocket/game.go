@@ -23,7 +23,7 @@ const (
 	TYPE_PLAYER_JOINED_ROOM = "PLAYER_JOINED_ROOM"
 	TYPE_PLAYER_LEFT_ROOM   = "PLAYER_LEFT_ROOM"
 
-	TYPE_PLAYER_FINISHED_GAME = "PLAYER_FINISHED_GAME"
+	TYPE_PLAYER_COMPLETED_GAME = "PLAYER_COMPLETED_GAME"
 	TYPE_START_COUNTDOWN      = "START_COUNTDOWN"
 	TYPE_STOP_COUNTDOWN       = "STOP_COUNTDOWN"
 	TYPE_TICK_COUNTDOWN       = "TICK_COUNTDOWN"
@@ -35,6 +35,8 @@ const (
 	TYPE_START_GAME          = "START_GAME"
 	TYPE_FINISH_GAME         = "FINISH_GAME"
 	TYPE_UPDATE_PLAYERS_DATA = "UPDATE_PLAYERS_DATA"
+
+	WAIT_SECONDS = 3; // How many seconds should the room count down for other players
 )
 
 var engine *Engine
@@ -109,6 +111,12 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 	case "COMPLETE_PLAYER_GAME":
 		if roomId, ok := e.getRoomForClientId(identifier); ok {
 			e.rooms[roomId].handlePlayerCompleted(identifier);
+
+			// Check if all players completed game. If yes, then shut the timer and remove the room
+			if e.rooms[roomId].haveAllPlayersCompletedGame() {
+				e.rooms[roomId].finishGame();
+				delete(e.rooms, roomId);
+			}
 		}
 		break;
 	}

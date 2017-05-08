@@ -70,13 +70,12 @@ class PlayerList extends Component {
 
     render() {
 
-        let current = this.props.game.currentIndex;
         let words = this.props.game.text.split(" ").length;
+        let current = this.props.game.finished ? words : this.props.game.currentIndex;
         let place = 0;
         if (this.props.game.room.players !== undefined && this.props.game.room.players[this.props.socket.identifier] !== undefined) {
             place = this.props.game.room.players[this.props.socket.identifier].place;
         }
-
 
         return(
             <div className="game__progress">
@@ -87,7 +86,6 @@ class PlayerList extends Component {
                         <div className="progress-bar progress-bar-success" role="progressbar" aria-valuenow={ current } aria-valuemin="0" aria-valuemax={ words } style={{ 'width': ((current / words) * 100) + '%' }}>
                         </div>
                     </div>
-
                     { this.renderPlace(place) }
                 </div>
             </div>

@@ -33,8 +33,6 @@ class GameInput extends Component {
             if (inputValue === currentWord) {
                 if (this.props.game.currentIndex === (textWords.length - 1)) {
                     // Finish the game
-
-
                     // Run the callback if exists
                     if (this.props.onGameFinish && typeof this.props.onGameFinish === 'function') {
                         this.props.onGameFinish();

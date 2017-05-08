@@ -21,6 +21,7 @@ export const JOINED_ROOM = "@@game/JOINED_ROOM";
 export const LEFT_ROOM = "@@game/LEFT_ROOM";
 export const UPDATE_PLAYER_DATA = "@@game/UPDATE_PLAYER_DATA";
 export const UPDATE_PLAYERS_DATA = "@@game/UPDATE_PLAYERS_DATA";
+export const PLAYER_COMPLETED_GAME = "@@game/PLAYER_COMPLETED_GAME";
 
 
 const initialState = {
@@ -83,6 +84,13 @@ export default function reducer(state = initialState, action) {
                 currentIndex: state.currentIndex + 1,
             };
         case JOINED_ROOM:
+
+            Object.keys(action.players).forEach((i) => {
+                if (typeof action.players[i].completed === "string") {
+                    action.players[i].completed = action.players[i].completed === "1"
+                }
+            });
+
             return {
                 ...state,
                 text: action.text,
@@ -103,7 +111,10 @@ export default function reducer(state = initialState, action) {
                 ...state.room.players,
             };
 
+            action.player.completed = false;
             players[action.player.identifier] = action.player;
+
+            console.log("LOL", players);
 
             return {
                 ...state,
@@ -121,8 +132,8 @@ export default function reducer(state = initialState, action) {
             Object.keys(action.players).forEach((i) => {
                 let obj = action.players[i];
                 room.players[i].score = obj.score;
-                room.players[i].completed = obj.completed !== undefined ? obj.completed : false;
-
+                let completed = obj.completed !== undefined ? obj.completed : false;
+                room.players[i].completed = typeof completed === "string" ? completed === "1" : completed;
              });
 
             return {
@@ -147,6 +158,25 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 finished: true,
                 inputValue: '',
+            };
+        case PLAYER_COMPLETED_GAME:
+
+            players = {
+                ...state.room.players,
+            };
+
+            players[action.identifier] = {
+                ...state.room.players[action.identifier],
+                completed: true,
+                place: action.place
+            };
+
+            return {
+                ...state,
+                room: {
+                    ...state.room,
+                    players
+                }
             };
         case MAKE_WORD_MISTAKE:
             let currentMistakes = 0;
@@ -371,4 +401,8 @@ export function updatePlayersData(players) {
 
 export function updatePlayerData(score) {
     return { type: UPDATE_PLAYER_DATA,  score}
+}
+
+export function setPlayerCompleted(identifier, place) {
+    return { type: PLAYER_COMPLETED_GAME, identifier, place};
 }
