@@ -23,16 +23,18 @@ const (
 	TYPE_PLAYER_JOINED_ROOM = "PLAYER_JOINED_ROOM"
 	TYPE_PLAYER_LEFT_ROOM   = "PLAYER_LEFT_ROOM"
 
-	TYPE_START_COUNTDOWN = "START_COUNTDOWN"
-	TYPE_STOP_COUNTDOWN = "STOP_COUNTDOWN"
-	TYPE_TICK_COUNTDOWN = "TICK_COUNTDOWN"
+	TYPE_PLAYER_FINISHED_GAME = "PLAYER_FINISHED_GAME"
+	TYPE_START_COUNTDOWN      = "START_COUNTDOWN"
+	TYPE_STOP_COUNTDOWN       = "STOP_COUNTDOWN"
+	TYPE_TICK_COUNTDOWN       = "TICK_COUNTDOWN"
 
 	TYPE_START_WAIT_COUNTDOWN = "START_WAIT_COUNTDOWN"
-	TYPE_STOP_WAIT_COUNTDOWN = "STOP_WAIT_COUNTDOWN"
-	TYPE_TICK_WAIT_COUNTDOWN = "TICK_WAIT_COUNTDOWN"
+	TYPE_STOP_WAIT_COUNTDOWN  = "STOP_WAIT_COUNTDOWN"
+	TYPE_TICK_WAIT_COUNTDOWN  = "TICK_WAIT_COUNTDOWN"
 
-	TYPE_START_GAME = "START_GAME"
-	TYPE_FINISH_GAME = "FINISH_GAME"
+	TYPE_START_GAME          = "START_GAME"
+	TYPE_FINISH_GAME         = "FINISH_GAME"
+	TYPE_UPDATE_PLAYERS_DATA = "UPDATE_PLAYERS_DATA"
 )
 
 var engine *Engine
@@ -65,7 +67,6 @@ func (e *Engine) Run() {
 		case r := <-e.newRoomChannel:
 			log.Println("Adding new room", r)
 			e.rooms[r.Id] = r
-			log.Println("ROOMS", e.rooms)
 		}
 	}
 
@@ -78,7 +79,7 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 	case "JOIN_ROOM":
 		online, ok := message["online"]
 		if !ok {
-			online = false;
+			online = false
 		}
 		_, ok = GetEngine().handleJoinRoom(identifier, online.(bool))
 	case "LEAVE_ROOM":
@@ -99,6 +100,17 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 				map[string]interface{}{},
 			)
 		}
+	case "UPDATE_PLAYER_DATA":
+		if score, ok := message["score"]; ok {
+			if roomId, ok := e.getRoomForClientId(identifier); ok {
+				e.rooms[roomId].handlePlayerUpdate(identifier, score.(float64));
+			}
+		}
+	case "COMPLETE_PLAYER_GAME":
+		if roomId, ok := e.getRoomForClientId(identifier); ok {
+			e.rooms[roomId].handlePlayerCompleted(identifier);
+		}
+		break;
 	}
 
 }
@@ -134,7 +146,7 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
 				"text":   session.Text.Text,
 			},
 		)
-		return session.Id, true;
+		return session.Id, true
 	}
 
 	// For online game, join the room or create a new one
@@ -206,7 +218,12 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 
 		// If there's less than 2 players, stop the countdown ticker if it runs
 		if len(e.rooms[roomId].Players) < 2 {
-			e.rooms[roomId].stopWaitCountdown();
+			e.rooms[roomId].stopWaitCountdown()
+		}
+
+		if len(e.rooms[roomId].Players) < 1 {
+			e.rooms[roomId].resetRoom()
+			delete(e.rooms, roomId)
 		}
 
 		return nil

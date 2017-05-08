@@ -12,6 +12,7 @@ import GameBar from './GameBar';
 import GameEngine from './../utils/gameEngine';
 import GameControls from './GameControls';
 import GameCountdown from './GameCountdown';
+import GamePlayerList from './GamePlayerList';
 import WaitPlayersModal from './WaitPlayersModal';
 
 import * as GameActions from 'store/modules/gameModule';
@@ -77,11 +78,7 @@ class Game extends Component {
     }
 
     resetGame() {
-        console.log("resetting...");
         this.engine.resetGame();
-        if (this.props.game.online) {
-            this.props.dispatch(SocketActions.leaveRoom());
-        }
     }
 
     handleGameStart() {
@@ -99,12 +96,15 @@ class Game extends Component {
             // We've got the room ID, we can now proceed to start the game
             if (!this.props.online) {
                 this.engine.startCountdown(() => {
-                    this.props.dispatch(GameActions.startGame(this.props.online));
-                    this.engine.startTimer();
+                    this.engine.startGame(this.props.online);
                 });
             } else {
                 this.props.dispatch(GameActions.startMatchmaking());
             }
+        }
+
+        if ((this.props.game.starting === undefined || !this.props.game.starting) && newProps.game.starting) {
+            this.engine.startGame(this.props.online);
         }
     }
 
@@ -142,9 +142,9 @@ class Game extends Component {
     render() {
         return (
             <div id="game" className="game">
+                <GamePlayerList/>
                 <div className="panel panel-default">
                     <div className="panel-body">
-
                         <GameBar />
                         { this.renderMain() }
                     </div>

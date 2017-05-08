@@ -1,5 +1,6 @@
 import * as socketActions from "store/modules/socketModule";
 import * as gameActions from "store/modules/gameModule";
+import GameEngine from "scenes/Game/utils/gameEngine";
 
 const CODE_RECONNECT = 5001;
 const CODE_DISCONNECT = 5000;
@@ -60,9 +61,12 @@ const socketMiddleware = (function(){
             case "STOP_WAIT_COUNTDOWN":
                 store.dispatch(gameActions.stopWaitCountdown());
                 break;
-
+            case "UPDATE_PLAYERS_DATA":
+                store.dispatch(gameActions.updatePlayersData(msg.data.players));
+                break;
             case "START_GAME":
-                store.dispatch(gameActions.startGame(true));
+
+                store.dispatch(gameActions.startingGame(true));
                 break;
 
         }
@@ -142,7 +146,25 @@ const socketMiddleware = (function(){
                     }));
                 }
                 break;
-
+            case gameActions.UPDATE_PLAYER_DATA:
+                if (store.getState().game.online) {
+                    if (socket !== null) {
+                        socket.send(JSON.stringify({
+                            type: "UPDATE_PLAYER_DATA",
+                            score: action.score
+                        }));
+                    }
+                }
+                break;
+            case gameActions.FINISH_GAME:
+                if (store.getState().game.online) {
+                    if (socket !== null) {
+                        socket.send(JSON.stringify({
+                                type: "COMPLETE_PLAYER_GAME"
+                        }));
+                    }
+                }
+                break;
             default:
                 return next(action);
         }

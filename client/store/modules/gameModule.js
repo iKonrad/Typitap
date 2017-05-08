@@ -1,5 +1,6 @@
 const START_GAME = "@@game/START_GAME";
-const FINISH_GAME = "@@game/FINISH_GAME";
+const STARTING_GAME = "@@game/STARTING_GAME";
+export const FINISH_GAME = "@@game/FINISH_GAME";
 const UPDATE_INPUT = "@@game/UPDATE_INPUT";
 const FINISH_WORD = "@@game/FINISH_WORD";
 const MAKE_WORD_MISTAKE = "@@game/ERROR_WORD";
@@ -18,11 +19,14 @@ const PLAYER_JOINED_ROOM = "@@game/PLAYER_JOINED_ROOM";
 const PLAYER_LEFT_ROOM = "@@game/PLAYER_LEFT_ROOM";
 export const JOINED_ROOM = "@@game/JOINED_ROOM";
 export const LEFT_ROOM = "@@game/LEFT_ROOM";
+export const UPDATE_PLAYER_DATA = "@@game/UPDATE_PLAYER_DATA";
+export const UPDATE_PLAYERS_DATA = "@@game/UPDATE_PLAYERS_DATA";
 
 
 const initialState = {
     text: '',
     started: false,
+    starting: false,
     currentIndex: 0,
     finished: false,
     inputValue: '',
@@ -52,9 +56,16 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 started: true,
+                starting: false,
                 countdown: false,
                 online: action.online,
             };
+        case STARTING_GAME:
+            return {
+                ...state,
+                starting: true,
+                online: action.online,
+            }
         case START_MATCHMAKING:
             return {
                 ...state,
@@ -101,6 +112,23 @@ export default function reducer(state = initialState, action) {
                     players
                 }
             };
+        case UPDATE_PLAYERS_DATA:
+
+            let room = {
+                ...state.room
+            };
+
+            Object.keys(action.players).forEach((i) => {
+                let obj = action.players[i];
+                room.players[i].score = obj.score;
+                room.players[i].completed = obj.completed !== undefined ? obj.completed : false;
+
+             });
+
+            return {
+                ...state,
+                room
+            }
         case PLAYER_LEFT_ROOM:
             return {
                 ...state,
@@ -198,7 +226,8 @@ export default function reducer(state = initialState, action) {
 
 
 // Game Actions
-export function startGame(online) {
+export function
+startGame(online) {
     return {
         type: START_GAME,
         online,
@@ -330,4 +359,16 @@ export function playerJoinedRoom(player) {
 
 export function playerLeftRoom(identifier) {
     return {type: PLAYER_LEFT_ROOM, identifier}
+}
+
+export function startingGame(online) {
+    return {type: STARTING_GAME, online}
+}
+
+export function updatePlayersData(players) {
+    return { type: UPDATE_PLAYERS_DATA,  players}
+}
+
+export function updatePlayerData(score) {
+    return { type: UPDATE_PLAYER_DATA,  score}
 }

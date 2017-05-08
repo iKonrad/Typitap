@@ -1,5 +1,7 @@
 import {getStore} from 'store/store';
 import * as GameActions from 'store/modules/gameModule';
+import * as SocketActions from 'store/modules/socketModule';
+
 import Notifications from 'react-notification-system-redux';
 import React from 'react';
 
@@ -11,10 +13,13 @@ class GameEngine {
     }
 
     startTimer() {
-
         this.timer = setInterval(() => {
-
             this.store.dispatch(GameActions.tickTime());
+            // We want the data to be sent only for multiplayer games
+            if (this.store.getState().game.online) {
+                // Sends updates to the websocket server about the current game
+                this.store.dispatch(GameActions.updatePlayerData(this.store.getState().game.currentIndex))
+            }
 
         }, 1000);
     }
@@ -23,17 +28,47 @@ class GameEngine {
         clearInterval(this.timer);
     }
 
+    startGame(online) {
+        this.store.dispatch(GameActions.startGame(online));
+        this.startTimer();
+    }
+
+    startCountdown(callback) {
+        this.store.dispatch(GameActions.startCountdown(5));
+        this.countdownTimer = setInterval(() => {
+            if (this.store.getState().game.countdownSeconds === 1) {
+                clearInterval(this.countdownTimer);
+                callback();
+                return;
+            }
+            this.store.dispatch(GameActions.tickCountdown());
+        }, 1000);
+    }
+
+
+    resetGame() {
+        clearInterval(this.timer);
+        clearInterval(this.countdownTimer);
+        if (this.store.getState().game.online) {
+            this.store.dispatch(SocketActions.leaveRoom());
+        }
+
+        this.store.dispatch(GameActions.resetGame());
+    }
+
+
 
     finishGame() {
-
         // Stop the game timer
         this.stopTimer();
+
+
+
 
         // Mark the game as finished
         this.store.dispatch(GameActions.finishGame());
 
         let state = this.store.getState().game;
-
 
         // Calculate the WPM and accuracy
         let seconds = state.time;
@@ -46,7 +81,6 @@ class GameEngine {
         });
 
         let virtualWords = Math.round(characters / 5);
-
         let speed = Math.round(virtualWords * (60 / seconds));
         let accuracy = 100 - ((Object.keys(state.mistakes).length / words) * 100).toFixed(1);
         let results = {
@@ -59,46 +93,16 @@ class GameEngine {
 
         // Post the results to the server
         this.postGameResultData(results);
-
         let mistakesCount = state.mistakes === undefined ? '0' : Object.keys(state.mistakes).length;
 
         // Show notification with the results to the user
         this.store.dispatch(Notifications.success({
-                    children: (
-                        <p>Game finished in {seconds} seconds with score <strong>{speed}</strong> wpm. Your accuracy:
+            children: (
+                <p>Game finished in {seconds} seconds with score <strong>{speed}</strong> wpm. Your accuracy:
                     <strong>{ accuracy }%</strong> ({mistakesCount} mistakes)</p>)
         }));
 
     }
-
-    startOffline() {
-
-    }
-
-
-    startCountdown(callback) {
-
-        this.store.dispatch(GameActions.startCountdown(5));
-
-        this.countdownTimer = setInterval(() => {
-
-            if (this.store.getState().game.countdownSeconds === 1) {
-                clearInterval(this.countdownTimer);
-                callback();
-                return;
-            }
-
-            this.store.dispatch(GameActions.tickCountdown());
-        }, 1000);
-    }
-
-
-    resetGame() {
-        clearInterval(this.timer);
-        clearInterval(this.countdownTimer);
-        this.store.dispatch(GameActions.resetGame());
-    }
-
 
     postGameResultData(results) {
 

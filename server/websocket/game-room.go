@@ -4,17 +4,21 @@ import (
 	"log"
 	"time"
 
+	"github.com/go-redis/redis"
 	"github.com/iKonrad/typitap/server/manager"
 )
 
 type Room struct {
 	Id                   string
 	Players              map[string]bool
-	countdownTicker      *time.Ticker
+	ticker               *time.Ticker
 	countdownSeconds     int8
 	countdownStarted     bool
 	waitCountdownSeconds int8
 	waitCountdownStarted bool
+	gameStarted          bool
+	nextPlace            int8
+	time                 int8
 }
 
 func NewRoom(id string) *Room {
@@ -29,12 +33,16 @@ func NewRoom(id string) *Room {
 		countdownStarted:     false,
 		waitCountdownSeconds: 0,
 		waitCountdownStarted: false,
+		gameStarted:          false,
+		nextPlace:            1,
+		time:                 0,
 	}
 }
 
 func (r *Room) Run() {
 }
 
+// Adds a new player to the room
 func (r *Room) AddPlayer(identifier string) {
 
 	err := GetEngine().redis.HSet("rooms:"+r.Id+":players:"+identifier, "identifier", identifier).Err()
@@ -42,12 +50,16 @@ func (r *Room) AddPlayer(identifier string) {
 		log.Println("Error while adding a user to the room --"+"rooms:"+r.Id+":players:"+identifier, err)
 	}
 
-	GetEngine().redis.HSet("rooms:"+r.Id+":players:"+identifier, "score", 0)
-	GetEngine().redis.HSet("player:"+identifier, "roomId", r.Id)
-
+	pipeline := GetEngine().redis.Pipeline()
+	defer pipeline.Close()
+	pipeline.HSet("rooms:"+r.Id+":players:"+identifier, "score", 0)
+	pipeline.HSet("rooms:"+r.Id+":players:"+identifier, "place", 0)
+	pipeline.HSet("player:"+identifier, "roomId", r.Id)
+	_, err = pipeline.Exec()
 	r.Players[identifier] = true
 }
 
+// Removes player from the room
 func (r *Room) RemovePlayer(identifier string) {
 	GetEngine().redis.HDel("rooms:"+r.Id+":players:"+identifier, "identifier", "score")
 	GetEngine().redis.HDel("player:"+identifier, "roomId")
@@ -95,6 +107,7 @@ func (r *Room) canStartGame() bool {
 	return len(r.Players) > 1
 }
 
+// Resets the wait countdown (for example, when a new player enters the room)
 func (r *Room) restartWaitCountdown() {
 
 	r.SendMessage(
@@ -105,15 +118,15 @@ func (r *Room) restartWaitCountdown() {
 	)
 
 	if r.waitCountdownStarted {
-		r.countdownTicker.Stop();
+		r.ticker.Stop()
 	}
 
-	r.countdownTicker = time.NewTicker(time.Millisecond * 1000)
+	r.ticker = time.NewTicker(time.Millisecond * 1000)
 	r.waitCountdownStarted = true
 	r.waitCountdownSeconds = 10
 
 	go func() {
-		for range r.countdownTicker.C {
+		for range r.ticker.C {
 			r.waitCountdownSeconds--
 			if r.waitCountdownSeconds > 0 {
 				r.SendMessage(TYPE_TICK_WAIT_COUNTDOWN, map[string]interface{}{
@@ -133,18 +146,22 @@ func (r *Room) restartWaitCountdown() {
 	}()
 }
 
+// Stops the countdown when waiting for players
 func (r *Room) stopWaitCountdown() {
 
-	r.SendMessage(
-		TYPE_STOP_WAIT_COUNTDOWN,
-		map[string]interface{}{},
-	)
-	r.countdownTicker.Stop()
-	r.waitCountdownStarted = false
-	r.waitCountdownSeconds = 0
+	if r.ticker != nil && r.waitCountdownStarted {
+		r.SendMessage(
+			TYPE_STOP_WAIT_COUNTDOWN,
+			map[string]interface{}{},
+		)
+		r.ticker.Stop()
+		r.waitCountdownStarted = false
+		r.waitCountdownSeconds = 0
+	}
 
 }
 
+// Starts the final game countdown
 func (r *Room) startCountdown() {
 
 	r.SendMessage(
@@ -154,11 +171,11 @@ func (r *Room) startCountdown() {
 		},
 	)
 
-	r.countdownTicker = time.NewTicker(time.Millisecond * 1000)
+	r.ticker = time.NewTicker(time.Millisecond * 1000)
 	r.countdownStarted = true
 	r.countdownSeconds = 3
 	go func() {
-		for range r.countdownTicker.C {
+		for range r.ticker.C {
 			r.countdownSeconds--
 			if r.countdownSeconds > 0 {
 				r.SendMessage(TYPE_TICK_COUNTDOWN, map[string]interface{}{
@@ -167,7 +184,7 @@ func (r *Room) startCountdown() {
 
 			} else {
 				r.countdownStarted = false
-				r.countdownTicker.Stop()
+				r.ticker.Stop()
 				// Double check if all players are in the session and start the game
 				if len(r.Players) > 1 {
 					r.startGame()
@@ -181,19 +198,42 @@ func (r *Room) startCountdown() {
 
 }
 
+// Stops and resets the game countdown
 func (r *Room) stopCountdown() {
-	if r.countdownTicker != nil && r.countdownStarted {
+	if r.ticker != nil && r.countdownStarted {
 		r.SendMessage(
 			TYPE_STOP_COUNTDOWN,
 			map[string]interface{}{},
 		)
-		r.countdownTicker.Stop()
+		r.ticker.Stop()
 		r.countdownStarted = false
 		r.countdownSeconds = 0
 	}
 }
 
+// Runs the game timer and sends periodic updates to the players
 func (r *Room) startGame() {
+
+	// Can't start game if room is in the countdown state
+	if r.waitCountdownStarted || r.countdownStarted {
+		return
+	}
+
+	r.gameStarted = true
+	r.time = 0
+	r.ticker = time.NewTicker(time.Millisecond * 1000)
+	go func() {
+		for range r.ticker.C {
+			r.time++
+			playersData := r.getPlayersData()
+			r.SendMessage(
+				TYPE_UPDATE_PLAYERS_DATA,
+				map[string]interface{}{
+					"players": playersData,
+				},
+			)
+		}
+	}()
 
 	r.SendMessage(
 		TYPE_START_GAME,
@@ -202,9 +242,62 @@ func (r *Room) startGame() {
 
 }
 
+// Gets the game data and player scores
+func (r *Room) getPlayersData() map[string]interface{} {
+	// Create a pipeline to get data for all players
+	pipeline := GetEngine().redis.Pipeline()
+	defer pipeline.Close()
+	playerResults := make(map[string]*redis.StringStringMapCmd)
+	for identifier := range r.Players {
+		playerResults[identifier] = pipeline.HGetAll("rooms:" + r.Id + ":players:" + identifier)
+	}
+
+	_, err := pipeline.Exec()
+	if err != nil {
+		log.Println("Errow while fetching players data", err)
+	}
+
+	var parsedResults = make(map[string]interface{})
+	for _, data := range playerResults {
+		val := data.Val()
+		parsedResults[val["identifier"]] = val
+	}
+
+	return parsedResults
+}
+
+// This function stops the game timer
 func (r *Room) finishGame() {
-	r.SendMessage(
-		TYPE_FINISH_GAME,
-		map[string]interface{}{},
-	)
+	if r.gameStarted {
+		r.ticker.Stop()
+	}
+}
+
+func (r * Room) resetRoom() {
+	if r.waitCountdownStarted || r.countdownStarted || r.gameStarted {
+		r.ticker.Stop();
+	}
+}
+
+// Receives the player score and updates the redis database
+func (r *Room) handlePlayerUpdate(identifier string, score float64) {
+	if r.gameStarted {
+		GetEngine().redis.HSet("rooms:"+r.Id+":players:"+identifier, "score", score)
+	}
+}
+
+// Handles the player finishing the game: sets the finished flag, sends a message @TODO: Automatically post a game result
+func (r *Room) handlePlayerCompleted(identifier string) {
+	if r.gameStarted {
+		GetEngine().redis.HSet("rooms:"+r.Id+":players:"+identifier, "completed", true)
+		r.SendMessage(
+			TYPE_PLAYER_FINISHED_GAME,
+			map[string]interface{}{
+				"place": r.nextPlace,
+			},
+		)
+
+		// Increment next place
+		r.nextPlace++
+	}
 }
