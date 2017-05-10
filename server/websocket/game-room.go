@@ -6,6 +6,8 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/iKonrad/typitap/server/manager"
+	"github.com/iKonrad/typitap/server/logs"
+	"strconv"
 )
 
 type Room struct {
@@ -223,6 +225,14 @@ func (r *Room) startGame() {
 	r.gameStarted = true
 	r.time = 0
 	r.ticker = time.NewTicker(time.Millisecond * 1000)
+
+	logs.Log(
+		"Starting game",
+		"Game in room " + r.Id + " has started",
+		[]string{"websocket", "game"},
+		"Game Session " + r.Id,
+	);
+
 	go func() {
 		for range r.ticker.C {
 			r.time++
@@ -309,6 +319,12 @@ func (r *Room) handlePlayerCompleted(identifier string) {
 			},
 		)
 
+		logs.Success(
+			"Player completes game",
+			"Player " + identifier + "completes the game in room " + r.Id + " and finishes on " + strconv.Itoa(int(r.nextPlace)) + " place",
+			[]string{"websocket", "game", "players"},
+			"Game Session " + r.Id,
+		)
 
 		// Increment next place
 		r.nextPlace++

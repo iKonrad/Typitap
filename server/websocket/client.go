@@ -10,6 +10,7 @@ import (
 	"math/rand"
 	"strconv"
 	"encoding/json"
+	"github.com/iKonrad/typitap/server/logs"
 )
 
 const (
@@ -47,7 +48,7 @@ func ServeWs(context echo.Context) {
 
 	ws, err := upgrader.Upgrade(context.Response().Writer, context.Request(), nil);
 	if err != nil {
-		log.Println(err);
+		logs.Error("Websocket error", "Error while upgrading a request: " + err.Error(), []string{"websocket"}, "Websocket error")
 		return
 	}
 
@@ -74,6 +75,8 @@ func ServeWs(context echo.Context) {
 	c.SendMessage(TYPE_CONNECTED, map[string]interface{}{
 		"identifier": identifier,
 	})
+
+
 
 	go c.writePump()
 	c.readPump()
@@ -126,6 +129,7 @@ func (c *Client) writePump() {
 	for {
 		select {
 		case message, ok := <-c.send:
+			logs.Incr("socketMessages", []string{"websocket"});
 			if !ok {
 					c.write(websocket.CloseMessage, []byte{})
 					return
@@ -134,6 +138,7 @@ func (c *Client) writePump() {
 					return
 			}
 		case <-ticker.C:
+			logs.Incr("socketMessages", []string{"websocket"});
 			if err := c.write(websocket.PingMessage, []byte{}); err != nil {
 				return
 			}
@@ -157,5 +162,8 @@ func (c *Client) SendMessage(messageType string, message interface{}) {
 	if err != nil {
 		log.Println("Error while encoding a payload")
 	}
+
+	logs.Incr("socketMessages", []string{"websocket"});
+
 	c.write(websocket.TextMessage, encoded);
 }

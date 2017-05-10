@@ -8,6 +8,7 @@ import (
 	"github.com/iKonrad/typitap/server/config"
 	"github.com/iKonrad/typitap/server/manager"
 	"github.com/pkg/errors"
+	"github.com/iKonrad/typitap/server/logs"
 )
 
 type Engine struct {
@@ -84,7 +85,11 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 		if !ok {
 			online = false
 		}
-		_, ok = GetEngine().handleJoinRoom(identifier, online.(bool))
+
+		var roomId string
+		if roomId, ok = GetEngine().handleJoinRoom(identifier, online.(bool)); ok {
+			logs.Log("Player joined room", "Player " + identifier + " joined room " + roomId, []string{"websocket", "game", "players"}, "Game Session " + roomId)
+		}
 	case "LEAVE_ROOM":
 		err := e.handleLeaveRoom(identifier)
 		if err != nil {
@@ -166,6 +171,8 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
 		// Room doesn't exists, create a new one
 		room = NewRoom(session.Id)
 		e.newRoomChannel <- room
+		logs.Log("New room created", "Room '" + room.Id + "' has been created", []string{"websocket", "game"}, "Game Session " + room.Id)
+		logs.Gauge("rooms", float64(len(e.rooms)), []string{"websocket", "game"})
 	} else {
 		room = e.rooms[session.Id]
 	}
@@ -176,8 +183,8 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
 	// If room is full, close the room
 	log.Println("Player joined. Players now:", len(room.Players))
 	if len(room.Players) >= 5 {
-		log.Println("We've got enough players. Closing the session")
 		manager.Game.CloseGameSession(room.Id)
+		logs.Success("Room is full", "Room '" + room.Id + "' is full and has been closed", []string{"websocket", "game"}, "Game Session " + room.Id)
 	}
 
 	// Send message to the new player with a list of players and game text
@@ -201,7 +208,6 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
 	if len(room.Players) > 1 {
 		room.restartWaitCountdown()
 	}
-
 	return room.Id, true
 }
 
@@ -233,9 +239,10 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 			e.RemoveRoom(roomId)
 		}
 
+		logs.Log("Player left room", "Player " + identifier + " left room", []string{"websocket", "game", "players"}, "Game Session " + roomId)
+
 		return nil
 	}
-
 	return errors.New("Room with ID " + roomId + " has not been found")
 }
 
@@ -272,6 +279,8 @@ func (e *Engine) GetRoom(sessionId string) (*Room, bool) {
 }
 
 func (e *Engine) RemoveRoom(roomId string) {
+	logs.Log("Closing room", "Room " + roomId + " has been closed", []string{"websocket", "game", "players"}, "Game Session " + roomId)
+	logs.Gauge("rooms", float64(len(e.rooms)), []string{"websocket", "game"})
 	e.rooms[roomId].finishGame();
 	delete(e.rooms, roomId);
 }

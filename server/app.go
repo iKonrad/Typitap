@@ -8,6 +8,7 @@ import (
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/gorilla/websocket"
 	"github.com/iKonrad/typitap/server/assets"
+	"github.com/iKonrad/typitap/server/logs"
 	middlewares "github.com/iKonrad/typitap/server/middleware"
 	"github.com/iKonrad/typitap/server/routes"
 	ws "github.com/iKonrad/typitap/server/websocket"
@@ -181,6 +182,7 @@ func NewApp(opts ...AppOptions) *App {
 		}
 	})
 
+	logs.Log("App Started", "Typitap App has started", []string{"server"}, "Server")
 	return app
 }
 
