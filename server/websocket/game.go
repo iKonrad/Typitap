@@ -282,5 +282,6 @@ func (e *Engine) RemoveRoom(roomId string) {
 	logs.Log("Closing room", "Room " + roomId + " has been closed", []string{"websocket", "game", "players"}, "Game Session " + roomId)
 	logs.Gauge("rooms", float64(len(e.rooms)), []string{"websocket", "game"})
 	e.rooms[roomId].finishGame();
+	manager.Game.MarkSessionFinished(roomId);
 	delete(e.rooms, roomId);
 }

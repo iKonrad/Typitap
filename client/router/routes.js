@@ -7,6 +7,8 @@ import Logout from 'scenes/Auth/scenes/Logout';
 import Activate from 'scenes/Auth/scenes/Activate';
 import Play from 'scenes/Play';
 import GameWindow from 'scenes/Game';
+import Account from 'scenes/Account';
+import AccountDetails from 'scenes/Account/scenes/AccountDetails';
 
 import Permissions from 'utils/permissions';
 
@@ -30,22 +32,30 @@ export default ({store, first}) => {
         };
     }
 
-
     return (
         <Route path="/" component={Base}>
             <IndexRoute component={Home} onEnter={w(Home.onEnter)}/>
             <Route path="/login" component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.onEnter)}/>
             <Route path="/signup" component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.onEnter)}/>
-            <Route path="/auth/password/reset/:token" component={Permissions.OnlyAnonymous(Auth)}
-                   onEnter={w(Auth.onEnter)}/>
-            <Route path="/auth/password/forgot" component={Permissions.OnlyAnonymous(Auth)}
-                   onEnter={w(Auth.onEnter)}/>
+
+            <Route path="/account" component={Account}>
+                <IndexRoute component={Permissions.OnlyUsers(AccountDetails)} onEnter={w(AccountDetails.onEnter)}/>
+                <Route path="details" component={Permissions.OnlyUsers(AccountDetails)} onEnter={w(AccountDetails.onEnter)}/>
+                <Route path="avatar" component={Permissions.OnlyUsers(AccountDetails)} onEnter={w(AccountDetails.onEnter)}/>
+                <Route path="keyboard" component={Permissions.OnlyUsers(AccountDetails)} onEnter={w(AccountDetails.onEnter)}/>
+            </Route>
 
             <Route path="/play" component={Play} onEnter={w(Play.onEnter)}/>
             <Route path="/play/:type" component={GameWindow} onEnter={w(GameWindow.onEnter)}/>
 
             <Route path="/auth/activate/:token" component={Activate} onEnter={w(Activate.onEnter)}/>
             <Route path="auth/logout" component={Logout} onEnter={w(Logout.onEnter)}/>
+            <Route path="/auth/password/reset/:token" component={Permissions.OnlyAnonymous(Auth)}
+                   onEnter={w(Auth.onEnter)}/>
+            <Route path="/auth/password/forgot" component={Permissions.OnlyAnonymous(Auth)}
+                   onEnter={w(Auth.onEnter)}/>
+
+
             {/* Replace with 404 */}
             <Route path="*" component={Home} onEnter={w(Home.onEnter)}/>
         </Route>

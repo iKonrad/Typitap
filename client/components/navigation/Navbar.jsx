@@ -21,12 +21,6 @@ class Navbar extends Component {
                     url: '/signup',
                     authenticated: false
                 },
-                // {
-                //     label: 'Dashboard',
-                //     type: 'link',
-                //     url: '/',
-                //     authenticated: true
-                // },
                 {
                     label: 'My account',
                     type: 'dropdown',
@@ -36,7 +30,7 @@ class Navbar extends Component {
                         {
                             label: 'Account',
                             type: 'link',
-                            url: '/account',
+                            url: '/account/details',
                             authenticated: true
                         },
                         {

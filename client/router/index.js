@@ -45,14 +45,14 @@ require('assets/scss/main.scss');
 
 
 // Style live reloading
-// if (module.hot) {
-//     let c = 0;
-//     module.hot.accept('assets/scss', () => {
-//         require('assets/scss/main.scss');
-//         const a = document.createElement('a');
-//         const link = document.querySelector('link[rel="stylesheet"]');
-//         a.href = link.href;
-//         a.search = '?' + c++;
-//         link.href = a.href;
-//     });
-// }
+if (module.hot) {
+    let c = 0;
+    module.hot.accept('assets/scss/main.scss', () => {
+        require('../assets/scss/main.scss');
+        const a = document.createElement('a');
+        const link = document.querySelector('link[rel="stylesheet"]');
+        a.href = link.href;
+        a.search = '?' + c++;
+        link.href = a.href;
+    });
+}

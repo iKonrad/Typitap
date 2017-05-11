@@ -16,7 +16,6 @@ class Dashboard extends Component {
     }
 
     static onEnter({store, next, replace, callback}) {
-
         callback();
     }
 

@@ -80,6 +80,7 @@ func (gm GameManager) FindOpenSession(online bool) (entities.GameSession, bool) 
 	resp, err := r.Table("game_sessions").Filter(map[string]interface{}{
 		"online": online,
 		"open":   true,
+		"finished": false,
 	}).OrderBy(r.Asc("created")).Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
 			"textId":  r.Table("game_texts").Get(p.Field("textId")),

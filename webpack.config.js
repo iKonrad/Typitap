@@ -27,8 +27,14 @@ if (process.env.NODE_ENV === 'production') {
             'process.env': {NODE_ENV: JSON.stringify('production')}
         })
     ]);
+};
+
+var scssLoader = "css-loader!sass-loader!import-glob-loader";
+var cssLoader = "css-loader";
+if (process.env.NODE_ENV === 'production') {
+    scssLoader = "css-loader?minimize=true!sass-loader!import-glob-loader";
+    cssLoader = "css-loader?minimize=true";
 }
-;
 
 var config = {
     entry: {
@@ -43,8 +49,8 @@ var config = {
     module: {
         loaders: [
             { test: require.resolve('jquery'), loader: 'expose?$!expose?jQuery' },
-            { test: /\.scss$/, loader: ExtractTextPlugin.extract('css-loader?minimize=true!sass-loader!import-glob-loader') }, // SASS & CSS FILES
-            {test: /\.css/, loader: ExtractTextPlugin.extract('css-loader?minimize=true')},
+            { test: /\.scss$/, loader: ExtractTextPlugin.extract(scssLoader) }, // SASS & CSS FILES
+            {test: /\.css/, loader: ExtractTextPlugin.extract(cssLoader)},
             {test: /\.(png|gif)$/, loader: 'url-loader?name=[name]@[hash].[ext]&limit=5000'},
             {test: /\.(pdf|ico|jpg|eot|otf|woff|ttf|mp4|webm)$/, loader: 'file-loader?name=[name]@[hash].[ext]'},
             {test: /\.json$/, loader: 'json-loader'},
