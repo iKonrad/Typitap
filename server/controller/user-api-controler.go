@@ -88,16 +88,42 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 
 	switch field {
 	case "Name":
-		user.Name = value
+		isValid, err := manager.User.ValidateName(value);
+		if isValid {
+			user.Name = value
+		} else {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"success": false,
+				"message": err,
+			})
+		}
 	case "Email":
-		user.Email = value
+		isValid, err := manager.User.ValidateEmail(value);
+		if isValid {
+			user.Email = value
+		} else {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"success": false,
+				"message": err,
+			})
+		}
+
 	case "Password":
-		manager.User.UpdateUserPassword(value, user)
+
+		isValid, err := manager.User.ValidatePassword(value);
+		if isValid {
+			manager.User.UpdateUserPassword(value, user)
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"success": true,
+				"message": "Password updated",
+			})
+		}
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"success": true,
-			"message": "Password updated",
+			"success": false,
+			"message": err,
 		})
 	}
+
 
 	if ok := manager.User.UpdateUser(&user); ok {
 		return c.JSON(http.StatusOK, map[string]interface{}{

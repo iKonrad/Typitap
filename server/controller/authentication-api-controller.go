@@ -293,13 +293,13 @@ func (ac AuthenticationAPIController) HandlePasswordReset(c echo.Context) error 
 	}
 
 	// We've got the token, now we can validate the password
-	isPasswordValid, _ := manager.User.ValidatePassword(password);
+	isPasswordValid, err := manager.User.ValidatePassword(password);
 
 	if !isPasswordValid {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"success": false,
 			"errors": map[string]string{
-				"password": "Invalid Password",
+				"password": err,
 			},
 		});
 	}

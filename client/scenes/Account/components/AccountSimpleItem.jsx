@@ -103,9 +103,10 @@ class AccountSimpleItem extends React.Component {
                 this.toggleButton();
                 this.props.dispatch(Notifications.success({title: `${this.props.name} updated`, message: "Your details have been updated successfully"}))
                 that.props.dispatch(UserActions.updateUserField(that.props.name, field.value));
+            } else {
+                this.props.dispatch(Notifications.error({title: `Error`, message: response.message}))
             }
         })
-
     }
 
     render() {
