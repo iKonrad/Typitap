@@ -3,7 +3,7 @@ const LOGOUT_USER_SUCCESS =  "LOGOUT_USER_SUCCESS";
 const ACTIVATE_USER_SUCCESS =  "ACTIVATE_USER_SUCCESS";
 const ACTIVATE_USER_FAILURE =  "ACTIVATE_USER_FAILURE";
 const SAVE_USER_DATA =  "SAVE_USER_DATA";
-
+const UPDATE_USER_FIELD = "UPDATE_USER_FIELD";
 
 
 export default function reducer(state = {}, action) {
@@ -28,6 +28,17 @@ export default function reducer(state = {}, action) {
                     Active: true,
                 }
             }
+        case UPDATE_USER_FIELD:
+            let newObj = {};
+            newObj[action.key] = action.value;
+
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    ...newObj
+                }
+            };
     }
 
     return state;
@@ -60,8 +71,10 @@ export function logoutUser() {
 
 };
 
-export function fetchGameResults() {
-
-
-
+export function updateUserField(key, value) {
+    return {
+        type: UPDATE_USER_FIELD,
+        key,
+        value,
+    }
 }

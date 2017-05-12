@@ -325,3 +325,15 @@ func (um UserManager) UpdateUserPassword(password string, user entities.User) bo
 
 	return true
 }
+
+func (um UserManager) UpdateUser(user *entities.User) bool {
+
+	r.Table("users").Get(user.Id).Update(map[string]interface{}{
+		"name": user.Name,
+		"active": user.Active,
+		"email": user.Email,
+	}).Exec(db.Session);
+
+	return true;
+
+}

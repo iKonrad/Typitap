@@ -1,12 +1,14 @@
 package controller
 
 import (
+	"log"
+	"net/http"
+
+	db "github.com/iKonrad/typitap/server/database"
 	"github.com/iKonrad/typitap/server/entities"
+	"github.com/iKonrad/typitap/server/manager"
 	"github.com/labstack/echo"
 	r "gopkg.in/gorethink/gorethink.v3"
-	db "github.com/iKonrad/typitap/server/database"
-	"net/http"
-	"log"
 )
 
 type UserAPIController struct {
@@ -20,7 +22,6 @@ func init() {
 
 func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 
-
 	// Check if user is logged in
 	if !c.Get("IsLoggedIn").(bool) {
 		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
@@ -28,11 +29,9 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 		})
 	}
 
-
-
 	user := c.Get("User").(entities.User)
 
-	var results []map[string]interface{};
+	var results []map[string]interface{}
 	filters := map[string]interface{}{}
 
 	filters["userId"] = user.Id
@@ -41,40 +40,75 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 		filters["online"] = true
 	}
 
-
 	if c.QueryParam("finished") != "" {
 		filters["finished"] = true
 	}
 
 	resp, err := r.Table("game_results").Filter(filters).OrderBy(r.Desc("created")).Merge(func(t r.Term) interface{} {
-		return map[string]interface{} {
+		return map[string]interface{}{
 			"session": r.Table("game_sessions").Get(t.Field("sessionId")),
 		}
-	}).Run(db.Session);
-
-	defer resp.Close();
-
+	}).Run(db.Session)
+	defer resp.Close()
 	if err != nil {
-		log.Println(err);
+		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"success": false,
-			"error": "Internal error occurred",
-		});
+			"error":   "Internal error occurred",
+		})
 	}
 
-	err = resp.All(&results);
-
+	err = resp.All(&results)
 	if err != nil {
-		log.Println(err.Error());
+		log.Println(err.Error())
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"success": false,
-			"error": "Internal error occurred",
-		});
+			"error":   "Internal error occurred",
+		})
 	}
-
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
-		"data": results,
-	});
+		"data":    results,
+	})
+}
+
+func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
+
+	// Check if user is logged in
+	if !c.Get("IsLoggedIn").(bool) {
+		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
+			"success": false,
+		})
+	}
+
+	field := c.FormValue("field")
+	value := c.FormValue("value")
+	user := c.Get("User").(entities.User)
+
+	switch field {
+	case "Name":
+		user.Name = value
+	case "Email":
+		user.Email = value
+	case "Password":
+		manager.User.UpdateUserPassword(value, user)
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"success": true,
+			"message": "Password updated",
+		})
+	}
+
+	if ok := manager.User.UpdateUser(&user); ok {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"success": true,
+			"message": "Account updated",
+		})
+	} else {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"success": false,
+			"message": "Something went wrong. Try again.",
+		})
+	}
+
 }

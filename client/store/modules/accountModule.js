@@ -3,46 +3,52 @@ const CLOSE_EDIT_FIELD = "CLOSE_EDIT_FIELD";
 
 const initialState = {
     details: {
-        name: {
+        Name: {
             open: false
         },
-        email: {
+        Email: {
             open: false
         },
-        password: {
+        Password: {
             open: false
         },
-        bio: {
+        Bio: {
             open: false
         }
     }
 };
 
 export default function reducer(state = initialState, action) {
-    switch(action.type) {
+    switch (action.type) {
         case OPEN_EDIT_FIELD:
-            let newState = {
-                ...state
+
+            let newObj = {};
+            newObj[action.field] = {
+                open: true,
             };
-            newState.details[action.field] = {
-                ...state.details[action.field],
-                open: true
+
+            return {
+                ...state,
+                details: {
+                    ...state.details,
+                    ...newObj
+                }
             };
-            return newState;
         case CLOSE_EDIT_FIELD:
-            newState = {
-                ...state
+            newObj = {};
+            newObj[action.field] = {
+                open: false,
             };
-            newState.details[action.field] = {
-                ...state.details[action.field],
-                open: false
+            return {
+                ...state,
+                details: {
+                    ...state.details,
+                    ...newObj
+                }
             };
-            return newState;
     }
     return state;
 }
-
-
 
 
 export function openEditField(field) {
@@ -57,4 +63,26 @@ export function closeEditField(field) {
         type: CLOSE_EDIT_FIELD,
         field
     }
+}
+
+export function submitField(field, value) {
+
+    return (dispatch) => {
+
+        const formData = new FormData();
+        formData.append("field", field);
+        formData.append("value", value);
+
+        return fetch("/api/user/account/update", {
+            credentials: "same-origin",
+            method: "POST",
+            body: formData,
+            headers: {
+                "Cookie": global.clientCookies
+            }
+        }).then((response) => {
+            return response.json()
+        });
+    };
+
 }

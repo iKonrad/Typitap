@@ -114,8 +114,6 @@ export default function reducer(state = initialState, action) {
             action.player.completed = false;
             players[action.player.identifier] = action.player;
 
-            console.log("LOL", players);
-
             return {
                 ...state,
                 room: {
@@ -246,7 +244,10 @@ export default function reducer(state = initialState, action) {
                 waitCountdownSeconds: 0,
             }
         case RESET_GAME:
-            return initialState
+            return {
+                ...state,
+                ...initialState
+            }
 
     }
 

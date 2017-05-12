@@ -15,7 +15,7 @@ const Permissions = {
     OnlyUsers: UserAuthWrapper({
         authSelector: state => state.user,
         redirectAction: routerActions.replace,
-        failureRedirectPath: '/',
+        failureRedirectPath: '/login',
         wrapperDisplayName: 'OnlyUsers',
         predicate: user => user.loggedIn
     })

@@ -22,7 +22,7 @@ class Navbar extends Component {
                     authenticated: false
                 },
                 {
-                    label: 'My account',
+                    label: '%%Name%%',
                     type: 'dropdown',
                     url: '#',
                     authenticated: true,
@@ -57,38 +57,62 @@ class Navbar extends Component {
         };
     }
 
+    renderDropdown(index, obj) {
+        return (
+            <li className="dropdown" key={'dropdown-' + index}>
+                <a
+                    href="#"
+                    className="dropdown-toggle"
+                    data-toggle="dropdown"
+                    role="button"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                    { obj.label }
+                    <span className="caret" style={{marginLeft: '5px'}}></span>
+                </a>
+                <ul className="dropdown-menu">
+                    { obj.items.map((item, index) => {
+                        return <NavLink className='dropdown-item' to={item.url}
+                                        key={'menu-dropdown-item-' + index}>{ item.label }</NavLink>;
+                    }) }
+                </ul>
+            </li>
+        );
+    }
+
+
+    parseValue(value) {
+        if (this.props.user.loggedIn) {
+            value = value.replace("%%Name%%", this.props.user.data.Name);
+            value = value.replace("%%Email%%", this.props.user.data.Email);
+        }
+        return value;
+    }
+
     render() {
+        let that = this;
+
         return (
             <nav className="navbar">
                 <div className="container">
                     <div className="navbar-header">
-                        <Link className="navbar-brand" to="/"><img src="/static/images/identity/logo-white-sm.png"
-                                                                   alt=""/></Link>
+                        <Link className="navbar-brand" to="/">
+                            <img src="/static/images/identity/logo-white-sm.png" alt=""/>
+                        </Link>
                     </div>
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav pull-right">
-
                             { this.state.menu.map((obj, index) => {
-
-                                if (this.props.user && ((!obj.authenticated && this.props.user.loggedIn === undefined) ||  obj.authenticated === this.props.user.loggedIn)) {
-
+                                if (this.props.user && ((!obj.authenticated && this.props.user.loggedIn === undefined) || obj.authenticated === this.props.user.loggedIn)) {
+                                    let parsedObj = obj;
+                                    parsedObj.label = that.parseValue(obj.label);
                                     if (obj.type === 'link') {
-                                        return <NavLink to={obj.url} key={'menu-item-' + index}>{ obj.label }</NavLink>;
-                                    } else if (obj.type === 'button') {
-                                        return <NavLink to={obj.url} key={'menu-item-' + index}
-                                                        type="button">{ obj.label }</NavLink>;
-                                    } else if (obj.type === 'dropdown') {
-                                        return (
-                                            <li className="dropdown" key={'dropdown-' + index}>
-                                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{ obj.label } <span className="caret" style={{marginLeft: '5px'}}></span></a>
-                                                <ul className="dropdown-menu">
-                                                    { obj.items.map((item, index) => {
-                                                        return <NavLink className='dropdown-item' to={item.url}  key={'menu-dropdown-item-' + index}>{ item.label }</NavLink>;
-                                                    }) }
-                                                </ul>
-                                            </li>
-                                        );
-                                    } else if (obj.type === "logout") {
+                                        return <NavLink to={obj.url} key={'menu-item-' + index}>{ parsedObj.label }</NavLink>;
+                                    } else if (parsedObj.type === 'button') {
+                                        return <NavLink to={parsedObj.url} key={'menu-item-' + index} type="button">{ parsedObj.label }</NavLink>;
+                                    } else if (parsedObj.type === 'dropdown') {
+                                        return that.renderDropdown(index, parsedObj);
+                                    } else if (parsedObj.type === "logout") {
                                         return (<a href="/auth/logout" key={ 'menu-item' + index }>Log out</a>);
                                     }
                                 }

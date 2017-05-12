@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
+import SimpleItem from './../components/AccountSimpleItem';
 
 class Details extends React.Component {
     static onEnter({store, next, replace, callback}) {
@@ -17,7 +18,9 @@ class Details extends React.Component {
             <div className="details-page">
                 <div className="panel panel-default">
                     <div className="panel-body">
-                        Page
+                        <SimpleItem name="Name" />
+                        <SimpleItem name="Email" />
+                        <SimpleItem name="Password" />
                     </div>
                 </div>
             </div>

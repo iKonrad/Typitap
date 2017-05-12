@@ -15,4 +15,5 @@ type UserAPIRoutes struct{}
 func (api *UserAPIRoutes) Bind(group *echo.Group) {
 	// Authentication routes
 	group.GET("/results", controller.UserAPI.GetUserGameResults);
+	group.POST("/account/update", controller.UserAPI.UpdateAccountInformation);
 }

@@ -4,7 +4,7 @@ import "time"
 
 type User struct {
 	Id       string `gorethink:"id,omitempty"`
-	Name     string `gorethink:"firstName"`
+	Name     string `gorethink:"name"`
 	Email    string `gorethink:"email"`
 	Password string `gorethink:"password"`
 	Username string `gorethink:"username"`

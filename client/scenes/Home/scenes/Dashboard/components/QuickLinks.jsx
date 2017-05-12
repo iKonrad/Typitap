@@ -17,7 +17,7 @@ class QuickLinks extends Component {
                 </div>
                 <div className="panel-body">
                     <Link to="/play" className="text-primary">Play</Link><br />
-                    <Link to="/account" className="text-primary">My Account</Link><br />
+                    <Link to="/account/details" className="text-primary">My Account</Link><br />
                 </div>
             </div>
         );

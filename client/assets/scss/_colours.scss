@@ -86,6 +86,8 @@ $silver:        #bdc3c7;
 $concrete:      #95a5a6;
 $asbestos:      #7f8c8d;
 
+$grey-700: darken($dark-grey, 10%);
+$grey-600: darken($dark-grey, 5%);
 $grey-500: $dark-grey;
 $grey-450: lighten($dark-grey, 15%);
 $grey-400: lighten($dark-grey, 30%);
@@ -95,6 +97,7 @@ $grey-200: $silver;
 $grey-150: lighten($dark-grey, 73%);
 $grey-100: $clouds;
 $grey-050: lighten($clouds, 4%);
+$grey-030: lighten($clouds, 5%);
 
 
 $nav-color: $purple-200;

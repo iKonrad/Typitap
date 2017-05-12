@@ -8,4 +8,38 @@
 
   }
 
+  &__item {
+    margin: 10px 0;
+    padding: 10px 20px;
+    transition: all 0.3s ease-in-out;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: $grey-100;
+    }
+
+    &__label {
+      font-size: 14px;
+      color: $grey-300;
+      margin-bottom: -2px;
+    }
+
+    &__value {
+      font-size: 16px;
+      color: $grey-700;
+      min-height: 40px;
+      margin-top: 4px;
+    }
+
+    &__button {
+      width: 100%;
+      margin: 10px 0;
+
+      @media screen and (min-width: $screen-sm-min) {
+        width: auto;
+        margin: 5px 0 0 0;
+      }
+    }
+  }
+
 }

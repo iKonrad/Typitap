@@ -18,7 +18,8 @@
 
   &.btn-small {
     min-height: 20px;
-    padding: 5px 8px;
+    height: 30px;
+    padding: 4px 8px;
   }
 
   &-primary {
@@ -33,9 +34,8 @@
     }
   }
 
-
   &:focus {
-    outline:none;
+    outline: none;
     border-color: transparent;
   }
 
@@ -81,7 +81,7 @@
     background-color: $twitter;
     color: white;
     &:hover {
-    background-color: lighten($twitter, 6%);
+      background-color: lighten($twitter, 6%);
     }
   }
 
@@ -90,14 +90,11 @@
     background-color: $reddit;
     color: white;
     &:hover {
-    background-color: lighten($reddit, 6%);
+      background-color: lighten($reddit, 6%);
     }
   }
 
 }
-
-
-
 
 .btn-outline {
   background-color: transparent;
@@ -106,56 +103,71 @@
   border-width: 1px;
 }
 
+.btn-secondary.btn-outline {
+  color: $brand-secondary;
+  border: 1px solid $brand-secondary;
+  &:hover, &:active, &:focus {
+    color: white;
+    border: 1px solid $brand-secondary;
+  }
+}
+
 .btn-primary.btn-outline {
   color: $brand-primary;
   border: 1px solid $brand-primary;
-  &:hover {
-      border: 1px solid $brand-primary;
+  &:hover, &:active, &:focus {
+    color: white;
+    border: 1px solid $brand-primary;
   }
 }
 
 .btn-success.btn-outline {
   color: $brand-success;
   border: 1px solid $brand-success;
-  &:hover {
-      background-color: $brand-success;
-      border: 1px solid $brand-success;
+  &:hover, &:active, &:focus {
+    color: white;
+    background-color: $brand-success;
+    border: 1px solid $brand-success;
   }
 }
 
 .btn-info.btn-outline {
   color: $brand-info;
   border: 1px solid $brand-info;
-  &:hover {
-      background-color: $brand-info;
-      border: 1px solid $brand-info;
+  &:hover, &:active, &:focus {
+    color: white;
+    background-color: $brand-info;
+    border: 1px solid $brand-info;
   }
 }
 
 .btn-warning.btn-outline {
   color: $brand-warning;
   border: 1px solid $brand-warning;
-  &:hover {
-      background-color: $brand-warning;
-      border: 1px solid $brand-warning;
+  &:hover, &:active, &:focus {
+    color: white;
+    background-color: $brand-warning;
+    border: 1px solid $brand-warning;
   }
 }
 
 .btn-danger.btn-outline {
   color: $brand-danger;
   border: 1px solid $brand-danger;
-  &:hover {
-      background-color: $brand-danger;
-      border: 1px solid $brand-danger;
+  &:hover, &:active, &:focus {
+    color: white;
+    background-color: $brand-danger;
+    border: 1px solid $brand-danger;
   }
 }
 
 .btn-default.btn-outline {
   color: $grey-200;
   border: 1px solid $grey-200;
-  &:hover {
-      background-color: $grey-200;
-      border: 1px solid $grey-200;
+  &:hover, &:active, &:focus {
+    color: white;
+    background-color: $grey-200;
+    border: 1px solid $grey-200;
   }
 }
 
@@ -179,7 +191,6 @@
 .btn-default.btn-outline:hover {
   color: #fff;
 }
-
 
 a {
   color: $brand-secondary;
