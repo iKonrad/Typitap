@@ -63,7 +63,7 @@ func NewApp(opts ...AppOptions) *App {
 	engine.Debug = conf.UBool("debug")
 
 	engine.GET("/favicon.ico", func(c echo.Context) error {
-		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
+		return c.Redirect(http.StatusMovedPermanently, "/images/favicon.ico")
 	})
 
 	// Register authentication middleware
