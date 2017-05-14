@@ -16,8 +16,12 @@ class RecentGames extends Component {
 
         if (this.props.dashboard.games && this.props.dashboard.games.length > 0) {
             let items = this.props.dashboard.games.map((item, index) => {
+                let isPerfect = 1;
+                if (item.mistakes !== undefined && item.mistakes !== null) {
+                    isPerfect = Object.keys(item.mistakes).length < 1 ? 1 : 0
+                }
                 return (
-                    <RecentGamesRow perfect={ Object.keys(item.mistakes).length < 1 ? 1 : 0 }
+                    <RecentGamesRow perfect={ isPerfect }
                                     key={ 'activity-item-' + index } date={ new Date(item.created) }
                                     name={item.session.online ? "Online race" : "Offline race"} score={item.wpm}/>
                 );

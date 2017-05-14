@@ -4,6 +4,7 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import PasswordResetForm from './components/PasswordResetForm';
 import PasswordForgotForm from './components/PasswordForgotForm';
+import {Link} from 'react-router';
 
 class Auth extends Component {
 
@@ -31,20 +32,23 @@ class Auth extends Component {
             let isValid = response.success && response.valid;
 
             return (
-                <PasswordResetForm token={ this.props.params.token } isValid={ isValid } />
+                <PasswordResetForm token={ this.props.params.token } isValid={ isValid }/>
             );
         }
     }
 
     render() {
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="col col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
-                        { this.renderForm() }
+            <div className="auth">
+
+                <div className="auth__panel">
+                    <div className="text-center">
+                        <Link to="/"><img src="/static/images/identity/typitap-logo-white@1.5x.png" alt="Typitap logo" /></Link>
                     </div>
+                    { this.renderForm() }
                 </div>
             </div>
+
         );
     }
 

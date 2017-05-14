@@ -35,8 +35,8 @@ export default ({store, first}) => {
     return (
         <Route path="/" component={Base}>
             <IndexRoute component={Home} onEnter={w(Home.onEnter)}/>
-            <Route path="/login" component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.onEnter)}/>
-            <Route path="/signup" component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.onEnter)}/>
+            <Route path="/login" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.onEnter)}/>
+            <Route path="/signup" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.onEnter)}/>
 
             <Route path="/account" component={Account}>
                 <IndexRoute component={Permissions.OnlyUsers(AccountDetails)} onEnter={w(AccountDetails.onEnter)}/>
@@ -48,11 +48,11 @@ export default ({store, first}) => {
             <Route path="/play" component={Play} onEnter={w(Play.onEnter)}/>
             <Route path="/play/:type" component={GameWindow} onEnter={w(GameWindow.onEnter)}/>
 
-            <Route path="/auth/activate/:token" component={Activate} onEnter={w(Activate.onEnter)}/>
+            <Route path="/auth/activate/:token" emptyBase={true} component={Activate} onEnter={w(Activate.onEnter)}/>
             <Route path="auth/logout" component={Logout} onEnter={w(Logout.onEnter)}/>
-            <Route path="/auth/password/reset/:token" component={Permissions.OnlyAnonymous(Auth)}
+            <Route path="/auth/password/reset/:token" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)}
                    onEnter={w(Auth.onEnter)}/>
-            <Route path="/auth/password/forgot" component={Permissions.OnlyAnonymous(Auth)}
+            <Route path="/auth/password/forgot" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)}
                    onEnter={w(Auth.onEnter)}/>
 
 

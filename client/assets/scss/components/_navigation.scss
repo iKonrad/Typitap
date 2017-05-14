@@ -2,6 +2,8 @@
 .navbar {
   background: $nav-color;
   border: none;
+  border-radius: 0;
+  margin-bottom: 0;
 
   .navbar-btn {
     margin: 10px;
@@ -13,7 +15,7 @@
 
 
     .navbar-brand {
-      padding-top: 20px;
+      padding-top: 13px;
     }
   }
 

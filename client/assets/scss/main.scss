@@ -21,6 +21,7 @@ $icon-font-path: "./../libs/bootstrap-sass/assets/fonts/bootstrap/";
 // 2. Components
 @import 'components/**/*.scss';
 
+
 // 3. Pages
 @import 'pages/**/*.scss';
 
@@ -36,6 +37,11 @@ body {
 }
 
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 
 .row {
@@ -43,4 +49,9 @@ body {
     margin: 15px 0px;
 
   }
+}
+
+#app {
+  width: 100%;
+  height: 100%;
 }

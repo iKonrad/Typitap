@@ -40,7 +40,7 @@ class SignupForm extends Component {
 
             <div className="">
                 <div className="panel panel-default card-login">
-                    <div className="panel-heading"><h2>Sign up</h2></div>
+                    <div className="panel-heading"><h3>Sign up</h3></div>
                     <div className="panel-body">
                         <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
 
@@ -51,14 +51,23 @@ class SignupForm extends Component {
 
                             <div className="form-group">
                                 <button type="submit" disabled={pristine || submitting}
-                                        className="btn btn-secondary btn-block">Sign up
+                                        className="btn btn-primary btn-block">Sign up
                                 </button>
                             </div>
                         </form>
                     </div>
-                </div>
-                <div className="text-center">
-                    <Link to="/auth/password/forgot">Forgot password?</Link> | Have an account? <Link to="/login">Log in</Link>
+                    <div className="panel-footer">
+                        <div className="row">
+                            <div className="col col-xs-12">
+                                <div className="pull-left">
+                                    <Link to="/login">Log in</Link>
+                                </div>
+                                <div className="pull-right">
+                                    <Link to="/auth/password/forgot">Forgot password?</Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

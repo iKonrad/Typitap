@@ -1,10 +1,9 @@
 package manager
 
 import (
-	"encoding/json"
 	"errors"
 	"log"
-	"strconv"
+	"strings"
 	"time"
 
 	db "github.com/iKonrad/typitap/server/database"
@@ -53,7 +52,7 @@ func (gm GameManager) GetSession(sessionId string) (entities.GameSession, error)
 	// Fetch the game text
 	resp, err := r.Table("game_sessions").Get(sessionId).Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
-			"textId":  r.Table("game_texts").Get(p.Field("textId")),
+			"textId": r.Table("game_texts").Get(p.Field("textId")),
 		}
 	}).Run(db.Session)
 	defer resp.Close()
@@ -78,12 +77,12 @@ func (gm GameManager) FindOpenSession(online bool) (entities.GameSession, bool) 
 
 	// Fetch the game text
 	resp, err := r.Table("game_sessions").Filter(map[string]interface{}{
-		"online": online,
-		"open":   true,
+		"online":   online,
+		"open":     true,
 		"finished": false,
 	}).OrderBy(r.Asc("created")).Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
-			"textId":  r.Table("game_texts").Get(p.Field("textId")),
+			"textId": r.Table("game_texts").Get(p.Field("textId")),
 		}
 	}).Run(db.Session)
 
@@ -107,25 +106,19 @@ func (gm GameManager) FindOpenSession(online bool) (entities.GameSession, bool) 
 	return session, true
 }
 
-
 func (gm GameManager) CloseGameSession(sessionId string) {
 
 	r.Table("game_sessions").Get(sessionId).Update(map[string]interface{}{
 		"open": false,
-	}).Exec(db.Session);
-
+	}).Exec(db.Session)
 }
-
 
 func (gm GameManager) OpenGameSession(sessionId string) {
 
 	r.Table("game_sessions").Get(sessionId).Update(map[string]interface{}{
 		"open": true,
-	}).Exec(db.Session);
-
+	}).Exec(db.Session)
 }
-
-
 
 func (gm GameManager) getRandomGameText() (entities.GameText, error) {
 
@@ -169,41 +162,37 @@ func (gm GameManager) getGameText(textId int) (entities.GameText, error) {
 
 }
 
-func (gm GameManager) SaveResult(user *entities.User, data map[string]interface{}) (entities.GameResult, error) {
+func (gm GameManager) SaveResult(user *entities.User, sessionId string, mistakes map[string]int, wpm int, accuracy int, gameTime int, place int) (entities.GameResult, error) {
 
-	_, isValid := gm.validateGameResult(data)
-	if !isValid {
-		return entities.GameResult{}, errors.New("Problem with saving game results")
-	}
+	//var mistakes map[string]int
+	//if data["mistakes"] != nil {
+	//	json.Unmarshal([]byte(data["mistakes"].(string)), &mistakes)
+	//}
 
-	var mistakes map[string]int
-	if data["mistakes"] != nil {
-		json.Unmarshal([]byte(data["mistakes"].(string)), &mistakes)
-	}
+	log.Println("SAvinggg...");
 
 	// Get Session by ID
-	session, err := gm.GetSession(data["sessionId"].(string))
+	session, err := gm.GetSession(sessionId)
 	if err != nil {
 		return entities.GameResult{}, err
 	}
 
 	newId := uuid.NewV4()
-	gameWpm, _ := strconv.Atoi(data["wpm"].(string))
-	gameAccuracy, _ := strconv.Atoi(data["accuracy"].(string))
-	gameTime, _ := strconv.Atoi(data["time"].(string))
-
-	// @TODO: Calculate WPM on server
+	//gameWpm, _ := strconv.Atoi(data["wpm"].(string))
+	//gameAccuracy, _ := strconv.Atoi(data["accuracy"].(string))
+	//gameTime, _ := strconv.Atoi(data["time"].(string))
 
 	// Create result object
 	newResult := entities.GameResult{
 		Id:       newId.String(),
 		User:     *user,
 		Created:  time.Now(),
-		WPM:      gameWpm,
-		Accuracy: gameAccuracy,
+		WPM:      wpm,
+		Accuracy: accuracy,
 		Time:     gameTime,
 		Mistakes: mistakes,
 		Session:  session,
+		Place:    place,
 	}
 
 	// Save the result in the database
@@ -240,7 +229,7 @@ func (gm GameManager) MarkSessionFinished(sessionId string) {
 
 	r.Table("game_sessions").Get(sessionId).Update(map[string]interface{}{
 		"finished": true,
-		"open": false,
+		"open":     false,
 	}).Exec(db.Session)
 }
 
@@ -251,4 +240,28 @@ func (gm GameManager) DeleteOldSessionsForUser(userId string) {
 		"userId":   userId,
 		"online":   false,
 	}).Delete().Exec(db.Session)
+}
+
+func (gm GameManager) CalculateResult(time int, errors int, text string) (int, int) {
+
+	// Remove spaces form the text
+	oneString := strings.Replace(text, " ", "", -1)
+
+	// Count number of characters in a string
+	characters := len([]rune(oneString))
+
+	// Divide the text by 5 to get number of average words
+	virtualWords := int(characters / 5)
+
+	if characters % 5 > 2 {
+		virtualWords++
+	}
+
+	// Calculate the WPM
+	speed := int(float64(virtualWords) * (60.0 / float64(time)))
+
+	// Calculate the accuracy
+	accuracy := 100 - int((float64(errors)/float64(virtualWords))*100)
+
+	return speed, accuracy
 }

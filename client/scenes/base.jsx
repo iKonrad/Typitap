@@ -36,6 +36,17 @@ class Base extends Component {
 
     render() {
 
+        let showEmptyBase = false;
+        this.props.router.routes.forEach((obj) => {
+            if (obj.emptyBase !== undefined && obj.emptyBase) {
+                showEmptyBase = true;
+            }
+        });
+
+        if (showEmptyBase) {
+            return this.props.children;
+        }
+
         return (
             <div>
                 <Navbar />

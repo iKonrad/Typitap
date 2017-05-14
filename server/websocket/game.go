@@ -6,9 +6,9 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/iKonrad/typitap/server/config"
+	"github.com/iKonrad/typitap/server/logs"
 	"github.com/iKonrad/typitap/server/manager"
 	"github.com/pkg/errors"
-	"github.com/iKonrad/typitap/server/logs"
 )
 
 type Engine struct {
@@ -25,9 +25,9 @@ const (
 	TYPE_PLAYER_LEFT_ROOM   = "PLAYER_LEFT_ROOM"
 
 	TYPE_PLAYER_COMPLETED_GAME = "PLAYER_COMPLETED_GAME"
-	TYPE_START_COUNTDOWN      = "START_COUNTDOWN"
-	TYPE_STOP_COUNTDOWN       = "STOP_COUNTDOWN"
-	TYPE_TICK_COUNTDOWN       = "TICK_COUNTDOWN"
+	TYPE_START_COUNTDOWN       = "START_COUNTDOWN"
+	TYPE_STOP_COUNTDOWN        = "STOP_COUNTDOWN"
+	TYPE_TICK_COUNTDOWN        = "TICK_COUNTDOWN"
 
 	TYPE_START_WAIT_COUNTDOWN = "START_WAIT_COUNTDOWN"
 	TYPE_STOP_WAIT_COUNTDOWN  = "STOP_WAIT_COUNTDOWN"
@@ -37,7 +37,7 @@ const (
 	TYPE_FINISH_GAME         = "FINISH_GAME"
 	TYPE_UPDATE_PLAYERS_DATA = "UPDATE_PLAYERS_DATA"
 
-	WAIT_SECONDS = 3; // How many seconds should the room count down for other players
+	WAIT_SECONDS        = 3   // How many seconds should the room count down for other players
 	FINISH_GAME_SECONDS = 120 // How many seconds must pass before the game automatically closes
 )
 
@@ -88,7 +88,7 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 
 		var roomId string
 		if roomId, ok = GetEngine().handleJoinRoom(identifier, online.(bool)); ok {
-			logs.Log("Player joined room", "Player " + identifier + " joined room " + roomId, []string{"websocket", "game", "players"}, "Game Session " + roomId)
+			logs.Log("Player joined room", "Player "+identifier+" joined room "+roomId, []string{"websocket", "game", "players"}, "Game Session "+roomId)
 		}
 	case "LEAVE_ROOM":
 		err := e.handleLeaveRoom(identifier)
@@ -111,19 +111,27 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 	case "UPDATE_PLAYER_DATA":
 		if score, ok := message["score"]; ok {
 			if roomId, ok := e.getRoomForClientId(identifier); ok {
-				e.rooms[roomId].handlePlayerUpdate(identifier, score.(float64));
+				e.rooms[roomId].handlePlayerUpdate(identifier, score.(float64))
 			}
 		}
 	case "COMPLETE_PLAYER_GAME":
 		if roomId, ok := e.getRoomForClientId(identifier); ok {
-			e.rooms[roomId].handlePlayerCompleted(identifier);
+
+			var mistakes = make(map[string]int)
+			m := message["mistakes"];
+
+			for i, v := range m.(map[string]interface{}) {
+				mistakes[i] = int(v.(float64))
+			}
+
+			e.rooms[roomId].handlePlayerCompleted(identifier, mistakes)
 
 			// Check if all players completed game. If yes, then shut the timer and remove the room
 			if e.rooms[roomId].haveAllPlayersCompletedGame() {
 				e.RemoveRoom(roomId)
 			}
 		}
-		break;
+		break
 	}
 
 }
@@ -169,9 +177,9 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
 	var room *Room
 	if !exists {
 		// Room doesn't exists, create a new one
-		room = NewRoom(session.Id)
+		room = NewRoom(session.Id, session.Text.Text)
 		e.newRoomChannel <- room
-		logs.Log("New room created", "Room '" + room.Id + "' has been created", []string{"websocket", "game"}, "Game Session " + room.Id)
+		logs.Log("New room created", "Room '"+room.Id+"' has been created", []string{"websocket", "game"}, "Game Session "+room.Id)
 		logs.Gauge("rooms", float64(len(e.rooms)), []string{"websocket", "game"})
 	} else {
 		room = e.rooms[session.Id]
@@ -184,7 +192,7 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
 	log.Println("Player joined. Players now:", len(room.Players))
 	if len(room.Players) >= 5 {
 		manager.Game.CloseGameSession(room.Id)
-		logs.Success("Room is full", "Room '" + room.Id + "' is full and has been closed", []string{"websocket", "game"}, "Game Session " + room.Id)
+		logs.Success("Room is full", "Room '"+room.Id+"' is full and has been closed", []string{"websocket", "game"}, "Game Session "+room.Id)
 	}
 
 	// Send message to the new player with a list of players and game text
@@ -239,7 +247,7 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 			e.RemoveRoom(roomId)
 		}
 
-		logs.Log("Player left room", "Player " + identifier + " left room", []string{"websocket", "game", "players"}, "Game Session " + roomId)
+		logs.Log("Player left room", "Player "+identifier+" left room", []string{"websocket", "game", "players"}, "Game Session "+roomId)
 
 		return nil
 	}
@@ -279,9 +287,9 @@ func (e *Engine) GetRoom(sessionId string) (*Room, bool) {
 }
 
 func (e *Engine) RemoveRoom(roomId string) {
-	logs.Log("Closing room", "Room " + roomId + " has been closed", []string{"websocket", "game", "players"}, "Game Session " + roomId)
+	logs.Log("Closing room", "Room "+roomId+" has been closed", []string{"websocket", "game", "players"}, "Game Session "+roomId)
 	logs.Gauge("rooms", float64(len(e.rooms)), []string{"websocket", "game"})
-	e.rooms[roomId].finishGame();
-	manager.Game.MarkSessionFinished(roomId);
-	delete(e.rooms, roomId);
+	e.rooms[roomId].finishGame()
+	manager.Game.MarkSessionFinished(roomId)
+	delete(e.rooms, roomId)
 }

@@ -1,0 +1,25 @@
+.blob {
+  margin: 20px 0;
+  position: relative;
+  &__name {
+
+  }
+
+
+
+  &__icon {
+    min-height: 100px;
+    transition: all 0.3s ease-in-out;
+
+  }
+
+  &:hover {
+    .blob__icon {
+      transform: scale(1.1);
+    }
+  }
+
+  &__text {
+    text-align: justify;
+  }
+}

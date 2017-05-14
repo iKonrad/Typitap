@@ -26,7 +26,6 @@ body {
 .text-caption {
   font-size: 1.05em;
   color: $grey-300;
-  margin-top: -15px;
   font-weight: 300;
 }
 
@@ -50,4 +49,12 @@ a {
 
 body, p, a, h1, h2, h3, h4, h5, h6 {
   font-family: "Dosis", sans-serif;
+}
+
+.white {
+  color: white;
+}
+
+strong {
+  font-weight: 600;
 }

@@ -1,7 +1,8 @@
 import * as socketActions from "store/modules/socketModule";
 import * as gameActions from "store/modules/gameModule";
 import GameEngine from "scenes/Game/utils/gameEngine";
-
+import Notifications from 'react-notification-system-redux';
+import React from 'react';
 const CODE_RECONNECT = 5001;
 const CODE_DISCONNECT = 5000;
 
@@ -65,6 +66,14 @@ const socketMiddleware = (function(){
                 store.dispatch(gameActions.updatePlayersData(msg.data.players));
                 break;
             case "PLAYER_COMPLETED_GAME":
+                if (msg.data.identifier === store.getState().socket.identifier) {
+                    let mistakes = store.getState().game.mistakes !== undefined ? Object.keys(store.getState().game.mistakes).length : 0;
+                    store.dispatch(Notifications.success({
+                        children: (
+                            <p>Game finished in {msg.data.time} seconds with score <strong>{msg.data.wpm}</strong> wpm. Your accuracy:
+                                <strong>{ msg.data.accuracy }%</strong> ({mistakes} mistakes)</p>)
+                    }));
+                }
                 store.dispatch(gameActions.setPlayerCompleted(msg.data.identifier, msg.data.place));
                 break;
             case "START_GAME":
@@ -156,7 +165,7 @@ const socketMiddleware = (function(){
                     if (socket !== null) {
                         socket.send(JSON.stringify({
                             type: "UPDATE_PLAYER_DATA",
-                            score: action.score
+                            score: action.score,
                         }));
                     }
                 }
@@ -165,7 +174,8 @@ const socketMiddleware = (function(){
                 if (store.getState().game.online) {
                     if (socket !== null) {
                         socket.send(JSON.stringify({
-                                type: "COMPLETE_PLAYER_GAME"
+                                type: "COMPLETE_PLAYER_GAME",
+                                mistakes: store.getState().game.mistakes
                         }));
                     }
                 }

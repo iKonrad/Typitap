@@ -23,9 +23,11 @@ type Room struct {
 	time                 int8
 }
 
-func NewRoom(id string) *Room {
+func NewRoom(id string, text string) *Room {
 
 	GetEngine().redis.HSet("rooms:"+id, "started", false)
+
+	GetEngine().redis.HSet("rooms:"+id, "text", text);
 
 	// Add player to the room
 	return &Room{
@@ -228,11 +230,10 @@ func (r *Room) startGame() {
 
 	logs.Log(
 		"Starting game",
-		"Game in room " + r.Id + " has started",
+		"Game in room "+r.Id+" has started",
 		[]string{"websocket", "game"},
-		"Game Session " + r.Id,
+		"Game Session "+r.Id,
 	);
-
 	go func() {
 		for range r.ticker.C {
 			r.time++
@@ -293,9 +294,10 @@ func (r *Room) finishGame() {
 	}
 }
 
-func (r * Room) resetRoom() {
+func (r *Room) resetRoom() {
 	if r.waitCountdownStarted || r.countdownStarted || r.gameStarted {
 		r.ticker.Stop();
+		GetEngine().redis.HDel("rooms:"+r.Id, "text");
 	}
 }
 
@@ -307,24 +309,39 @@ func (r *Room) handlePlayerUpdate(identifier string, score float64) {
 }
 
 // Handles the player finishing the game: sets the finished flag, sends a message @TODO: Automatically post a game result
-func (r *Room) handlePlayerCompleted(identifier string) {
+func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int) {
 
 	if r.gameStarted {
 		GetEngine().redis.HSet("rooms:"+r.Id+":players:"+identifier, "completed", true)
+
+		text := GetEngine().redis.HGet("rooms:"+r.Id, "text")
+
+		playerTime := int(r.time)
+
+		// Calculate WPM and accuracy
+		wpm, accuracy := manager.Game.CalculateResult(playerTime, len(mistakes), text.Val());
+
 		r.SendMessage(
 			TYPE_PLAYER_COMPLETED_GAME,
 			map[string]interface{}{
 				"identifier": identifier,
-				"place": r.nextPlace,
+				"place":      r.nextPlace,
+				"wpm":        wpm,
+				"accuracy":   accuracy,
+				"time": playerTime,
 			},
 		)
 
 		logs.Success(
 			"Player completes game",
-			"Player " + identifier + "completes the game in room " + r.Id + " and finishes on " + strconv.Itoa(int(r.nextPlace)) + " place",
+			"Player "+identifier+"completes the game in room "+r.Id+" and finishes on "+strconv.Itoa(int(r.nextPlace))+" place. WPM: "+strconv.Itoa(wpm)+", Accuracy: "+strconv.Itoa(accuracy)+", Time: " + strconv.Itoa(playerTime),
 			[]string{"websocket", "game", "players"},
-			"Game Session " + r.Id,
+			"Game Session "+r.Id,
 		)
+
+		if user, ok := manager.User.FindUserBy("username", identifier); ok {
+			manager.Game.SaveResult(&user, r.Id, mistakes, wpm, accuracy, int(r.time), int(r.nextPlace))
+		}
 
 		// Increment next place
 		r.nextPlace++
@@ -338,7 +355,7 @@ func (r *Room) haveAllPlayersCompletedGame() bool {
 
 	var parsedResults = make(map[string]*redis.StringCmd)
 	for identifier := range r.Players {
-		parsedResults[identifier] = pipeline.HGet("rooms:" + r.Id + ":players:" + identifier, "completed");
+		parsedResults[identifier] = pipeline.HGet("rooms:"+r.Id+":players:"+identifier, "completed");
 	}
 
 	_, err := pipeline.Exec()

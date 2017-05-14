@@ -37,19 +37,28 @@ class LoginForm extends Component {
         return (
             <div>
                 <div className="panel panel-default card-login">
-                    <div className="panel-heading"><h2>Log in</h2></div>
+                    <div className="panel-heading"><h3>Log in</h3></div>
                     <div className="panel-body">
                         <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
                             <Field name="username" component={ Input } type="text" label="Username"/>
                             <Field name="password" component={ Input } type="password" label="Password"/>
                             <div className="form-group">
-                                <button type="submit" disabled={pristine || submitting} className="btn btn-secondary btn-block">Log in</button>
+                                <button type="submit" disabled={pristine || submitting} className="btn btn-primary btn-block">Log in</button>
                             </div>
                         </form>
                     </div>
-                </div>
-                <div className="text-center">
-                    <Link to="/auth/password/forgot">Forgot password?</Link> | Don't have an account? <Link to="/signup">Get one</Link>
+                    <div className="panel-footer">
+                        <div className="row">
+                            <div className="col col-xs-12">
+                                <div className="pull-left">
+                                    <Link to="/auth/password/forgot">Forgot password?</Link>
+                                </div>
+                                <div className="pull-right">
+                                    <Link to="/signup">Create account</Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

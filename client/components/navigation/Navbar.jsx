@@ -97,7 +97,7 @@ class Navbar extends Component {
                 <div className="container">
                     <div className="navbar-header">
                         <Link className="navbar-brand" to="/">
-                            <img src="/static/images/identity/logo-white-sm.png" alt=""/>
+                            <img src="/static/images/identity/typitap-logo-white@1.25x.png" alt=""/>
                         </Link>
                     </div>
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

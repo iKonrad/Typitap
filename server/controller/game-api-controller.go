@@ -7,6 +7,8 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/iKonrad/typitap/server/manager"
 	"github.com/labstack/echo"
+	"strconv"
+	"encoding/json"
 )
 
 type GameAPIController struct {
@@ -72,7 +74,16 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 		"user":      user,
 	}
 
-	newResult, err := manager.Game.SaveResult(&user, data)
+	var mistakes map[string]int
+	if c.FormValue("mistakes") != "" {
+		json.Unmarshal([]byte(data["mistakes"].(string)), &mistakes)
+	}
+
+	wpm, _ := strconv.Atoi(c.FormValue("wpm"))
+	accuracy, _ := strconv.Atoi(c.FormValue("accuracy"))
+	gameTime, _ := strconv.Atoi(c.FormValue("time"))
+
+	newResult, err := manager.Game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, accuracy, gameTime, 0)
 
 	if err != nil {
 		log.Println(err)

@@ -32,7 +32,7 @@ class PasswordResetForm extends Component {
             <div className="">
                 {error && <strong>{error}</strong>}
                 <div className="panel panel-default card-login">
-                    <div className="panel-heading"><h2>Reset your password</h2></div>
+                    <div className="panel-heading"><h3>Reset your password</h3></div>
                     <div className="panel-body">
                         <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
 
@@ -40,7 +40,7 @@ class PasswordResetForm extends Component {
                             <Field name="password" component={ Input } type="password" label="Password"/>
                             <Field name="password-confirm" component={ Input } type="password" label="Confirm Password"/>
                             <div className="form-group">
-                                <button type="submit" disabled={pristine || submitting} className="btn btn-secondary btn-block">Reset Password</button>
+                                <button type="submit" disabled={pristine || submitting} className="btn btn-primary btn-block">Reset Password</button>
                             </div>
                         </form>
                     </div>

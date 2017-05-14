@@ -172,6 +172,30 @@ func (um UserManager) FindUserBy(key string, value string) (entities.User, bool)
 	return returnedUser, true
 }
 
+func (um UserManager) GetUser(id string) (entities.User, bool) {
+
+	log.Println("Getting user id ", id)
+	res, err := r.Table("users").Get(id).Run(db.Session)
+
+	defer res.Close()
+
+	if res.IsNil() {
+		log.Println("NIL")
+		return entities.User{}, false
+	}
+
+	var returnedUser entities.User
+	err = res.One(&returnedUser)
+
+	if err != nil {
+		log.Println("ERR", err)
+		return entities.User{}, false
+	}
+
+	return returnedUser, true
+
+}
+
 func (um UserManager) GenerateUserToken(tokenType string, user entities.User) (string, bool) {
 
 	// Generate activation token
