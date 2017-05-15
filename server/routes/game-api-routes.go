@@ -16,4 +16,6 @@ func (api *GameAPIRoutes) Bind(group *echo.Group) {
 	// Authentication routes
 	group.GET("/session/:type", controller.GameAPI.GetSession)
 	group.POST("/session/result", controller.GameAPI.SaveResult)
+	group.GET("/charts", controller.GameAPI.GetChartsData)
+	group.GET("/charts/:name", controller.GameAPI.GetChartData)
 }

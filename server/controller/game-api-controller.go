@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo"
 	"strconv"
 	"encoding/json"
+	"github.com/iKonrad/typitap/server/game/topchart"
 )
 
 type GameAPIController struct {
@@ -85,6 +86,11 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 
 	newResult, err := manager.Game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, accuracy, gameTime, 0)
 
+	manager.Game.MarkSessionFinished(c.FormValue("sessionId"));
+
+	// Submit the result for the top chart
+	topchart.CheckTopChart(&newResult);
+
 	if err != nil {
 		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -97,5 +103,31 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 		"success":  true,
 		"resultId": newResult.Id,
 	})
+
+}
+
+
+func (ac *GameAPIController) GetChartsData(c echo.Context) error {
+
+	charts := topchart.GetCharts();
+
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": true,
+		"data": charts,
+	});
+}
+
+
+func (ac *GameAPIController) GetChartData(c echo.Context) error {
+
+	name := c.Param("name");
+
+	chart := topchart.GetChart(name);
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": true,
+		"data": chart,
+	});
 
 }

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as UserActions from 'store/modules/userModule';
-import RecentGamesRow from './RecentGamesRow';
+import ResultRow from 'components/app/ResultRow';
 
 class RecentGames extends Component {
 
@@ -21,7 +21,7 @@ class RecentGames extends Component {
                     isPerfect = Object.keys(item.mistakes).length < 1 ? 1 : 0
                 }
                 return (
-                    <RecentGamesRow perfect={ isPerfect }
+                    <ResultRow perfect={ isPerfect }
                                     key={ 'activity-item-' + index } date={ new Date(item.created) }
                                     name={item.session.online ? "Online race" : "Offline race"} score={item.wpm}/>
                 );
@@ -38,8 +38,8 @@ class RecentGames extends Component {
             <div className="panel panel-default">
                 <div className="panel-heading">
                     <h3>Recent Games</h3>
-                    { this.renderItems() }
                 </div>
+                { this.renderItems() }
             </div>
         );
     }

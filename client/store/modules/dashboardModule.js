@@ -1,4 +1,4 @@
-const SET_RECENT_GAMES = "SET_RECENT_GAMES";
+const SET_RECENT_GAMES_DATA = "SET_RECENT_GAMES_DATA";
 
 const initialState = {
     games: [],
@@ -6,7 +6,7 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
-        case SET_RECENT_GAMES:
+        case SET_RECENT_GAMES_DATA:
             return {
                 ...state,
                 games: action.games,
@@ -30,7 +30,7 @@ export function getRecentGames() {
             return response.json();
         }).then((response) => {
             if (response.success) {
-                return dispatch({type: SET_RECENT_GAMES, games: response.data});
+                return dispatch({type: SET_RECENT_GAMES_DATA, games: response.data});
             }
         });
     }

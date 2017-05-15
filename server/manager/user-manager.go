@@ -174,13 +174,11 @@ func (um UserManager) FindUserBy(key string, value string) (entities.User, bool)
 
 func (um UserManager) GetUser(id string) (entities.User, bool) {
 
-	log.Println("Getting user id ", id)
 	res, err := r.Table("users").Get(id).Run(db.Session)
 
 	defer res.Close()
 
 	if res.IsNil() {
-		log.Println("NIL")
 		return entities.User{}, false
 	}
 
@@ -188,7 +186,6 @@ func (um UserManager) GetUser(id string) (entities.User, bool) {
 	err = res.One(&returnedUser)
 
 	if err != nil {
-		log.Println("ERR", err)
 		return entities.User{}, false
 	}
 

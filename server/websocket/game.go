@@ -4,15 +4,13 @@ import (
 	"log"
 	"sync"
 
-	"github.com/go-redis/redis"
-	"github.com/iKonrad/typitap/server/config"
 	"github.com/iKonrad/typitap/server/logs"
 	"github.com/iKonrad/typitap/server/manager"
 	"github.com/pkg/errors"
+	db "github.com/iKonrad/typitap/server/database"
 )
 
 type Engine struct {
-	redis          *redis.Client
 	rooms          map[string]*Room
 	newRoomChannel chan *Room
 }
@@ -49,17 +47,9 @@ func GetEngine() *Engine {
 		engine = &Engine{
 			rooms:          make(map[string]*Room),
 			newRoomChannel: make(chan *Room),
-			redis: redis.NewClient(&redis.Options{
-				Addr:     config.GetString("redis_host"),
-				Password: "",                                 // no password set
-				DB:       config.Get("redis_database").(int), // use default DB
-			}),
 		}
 
-		if config.GetBool("debug") {
-			// Flush redis database
-			engine.redis.FlushDb()
-		}
+
 	})
 	return engine
 }
@@ -257,7 +247,7 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 // Helper function that fetches the RoomID (SessionID) for a given Client identifier
 func (e *Engine) getRoomForClientId(identifier string) (sessionId string, ok bool) {
 
-	sessionId = e.redis.HGet("player:"+identifier, "roomId").Val()
+	sessionId = db.Redis.HGet("player:"+identifier, "roomId").Val()
 	ok = false
 
 	if e.roomExists(sessionId) {

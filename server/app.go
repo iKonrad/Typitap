@@ -17,6 +17,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
+	"github.com/iKonrad/typitap/server/cron"
 )
 
 // App struct.
@@ -183,6 +184,7 @@ func NewApp(opts ...AppOptions) *App {
 	})
 
 	logs.Log("App Started", "Typitap App has started", []string{"server"}, "Server")
+	cron.RunJobs()
 	return app
 }
 

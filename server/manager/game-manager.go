@@ -164,13 +164,6 @@ func (gm GameManager) getGameText(textId int) (entities.GameText, error) {
 
 func (gm GameManager) SaveResult(user *entities.User, sessionId string, mistakes map[string]int, wpm int, accuracy int, gameTime int, place int) (entities.GameResult, error) {
 
-	//var mistakes map[string]int
-	//if data["mistakes"] != nil {
-	//	json.Unmarshal([]byte(data["mistakes"].(string)), &mistakes)
-	//}
-
-	log.Println("SAvinggg...");
-
 	// Get Session by ID
 	session, err := gm.GetSession(sessionId)
 	if err != nil {
@@ -178,9 +171,6 @@ func (gm GameManager) SaveResult(user *entities.User, sessionId string, mistakes
 	}
 
 	newId := uuid.NewV4()
-	//gameWpm, _ := strconv.Atoi(data["wpm"].(string))
-	//gameAccuracy, _ := strconv.Atoi(data["accuracy"].(string))
-	//gameTime, _ := strconv.Atoi(data["time"].(string))
 
 	// Create result object
 	newResult := entities.GameResult{
@@ -253,7 +243,7 @@ func (gm GameManager) CalculateResult(time int, errors int, text string) (int, i
 	// Divide the text by 5 to get number of average words
 	virtualWords := int(characters / 5)
 
-	if characters % 5 > 2 {
+	if characters%5 > 2 {
 		virtualWords++
 	}
 

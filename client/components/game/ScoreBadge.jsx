@@ -33,7 +33,7 @@ class ScoreBadge extends Component {
 
         let badgeClass = badgeColor(this.props.score);
 
-        if (this.props.perfect === 1) {
+        if (this.props.perfect) {
             badgeClass = badgeClass + ' ' + 'badge--icon';
         }
 

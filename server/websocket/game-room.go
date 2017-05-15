@@ -8,6 +8,8 @@ import (
 	"github.com/iKonrad/typitap/server/manager"
 	"github.com/iKonrad/typitap/server/logs"
 	"strconv"
+	db "github.com/iKonrad/typitap/server/database"
+	"github.com/iKonrad/typitap/server/game/topchart"
 )
 
 type Room struct {
@@ -25,9 +27,9 @@ type Room struct {
 
 func NewRoom(id string, text string) *Room {
 
-	GetEngine().redis.HSet("rooms:"+id, "started", false)
+	db.Redis.HSet("rooms:"+id, "started", false)
 
-	GetEngine().redis.HSet("rooms:"+id, "text", text);
+	db.Redis.HSet("rooms:"+id, "text", text);
 
 	// Add player to the room
 	return &Room{
@@ -49,12 +51,12 @@ func (r *Room) Run() {
 // Adds a new player to the room
 func (r *Room) AddPlayer(identifier string) {
 
-	err := GetEngine().redis.HSet("rooms:"+r.Id+":players:"+identifier, "identifier", identifier).Err()
+	err := db.Redis.HSet("rooms:"+r.Id+":players:"+identifier, "identifier", identifier).Err()
 	if err != nil {
 		log.Println("Error while adding a user to the room --"+"rooms:"+r.Id+":players:"+identifier, err)
 	}
 
-	pipeline := GetEngine().redis.Pipeline()
+	pipeline := db.Redis.Pipeline()
 	defer pipeline.Close()
 	pipeline.HSet("rooms:"+r.Id+":players:"+identifier, "score", 0)
 	pipeline.HSet("rooms:"+r.Id+":players:"+identifier, "place", 0)
@@ -66,8 +68,8 @@ func (r *Room) AddPlayer(identifier string) {
 
 // Removes player from the room
 func (r *Room) RemovePlayer(identifier string) {
-	GetEngine().redis.HDel("rooms:"+r.Id+":players:"+identifier, "identifier", "score")
-	GetEngine().redis.HDel("player:"+identifier, "roomId")
+	db.Redis.HDel("rooms:"+r.Id+":players:"+identifier, "identifier", "score")
+	db.Redis.HDel("player:"+identifier, "roomId")
 	delete(r.Players, identifier)
 }
 
@@ -79,7 +81,7 @@ func (r *Room) GetPlayers() map[string]interface{} {
 	// Iterate over all the players
 	for identifier := range r.Players {
 		// Get the current player from Redis
-		players[identifier] = GetEngine().redis.HGetAll("rooms:" + r.Id + ":players:" + identifier).Val()
+		players[identifier] = db.Redis.HGetAll("rooms:" + r.Id + ":players:" + identifier).Val()
 	}
 
 	return players
@@ -87,7 +89,7 @@ func (r *Room) GetPlayers() map[string]interface{} {
 
 // Returns a slice with players in this room along with all the data
 func (r *Room) GetPlayer(identifier string) map[string]string {
-	return GetEngine().redis.HGetAll("rooms:" + r.Id + ":players:" + identifier).Val()
+	return db.Redis.HGetAll("rooms:" + r.Id + ":players:" + identifier).Val()
 }
 
 // Sends a message to the members of this room
@@ -262,7 +264,7 @@ func (r *Room) startGame() {
 // Gets the game data and player scores
 func (r *Room) getPlayersData() map[string]interface{} {
 	// Create a pipeline to get data for all players
-	pipeline := GetEngine().redis.Pipeline()
+	pipeline := db.Redis.Pipeline()
 	defer pipeline.Close()
 	playerResults := make(map[string]*redis.StringStringMapCmd)
 	for identifier := range r.Players {
@@ -297,24 +299,24 @@ func (r *Room) finishGame() {
 func (r *Room) resetRoom() {
 	if r.waitCountdownStarted || r.countdownStarted || r.gameStarted {
 		r.ticker.Stop();
-		GetEngine().redis.HDel("rooms:"+r.Id, "text");
+		db.Redis.HDel("rooms:"+r.Id, "text");
 	}
 }
 
 // Receives the player score and updates the redis database
 func (r *Room) handlePlayerUpdate(identifier string, score float64) {
 	if r.gameStarted {
-		GetEngine().redis.HSet("rooms:"+r.Id+":players:"+identifier, "score", score)
+		db.Redis.HSet("rooms:"+r.Id+":players:"+identifier, "score", score)
 	}
 }
 
-// Handles the player finishing the game: sets the finished flag, sends a message @TODO: Automatically post a game result
+// Handles the player finishing the game: sets the finished flag, sends a message
 func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int) {
 
 	if r.gameStarted {
-		GetEngine().redis.HSet("rooms:"+r.Id+":players:"+identifier, "completed", true)
+		db.Redis.HSet("rooms:"+r.Id+":players:"+identifier, "completed", true)
 
-		text := GetEngine().redis.HGet("rooms:"+r.Id, "text")
+		text := db.Redis.HGet("rooms:"+r.Id, "text")
 
 		playerTime := int(r.time)
 
@@ -340,7 +342,11 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 		)
 
 		if user, ok := manager.User.FindUserBy("username", identifier); ok {
-			manager.Game.SaveResult(&user, r.Id, mistakes, wpm, accuracy, int(r.time), int(r.nextPlace))
+			result, err := manager.Game.SaveResult(&user, r.Id, mistakes, wpm, accuracy, int(r.time), int(r.nextPlace))
+			if err != nil {
+				logs.Error("Error while saving a result", "An error occurred while saving results for user " + identifier, []string{"errors", "websocket", "game"}, "Game Session " + r.Id)
+			}
+			topchart.CheckTopChart(&result)
 		}
 
 		// Increment next place
@@ -350,7 +356,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 
 func (r *Room) haveAllPlayersCompletedGame() bool {
 	// Check if all players have finished
-	pipeline := GetEngine().redis.Pipeline()
+	pipeline := db.Redis.Pipeline()
 	defer pipeline.Close()
 
 	var parsedResults = make(map[string]*redis.StringCmd)

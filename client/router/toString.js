@@ -40,8 +40,6 @@ export default function (options, cbk) {
         currentState = options.state;
     }
 
-
-
     const memoryHistory = createMemoryHistory(options.url)
     const store = createStore(currentState, memoryHistory);
     setAsCurrentStore(store);
