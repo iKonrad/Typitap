@@ -9,6 +9,7 @@ import (
 	"github.com/iKonrad/typitap/server/manager"
 	"github.com/labstack/echo"
 	r "gopkg.in/gorethink/gorethink.v3"
+	"strconv"
 )
 
 type UserAPIController struct {
@@ -44,7 +45,14 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 		filters["finished"] = true
 	}
 
-	resp, err := r.Table("game_results").Filter(filters).OrderBy(r.Desc("created")).Merge(func(t r.Term) interface{} {
+	o := c.QueryParam("offset");
+	if o == "" {
+		o = "0";
+	}
+
+	offset, _ := strconv.Atoi(o);
+
+	resp, err := r.Table("game_results").Filter(filters).OrderBy(r.Desc("created")).Skip(offset).Limit(10).Merge(func(t r.Term) interface{} {
 		return map[string]interface{}{
 			"session": r.Table("game_sessions").Get(t.Field("sessionId")),
 		}

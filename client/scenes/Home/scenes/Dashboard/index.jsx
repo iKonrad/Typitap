@@ -12,7 +12,11 @@ import * as DashboardActions from 'store/modules/dashboardModule';
 class Dashboard extends Component {
 
     componentWillMount() {
-        this.props.dispatch(DashboardActions.getRecentGames());
+        this.props.dispatch(DashboardActions.getRecentGames(0));
+    }
+
+    componentWillUnmount() {
+        this.props.dispatch(DashboardActions.resetRecentGames());
     }
 
     static onEnter({store, next, replace, callback}) {
@@ -20,7 +24,7 @@ class Dashboard extends Component {
     }
 
     static initialize(response, params, store) {
-        return store.dispatch(DashboardActions.getRecentGames());
+        return store.dispatch(DashboardActions.getRecentGames(0));
     }
 
     render() {

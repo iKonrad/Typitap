@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import * as UserActions from 'store/modules/userModule';
+import * as DashboardActions from 'store/modules/dashboardModule';
 import ResultRow from 'components/app/ResultRow';
 
 class RecentGames extends Component {
@@ -14,7 +14,9 @@ class RecentGames extends Component {
 
     renderItems() {
 
+        console.log(this.props.dashboard.games);
         if (this.props.dashboard.games && this.props.dashboard.games.length > 0) {
+            console.log("here");
             let items = this.props.dashboard.games.map((item, index) => {
                 let isPerfect = 1;
                 if (item.mistakes !== undefined && item.mistakes !== null) {
@@ -28,9 +30,15 @@ class RecentGames extends Component {
             });
             return items;
         } else {
+            console.log("oops");
             return (<div className="panel-body text-muted text-center">You haven't played any games yet.</div>);
         }
 
+    }
+
+    fetchMoreResults() {
+        let offset = this.props.dashboard.games.length;
+        this.props.dispatch(DashboardActions.getRecentGames(offset));
     }
 
     render() {
@@ -40,6 +48,10 @@ class RecentGames extends Component {
                     <h3>Recent Games</h3>
                 </div>
                 { this.renderItems() }
+                <div className="text-center">
+                    <button className="btn btn-link" onClick={this.fetchMoreResults.bind(this)}>More</button>
+                </div>
+
             </div>
         );
     }
