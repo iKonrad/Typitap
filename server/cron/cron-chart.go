@@ -10,9 +10,9 @@ func registerChartJobs() {
 		topchart.ResetChart("today");
 	})
 
-	c.AddFunc("0 0 0 * * 1", func() {
-		topchart.ResetChart("week");
-	})
+	//c.AddFunc("0 0 0 * * 1", func() {
+	//	topchart.ResetChart("week");
+	//})
 
 	c.AddFunc("0 0 0 1 * *", func() {
 		topchart.ResetChart("month");

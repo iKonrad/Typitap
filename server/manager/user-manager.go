@@ -291,3 +291,10 @@ func (um UserManager) UpdateUser(user *entities.User) bool {
 	}).Exec(db.Session)
 	return true
 }
+
+func (um UserManager) SanitizeUser(user *entities.User) {
+
+	user.Email = "";
+	user.Password = "";
+
+}

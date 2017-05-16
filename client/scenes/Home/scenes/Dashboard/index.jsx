@@ -19,9 +19,6 @@ class Dashboard extends Component {
         this.props.dispatch(DashboardActions.resetRecentGames());
     }
 
-    static onEnter({store, next, replace, callback}) {
-        callback();
-    }
 
     static initialize(response, params, store) {
         return store.dispatch(DashboardActions.getRecentGames(0));

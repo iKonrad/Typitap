@@ -9,6 +9,7 @@ import (
 	r "gopkg.in/gorethink/gorethink.v3"
 	"github.com/iKonrad/typitap/server/logs"
 	"strconv"
+	"github.com/iKonrad/typitap/server/manager"
 )
 
 var charts map[string]entities.GameChart
@@ -39,9 +40,7 @@ func init() {
 	charts = make(map[string]entities.GameChart)
 	names := []string{
 		"today",
-		"week",
 		"month",
-		"all",
 	}
 
 	for _, name := range names {
@@ -91,6 +90,11 @@ func pullChart(name string) (entities.GameChart, bool) {
 	}
 
 	sort.Sort(entities.SortResultsByScore(returnedChart.Items))
+
+	// Remove passwords and e-mails from the user objects
+	for i, _ := range returnedChart.Items {
+		manager.User.SanitizeUser(&returnedChart.Items[i].User)
+	}
 
 	return returnedChart, true
 }
@@ -149,6 +153,9 @@ func CheckTopChart(result *entities.GameResult) bool {
 }
 
 func addRecordToChart(name string, result *entities.GameResult) {
+
+	manager.User.SanitizeUser(&result.User)
+
 	chartCopy := charts[name]
 	chart := &chartCopy
 	if len(chart.Items) > 0 && len(chart.Items) >= MAX_CHART_LENGTH {

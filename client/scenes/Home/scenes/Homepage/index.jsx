@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import { Link } from 'react-router';
-
+import * as AppActions from 'store/modules/appModule';
+import TopChart from 'components/app/TopChart';
 
 class Homepage extends Component {
 
-    static onEnter({store, next, replace, callback}) {
-        callback();
+    componentWillMount() {
+        this.props.dispatch(AppActions.fetchChartsData());
+    }
+
+    static initialize(response, params, store) {
+        return store.dispatch(AppActions.fetchChartsData());
     }
 
     render() {
@@ -97,14 +102,7 @@ class Homepage extends Component {
                                 </div>
                             </div>
                             <div className="col col-xs-12 col-md-4">
-                                <div className="panel panel-white">
-                                    <div className="panel-heading">
-                                        <h5>Today's bests</h5>
-                                    </div>
-                                    <div className="panel-body">
-                                        Panel content
-                                    </div>
-                                </div>
+                                <TopChart name="today" title="Today's bests" />
                             </div>
                         </div>
                     </div>

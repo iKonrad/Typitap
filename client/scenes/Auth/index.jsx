@@ -8,11 +8,6 @@ import {Link} from 'react-router';
 
 class Auth extends Component {
 
-    static onEnter({store, nextState, replaceState, callback}) {
-
-        callback();
-    }
-
 
     renderForm() {
 

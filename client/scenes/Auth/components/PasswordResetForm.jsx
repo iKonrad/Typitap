@@ -7,9 +7,6 @@ import { push } from 'react-router-redux';
 import Notifications from 'react-notification-system-redux';
 class PasswordResetForm extends Component {
 
-
-
-
     handleSubmitForm(values) {
         return FormActions.submitPasswordReset(values).then((details) => {
             this.props.dispatch(Notifications.success({'message': `Your password has been reset. You can now log in using your new credentials`}));
@@ -22,8 +19,6 @@ class PasswordResetForm extends Component {
 
         this.props.change("token", this.props.token);
     }
-
-
 
     renderForm() {
         const { handleSubmit, pristine, reset, submitting, error, token } = this.props;
