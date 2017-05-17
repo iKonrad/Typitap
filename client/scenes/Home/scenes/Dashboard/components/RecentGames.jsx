@@ -13,10 +13,7 @@ class RecentGames extends Component {
     }
 
     renderItems() {
-
-        console.log(this.props.dashboard.games);
         if (this.props.dashboard.games && this.props.dashboard.games.length > 0) {
-            console.log("here");
             let items = this.props.dashboard.games.map((item, index) => {
                 let isPerfect = 1;
                 if (item.mistakes !== undefined && item.mistakes !== null) {
@@ -30,7 +27,6 @@ class RecentGames extends Component {
             });
             return items;
         } else {
-            console.log("oops");
             return (<div className="panel-body text-muted text-center">You haven't played any games yet.</div>);
         }
 

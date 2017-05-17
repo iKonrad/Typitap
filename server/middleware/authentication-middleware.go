@@ -1,18 +1,14 @@
 package middleware
 
 import (
-
-	//"github.com/gorilla/schema"
-	//"github.com/gorilla/securecookie"
-	//"github.com/gorilla/sessions"
 	"fmt"
-	"github.com/labstack/echo"
-	//"net/http"
+	"strings"
+
 	db "github.com/iKonrad/typitap/server/database"
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/iKonrad/typitap/server/manager"
+	"github.com/labstack/echo"
 	r "gopkg.in/gorethink/gorethink.v3"
-	"strings"
 )
 
 // Declare global variables
@@ -41,8 +37,7 @@ func CheckAuthHandler(next echo.HandlerFunc) echo.HandlerFunc {
 
 			res, err := r.Table("users").Get(userId).Run(db.Session)
 
-			defer res.Close();
-
+			defer res.Close()
 			if err == nil {
 				var currentUser entities.User
 				err = res.One(&currentUser)

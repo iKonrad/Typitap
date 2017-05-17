@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"encoding/json"
 	"github.com/iKonrad/typitap/server/game/topchart"
+	"github.com/iKonrad/typitap/server/feed"
 )
 
 type GameAPIController struct {
@@ -85,6 +86,8 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 	gameTime, _ := strconv.Atoi(c.FormValue("time"))
 
 	newResult, err := manager.Game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, accuracy, gameTime, 0)
+
+	feed.SendActivity(user.Id, feed.Activities.PlayerCompletedOfflineGameActivity(user.Username,  wpm))
 
 	manager.Game.MarkSessionFinished(c.FormValue("sessionId"));
 

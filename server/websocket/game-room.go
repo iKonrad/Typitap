@@ -2,14 +2,15 @@ package websocket
 
 import (
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/go-redis/redis"
-	"github.com/iKonrad/typitap/server/manager"
-	"github.com/iKonrad/typitap/server/logs"
-	"strconv"
 	db "github.com/iKonrad/typitap/server/database"
+	"github.com/iKonrad/typitap/server/feed"
 	"github.com/iKonrad/typitap/server/game/topchart"
+	"github.com/iKonrad/typitap/server/logs"
+	"github.com/iKonrad/typitap/server/manager"
 )
 
 type Room struct {
@@ -29,7 +30,7 @@ func NewRoom(id string, text string) *Room {
 
 	db.Redis.HSet("rooms:"+id, "started", false)
 
-	db.Redis.HSet("rooms:"+id, "text", text);
+	db.Redis.HSet("rooms:"+id, "text", text)
 
 	// Add player to the room
 	return &Room{
@@ -235,7 +236,7 @@ func (r *Room) startGame() {
 		"Game in room "+r.Id+" has started",
 		[]string{"websocket", "game"},
 		"Game Session "+r.Id,
-	);
+	)
 	go func() {
 		for range r.ticker.C {
 			r.time++
@@ -248,8 +249,8 @@ func (r *Room) startGame() {
 			)
 
 			if r.time == FINISH_GAME_SECONDS {
-				r.SendMessage(TYPE_FINISH_GAME, map[string]interface{}{});
-				GetEngine().RemoveRoom(r.Id);
+				r.SendMessage(TYPE_FINISH_GAME, map[string]interface{}{})
+				GetEngine().RemoveRoom(r.Id)
 			}
 		}
 	}()
@@ -291,15 +292,15 @@ func (r *Room) finishGame() {
 		r.ticker.Stop()
 
 		for identifier := range r.Players {
-			r.RemovePlayer(identifier);
+			r.RemovePlayer(identifier)
 		}
 	}
 }
 
 func (r *Room) resetRoom() {
 	if r.waitCountdownStarted || r.countdownStarted || r.gameStarted {
-		r.ticker.Stop();
-		db.Redis.HDel("rooms:"+r.Id, "text");
+		r.ticker.Stop()
+		db.Redis.HDel("rooms:"+r.Id, "text")
 	}
 }
 
@@ -321,8 +322,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 		playerTime := int(r.time)
 
 		// Calculate WPM and accuracy
-		wpm, accuracy := manager.Game.CalculateResult(playerTime, len(mistakes), text.Val());
-
+		wpm, accuracy := manager.Game.CalculateResult(playerTime, len(mistakes), text.Val())
 		r.SendMessage(
 			TYPE_PLAYER_COMPLETED_GAME,
 			map[string]interface{}{
@@ -330,13 +330,13 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 				"place":      r.nextPlace,
 				"wpm":        wpm,
 				"accuracy":   accuracy,
-				"time": playerTime,
+				"time":       playerTime,
 			},
 		)
 
 		logs.Success(
 			"Player completes game",
-			"Player "+identifier+"completes the game in room "+r.Id+" and finishes on "+strconv.Itoa(int(r.nextPlace))+" place. WPM: "+strconv.Itoa(wpm)+", Accuracy: "+strconv.Itoa(accuracy)+", Time: " + strconv.Itoa(playerTime),
+			"Player "+identifier+"completes the game in room "+r.Id+" and finishes on "+strconv.Itoa(int(r.nextPlace))+" place. WPM: "+strconv.Itoa(wpm)+", Accuracy: "+strconv.Itoa(accuracy)+", Time: "+strconv.Itoa(playerTime),
 			[]string{"websocket", "game", "players"},
 			"Game Session "+r.Id,
 		)
@@ -344,9 +344,10 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 		if user, ok := manager.User.FindUserBy("username", identifier); ok {
 			result, err := manager.Game.SaveResult(&user, r.Id, mistakes, wpm, accuracy, int(r.time), int(r.nextPlace))
 			if err != nil {
-				logs.Error("Error while saving a result", "An error occurred while saving results for user " + identifier, []string{"errors", "websocket", "game"}, "Game Session " + r.Id)
+				logs.Error("Error while saving a result", "An error occurred while saving results for user "+identifier, []string{"errors", "websocket", "game"}, "Game Session "+r.Id)
 			}
 			topchart.CheckTopChart(&result)
+			feed.SendActivity(user.Id, feed.Activities.PlayerCompletedOnlineGameActivity(user.Username, int(r.nextPlace), wpm))
 		}
 
 		// Increment next place
@@ -361,7 +362,7 @@ func (r *Room) haveAllPlayersCompletedGame() bool {
 
 	var parsedResults = make(map[string]*redis.StringCmd)
 	for identifier := range r.Players {
-		parsedResults[identifier] = pipeline.HGet("rooms:"+r.Id+":players:"+identifier, "completed");
+		parsedResults[identifier] = pipeline.HGet("rooms:"+r.Id+":players:"+identifier, "completed")
 	}
 
 	_, err := pipeline.Exec()
@@ -371,9 +372,9 @@ func (r *Room) haveAllPlayersCompletedGame() bool {
 
 	for _, data := range parsedResults {
 		if data.Val() == "0" {
-			return false;
+			return false
 		}
 	}
 
-	return true;
+	return true
 }

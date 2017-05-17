@@ -73,6 +73,7 @@ func pullChart(name string) (entities.GameChart, bool) {
 					}),
 				}
 			}),
+
 		}
 	}).Run(db.Session)
 	defer res.Close()

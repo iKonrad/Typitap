@@ -17,7 +17,7 @@ export default function reducer(state = initialState, action) {
         case RESET_RECENT_GAMES_DATA:
             return {
                 ...state,
-                games: initialState.games,
+                games: [],
             }
     }
 
@@ -38,7 +38,9 @@ export function getRecentGames(offset) {
             return response.json();
         }).then((response) => {
             if (response.success) {
-                return dispatch({type: SET_RECENT_GAMES_DATA, games: response.data});
+                if (response.data !== undefined && response.data !== null) {
+                    return dispatch({type: SET_RECENT_GAMES_DATA, games: response.data});
+                }
             }
         });
     }

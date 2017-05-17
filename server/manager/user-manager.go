@@ -51,9 +51,20 @@ func (um UserManager) CreateUser(details map[string]interface{}) (entities.User,
 
 	cursor, err := r.Table("users").Insert(newUser).Run(db.Session)
 
+	newFeed := entities.UserFeed{
+		User: newUser,
+		Items: []entities.Activity{},
+	}
+
 	if err != nil {
 		log.Println(err)
 	}
+
+	cursor, err = r.Table("user_activity_feed").Insert(newFeed).Run(db.Session)
+	if err != nil {
+		log.Println(err)
+	}
+
 
 	defer cursor.Close()
 

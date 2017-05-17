@@ -75,6 +75,10 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 		})
 	}
 
+	if resp.IsNil() {
+		results = []map[string]interface{}{}
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
 		"data":    results,
