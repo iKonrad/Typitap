@@ -8,6 +8,7 @@ import (
 	"github.com/iKonrad/typitap/server/logs"
 	"github.com/nu7hatch/gouuid"
 	r "gopkg.in/gorethink/gorethink.v3"
+	"log"
 )
 
 type ActivityActions struct{}
@@ -17,7 +18,7 @@ var Activities = ActivityActions{}
 func SendActivity(ownerId string, details map[string]string) bool {
 
 	activityType, ok := details["activityType"]
-	delete(details, "activityType");
+	delete(details, "activityType")
 	if !ok {
 		return false
 	}
@@ -59,7 +60,6 @@ func addActivityToUserFeed(activityId string, userId string) bool {
 	return true
 }
 
-
 func getActivityType(typeId string) (entities.ActivityType, bool) {
 
 	res, _ := r.Table("activity_types").Get(typeId).Run(db.Session)
@@ -88,4 +88,42 @@ func newActivity() entities.Activity {
 	}
 
 	return a
+}
+
+func GetFeedForUser(userId string, offset int) (entities.UserFeed, bool) {
+
+	resp, err := r.Table("user_activity_feed").Get(userId).Without("userId").Merge(func(p r.Term) interface{} {
+		return map[string]interface{}{
+			"items": r.Table("activities").
+				GetAll(r.Args(p.Field("items"))).
+				OrderBy(r.Desc("created")).
+				Skip(offset).
+				Limit(5).
+				CoerceTo("array").
+				Merge(func(s r.Term) interface{} {
+				return map[string]interface{}{
+					"typeId": r.Table("activity_types").Get(s.Field("typeId")),
+				}
+			},
+			),
+		}
+	}).Run(db.Session)
+
+	defer resp.Close()
+
+	if err != nil {
+		log.Println("LOL? ", err.Error())
+		return entities.UserFeed{}, false
+	}
+
+	var userFeed entities.UserFeed
+
+	err = resp.One(&userFeed)
+
+	if err != nil {
+		log.Println("LOL2? ", err.Error())
+		return entities.UserFeed{}, false
+	}
+
+	return userFeed, true
 }

@@ -1,6 +1,5 @@
 package routes
 
-
 import (
 	"github.com/iKonrad/typitap/server/controller"
 	"github.com/labstack/echo"
@@ -14,6 +13,7 @@ type UserAPIRoutes struct{}
 // Bind attaches api routes
 func (api *UserAPIRoutes) Bind(group *echo.Group) {
 	// Authentication routes
-	group.GET("/results", controller.UserAPI.GetUserGameResults);
-	group.POST("/account/update", controller.UserAPI.UpdateAccountInformation);
+	group.GET("/results", controller.UserAPI.GetUserGameResults)
+	group.POST("/account/update", controller.UserAPI.UpdateAccountInformation)
+	group.GET("/feed", controller.UserAPI.GetUserActivityFeed)
 }

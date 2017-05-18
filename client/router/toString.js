@@ -74,7 +74,8 @@ export default function (options, cbk) {
                     store.dispatch(AppActions.setResponse(responseData));
 
                     // Check if checkAuth function is present as well
-                    if (typeof(comp.initialize) !== 'undefined') {promise = comp.initialize(responseData, params, store);
+                    if (typeof(comp.initialize) !== 'undefined') {
+                        promise = comp.initialize(responseData, params, store);
 
                         if (promise.then !== undefined && typeof promise.then === 'function') {
                             promise.then(() => {renderComponent();

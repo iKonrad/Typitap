@@ -10,7 +10,7 @@ class Home extends Component {
     static initialize(response, params, store) {
 
         if (store.getState().user.loggedIn) {
-            return Dashboard.initialize(response, params, store);
+            return "";
         } else {
             return Homepage.initialize(response, params, store);
         }

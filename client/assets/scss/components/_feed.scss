@@ -1,0 +1,56 @@
+#feed {
+
+  .activity {
+    padding: 25px;
+    border-bottom: 1px solid $grey-050;
+  transition: all 0.3s ease;
+    &:hover {
+      background-color: $grey-050;
+    }
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+
+    &__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      text-align: center;
+      &:after {
+        font-size: 18px;
+        position: relative;
+        top: 9px;
+        text-align: center;
+        font-family: "FontAwesome";
+        color: white;
+      }
+
+      &--offline-race {
+        background-color: $grey-300;
+        &:after {
+          content: "\f11e";
+
+        }
+      }
+      &--online-race {
+        background-color: $brand-secondary;
+        &:after {
+          content: "\f11e";
+        }
+      }
+
+    }
+
+    &__text {
+      font-size: 16px;
+      color: $grey-500;
+    }
+
+    &__date {
+      font-size: 14px;
+      color: $grey-200;
+    }
+  }
+
+}

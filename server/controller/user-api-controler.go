@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo"
 	r "gopkg.in/gorethink/gorethink.v3"
 	"strconv"
+	"github.com/iKonrad/typitap/server/feed"
 )
 
 type UserAPIController struct {
@@ -51,7 +52,6 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 	}
 
 	offset, _ := strconv.Atoi(o);
-
 	resp, err := r.Table("game_results").Filter(filters).OrderBy(r.Desc("created")).Skip(offset).Limit(10).Merge(func(t r.Term) interface{} {
 		return map[string]interface{}{
 			"session": r.Table("game_sessions").Get(t.Field("sessionId")),
@@ -75,9 +75,6 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 		})
 	}
 
-	if resp.IsNil() {
-		results = []map[string]interface{}{}
-	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
@@ -136,7 +133,6 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 		})
 	}
 
-
 	if ok := manager.User.UpdateUser(&user); ok {
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"success": true,
@@ -148,5 +144,37 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 			"message": "Something went wrong. Try again.",
 		})
 	}
+
+}
+
+
+func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
+
+	// Check if user is logged in
+	if !c.Get("IsLoggedIn").(bool) {
+		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
+			"success": false,
+		})
+	}
+
+	o := c.QueryParam("offset");
+	if o == "" {
+		o = "0";
+	}
+
+	offset, _ := strconv.Atoi(o)
+
+	user := c.Get("User").(entities.User)
+
+	if userFeed, ok := feed.GetFeedForUser(user.Id, offset); ok {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"success": true,
+			"data": userFeed,
+		})
+	}
+
+	return c.JSON(http.StatusNoContent, map[string]interface{}{
+		"success": false,
+	})
 
 }
