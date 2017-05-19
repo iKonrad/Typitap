@@ -31,7 +31,7 @@ class AccountSimpleItem extends React.Component {
                                    defaultValue={ this.props.user.data[this.props.name] }
                                    placeholder={`Enter new ${this.props.name}`} className="form-control control-small"/>
                             <span className="input-group-btn">
-                            <button type="submit" className="btn btn-primary btn-small">Save</button>
+                            <button type="submit" className="btn btn-primary btn-sm">Save</button>
                         </span>
                         </div>
                     </form>
@@ -86,7 +86,7 @@ class AccountSimpleItem extends React.Component {
         if (this.props.account.details[this.props.name].open) {
             return "";
         } else {
-            return (<button className=" account__item__button btn btn-primary btn-small btn-outline"
+            return (<button className=" account__item__button btn btn-primary btn-sm btn-outline"
                             onClick={ this.toggleButton.bind(this) }>{ this.props.name !== "Password" ? "Edit" : "Change Password" }</button>);
         }
     }

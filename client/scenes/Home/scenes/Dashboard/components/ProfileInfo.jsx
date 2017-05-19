@@ -1,13 +1,10 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-
+import Gravatar from 'components/user/Gravatar';
 
 class ProfileInfo extends Component {
 
-    static onEnter({store, next, replace, callback}) {
-        callback();
-    }
 
     render() {
         return (
@@ -16,7 +13,7 @@ class ProfileInfo extends Component {
                     <div className="row">
                         <div className="col col-xs-12 col-sm-3 col-md-3">
                             <div className="profile__picture">
-                                <img src="http://placehold.it/120x120" className="img-circle img-responsive" alt=""/>
+                                <Gravatar email={ this.props.user !== undefined ? this.props.user.data.Email : "test@test.com" } size={120} className="img-circle img-responsive" />
                             </div>
                         </div>
                         <div className="col col-xs-12 col-sm-3 col-md-2 profile-page__info__details">

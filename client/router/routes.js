@@ -9,6 +9,7 @@ import Play from 'scenes/Play';
 import GameWindow from 'scenes/Game';
 import Account from 'scenes/Account';
 import AccountDetails from 'scenes/Account/scenes/AccountDetails';
+import AvatarSettings from 'scenes/Account/scenes/AvatarSettings';
 
 import Permissions from 'utils/permissions';
 
@@ -30,7 +31,7 @@ export default ({store, first}) => {
             <Route path="/account" component={Account}>
                 <IndexRoute component={Permissions.OnlyUsers(AccountDetails)} />
                 <Route path="details" component={Permissions.OnlyUsers(AccountDetails)}/>
-                <Route path="avatar" component={Permissions.OnlyUsers(AccountDetails)}/>
+                <Route path="avatar" component={Permissions.OnlyUsers(AvatarSettings)}/>
                 <Route path="keyboard" component={Permissions.OnlyUsers(AccountDetails)}/>
             </Route>
 

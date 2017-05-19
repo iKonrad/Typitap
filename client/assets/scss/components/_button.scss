@@ -16,10 +16,10 @@
   font-family: 'Dosis', sans-serif;
   font-weight: normal;
 
-  &.btn-small {
+  &.btn-sm {
     min-height: 20px;
     height: 30px;
-    padding: 4px 8px;
+    padding: 2px 8px 4px 8px;
   }
 
   &-primary {
@@ -101,6 +101,17 @@
   color: inherit;
   transition: all .5s;
   border: 1px solid $brand-primary;
+
+  &:focus, &:active {
+    border: 1px solid $brand-primary;
+    color: $brand-primary;
+  }
+
+  &:hover {
+    background-color: $brand-primary;
+    color: white;
+    border: 1px solid $brand-primary;
+  }
 
   &.btn-white {
     color: white;
@@ -209,4 +220,6 @@ a {
     color: $brand-secondary;
   }
 }
+
+
 
