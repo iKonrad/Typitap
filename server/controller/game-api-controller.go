@@ -92,14 +92,16 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 	game.MarkSessionFinished(c.FormValue("sessionId"))
 
 	// Submit the result for the top chart
-	topchart.CheckTopChart(&newResult)
 	if err != nil {
+
 		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"success": false,
-			"error":   "Couldn not save the session data",
+			"error":   "Could not save the session data",
 		})
 	}
+
+	topchart.CheckTopChart(&newResult)
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success":  true,
