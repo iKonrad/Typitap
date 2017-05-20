@@ -8,13 +8,9 @@ class RecentGames extends Component {
 
 
 
-    static onEnter({store, next, replace, callback}) {
-        callback();
-    }
-
     renderItems() {
-        if (this.props.dashboard.games && this.props.dashboard.games.length > 0) {
-            let items = this.props.dashboard.games.map((item, index) => {
+        if (this.props.games && this.props.games.length > 0) {
+            let items = this.props.games.map((item, index) => {
                 let isPerfect = 1;
                 if (item.mistakes !== undefined && item.mistakes !== null) {
                     isPerfect = Object.keys(item.mistakes).length < 1 ? 1 : 0
@@ -33,7 +29,7 @@ class RecentGames extends Component {
     }
 
     fetchMoreResults() {
-        let offset = this.props.dashboard.games.length;
+        let offset = this.props.games.length;
         this.props.dispatch(DashboardActions.getRecentGames(offset));
     }
 

@@ -67,25 +67,17 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 
 	user := c.Get("User").(entities.User)
 
-	data := map[string]interface{}{
-		"time":      c.FormValue("time"),
-		"wpm":       c.FormValue("wpm"),
-		"accuracy":  c.FormValue("accuracy"),
-		"mistakes":  c.FormValue("mistakes"),
-		"sessionId": c.FormValue("sessionId"),
-		"user":      user,
-	}
-
 	var mistakes map[string]int
 	if c.FormValue("mistakes") != "" {
-		json.Unmarshal([]byte(data["mistakes"].(string)), &mistakes)
+		json.Unmarshal([]byte(c.FormValue("mistakes")), &mistakes)
 	}
 
 	wpm, _ := strconv.Atoi(c.FormValue("wpm"))
-	accuracy, _ := strconv.Atoi(c.FormValue("accuracy"))
+	accuracy, _ := strconv.ParseFloat(c.FormValue("accuracy"), 32)
 	gameTime, _ := strconv.Atoi(c.FormValue("time"))
 
-	newResult, err := game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, accuracy, gameTime, 0)
+	log.Println("Acc", accuracy);
+	newResult, err := game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, int(accuracy), gameTime, 0)
 
 	feed.SendActivity(user.Id, feed.Activities.PlayerCompletedOfflineGameActivity(user.Username, wpm))
 

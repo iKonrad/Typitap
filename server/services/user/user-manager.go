@@ -40,21 +40,37 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 
 	cursor, err := r.Table("users").Insert(newUser).Run(db.Session)
 
-	newFeed := entities.UserFeed{
-		User:  newUser,
-		Items: []entities.Activity{},
-	}
-
 	if err != nil {
 		log.Println(err)
+	} else {
+		newFeed := entities.UserFeed{
+			User:  newUser,
+			Items: []entities.Activity{},
+		}
+
+		cursor, err = r.Table("user_activity_feed").Insert(newFeed).Run(db.Session)
+		if err != nil {
+			log.Println(err)
+		}
+		defer cursor.Close()
+
+		newStats := entities.UserStats{
+			User: newUser,
+			WPM: 0,
+			Accuracy: 0,
+			GoldenTrophies: 0,
+			SilverTrophies: 0,
+			BronzeTrophies: 0,
+		}
+
+		statsCursor, err := r.Table("user_stats").Insert(newStats).Run(db.Session)
+		if err != nil {
+			log.Println(err);
+		}
+		defer statsCursor.Close()
 	}
 
-	cursor, err = r.Table("user_activity_feed").Insert(newFeed).Run(db.Session)
-	if err != nil {
-		log.Println(err)
-	}
 
-	defer cursor.Close()
 
 	return newUser, nil
 }

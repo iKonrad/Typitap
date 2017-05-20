@@ -16,4 +16,5 @@ func (api *UserAPIRoutes) Bind(group *echo.Group) {
 	group.GET("/results", controller.UserAPI.GetUserGameResults)
 	group.POST("/account/update", controller.UserAPI.UpdateAccountInformation)
 	group.GET("/feed", controller.UserAPI.GetUserActivityFeed)
+	group.GET("/stats", controller.UserAPI.GetUserStats)
 }

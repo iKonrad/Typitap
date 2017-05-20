@@ -1,0 +1,5 @@
+@mixin scale($s) {
+  -ms-transform: scale($s); /* IE 9 */
+  -webkit-transform: scale($s); /* Safari */
+  transform: scale($s);
+}

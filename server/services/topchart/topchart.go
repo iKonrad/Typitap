@@ -119,32 +119,24 @@ func saveChart(chart *entities.GameChart) {
 
 func CheckTopChart(result *entities.GameResult) bool {
 
-	log.Println("Checking ", result)
 	updated := false
 	for name, c := range charts {
-		log.Println("Chart ", name)
 		if len(c.Items) < MAX_CHART_LENGTH {
-			log.Println("Found empty space, adding in")
 			addRecordToChart(name, result)
 			updated = true
 			continue
 		}
-
 		lastItem := c.Items[len(c.Items)-1]
-		log.Println("Item ", lastItem.WPM)
 		// Check if the score is higher than last item
 		if result.WPM > lastItem.WPM {
-			log.Println("Yes 1")
 			addRecordToChart(name, result)
 			updated = true
 		} else if result.WPM == lastItem.WPM {
-			log.Println("Yes 2")
 			if result.Accuracy > lastItem.Accuracy {
 				addRecordToChart(name, result)
 				updated = true
 			}
 		}
-
 	}
 
 	return updated

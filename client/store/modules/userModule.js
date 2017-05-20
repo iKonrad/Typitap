@@ -4,9 +4,15 @@ const ACTIVATE_USER_SUCCESS =  "ACTIVATE_USER_SUCCESS";
 const ACTIVATE_USER_FAILURE =  "ACTIVATE_USER_FAILURE";
 const SAVE_USER_DATA =  "SAVE_USER_DATA";
 const UPDATE_USER_FIELD = "UPDATE_USER_FIELD";
+const SET_USER_STATS = "SET_USER_STATS";
 
+const initialState = {
+    loggedIn: false,
+    data: {},
+    stats: {},
+};
 
-export default function reducer(state = {}, action) {
+export default function reducer(state = initialState, action) {
     switch (action.type) {
         case LOGIN_USER_SUCCESS:
             return {
@@ -39,6 +45,14 @@ export default function reducer(state = {}, action) {
                     ...newObj
                 }
             };
+        case SET_USER_STATS:
+            return {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    ...action.stats,
+                }
+            }
     }
 
     return state;
@@ -76,5 +90,23 @@ export function updateUserField(key, value) {
         type: UPDATE_USER_FIELD,
         key,
         value,
+    }
+}
+
+export function fetchUserStats() {
+
+    return (dispatch) => {
+
+        return fetch("/api/user/stats", {
+            method: "GET",
+            credentials: "same-origin",
+            headers: global.clientCookies
+        }).then((response) => {
+            return response.json();
+        }).then((response) => {
+            if (response.success && response.data !== undefined) {
+                return dispatch({type: SET_USER_STATS, stats: response.data});
+            }
+        });
     }
 }

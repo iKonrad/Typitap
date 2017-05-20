@@ -12,6 +12,7 @@ import (
 	"github.com/iKonrad/typitap/server/services/logs"
 	"github.com/iKonrad/typitap/server/services/topchart"
 	us "github.com/iKonrad/typitap/server/services/user"
+	"github.com/iKonrad/typitap/server/services/stats"
 )
 
 type Room struct {
@@ -349,6 +350,12 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 			}
 			topchart.CheckTopChart(&result)
 			feed.SendActivity(user.Id, feed.Activities.PlayerCompletedOnlineGameActivity(user.Username, int(r.nextPlace), wpm))
+
+			// Increment trophy stat only if there's more players than the trophy (to get silver trophy, there must be at least 3 people)
+			if r.nextPlace <= 3 && int(r.nextPlace) < len(r.Players) {
+				stats.IncrementTrophyStat(r.nextPlace, user.Id)
+			}
+
 		}
 
 		// Increment next place

@@ -2,13 +2,17 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Activity from 'components/app/Activity';
+import * as DashboardActions from 'store/modules/dashboardModule';
 
 class ActivityFeed extends Component {
 
-    static onEnter({store, next, replace, callback}) {
-        callback();
+    componentWillMount() {
+        this.props.dispatch(DashboardActions.fetchActivityFeed(0));
     }
 
+    componentWillUnmount() {
+        this.props.dispatch(DashboardActions.resetActivityFeed());
+    }
     parseMessage(text, data) {
 
         Object.keys(data).forEach((key, index) => {

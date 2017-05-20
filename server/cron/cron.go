@@ -10,5 +10,6 @@ var c *cron.Cron;
 func RunJobs() {
 	c = cron.New();
 	registerChartJobs()
+	registerStatsJobs()
 	c.Start()
 }

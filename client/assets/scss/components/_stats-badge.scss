@@ -1,0 +1,51 @@
+.stats-badge {
+  width: 80px;
+  height: 80px;
+  margin: 0 10px;
+  padding-top: 5px;
+  text-align: center;
+  display: inline-block;
+  background-color: $grey-300;
+  border-radius: 8px;
+  overflow: hidden;
+
+
+  .badge-value {
+    font-size: 30px;
+    color: white;
+  }
+  .badge-label {
+    font-size: 16px;
+    color: white;
+  }
+
+  .badge-icon {
+    font-family: "FontAwesome", sans-serif;
+    font-size: 25px;
+    color: white;
+    margin-top: -5px;
+    &:after {
+      content: "\f091";
+    }
+  }
+
+  &.badge-wpm {
+    background-color: $brand-primary;
+  }
+
+  &.badge-accuracy {
+    background-color: $brand-secondary;
+  }
+
+  &.badge-goldenTrophies {
+    background-color: $yellow-200;
+  }
+
+  &.badge-silverTrophies {
+    background-color: $grey-200;
+  }
+
+  &.badge-bronzeTrophies {
+    background-color: #db7c1b;
+  }
+}

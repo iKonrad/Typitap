@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ProfileInfo from './components/ProfileInfo';
 import QuickLinks from './components/QuickLinks';
-import UserStats from './components/UserStats';
+import UserStats from 'components/user/UserStats';
 import ActivityFeed from 'components/app/ActivityFeed';
 import ProgressChart from './components/ProgressChart';
-import RecentGames from './components/RecentGames';
+import RecentGames from 'components/user/RecentGames';
 import * as DashboardActions from 'store/modules/dashboardModule';
 
 
@@ -13,12 +13,10 @@ class Dashboard extends Component {
 
     componentWillMount() {
         this.props.dispatch(DashboardActions.getRecentGames(0));
-        this.props.dispatch(DashboardActions.fetchActivityFeed(0));
     }
 
     componentWillUnmount() {
         this.props.dispatch(DashboardActions.resetRecentGames());
-        this.props.dispatch(DashboardActions.resetActivityFeed());
     }
 
 
@@ -34,7 +32,7 @@ class Dashboard extends Component {
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <UserStats />
+                                <UserStats stats={ this.props.user.stats } />
                             </div>
                         </div>
 
@@ -57,7 +55,7 @@ class Dashboard extends Component {
                         </div>
                     </div>
                     <div className="col col-xs-12 col-md-4">
-                        <RecentGames/>
+                        <RecentGames games={this.props.dashboard.games} />
                     </div>
                 </div>
             </div>
@@ -69,7 +67,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user
+        user: state.user,
+        dashboard: state.dashboard,
     }
 };
 

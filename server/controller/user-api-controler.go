@@ -8,6 +8,7 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/iKonrad/typitap/server/services/feed"
+	"github.com/iKonrad/typitap/server/services/stats"
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/labstack/echo"
 	r "gopkg.in/gorethink/gorethink.v3"
@@ -175,4 +176,28 @@ func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
 		"success": false,
 	})
 
+}
+
+func (gc UserAPIController) GetUserStats(c echo.Context) error {
+
+	// Check if user is logged in
+	if !c.Get("IsLoggedIn").(bool) {
+		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
+			"success": false,
+		})
+	}
+
+	user := c.Get("User").(entities.User)
+
+	if userStats, ok := stats.GetStatsForUser(user.Id); ok {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"success": true,
+			"data":    userStats,
+		})
+	}
+
+	return c.JSON(http.StatusNoContent, map[string]interface{}{
+		"success": false,
+		"message": "No stats for this user",
+	})
 }

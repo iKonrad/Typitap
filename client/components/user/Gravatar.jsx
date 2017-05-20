@@ -41,8 +41,6 @@ class Gravatar extends React.Component {
         // Gravatar service currently trims and lowercases all registered emails
         const formattedEmail = ('' + this.props.email).trim().toLowerCase();
 
-        console.log("EMAIL", JSON.stringify(this.props));
-
         let hash
         if (this.props.md5) {
             hash = this.props.md5
