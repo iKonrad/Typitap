@@ -1,14 +1,14 @@
 package feed
 
 import (
+	"log"
 	"time"
 
-	db "github.com/iKonrad/typitap/server/database"
 	"github.com/iKonrad/typitap/server/entities"
-	"github.com/iKonrad/typitap/server/logs"
+	db "github.com/iKonrad/typitap/server/services/database"
+	"github.com/iKonrad/typitap/server/services/logs"
 	"github.com/nu7hatch/gouuid"
 	r "gopkg.in/gorethink/gorethink.v3"
-	"log"
 )
 
 type ActivityActions struct{}
@@ -101,11 +101,11 @@ func GetFeedForUser(userId string, offset int) (entities.UserFeed, bool) {
 				Limit(5).
 				CoerceTo("array").
 				Merge(func(s r.Term) interface{} {
-				return map[string]interface{}{
-					"typeId": r.Table("activity_types").Get(s.Field("typeId")),
-				}
-			},
-			),
+					return map[string]interface{}{
+						"typeId": r.Table("activity_types").Get(s.Field("typeId")),
+					}
+				},
+				),
 		}
 	}).Run(db.Session)
 

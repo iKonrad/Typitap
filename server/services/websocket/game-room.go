@@ -6,11 +6,12 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
-	db "github.com/iKonrad/typitap/server/database"
-	"github.com/iKonrad/typitap/server/feed"
-	"github.com/iKonrad/typitap/server/game/topchart"
-	"github.com/iKonrad/typitap/server/logs"
-	"github.com/iKonrad/typitap/server/manager"
+	db "github.com/iKonrad/typitap/server/services/database"
+	"github.com/iKonrad/typitap/server/services/feed"
+	"github.com/iKonrad/typitap/server/services/game"
+	"github.com/iKonrad/typitap/server/services/logs"
+	"github.com/iKonrad/typitap/server/services/topchart"
+	us "github.com/iKonrad/typitap/server/services/user"
 )
 
 type Room struct {
@@ -146,7 +147,7 @@ func (r *Room) restartWaitCountdown() {
 				// Double check if all players are in the session and start the game
 				if len(r.Players) > 1 {
 					// Mark the room as closed so noone else can join
-					manager.Game.CloseGameSession(r.Id)
+					game.CloseGameSession(r.Id)
 					r.startCountdown()
 				}
 			}
@@ -322,7 +323,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 		playerTime := int(r.time)
 
 		// Calculate WPM and accuracy
-		wpm, accuracy := manager.Game.CalculateResult(playerTime, len(mistakes), text.Val())
+		wpm, accuracy := game.CalculateResult(playerTime, len(mistakes), text.Val())
 		r.SendMessage(
 			TYPE_PLAYER_COMPLETED_GAME,
 			map[string]interface{}{
@@ -341,8 +342,8 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 			"Game Session "+r.Id,
 		)
 
-		if user, ok := manager.User.FindUserBy("username", identifier); ok {
-			result, err := manager.Game.SaveResult(&user, r.Id, mistakes, wpm, accuracy, int(r.time), int(r.nextPlace))
+		if user, ok := us.FindUserBy("username", identifier); ok {
+			result, err := game.SaveResult(&user, r.Id, mistakes, wpm, accuracy, int(r.time), int(r.nextPlace))
 			if err != nil {
 				logs.Error("Error while saving a result", "An error occurred while saving results for user "+identifier, []string{"errors", "websocket", "game"}, "Game Session "+r.Id)
 			}

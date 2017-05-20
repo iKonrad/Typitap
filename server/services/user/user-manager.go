@@ -1,32 +1,21 @@
-package manager
+package user
 
 import (
 	"errors"
 	"log"
 	"time"
 
-	db "github.com/iKonrad/typitap/server/database"
 	"github.com/iKonrad/typitap/server/entities"
+	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/nu7hatch/gouuid"
 	errorGen "github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 	r "gopkg.in/gorethink/gorethink.v3"
 )
 
-type UserManager struct {
-}
+func CreateUser(details map[string]interface{}) (entities.User, error) {
 
-var User UserManager
-
-var currentUser entities.User
-
-func init() {
-	User = UserManager{}
-}
-
-func (um UserManager) CreateUser(details map[string]interface{}) (entities.User, error) {
-
-	isValid, _ := um.ValidateUser(details)
+	isValid, _ := ValidateUser(details)
 
 	if !isValid {
 		return entities.User{}, errorGen.New("Invalid user details")
@@ -39,7 +28,7 @@ func (um UserManager) CreateUser(details map[string]interface{}) (entities.User,
 		return entities.User{}, errors.New("Issue while creating a UUID key: " + error.Error())
 	}
 
-	hashedPassword := um.generatePassword(details["password"].(string))
+	hashedPassword := generatePassword(details["password"].(string))
 	newUser := entities.User{
 		Id:       newId.String(),
 		Name:     details["name"].(string),
@@ -52,7 +41,7 @@ func (um UserManager) CreateUser(details map[string]interface{}) (entities.User,
 	cursor, err := r.Table("users").Insert(newUser).Run(db.Session)
 
 	newFeed := entities.UserFeed{
-		User: newUser,
+		User:  newUser,
 		Items: []entities.Activity{},
 	}
 
@@ -65,40 +54,39 @@ func (um UserManager) CreateUser(details map[string]interface{}) (entities.User,
 		log.Println(err)
 	}
 
-
 	defer cursor.Close()
 
 	return newUser, nil
 }
 
-func (um UserManager) ValidateUser(details map[string]interface{}) (bool, map[string]string) {
+func ValidateUser(details map[string]interface{}) (bool, map[string]string) {
 
 	fieldErrors := map[string]string{}
 	isValid := true
 
 	// First name validation
-	fieldValid, err := um.ValidateName(details["name"].(string))
+	fieldValid, err := ValidateName(details["name"].(string))
 	if !fieldValid {
 		isValid = false
 		fieldErrors["name"] = err
 	}
 
 	// Username validation
-	fieldValid, err = um.ValidateUsername(details["username"].(string))
+	fieldValid, err = ValidateUsername(details["username"].(string))
 	if !fieldValid {
 		isValid = false
 		fieldErrors["username"] = err
 	}
 
 	// Email validation
-	fieldValid, err = um.ValidateEmail(details["email"].(string))
+	fieldValid, err = ValidateEmail(details["email"].(string))
 	if !fieldValid {
 		isValid = false
 		fieldErrors["email"] = err
 	}
 
 	// Password validation
-	fieldValid, err = um.ValidatePassword(details["password"].(string))
+	fieldValid, err = ValidatePassword(details["password"].(string))
 	if !fieldValid {
 		isValid = false
 		fieldErrors["password"] = err
@@ -108,13 +96,13 @@ func (um UserManager) ValidateUser(details map[string]interface{}) (bool, map[st
 
 }
 
-func (um UserManager) generatePassword(password string) string {
+func generatePassword(password string) string {
 	generatedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	return string(generatedPassword[:])
 }
 
 // Checks if there's already an account with provided e-mail address
-func (um UserManager) IsEmailAvailable(email string) bool {
+func IsEmailAvailable(email string) bool {
 
 	// Check if e-mail exists in the database
 	res, _ := r.Table("users").Filter(map[string]interface{}{
@@ -137,7 +125,7 @@ func (um UserManager) IsEmailAvailable(email string) bool {
 }
 
 // Checks if account with provided username already exists
-func (um UserManager) IsUsernameAvailable(username string) bool {
+func IsUsernameAvailable(username string) bool {
 
 	// Check if e-mail exists in the database
 	res, _ := r.Table("users").Filter(map[string]interface{}{
@@ -160,7 +148,7 @@ func (um UserManager) IsUsernameAvailable(username string) bool {
 }
 
 // Fetches the user from the database by the provided key. First return value is a user itself. Second return value is OK/found
-func (um UserManager) FindUserBy(key string, value string) (entities.User, bool) {
+func FindUserBy(key string, value string) (entities.User, bool) {
 
 	res, err := r.Table("users").Filter(map[string]interface{}{
 		key: value,
@@ -183,7 +171,7 @@ func (um UserManager) FindUserBy(key string, value string) (entities.User, bool)
 	return returnedUser, true
 }
 
-func (um UserManager) GetUser(id string) (entities.User, bool) {
+func GetUser(id string) (entities.User, bool) {
 
 	res, err := r.Table("users").Get(id).Run(db.Session)
 
@@ -204,7 +192,7 @@ func (um UserManager) GetUser(id string) (entities.User, bool) {
 
 }
 
-func (um UserManager) GenerateUserToken(tokenType string, user entities.User) (string, bool) {
+func GenerateUserToken(tokenType string, user entities.User) (string, bool) {
 
 	// Generate activation token
 	tokenString, _ := uuid.NewV4()
@@ -229,7 +217,7 @@ func (um UserManager) GenerateUserToken(tokenType string, user entities.User) (s
 
 }
 
-func (um UserManager) GetUserToken(token string, tokenType string) (entities.UserToken, bool) {
+func GetUserToken(token string, tokenType string) (entities.UserToken, bool) {
 
 	res, err := r.Table("tokens").Filter(map[string]interface{}{
 		"token": token,
@@ -257,7 +245,7 @@ func (um UserManager) GetUserToken(token string, tokenType string) (entities.Use
 
 }
 
-func (um UserManager) UseUserToken(token string, tokenType string) bool {
+func UseUserToken(token string, tokenType string) bool {
 
 	res, err := r.Table("tokens").Filter(map[string]interface{}{
 		"token": token,
@@ -276,7 +264,7 @@ func (um UserManager) UseUserToken(token string, tokenType string) bool {
 	return true
 }
 
-func (um UserManager) ActivateUser(userId string) bool {
+func ActivateUser(userId string) bool {
 
 	err := r.Table("users").Get(userId).Update(map[string]interface{}{
 		"active": true,
@@ -284,16 +272,16 @@ func (um UserManager) ActivateUser(userId string) bool {
 	return err == nil
 }
 
-func (um UserManager) UpdateUserPassword(password string, user entities.User) bool {
+func UpdateUserPassword(password string, user entities.User) bool {
 
-	hashedPassword := um.generatePassword(password)
+	hashedPassword := generatePassword(password)
 	r.Table("users").Get(user.Id).Update(map[string]interface{}{
 		"password": hashedPassword,
 	}).Exec(db.Session)
 	return true
 }
 
-func (um UserManager) UpdateUser(user *entities.User) bool {
+func UpdateUser(user *entities.User) bool {
 
 	r.Table("users").Get(user.Id).Update(map[string]interface{}{
 		"name":   user.Name,
@@ -303,9 +291,8 @@ func (um UserManager) UpdateUser(user *entities.User) bool {
 	return true
 }
 
-func (um UserManager) SanitizeUser(user *entities.User) {
+func SanitizeUser(user *entities.User) {
 
-	user.Email = "";
-	user.Password = "";
-
+	user.Email = ""
+	user.Password = ""
 }

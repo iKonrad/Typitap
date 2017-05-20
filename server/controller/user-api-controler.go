@@ -3,14 +3,14 @@ package controller
 import (
 	"log"
 	"net/http"
+	"strconv"
 
-	db "github.com/iKonrad/typitap/server/database"
 	"github.com/iKonrad/typitap/server/entities"
-	"github.com/iKonrad/typitap/server/manager"
+	db "github.com/iKonrad/typitap/server/services/database"
+	"github.com/iKonrad/typitap/server/services/feed"
+	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/labstack/echo"
 	r "gopkg.in/gorethink/gorethink.v3"
-	"strconv"
-	"github.com/iKonrad/typitap/server/feed"
 )
 
 type UserAPIController struct {
@@ -46,12 +46,12 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 		filters["finished"] = true
 	}
 
-	o := c.QueryParam("offset");
+	o := c.QueryParam("offset")
 	if o == "" {
-		o = "0";
+		o = "0"
 	}
 
-	offset, _ := strconv.Atoi(o);
+	offset, _ := strconv.Atoi(o)
 	resp, err := r.Table("game_results").Filter(filters).OrderBy(r.Desc("created")).Skip(offset).Limit(10).Merge(func(t r.Term) interface{} {
 		return map[string]interface{}{
 			"session": r.Table("game_sessions").Get(t.Field("sessionId")),
@@ -75,7 +75,6 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 		})
 	}
 
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
 		"data":    results,
@@ -97,7 +96,7 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 
 	switch field {
 	case "Name":
-		isValid, err := manager.User.ValidateName(value);
+		isValid, err := us.ValidateName(value)
 		if isValid {
 			user.Name = value
 		} else {
@@ -107,7 +106,7 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 			})
 		}
 	case "Email":
-		isValid, err := manager.User.ValidateEmail(value);
+		isValid, err := us.ValidateEmail(value)
 		if isValid {
 			user.Email = value
 		} else {
@@ -119,9 +118,9 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 
 	case "Password":
 
-		isValid, err := manager.User.ValidatePassword(value);
+		isValid, err := us.ValidatePassword(value)
 		if isValid {
-			manager.User.UpdateUserPassword(value, user)
+			us.UpdateUserPassword(value, user)
 			return c.JSON(http.StatusOK, map[string]interface{}{
 				"success": true,
 				"message": "Password updated",
@@ -133,7 +132,7 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 		})
 	}
 
-	if ok := manager.User.UpdateUser(&user); ok {
+	if ok := us.UpdateUser(&user); ok {
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"success": true,
 			"message": "Account updated",
@@ -147,7 +146,6 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 
 }
 
-
 func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
 
 	// Check if user is logged in
@@ -157,9 +155,9 @@ func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
 		})
 	}
 
-	o := c.QueryParam("offset");
+	o := c.QueryParam("offset")
 	if o == "" {
-		o = "0";
+		o = "0"
 	}
 
 	offset, _ := strconv.Atoi(o)
@@ -169,7 +167,7 @@ func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
 	if userFeed, ok := feed.GetFeedForUser(user.Id, offset); ok {
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"success": true,
-			"data": userFeed,
+			"data":    userFeed,
 		})
 	}
 

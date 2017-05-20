@@ -1,16 +1,17 @@
 package websocket
 
 import (
-	"time"
-	"github.com/gorilla/websocket"
-	"net/http"
-	"log"
-	"github.com/labstack/echo"
-	"github.com/iKonrad/typitap/server/entities"
-	"math/rand"
-	"strconv"
 	"encoding/json"
-	"github.com/iKonrad/typitap/server/logs"
+	"log"
+	"math/rand"
+	"net/http"
+	"strconv"
+	"time"
+
+	"github.com/gorilla/websocket"
+	"github.com/iKonrad/typitap/server/entities"
+	"github.com/iKonrad/typitap/server/services/logs"
+	"github.com/labstack/echo"
 )
 
 const (
@@ -21,13 +22,13 @@ const (
 )
 
 type Client struct {
-	user *entities.User
+	user       *entities.User
 	identifier string
 	ws         *websocket.Conn
 	send       chan []byte
 }
 
-var upgrader websocket.Upgrader;
+var upgrader websocket.Upgrader
 
 func init() {
 	upgrader = websocket.Upgrader{
@@ -42,41 +43,39 @@ func init() {
 func ServeWs(context echo.Context) {
 
 	if context.Request().Method != "GET" {
-		http.Error(context.Response().Writer, "Method not allowed", http.StatusMethodNotAllowed);
+		http.Error(context.Response().Writer, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	ws, err := upgrader.Upgrade(context.Response().Writer, context.Request(), nil);
+	ws, err := upgrader.Upgrade(context.Response().Writer, context.Request(), nil)
 	if err != nil {
-		logs.Error("Websocket error", "Error while upgrading a request: " + err.Error(), []string{"websocket"}, "Websocket error")
+		logs.Error("Websocket error", "Error while upgrading a request: "+err.Error(), []string{"websocket"}, "Websocket error")
 		return
 	}
 
 	// Check if user exists. If exists, use username as a identifier. Otherwise, create an anonymous ID
 
-	var identifier string;
-	var user entities.User;
+	var identifier string
+	var user entities.User
 	if context.Get("IsLoggedIn").(bool) {
 		user := context.Get("User").(entities.User)
 		identifier = user.Username
 	} else {
-		randomNumber := rand.Int();
-		identifier = "guest-" + strconv.Itoa(randomNumber);
+		randomNumber := rand.Int()
+		identifier = "guest-" + strconv.Itoa(randomNumber)
 	}
 
 	c := &Client{
-		user: &user,
+		user:       &user,
 		identifier: identifier,
 		send:       make(chan []byte, MAX_MESSAGE_SIZE),
 		ws:         ws,
 	}
 
-	hub.registerChannel <- c;
+	hub.registerChannel <- c
 	c.SendMessage(TYPE_CONNECTED, map[string]interface{}{
 		"identifier": identifier,
 	})
-
-
 
 	go c.writePump()
 	c.readPump()
@@ -87,10 +86,10 @@ func (c *Client) readPump() {
 
 	defer func() {
 		hub.unregisterChannel <- c
-		c.ws.Close();
+		c.ws.Close()
 	}()
 
-	c.ws.SetReadLimit(MAX_MESSAGE_SIZE);
+	c.ws.SetReadLimit(MAX_MESSAGE_SIZE)
 	c.ws.SetReadDeadline(time.Now().Add(PONG_WAIT))
 	c.ws.SetPongHandler(func(string) error {
 		c.ws.SetReadDeadline(time.Now().Add(PONG_WAIT))
@@ -103,10 +102,9 @@ func (c *Client) readPump() {
 		if err != nil {
 			break
 		}
-		var decodedMessage map[string]interface{};
-		json.Unmarshal(message, &decodedMessage);
-		c.parseMessage(c.identifier, decodedMessage);
-
+		var decodedMessage map[string]interface{}
+		json.Unmarshal(message, &decodedMessage)
+		c.parseMessage(c.identifier, decodedMessage)
 	}
 }
 
@@ -114,8 +112,7 @@ func (c *Client) parseMessage(identifier string, message map[string]interface{})
 
 	log.Println("Message received: ", message)
 
-	GetEngine().parseMessage(identifier, message);
-
+	GetEngine().parseMessage(identifier, message)
 }
 
 func (c *Client) writePump() {
@@ -129,16 +126,16 @@ func (c *Client) writePump() {
 	for {
 		select {
 		case message, ok := <-c.send:
-			logs.Incr("socketMessages", []string{"websocket"});
+			logs.Incr("socketMessages", []string{"websocket"})
 			if !ok {
-					c.write(websocket.CloseMessage, []byte{})
-					return
-				}
-				if err := c.write(websocket.TextMessage, message); err != nil {
-					return
+				c.write(websocket.CloseMessage, []byte{})
+				return
+			}
+			if err := c.write(websocket.TextMessage, message); err != nil {
+				return
 			}
 		case <-ticker.C:
-			logs.Incr("socketMessages", []string{"websocket"});
+			logs.Incr("socketMessages", []string{"websocket"})
 			if err := c.write(websocket.PingMessage, []byte{}); err != nil {
 				return
 			}
@@ -147,7 +144,7 @@ func (c *Client) writePump() {
 }
 
 func (c *Client) write(mt int, message []byte) error {
-	c.ws.SetWriteDeadline(time.Now().Add(WRITE_WAIT));
+	c.ws.SetWriteDeadline(time.Now().Add(WRITE_WAIT))
 	return c.ws.WriteMessage(mt, message)
 }
 
@@ -158,12 +155,11 @@ func (c *Client) SendMessage(messageType string, message interface{}) {
 		"data": message,
 	}
 
-	encoded, err := json.Marshal(messageObject);
+	encoded, err := json.Marshal(messageObject)
 	if err != nil {
 		log.Println("Error while encoding a payload")
 	}
 
-	logs.Incr("socketMessages", []string{"websocket"});
-
-	c.write(websocket.TextMessage, encoded);
+	logs.Incr("socketMessages", []string{"websocket"})
+	c.write(websocket.TextMessage, encoded)
 }

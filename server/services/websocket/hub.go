@@ -1,21 +1,22 @@
 package websocket
 
 import (
+	"encoding/json"
 	"log"
 	"sync"
-	"encoding/json"
+
 	"github.com/gorilla/websocket"
-	"github.com/iKonrad/typitap/server/logs"
+	"github.com/iKonrad/typitap/server/services/logs"
 )
 
 const (
-	TYPE_CONNECTED  = "CONNECTED" // Used after successful connection to the websocket server
-	TYPE_ERROR      = "ERROR" // Generic error type for any unsuccessful action
+	TYPE_CONNECTED = "CONNECTED" // Used after successful connection to the websocket server
+	TYPE_ERROR     = "ERROR"     // Generic error type for any unsuccessful action
 )
 
 const (
-	CODE_RECONNECT  = 5001;
-	CODE_DISCONNECT = 5000;
+	CODE_RECONNECT  = 5001
+	CODE_DISCONNECT = 5000
 )
 
 type SocketHub struct {
@@ -25,7 +26,7 @@ type SocketHub struct {
 	unregisterChannel chan *Client
 }
 
-var hub *SocketHub;
+var hub *SocketHub
 
 var once sync.Once
 
@@ -47,20 +48,20 @@ func (h *SocketHub) Run() {
 	for {
 		select {
 		case c := <-h.registerChannel:
-			log.Println("New client");
-			logs.Log("Client connected", "Client " + c.identifier + " connected to the websocket", []string{"websocket"}, "Websocket")
+			log.Println("New client")
+			logs.Log("Client connected", "Client "+c.identifier+" connected to the websocket", []string{"websocket"}, "Websocket")
 			h.clients[c.identifier] = c
-			log.Println("CLIENTS", float64(len(h.clients)));
+			log.Println("CLIENTS", float64(len(h.clients)))
 			logs.Gauge("clients", float64(len(h.clients)), []string{"websocket"})
 			break
 
 		case c := <-h.unregisterChannel:
 			log.Println("Client disconnected")
-			logs.Log("Client disconnected", "Client " + c.identifier + " disconnected to the websocket", []string{"websocket"}, "Websocket")
+			logs.Log("Client disconnected", "Client "+c.identifier+" disconnected to the websocket", []string{"websocket"}, "Websocket")
 			_, ok := h.clients[c.identifier]
 			logs.Gauge("clients", float64(len(h.clients)), []string{"websocket"})
 			if ok {
-				delete(h.clients, c.identifier);
+				delete(h.clients, c.identifier)
 			}
 		case m := <-h.broadcastChannel:
 			h.broadcastMessage(m)
@@ -87,17 +88,17 @@ func (h *SocketHub) broadcastMessage(message string) {
 func (h *SocketHub) SendMessageToClient(identifier string, messageType string, message interface{}) bool {
 
 	if _, ok := h.clients[identifier]; !ok {
-		log.Println("Could not find client with ID " + identifier);
-		return false;
+		log.Println("Could not find client with ID " + identifier)
+		return false
 	}
 
-	h.clients[identifier].SendMessage(messageType, message);
-	return true;
+	h.clients[identifier].SendMessage(messageType, message)
+	return true
 }
 
 func isClientConnected(identifier string) bool {
 
-	_, ok := GetHub().clients[identifier];
+	_, ok := GetHub().clients[identifier]
 	return ok
 
 }
@@ -109,7 +110,7 @@ func BroadcastMessage(messageType string, message interface{}) {
 		"data": message,
 	}
 
-	encoded, err := json.Marshal(messageObject);
+	encoded, err := json.Marshal(messageObject)
 	if err != nil {
 		log.Println("Error while encoding a payload")
 	}
@@ -121,10 +122,10 @@ func ReconnectClient(identifier string) {
 
 	client, ok := hub.clients[identifier]
 	if ok {
-		log.Println("RECONNECTING");
+		log.Println("RECONNECTING")
 		client.ws.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(CODE_RECONNECT, "Login/Logout"))
-		defer delete(hub.clients, identifier);
-		defer client.ws.Close();
+		defer delete(hub.clients, identifier)
+		defer client.ws.Close()
 	}
 
 }
@@ -134,8 +135,8 @@ func DisconnectClient(identifier string) {
 	client, ok := hub.clients[identifier]
 	if ok {
 		client.ws.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(CODE_DISCONNECT, "Disconnect"))
-		defer delete(hub.clients, identifier);
-		defer client.ws.Close();
+		defer delete(hub.clients, identifier)
+		defer client.ws.Close()
 	}
 
 }

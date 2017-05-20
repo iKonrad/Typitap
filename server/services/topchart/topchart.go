@@ -3,13 +3,13 @@ package topchart
 import (
 	"log"
 	"sort"
-
-	db "github.com/iKonrad/typitap/server/database"
-	"github.com/iKonrad/typitap/server/entities"
-	r "gopkg.in/gorethink/gorethink.v3"
-	"github.com/iKonrad/typitap/server/logs"
 	"strconv"
-	"github.com/iKonrad/typitap/server/manager"
+
+	"github.com/iKonrad/typitap/server/entities"
+	db "github.com/iKonrad/typitap/server/services/database"
+	"github.com/iKonrad/typitap/server/services/logs"
+	"github.com/iKonrad/typitap/server/services/user"
+	r "gopkg.in/gorethink/gorethink.v3"
 )
 
 var charts map[string]entities.GameChart
@@ -73,7 +73,6 @@ func pullChart(name string) (entities.GameChart, bool) {
 					}),
 				}
 			}),
-
 		}
 	}).Run(db.Session)
 	defer res.Close()
@@ -94,7 +93,7 @@ func pullChart(name string) (entities.GameChart, bool) {
 
 	// Remove passwords and e-mails from the user objects
 	for i, _ := range returnedChart.Items {
-		manager.User.SanitizeUser(&returnedChart.Items[i].User)
+		user.SanitizeUser(&returnedChart.Items[i].User)
 	}
 
 	return returnedChart, true
@@ -120,11 +119,10 @@ func saveChart(chart *entities.GameChart) {
 
 func CheckTopChart(result *entities.GameResult) bool {
 
-
-	log.Println("Checking ", result);
+	log.Println("Checking ", result)
 	updated := false
 	for name, c := range charts {
-		log.Println("Chart ", name);
+		log.Println("Chart ", name)
 		if len(c.Items) < MAX_CHART_LENGTH {
 			log.Println("Found empty space, adding in")
 			addRecordToChart(name, result)
@@ -155,7 +153,7 @@ func CheckTopChart(result *entities.GameResult) bool {
 
 func addRecordToChart(name string, result *entities.GameResult) {
 
-	manager.User.SanitizeUser(&result.User)
+	user.SanitizeUser(&result.User)
 
 	chartCopy := charts[name]
 	chart := &chartCopy
@@ -165,12 +163,12 @@ func addRecordToChart(name string, result *entities.GameResult) {
 
 	chart.Items = append(chart.Items, *result)
 	sort.Sort(entities.SortResultsByScore(chart.Items))
-	logs.Log("New highscore", "New highscore for " + name + " chart. Score: " + strconv.Itoa(result.WPM), []string{"game", "chart"}, "Charts")
+	logs.Log("New highscore", "New highscore for "+name+" chart. Score: "+strconv.Itoa(result.WPM), []string{"game", "chart"}, "Charts")
 	resultChannel <- chart
 }
 
 func removeChart(name string) {
-	logs.Log("Resetting chart", "Resetting " + name + " chart", []string{"game", "chart", "cron"}, "Charts")
+	logs.Log("Resetting chart", "Resetting "+name+" chart", []string{"game", "chart", "cron"}, "Charts")
 	newChart := createChart(name)
 	charts[name] = newChart
 	saveChart(&newChart)
@@ -181,9 +179,9 @@ func ResetChart(name string) {
 }
 
 func GetChart(name string) entities.GameChart {
-	return charts[name];
+	return charts[name]
 }
 
 func GetCharts() map[string]entities.GameChart {
-	return charts;
+	return charts
 }

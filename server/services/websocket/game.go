@@ -4,10 +4,10 @@ import (
 	"log"
 	"sync"
 
-	"github.com/iKonrad/typitap/server/logs"
-	"github.com/iKonrad/typitap/server/manager"
+	db "github.com/iKonrad/typitap/server/services/database"
+	"github.com/iKonrad/typitap/server/services/game"
+	"github.com/iKonrad/typitap/server/services/logs"
 	"github.com/pkg/errors"
-	db "github.com/iKonrad/typitap/server/database"
 )
 
 type Engine struct {
@@ -48,7 +48,6 @@ func GetEngine() *Engine {
 			rooms:          make(map[string]*Room),
 			newRoomChannel: make(chan *Room),
 		}
-
 
 	})
 	return engine
@@ -108,8 +107,7 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 		if roomId, ok := e.getRoomForClientId(identifier); ok {
 
 			var mistakes = make(map[string]int)
-			m := message["mistakes"];
-
+			m := message["mistakes"]
 			for i, v := range m.(map[string]interface{}) {
 				mistakes[i] = int(v.(float64))
 			}
@@ -130,10 +128,10 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
 
 	// Get the next session
-	session, ok := manager.Game.FindOpenSession(online)
+	session, ok := game.FindOpenSession(online)
 	if !ok {
 		var err error
-		session, err = manager.Game.CreateSession(online)
+		session, err = game.CreateSession(online)
 		if err != nil {
 			GetHub().SendMessageToClient(
 				identifier,
@@ -181,7 +179,7 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
 	// If room is full, close the room
 	log.Println("Player joined. Players now:", len(room.Players))
 	if len(room.Players) >= 5 {
-		manager.Game.CloseGameSession(room.Id)
+		game.CloseGameSession(room.Id)
 		logs.Success("Room is full", "Room '"+room.Id+"' is full and has been closed", []string{"websocket", "game"}, "Game Session "+room.Id)
 	}
 
@@ -225,7 +223,7 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 		log.Println("Player left. Now players: ", len(e.rooms[roomId].Players))
 		if shouldOpen {
 			log.Println("Opening back the session")
-			manager.Game.OpenGameSession(roomId)
+			game.OpenGameSession(roomId)
 		}
 
 		// If there's less than 2 players, stop the countdown ticker if it runs
@@ -280,6 +278,6 @@ func (e *Engine) RemoveRoom(roomId string) {
 	logs.Log("Closing room", "Room "+roomId+" has been closed", []string{"websocket", "game", "players"}, "Game Session "+roomId)
 	logs.Gauge("rooms", float64(len(e.rooms)), []string{"websocket", "game"})
 	e.rooms[roomId].finishGame()
-	manager.Game.MarkSessionFinished(roomId)
+	game.MarkSessionFinished(roomId)
 	delete(e.rooms, roomId)
 }

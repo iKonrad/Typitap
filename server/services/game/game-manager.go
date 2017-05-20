@@ -1,4 +1,4 @@
-package manager
+package game
 
 import (
 	"errors"
@@ -6,25 +6,16 @@ import (
 	"strings"
 	"time"
 
-	db "github.com/iKonrad/typitap/server/database"
 	"github.com/iKonrad/typitap/server/entities"
+	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/satori/go.uuid"
 	r "gopkg.in/gorethink/gorethink.v3"
 )
 
-type GameManager struct {
-}
-
-var Game GameManager
-
-func init() {
-	Game = GameManager{}
-}
-
-func (gm GameManager) CreateSession(online bool) (entities.GameSession, error) {
+func CreateSession(online bool) (entities.GameSession, error) {
 
 	// Get random text from the database
-	gameText, err := gm.getRandomGameText()
+	gameText, err := getRandomGameText()
 	if err != nil {
 		log.Println("No text found" + err.Error())
 		return entities.GameSession{}, err
@@ -47,7 +38,7 @@ func (gm GameManager) CreateSession(online bool) (entities.GameSession, error) {
 
 }
 
-func (gm GameManager) GetSession(sessionId string) (entities.GameSession, error) {
+func GetSession(sessionId string) (entities.GameSession, error) {
 
 	// Fetch the game text
 	resp, err := r.Table("game_sessions").Get(sessionId).Merge(func(p r.Term) interface{} {
@@ -73,7 +64,7 @@ func (gm GameManager) GetSession(sessionId string) (entities.GameSession, error)
 }
 
 // Fetches the open session from database if exists
-func (gm GameManager) FindOpenSession(online bool) (entities.GameSession, bool) {
+func FindOpenSession(online bool) (entities.GameSession, bool) {
 
 	// Fetch the game text
 	resp, err := r.Table("game_sessions").Filter(map[string]interface{}{
@@ -106,21 +97,21 @@ func (gm GameManager) FindOpenSession(online bool) (entities.GameSession, bool) 
 	return session, true
 }
 
-func (gm GameManager) CloseGameSession(sessionId string) {
+func CloseGameSession(sessionId string) {
 
 	r.Table("game_sessions").Get(sessionId).Update(map[string]interface{}{
 		"open": false,
 	}).Exec(db.Session)
 }
 
-func (gm GameManager) OpenGameSession(sessionId string) {
+func OpenGameSession(sessionId string) {
 
 	r.Table("game_sessions").Get(sessionId).Update(map[string]interface{}{
 		"open": true,
 	}).Exec(db.Session)
 }
 
-func (gm GameManager) getRandomGameText() (entities.GameText, error) {
+func getRandomGameText() (entities.GameText, error) {
 
 	resp, err := r.Table("game_texts").Sample(1).Run(db.Session)
 	defer resp.Close()
@@ -141,7 +132,7 @@ func (gm GameManager) getRandomGameText() (entities.GameText, error) {
 
 }
 
-func (gm GameManager) getGameText(textId int) (entities.GameText, error) {
+func getGameText(textId int) (entities.GameText, error) {
 
 	// Fetch the game text
 	resp, err := r.Table("game_texts").Get(textId).Run(db.Session)
@@ -162,10 +153,10 @@ func (gm GameManager) getGameText(textId int) (entities.GameText, error) {
 
 }
 
-func (gm GameManager) SaveResult(user *entities.User, sessionId string, mistakes map[string]int, wpm int, accuracy int, gameTime int, place int) (entities.GameResult, error) {
+func SaveResult(user *entities.User, sessionId string, mistakes map[string]int, wpm int, accuracy int, gameTime int, place int) (entities.GameResult, error) {
 
 	// Get Session by ID
-	session, err := gm.GetSession(sessionId)
+	session, err := GetSession(sessionId)
 	if err != nil {
 		return entities.GameResult{}, err
 	}
@@ -192,7 +183,7 @@ func (gm GameManager) SaveResult(user *entities.User, sessionId string, mistakes
 
 }
 
-func (gm GameManager) validateGameResult(details map[string]interface{}) (map[string]string, bool) {
+func validateGameResult(details map[string]interface{}) (map[string]string, bool) {
 
 	errors := map[string]string{}
 	isValid := true
@@ -215,7 +206,7 @@ func (gm GameManager) validateGameResult(details map[string]interface{}) (map[st
 
 }
 
-func (gm GameManager) MarkSessionFinished(sessionId string) {
+func MarkSessionFinished(sessionId string) {
 
 	r.Table("game_sessions").Get(sessionId).Update(map[string]interface{}{
 		"finished": true,
@@ -223,7 +214,7 @@ func (gm GameManager) MarkSessionFinished(sessionId string) {
 	}).Exec(db.Session)
 }
 
-func (gm GameManager) DeleteOldSessionsForUser(userId string) {
+func DeleteOldSessionsForUser(userId string) {
 
 	r.Table("game_sessions").Filter(map[string]interface{}{
 		"finished": false,
@@ -232,7 +223,7 @@ func (gm GameManager) DeleteOldSessionsForUser(userId string) {
 	}).Delete().Exec(db.Session)
 }
 
-func (gm GameManager) CalculateResult(time int, errors int, text string) (int, int) {
+func CalculateResult(time int, errors int, text string) (int, int) {
 
 	// Remove spaces form the text
 	oneString := strings.Replace(text, " ", "", -1)

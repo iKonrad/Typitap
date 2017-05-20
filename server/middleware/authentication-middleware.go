@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	db "github.com/iKonrad/typitap/server/database"
 	"github.com/iKonrad/typitap/server/entities"
-	"github.com/iKonrad/typitap/server/manager"
+	db "github.com/iKonrad/typitap/server/services/database"
+	"github.com/iKonrad/typitap/server/services/sessions"
 	"github.com/labstack/echo"
 	r "gopkg.in/gorethink/gorethink.v3"
 )
@@ -21,7 +21,7 @@ func CheckAuthHandler(next echo.HandlerFunc) echo.HandlerFunc {
 			return next(c)
 		}
 
-		session, err := manager.Session.Get(c.Request(), "SESSION_ID")
+		session, err := sessions.Session.Get(c.Request(), "SESSION_ID")
 
 		if err != nil {
 			fmt.Println("Error while fetching a session", err)

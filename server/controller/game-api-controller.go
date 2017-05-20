@@ -1,16 +1,16 @@
 package controller
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/iKonrad/typitap/server/entities"
-	"github.com/iKonrad/typitap/server/manager"
+	"github.com/iKonrad/typitap/server/services/feed"
+	"github.com/iKonrad/typitap/server/services/game"
+	"github.com/iKonrad/typitap/server/services/topchart"
 	"github.com/labstack/echo"
-	"strconv"
-	"encoding/json"
-	"github.com/iKonrad/typitap/server/game/topchart"
-	"github.com/iKonrad/typitap/server/feed"
 )
 
 type GameAPIController struct {
@@ -31,15 +31,15 @@ func (ac *GameAPIController) GetSession(c echo.Context) error {
 	if c.Get("IsLoggedIn").(bool) {
 		// If logged in, check if there's already an open offline session, and delete it
 		user = c.Get("User").(entities.User)
-		manager.Game.DeleteOldSessionsForUser(user.Id)
+		game.DeleteOldSessionsForUser(user.Id)
 	}
 
 	isOnline := sessionType == "online"
-	session, ok := manager.Game.FindOpenSession(isOnline)
+	session, ok := game.FindOpenSession(isOnline)
 	// Create the session and return it
 	var err error
 	if !ok {
-		session, err = manager.Game.CreateSession(isOnline)
+		session, err = game.CreateSession(isOnline)
 	}
 
 	if err != nil {
@@ -85,15 +85,14 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 	accuracy, _ := strconv.Atoi(c.FormValue("accuracy"))
 	gameTime, _ := strconv.Atoi(c.FormValue("time"))
 
-	newResult, err := manager.Game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, accuracy, gameTime, 0)
+	newResult, err := game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, accuracy, gameTime, 0)
 
-	feed.SendActivity(user.Id, feed.Activities.PlayerCompletedOfflineGameActivity(user.Username,  wpm))
+	feed.SendActivity(user.Id, feed.Activities.PlayerCompletedOfflineGameActivity(user.Username, wpm))
 
-	manager.Game.MarkSessionFinished(c.FormValue("sessionId"));
+	game.MarkSessionFinished(c.FormValue("sessionId"))
 
 	// Submit the result for the top chart
-	topchart.CheckTopChart(&newResult);
-
+	topchart.CheckTopChart(&newResult)
 	if err != nil {
 		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -109,28 +108,21 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 
 }
 
-
 func (ac *GameAPIController) GetChartsData(c echo.Context) error {
 
-	charts := topchart.GetCharts();
-
-
+	charts := topchart.GetCharts()
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
-		"data": charts,
-	});
+		"data":    charts,
+	})
 }
-
 
 func (ac *GameAPIController) GetChartData(c echo.Context) error {
 
-	name := c.Param("name");
-
-	chart := topchart.GetChart(name);
-
+	name := c.Param("name")
+	chart := topchart.GetChart(name)
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
-		"data": chart,
-	});
-
+		"data":    chart,
+	})
 }

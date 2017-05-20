@@ -1,7 +1,7 @@
 package cron
 
 import (
-	"github.com/iKonrad/typitap/server/game/topchart"
+	"github.com/iKonrad/typitap/server/services/topchart"
 )
 
 func registerChartJobs() {

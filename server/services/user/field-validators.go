@@ -1,11 +1,11 @@
-package manager
+package user
 
 import (
 	"strings"
 	"github.com/badoux/checkmail"
 )
 
-func (um UserManager) ValidateUsername(username string) (bool, string) {
+func ValidateUsername(username string) (bool, string) {
 
 	isValid := true;
 	var fieldError string;
@@ -21,7 +21,7 @@ func (um UserManager) ValidateUsername(username string) (bool, string) {
 			fieldError = "This username is not available"
 			isValid = false
 		} else {
-			isAvailable := um.IsUsernameAvailable(username)
+			isAvailable := IsUsernameAvailable(username)
 			if !isAvailable {
 				isValid = false
 				fieldError = "This username is taken"
@@ -33,7 +33,7 @@ func (um UserManager) ValidateUsername(username string) (bool, string) {
 }
 
 
-func (um UserManager) ValidateName(name string) (bool, string) {
+func ValidateName(name string) (bool, string) {
 
 	isValid := true;
 	var fieldError string;
@@ -54,7 +54,7 @@ func (um UserManager) ValidateName(name string) (bool, string) {
 }
 
 
-func (um UserManager) ValidateEmail(email string) (bool, string) {
+func ValidateEmail(email string) (bool, string) {
 
 	isValid := true;
 	var fieldError string;
@@ -69,7 +69,7 @@ func (um UserManager) ValidateEmail(email string) (bool, string) {
 			fieldError = "Invalid e-mail address"
 			isValid = false
 		} else {
-			isAvailable := um.IsEmailAvailable(email)
+			isAvailable := IsEmailAvailable(email)
 			if !isAvailable {
 				isValid = false
 				fieldError = "This e-mail address is taken"
@@ -82,7 +82,7 @@ func (um UserManager) ValidateEmail(email string) (bool, string) {
 }
 
 
-func (um UserManager) ValidatePassword(password string) (bool, string) {
+func ValidatePassword(password string) (bool, string) {
 	var err string
 	isValid := true
 

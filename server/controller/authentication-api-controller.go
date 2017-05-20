@@ -1,12 +1,15 @@
 package controller
 
 import (
-	"github.com/iKonrad/typitap/server/entities"
-	"github.com/iKonrad/typitap/server/manager"
-	"github.com/labstack/echo"
-	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
+
+	"github.com/iKonrad/typitap/server/entities"
+	"github.com/iKonrad/typitap/server/services/mail"
+	"github.com/iKonrad/typitap/server/services/sessions"
+	us "github.com/iKonrad/typitap/server/services/user"
+	"github.com/labstack/echo"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthenticationAPIController struct {
@@ -38,7 +41,7 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 	}
 
 	// Validate user details
-	isValid, errors := manager.User.ValidateUser(details)
+	isValid, errors := us.ValidateUser(details)
 
 	if !isValid {
 		response := map[string]interface{}{
@@ -49,37 +52,36 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 	}
 
 	// Data is valid, so we can create a new user now
-	newUser, err := manager.User.CreateUser(details)
+	newUser, err := us.CreateUser(details)
 
 	if err != nil {
 		log.Println(err)
 	}
 
-	newUser.Password = "";
-
+	newUser.Password = ""
 
 	// Generate an activation token for the confirmation e-mail
-	token, ok := manager.User.GenerateUserToken("activate", newUser);
+	token, ok := us.GenerateUserToken("activate", newUser)
 
 	if !ok {
 
 		return c.JSON(500, map[string]interface{}{
 			"success": false,
-			"error": "Your account has been created, but there was a problem with your activation token. Please get in touch with us for more information",
-		});
+			"error":   "Your account has been created, but there was a problem with your activation token. Please get in touch with us for more information",
+		})
 	}
 
 	// Send confirmation e-mail with an activation link
 	emailTags := map[string]interface{}{
-		"name": newUser.Name,
+		"name":       newUser.Name,
 		"action_url": "http://" + c.Request().Host + "/auth/activate/" + token,
-		"username": newUser.Username,
-	};
+		"username":   newUser.Username,
+	}
 
-	manager.Mail.SendEmail(newUser.Email, "NEW_ACCOUNT", emailTags)
+	mail.SendEmail(newUser.Email, "NEW_ACCOUNT", emailTags)
 
 	// Now, that we have a user, we can log in automatically
-	session, err := manager.Session.Get(c.Request(), "SESSION_ID")
+	session, err := sessions.Session.Get(c.Request(), "SESSION_ID")
 	if err != nil {
 		// The session is incorrect. We should remove the cookie.
 		cookie := http.Cookie{
@@ -99,25 +101,20 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 
 	session.Values["SessionCookie"] = sessionCookie
 
-	session.Options.MaxAge = 60 * 60 * 24 * 14;
+	session.Options.MaxAge = 60 * 60 * 24 * 14
 	err = session.Save(c.Request(), c.Response().Writer)
 
 	if err != nil {
 		log.Println("Error while saving a session", err)
 	}
 
-
-
-
 	return c.JSON(200, map[string]interface{}{
 		"success": true,
-		"user": newUser,
+		"user":    newUser,
 	})
 }
 
 func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
-
-
 
 	// Check if user is already logged in
 	if c.Get("IsLoggedIn").(bool) {
@@ -136,7 +133,7 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 	}
 
 	// Get the user for e-mail address
-	user, ok := manager.User.FindUserBy("username", username)
+	user, ok := us.FindUserBy("username", username)
 
 	// No user found for this username. Return an error
 	if !ok {
@@ -151,7 +148,7 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 	}
 
 	// Password is correct. Now we can safely create the session;
-	session, err := manager.Session.Get(c.Request(), "SESSION_ID")
+	session, err := sessions.Session.Get(c.Request(), "SESSION_ID")
 	if err != nil {
 		// The session is incorrect. We should remove the cookie.
 		cookie := http.Cookie{
@@ -168,65 +165,57 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 		Role:   "ADMIN", // @TODO: Replace this when roles are implemented
 	}
 
-	session.Options.MaxAge = 60 * 60 * 24 * 14;
+	session.Options.MaxAge = 60 * 60 * 24 * 14
 
-	user.Password = "";
+	user.Password = ""
 
 	session.Save(c.Request(), c.Response().Writer)
 
-
 	return c.JSON(200, map[string]interface{}{
 		"success": true,
-		"user": user,
+		"user":    user,
 	})
 }
 
-
-
-
-
-func (ac AuthenticationAPIController) HandleLogout (c echo.Context) error {
+func (ac AuthenticationAPIController) HandleLogout(c echo.Context) error {
 
 	// Check if user is already logged in
 	if !c.Get("IsLoggedIn").(bool) {
 		return c.JSON(200, map[string]interface{}{"success": true})
 	}
 
-	session, err := manager.Session.Get(c.Request(), "SESSION_ID");
+	session, err := sessions.Session.Get(c.Request(), "SESSION_ID")
 
 	if err != nil {
-		log.Println("Error while fetching the session", err);
+		log.Println("Error while fetching the session", err)
 	}
 
-	log.Println("USER", c.Get("User").(entities.User));
+	log.Println("USER", c.Get("User").(entities.User))
 
+	session.Options.MaxAge = -1
+	session.Save(c.Request(), c.Response().Writer)
 
-	session.Options.MaxAge = -1;
-	session.Save(c.Request(), c.Response().Writer);
-
-	return c.JSON(200, map[string]interface{}{"success": true});
+	return c.JSON(200, map[string]interface{}{"success": true})
 
 }
-
-
 
 func (ac AuthenticationAPIController) HandlePasswordForgot(c echo.Context) error {
 
 	// Check if logged in
-	if (c.Get("IsLoggedIn").(bool)) {
+	if c.Get("IsLoggedIn").(bool) {
 		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
 			"success": false,
-			"errors": map[string]string {
+			"errors": map[string]string{
 				"_error": "You are logged in",
 			},
-		});
+		})
 	}
 
-	emailAddress := c.FormValue("email");
+	emailAddress := c.FormValue("email")
 
 	// Check if user exists for this e-mail
 
-	user, ok := manager.User.FindUserBy("email", emailAddress);
+	user, ok := us.FindUserBy("email", emailAddress)
 
 	if !ok {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -234,54 +223,53 @@ func (ac AuthenticationAPIController) HandlePasswordForgot(c echo.Context) error
 			"errors": map[string]string{
 				"email": "We couldn't find an account for this e-mail address",
 			},
-		});
+		})
 	}
 
 	// Create a userToken for that user
-	userToken, ok := manager.User.GenerateUserToken("password", user);
+	userToken, ok := us.GenerateUserToken("password", user)
 
-	if (!ok) {
+	if !ok {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"success": false,
-			"errors": map[string]string {
+			"errors": map[string]string{
 				"_error": "An error occured while generating your token. Please try again later",
 			},
-		});
+		})
 	}
 
 	// Send the token to the e-mail address
 	emailTags := map[string]interface{}{
-		"name": user.Name,
+		"name":       user.Name,
 		"action_url": "http://" + c.Request().Host + "/auth/password/reset/" + userToken,
-		"username": user.Username,
-	};
+		"username":   user.Username,
+	}
 
-	manager.Mail.SendEmail(user.Email, "PASSWORD_RESET", emailTags);
+	mail.SendEmail(user.Email, "PASSWORD_RESET", emailTags)
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
-	});
+	})
 
 }
-
 
 func (ac AuthenticationAPIController) HandlePasswordReset(c echo.Context) error {
 
 	// Check if logged in
-	if (c.Get("IsLoggedIn").(bool)) {
+	if c.Get("IsLoggedIn").(bool) {
 		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
 			"success": false,
-			"errors": map[string]string {
+			"errors": map[string]string{
 				"_error": "You are logged in",
 			},
-		});
+		})
 	}
 
-	tokenString := c.FormValue("token");
-	password := c.FormValue("password");
-	passwordConfirm := c.FormValue("password-confirm");
+	tokenString := c.FormValue("token")
+	password := c.FormValue("password")
+	passwordConfirm := c.FormValue("password-confirm")
 
-	userToken, ok := manager.User.GetUserToken(tokenString, "password");
+	userToken, ok := us.GetUserToken(tokenString, "password")
 
 	if !ok {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -289,11 +277,11 @@ func (ac AuthenticationAPIController) HandlePasswordReset(c echo.Context) error 
 			"errors": map[string]string{
 				"_error": "Token is invalid or expired. Please try requesting a password reset again",
 			},
-		});
+		})
 	}
 
 	// We've got the token, now we can validate the password
-	isPasswordValid, err := manager.User.ValidatePassword(password);
+	isPasswordValid, err := us.ValidatePassword(password)
 
 	if !isPasswordValid {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -301,7 +289,7 @@ func (ac AuthenticationAPIController) HandlePasswordReset(c echo.Context) error 
 			"errors": map[string]string{
 				"password": err,
 			},
-		});
+		})
 	}
 
 	if password != passwordConfirm {
@@ -310,12 +298,11 @@ func (ac AuthenticationAPIController) HandlePasswordReset(c echo.Context) error 
 			"errors": map[string]string{
 				"password-confirm": "Passwords do not match",
 			},
-		});
+		})
 	}
 
-
 	// Otherwise we can update the password
-	isUpdated := manager.User.UpdateUserPassword(password, userToken.User);
+	isUpdated := us.UpdateUserPassword(password, userToken.User)
 
 	if !isUpdated {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -323,22 +310,17 @@ func (ac AuthenticationAPIController) HandlePasswordReset(c echo.Context) error 
 			"errors": map[string]string{
 				"password": "There was an issue with updating your password. Please try again later",
 			},
-		});
+		})
 	}
 
-
 	// Now we can mark the token as used
-	manager.User.UseUserToken(userToken.Token, "password");
+	us.UseUserToken(userToken.Token, "password")
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
-	});
+	})
 
 }
-
-
-
-
 
 func (ac AuthenticationAPIController) validateLoginForm(username string, password string) (bool, map[string]string) {
 
@@ -360,5 +342,3 @@ func (ac AuthenticationAPIController) validateLoginForm(username string, passwor
 	return isValid, errors
 
 }
-
-

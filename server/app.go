@@ -8,16 +8,16 @@ import (
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/gorilla/websocket"
 	"github.com/iKonrad/typitap/server/assets"
-	"github.com/iKonrad/typitap/server/logs"
+	"github.com/iKonrad/typitap/server/cron"
 	middlewares "github.com/iKonrad/typitap/server/middleware"
 	"github.com/iKonrad/typitap/server/routes"
-	ws "github.com/iKonrad/typitap/server/websocket"
+	"github.com/iKonrad/typitap/server/services/logs"
+	ws "github.com/iKonrad/typitap/server/services/websocket"
 	"github.com/itsjamie/go-bindata-templates"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
-	"github.com/iKonrad/typitap/server/cron"
 )
 
 // App struct.
