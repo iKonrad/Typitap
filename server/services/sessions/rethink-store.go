@@ -13,8 +13,8 @@ var Session *s.RethinkStore
 
 func init() {
 
-	databaseHost := config.GetString("database_host") + ":" + config.GetString("database_port")
-	databaseName := config.GetString("database_name");
+	databaseHost := config.Config.UString("database_host", "localhost") + ":" + config.Config.UString("database_port", "28015")
+	databaseName := config.Config.UString("database_name", "typitap");
 	// Fetch new store.
 	var err error
 	Session, err = s.NewRethinkStore(

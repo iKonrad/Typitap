@@ -1,55 +1,38 @@
 package config
 
 import (
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"log"
+
 	"github.com/iKonrad/typitap/server/assets"
+	"github.com/olebedev/config"
 )
 
-var data map[string]interface{}
+var Config *config.Config
+var Routes *config.Config
 
 func init() {
 
-
-	configBytes, err := assets.Asset("config/config.yml")
-
-	if (err != nil){
-		panic(err);
-	}
-
-	err = yaml.Unmarshal(configBytes, &data)
-	if err != nil {
-		log.Fatalf("error: %v", err)
-	}
-}
-
-func getConfigFileContent(path string) []byte {
-	content, err := ioutil.ReadFile(path)
-
+	// Fetch general configs
+	cfgBytes, err := assets.Asset("config/config.yml")
 	if err != nil {
 		panic(err)
 	}
-
-	return content
-}
-
-func Get(key string) (interface{}) {
-
-	if value, ok := data[key]; !ok {
-		return false
-	} else {
-		return value
+	Config, err = config.ParseYaml(string(cfgBytes[:]))
+	if err != nil {
+		log.Fatalf("error: %v", err)
 	}
-}
 
-// Convenience method for Get
-func GetString(key string) string {
-	value := Get(key)
-	return value.(string)
-}
 
-func GetBool(key string) bool {
-	value := Get(key);
-	return value.(bool)
+	// Fetch routing configuration
+	routeBytes, err := assets.Asset("config/routes.yml")
+	if err != nil {
+		log.Fatalf("error: %v", err)
+	}
+	Routes, err = config.ParseYaml(string(routeBytes[:]))
+	if err != nil {
+		log.Fatalf("error: %v", err)
+	}
+
+
+
 }

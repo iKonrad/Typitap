@@ -15,7 +15,7 @@ var Templates = map[string]int64{
 var client *postmark.Client
 
 func init() {
-	client = postmark.NewClient(config.GetString("mail_server_token"), config.GetString("mail_api_token"));
+	client = postmark.NewClient(config.Config.UString("mail_server_token", ""), config.Config.UString("mail_api_token", ""));
 }
 
 func SendEmail(to string, templateName string, tags map[string]interface{}) bool {
@@ -26,12 +26,12 @@ func SendEmail(to string, templateName string, tags map[string]interface{}) bool
 	}
 
 	email := postmark.TemplatedEmail{
-		From:          config.GetString("mail_from_address"),
+		From:          config.Config.UString("mail_from_address", "jarson@me.com"),
 		To:            to,
 		TemplateId:    templateId,
 		TemplateModel: tags,
 	}
-	if config.GetBool("debug") {
+	if config.Config.UBool("debug", false) {
 		return true
 	}
 	response, err := client.SendTemplatedEmail(email)

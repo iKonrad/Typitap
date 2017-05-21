@@ -1,0 +1,11 @@
+home:
+  path: /
+  role: ROLE_GUEST
+
+admin_general:
+  path: /admin
+  role: ROLE_ADMIN
+
+admin_super:
+  path: /admin/super
+  role: ROLE_SUPER_ADMIN

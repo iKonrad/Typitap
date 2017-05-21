@@ -69,6 +69,10 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Register authentication middleware
 	engine.Use(middlewares.CheckAuthHandler)
+
+	// Roles middleware
+	engine.Use(middlewares.CheckRoleHandler)
+
 	// Register Redux State generator middleware
 	engine.Use(middlewares.GenerateStateHandler)
 

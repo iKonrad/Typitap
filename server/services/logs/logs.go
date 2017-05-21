@@ -21,7 +21,7 @@ func c() *statsd.Client {
 		}
 
 		client.Namespace = "typitap."
-		if config.GetBool("debug") {
+		if config.Config.UBool("debug", false) {
 			client.Tags = append(client.Tags, "debug")
 		}
 	})

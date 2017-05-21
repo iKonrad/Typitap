@@ -10,6 +10,7 @@ type User struct {
 	Username string `gorethink:"username"`
 
 	Active bool `gorethink:"active"`
+	Role string `gorethink:"active"`
 
 	Created time.Time `gorethink:"created"`
 }

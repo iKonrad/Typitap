@@ -2,7 +2,7 @@ debug: true
 
 # Database
 database_host: 127.0.0.1
-database_port: "28015"
+database_port: 28015
 database_name: typitap
 
 redis_host: localhost:6379
@@ -13,4 +13,12 @@ mail_api_token: 256a4c09-3bb2-48ff-81af-d1b5188cfa0b
 mail_server_token: bc63297f-66c5-4a0b-b95a-e1ea46ca0c67
 mail_from_address: noreply@typitap.com
 
+# Duktape
 duktape_path: static/build/bundle.jszw
+
+roles:
+  ROLE_GUEST: 0
+  ROLE_USER: 10
+  ROLE_MODERATOR: 50
+  ROLE_ADMIN: 70
+  ROLE_SUPER_ADMIN: 100

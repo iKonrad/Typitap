@@ -13,6 +13,13 @@ class Dashboard extends Component {
     componentWillMount() {
         this.props.dispatch(DashboardActions.getRecentGames(0));
         this.props.dispatch(DashboardActions.fetchFollowData());
+
+
+        if (this.props.user.data !== undefined && this.props.user.stats === undefined || Object.keys(this.props.user.stats).length === 0) {
+            this.props.dispatch(UserActions.fetchUserStats());
+        }
+
+
     }
 
     componentWillUnmount() {
@@ -49,12 +56,12 @@ class Dashboard extends Component {
                     <div className="col col-xs-12 col-md-4">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Follow title="Followers" items={ this.props.dashboard.follow.followers } />
+                                <Follow title="Followers" items={ this.props.dashboard.follow.followers }/>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Follow title="Following" items={ this.props.dashboard.follow.following } />
+                                <Follow title="Following" items={ this.props.dashboard.follow.following }/>
                             </div>
                         </div>
                         <div className="row">

@@ -6,13 +6,7 @@ import * as UserActions from 'store/modules/userModule';
 
 class UserStats extends Component {
 
-    componentWillMount() {
 
-        if (this.props.user.stats === undefined || Object.keys(this.props.user.stats).length === 0) {
-            this.props.dispatch(UserActions.fetchUserStats());
-        }
-
-    }
 
     renderStatsItems(items) {
 

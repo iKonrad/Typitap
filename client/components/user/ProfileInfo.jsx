@@ -5,7 +5,6 @@ class ProfileInfo extends Component {
 
 
     render() {
-        console.log(this.props.user)
         return (
             <div className="panel panel-default profile-page__info">
                 <div className="panel-body">
