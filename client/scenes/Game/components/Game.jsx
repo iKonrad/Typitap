@@ -87,8 +87,6 @@ class Game extends Component {
         }
 
         if ((!this.props.game.room.id || this.props.game.room.id === "") && newProps.game.room.id !== undefined && newProps.game.room.id !== "") {
-            console.log("PREV", this.props);
-            console.log("NEXT", newProps);
             // We've got the room ID, we can now proceed to start the game
             if (!this.props.online) {
                 this.engine.startCountdown(() => {

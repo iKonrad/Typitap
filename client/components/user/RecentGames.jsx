@@ -23,7 +23,7 @@ class RecentGames extends Component {
             });
             return items;
         } else {
-            return (<div className="panel-body text-muted text-center">You haven't played any games yet.</div>);
+            return (<div className="panel-body text-muted text-center">No games played yet</div>);
         }
 
     }
@@ -33,6 +33,19 @@ class RecentGames extends Component {
         this.props.dispatch(DashboardActions.getRecentGames(offset));
     }
 
+    renderMoreButton() {
+        if (this.props.games && this.props.games.length > 0 && (this.props.hideButton === undefined || !this.props.hideButton)) {
+            return (
+                <div className="text-center">
+                    <button className="btn btn-link" onClick={this.fetchMoreResults.bind(this)}>More</button>
+                </div>
+            );
+        } else {
+            return "";
+        }
+
+    }
+
     render() {
         return (
             <div className="panel panel-default">
@@ -40,9 +53,7 @@ class RecentGames extends Component {
                     <h3>Recent Games</h3>
                 </div>
                 { this.renderItems() }
-                <div className="text-center">
-                    <button className="btn btn-link" onClick={this.fetchMoreResults.bind(this)}>More</button>
-                </div>
+
 
             </div>
         );

@@ -45,7 +45,6 @@ class AccountSimpleItem extends React.Component {
                 if (this.props.user.data[name] !== undefined) {
                     value = this.props.user.data[name];
                 } else {
-                    console.log(`Invalid '${name}' key passed to the component`);
                     return (<div>Invalid '{name}' key passed to the component</div>)
                 }
             } else {
@@ -66,7 +65,6 @@ class AccountSimpleItem extends React.Component {
 
     componentDidUpdate() {
         // Automatically focus on the field
-        console.log('upodated');
         if (this.refs[`field-${this.props.name}`] !== undefined) {
             this.refs[`field-${this.props.name}`].focus();
         }
@@ -93,12 +91,10 @@ class AccountSimpleItem extends React.Component {
 
     handleSubmit(e) {
 
-        console.log("HERE");
         e.preventDefault();
         let that = this;
         let field = this.refs[`field-${this.props.name}`];
         this.props.dispatch(AccountActions.submitField(this.props.name, field.value)).then((response) => {
-            console.log(response);
             if (response.success) {
                 this.toggleButton();
                 this.props.dispatch(Notifications.success({title: `${this.props.name} updated`, message: "Your details have been updated successfully"}))

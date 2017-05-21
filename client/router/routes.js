@@ -10,7 +10,7 @@ import GameWindow from 'scenes/Game';
 import Account from 'scenes/Account';
 import AccountDetails from 'scenes/Account/scenes/AccountDetails';
 import AvatarSettings from 'scenes/Account/scenes/AvatarSettings';
-
+import Profile from 'scenes/Profile';
 import Permissions from 'utils/permissions';
 
 /**
@@ -37,6 +37,9 @@ export default ({store, first}) => {
 
             <Route path="/play" component={Play} />
             <Route path="/play/:type" component={GameWindow} />
+
+
+            <Route path="/u/:user" component={Profile} />
 
             <Route path="/auth/activate/:token" emptyBase={true} component={Activate} />
             <Route path="auth/logout" component={Logout} />

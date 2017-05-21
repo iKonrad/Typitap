@@ -1,17 +1,14 @@
 package controller
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/iKonrad/typitap/server/entities"
-	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/iKonrad/typitap/server/services/feed"
 	"github.com/iKonrad/typitap/server/services/stats"
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/labstack/echo"
-	r "gopkg.in/gorethink/gorethink.v3"
 )
 
 type UserAPIController struct {
@@ -34,7 +31,6 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 
 	user := c.Get("User").(entities.User)
 
-	var results []map[string]interface{}
 	filters := map[string]interface{}{}
 
 	filters["userId"] = user.Id
@@ -53,23 +49,10 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 	}
 
 	offset, _ := strconv.Atoi(o)
-	resp, err := r.Table("game_results").Filter(filters).OrderBy(r.Desc("created")).Skip(offset).Limit(10).Merge(func(t r.Term) interface{} {
-		return map[string]interface{}{
-			"session": r.Table("game_sessions").Get(t.Field("sessionId")),
-		}
-	}).Run(db.Session)
-	defer resp.Close()
-	if err != nil {
-		log.Println(err)
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"success": false,
-			"error":   "Internal error occurred",
-		})
-	}
 
-	err = resp.All(&results)
-	if err != nil {
-		log.Println(err.Error())
+	results, ok := us.GetGameResultsForUser(offset, filters)
+
+	if !ok {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"success": false,
 			"error":   "Internal error occurred",
@@ -200,4 +183,116 @@ func (gc UserAPIController) GetUserStats(c echo.Context) error {
 		"success": false,
 		"message": "No stats for this user",
 	})
+}
+
+func (gc UserAPIController) FollowUser(c echo.Context) error {
+
+	// Check if user is logged in
+	if !c.Get("IsLoggedIn").(bool) {
+		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
+			"success": false,
+		})
+	}
+
+	user := c.Get("User").(entities.User)
+	followingUser := c.Param("followUser")
+	userExists := us.UserExists(followingUser)
+
+	if !userExists {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  false,
+			"message": "User doesn't exist",
+		})
+	}
+
+	feed.FollowUser(user.Id, followingUser)
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status": true,
+	})
+}
+
+func (gc UserAPIController) UnfollowUser(c echo.Context) error {
+
+	// Check if user is logged in
+	if !c.Get("IsLoggedIn").(bool) {
+		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
+			"success": false,
+		})
+	}
+
+	user := c.Get("User").(entities.User)
+	followingUser := c.Param("followUser")
+	userExists := us.UserExists(followingUser)
+
+	if !userExists {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"status":  false,
+			"message": "User doesn't exist",
+		})
+	}
+
+	feed.UnfollowUser(user.Id, followingUser)
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"status": true,
+	})
+}
+
+func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
+
+	username := c.Param("user")
+
+	user, ok := us.FindUserBy("username", username)
+
+	if !ok {
+		return c.JSON(http.StatusNoContent, map[string]interface{}{
+			"success": false,
+		})
+	}
+
+	user.Password = ""
+
+	// Get stats for user
+	userStats, ok := stats.GetStatsForUser(user.Id)
+	filters := map[string]interface{}{}
+	o := c.QueryParam("offset")
+	if o == "" {
+		o = "0"
+	}
+
+	offset, _ := strconv.Atoi(o)
+	filters["userId"] = user.Id
+	recentGames, _ := us.GetGameResultsForUser(offset, filters)
+
+	follow, _ := feed.GetFollowForUser(user.Id)
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": true,
+		"data": map[string]interface{}{
+			"user":  user,
+			"stats": userStats,
+			"games": recentGames,
+			"follow": follow,
+		},
+	})
+}
+
+
+func (gc UserAPIController) GetUserFollow(c echo.Context) error {
+
+	// Check if user is logged in
+	if !c.Get("IsLoggedIn").(bool) {
+		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
+			"success": false,
+		})
+	}
+
+	user := c.Get("User").(entities.User)
+
+	follow, _ := feed.GetFollowForUser(user.Id)
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": true,
+		"data": follow,
+	})
+
 }

@@ -48,7 +48,7 @@ func SendActivity(ownerId string, details map[string]string) bool {
 
 // Adds activity to a user feed (for example, a follower)
 func addActivityToUserFeed(activityId string, userId string) bool {
-	_, err := r.Table("user_activity_feed").Get(userId).Update(map[string]interface{}{
+	_, err := r.Table("user_feed_activity").Get(userId).Update(map[string]interface{}{
 		"items": r.Row.Field("items").Append(activityId),
 	}).RunWrite(db.Session)
 
@@ -92,7 +92,7 @@ func newActivity() entities.Activity {
 
 func GetFeedForUser(userId string, offset int) (entities.UserFeed, bool) {
 
-	resp, err := r.Table("user_activity_feed").Get(userId).Without("userId").Merge(func(p r.Term) interface{} {
+	resp, err := r.Table("user_feed_activity").Get(userId).Without("userId").Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
 			"items": r.Table("activities").
 				GetAll(r.Args(p.Field("items"))).
@@ -126,4 +126,54 @@ func GetFeedForUser(userId string, offset int) (entities.UserFeed, bool) {
 	}
 
 	return userFeed, true
+}
+
+func FollowUser(userId string, followingUser string) {
+	resp, err := r.Table("user_feed_follow").Get(userId).Update(map[string]interface{} {
+			"following": r.Row.Field("following").SetInsert(followingUser),
+	}).Run(db.Session)
+	log.Println(err)
+	defer resp.Close()
+	resp, err = r.Table("user_feed_follow").Get(followingUser).Update(map[string]interface{} {
+			"followers": r.Row.Field("following").SetInsert(userId),
+	}).Run(db.Session)
+	defer resp.Close()
+	log.Println(err)
+}
+
+func UnfollowUser(userId string, followingUser string) {
+	r.Table("user_feed_follow").Get(userId).Update(func(p r.Term) interface{} {
+		return map[string]interface{}{
+			"following": r.Row.Field("following").Filter(func(s r.Term) interface{} {
+				return s.Ne(followingUser)
+			}),
+		}
+	}).Exec(db.Session)
+	r.Table("user_feed_follow").Get(followingUser).Update(func(p r.Term) interface{} {
+		return map[string]interface{}{
+			"followers": r.Row.Field("followers").Filter(func(s r.Term) interface{} {
+				return s.Ne(userId)
+			}),
+		}
+	}).Exec(db.Session)
+}
+
+
+func GetFollowForUser(userId string) (map[string]interface{}, bool) {
+
+	resp, err := r.Table("user_feed_follow").Get(userId).Without("userId").Merge(func (p r.Term) interface{} {
+		return map[string]interface{}{
+			"following": r.Table("users").GetAll(r.Args(p.Field("following"))).Without("password", "active", "created").CoerceTo("array"),
+			"followers": r.Table("users").GetAll(r.Args(p.Field("followers"))).Without("password", "active", "created").CoerceTo("array"),
+		}
+	}).Run(db.Session)
+
+	if err != nil || resp.IsNil() {
+		return map[string]interface{}{}, false
+	}
+
+	var follow map[string]interface{}
+	err = resp.One(&follow)
+
+	return follow, true
 }

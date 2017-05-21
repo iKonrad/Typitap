@@ -48,16 +48,16 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 			Items: []entities.Activity{},
 		}
 
-		cursor, err = r.Table("user_activity_feed").Insert(newFeed).Run(db.Session)
+		cursor, err = r.Table("user_feed_activity").Insert(newFeed).Run(db.Session)
 		if err != nil {
 			log.Println(err)
 		}
 		defer cursor.Close()
 
 		newStats := entities.UserStats{
-			User: newUser,
-			WPM: 0,
-			Accuracy: 0,
+			User:           newUser,
+			WPM:            0,
+			Accuracy:       0,
 			GoldenTrophies: 0,
 			SilverTrophies: 0,
 			BronzeTrophies: 0,
@@ -68,9 +68,19 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 			log.Println(err);
 		}
 		defer statsCursor.Close()
+
+		// Create user follow table
+		newUserFollow := entities.UserFeedFollow{
+			User: newUser,
+		}
+
+		followCursor, err := r.Table("user_feed_follow").Insert(newUserFollow).Run(db.Session)
+		if err != nil {
+			log.Println(err);
+		}
+		defer followCursor.Close()
+
 	}
-
-
 
 	return newUser, nil
 }
@@ -208,6 +218,17 @@ func GetUser(id string) (entities.User, bool) {
 
 }
 
+func UserExists(id string) bool {
+
+	res, err := r.Table("users").Get(id).Run(db.Session)
+	defer res.Close()
+	if err != nil || res.IsNil() {
+		return false
+	}
+
+	return true
+}
+
 func GenerateUserToken(tokenType string, user entities.User) (string, bool) {
 
 	// Generate activation token
@@ -311,4 +332,28 @@ func SanitizeUser(user *entities.User) {
 
 	user.Email = ""
 	user.Password = ""
+}
+
+func GetGameResultsForUser(offset int, filters map[string]interface{}) ([]map[string]interface{}, bool) {
+	var results []map[string]interface{}
+	resp, err := r.Table("game_results").Filter(filters).OrderBy(r.Desc("created")).Skip(offset).Limit(10).Merge(func(t r.Term) interface{} {
+		return map[string]interface{}{
+			"session": r.Table("game_sessions").Get(t.Field("sessionId")),
+		}
+	}).Run(db.Session)
+	defer resp.Close()
+
+	if err != nil || resp.IsNil() {
+		log.Println(err.Error())
+		return []map[string]interface{}{}, false
+	}
+	err = resp.All(&results)
+
+	if err != nil {
+		log.Println(err.Error())
+		return []map[string]interface{}{}, false
+	}
+
+	return results, true
+
 }

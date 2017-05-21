@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import ProfileInfo from './components/ProfileInfo';
-import QuickLinks from './components/QuickLinks';
+import ProfileInfo from 'components/user/ProfileInfo';
 import UserStats from 'components/user/UserStats';
 import ActivityFeed from 'components/app/ActivityFeed';
 import ProgressChart from './components/ProgressChart';
 import RecentGames from 'components/user/RecentGames';
 import * as DashboardActions from 'store/modules/dashboardModule';
-
+import Follow from 'components/user/UserFollow';
 
 class Dashboard extends Component {
 
     componentWillMount() {
         this.props.dispatch(DashboardActions.getRecentGames(0));
+        this.props.dispatch(DashboardActions.fetchFollowData());
     }
 
     componentWillUnmount() {
@@ -27,22 +27,14 @@ class Dashboard extends Component {
                     <div className="col col-xs-12 col-md-8">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <ProfileInfo/>
+                                <ProfileInfo user={ this.props.user.data }/>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <UserStats stats={ this.props.user.stats } />
+                                <UserStats stats={ this.props.user.stats }/>
                             </div>
                         </div>
-
-                    </div>
-                    <div className="col col-xs-12 col-md-4">
-                        <QuickLinks/>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col col-xs-12 col-md-8">
                         <div className="row">
                             <div className="col-xs-12">
                                 <ActivityFeed />
@@ -55,10 +47,27 @@ class Dashboard extends Component {
                         </div>
                     </div>
                     <div className="col col-xs-12 col-md-4">
-                        <RecentGames games={this.props.dashboard.games} />
+                        <div className="row">
+                            <div className="col col-xs-12">
+                                <Follow title="Followers" items={ this.props.dashboard.follow.followers } />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col col-xs-12">
+                                <Follow title="Following" items={ this.props.dashboard.follow.following } />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col col-xs-12">
+                                <RecentGames games={this.props.dashboard.games}/>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
+
             </div>
+
         );
     }
 
