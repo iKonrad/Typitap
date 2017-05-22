@@ -10,7 +10,7 @@ $icon-font-path: "./../libs/bootstrap-sass/assets/fonts/bootstrap/";
 @import "fonts";
 
 // 0. Utils
-//@import 'utils/**/*.scss';
+@import 'utils/**/*.scss';
 
 // 1. Layout
 //@import 'layout/**/*.scss';

@@ -35,6 +35,8 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 		Email:    details["email"].(string),
 		Username: details["username"].(string),
 		Active:   false,
+		Role: "ROLE_USER",
+		Created: time.Now(),
 		Password: hashedPassword,
 	}
 

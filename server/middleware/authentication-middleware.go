@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"fmt"
+	"log"
 	"strings"
 
 	"github.com/iKonrad/typitap/server/entities"
@@ -24,7 +24,7 @@ func CheckAuthHandler(next echo.HandlerFunc) echo.HandlerFunc {
 		session, err := sessions.Session.Get(c.Request(), "SESSION_ID")
 
 		if err != nil {
-			fmt.Println("Error while fetching a session", err)
+			log.Println("Error while fetching a session", err)
 		}
 
 		c.Set("User", entities.User{})
@@ -32,11 +32,8 @@ func CheckAuthHandler(next echo.HandlerFunc) echo.HandlerFunc {
 
 		// Get the user for the session
 		if !session.IsNew {
-
 			userId := session.Values["SessionCookie"].(*entities.SessionCookie).UserId
-
 			res, err := r.Table("users").Get(userId).Run(db.Session)
-
 			defer res.Close()
 			if err == nil {
 				var currentUser entities.User

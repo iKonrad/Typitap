@@ -18,6 +18,13 @@ const Permissions = {
         failureRedirectPath: '/login',
         wrapperDisplayName: 'OnlyUsers',
         predicate: user => user.loggedIn
+    }),
+    OnlyAdmins: UserAuthWrapper({
+        authSelector: state => state.user,
+        redirectAction: routerActions.replace,
+        failureRedirectPath: '/',
+        wrapperDisplayName: 'OnlyAdmins',
+        predicate: user => user.data !== undefined && user.data.Role === "ROLE_ADMIN" || user.data.Role === "ROLE_SUPER_ADMIN",
     })
 };
 

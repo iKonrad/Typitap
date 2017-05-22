@@ -22,12 +22,6 @@ func init() {
 
 func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 
-	// Check if user is logged in
-	if !c.Get("IsLoggedIn").(bool) {
-		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
-			"success": false,
-		})
-	}
 
 	user := c.Get("User").(entities.User)
 
@@ -67,12 +61,6 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 
 func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 
-	// Check if user is logged in
-	if !c.Get("IsLoggedIn").(bool) {
-		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
-			"success": false,
-		})
-	}
 
 	field := c.FormValue("field")
 	value := c.FormValue("value")
@@ -132,12 +120,6 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 
 func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
 
-	// Check if user is logged in
-	if !c.Get("IsLoggedIn").(bool) {
-		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
-			"success": false,
-		})
-	}
 
 	o := c.QueryParam("offset")
 	if o == "" {
@@ -187,13 +169,6 @@ func (gc UserAPIController) GetUserStats(c echo.Context) error {
 
 func (gc UserAPIController) FollowUser(c echo.Context) error {
 
-	// Check if user is logged in
-	if !c.Get("IsLoggedIn").(bool) {
-		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
-			"success": false,
-		})
-	}
-
 	user := c.Get("User").(entities.User)
 	followingUser := c.Param("followUser")
 	userExists := us.UserExists(followingUser)
@@ -213,12 +188,6 @@ func (gc UserAPIController) FollowUser(c echo.Context) error {
 
 func (gc UserAPIController) UnfollowUser(c echo.Context) error {
 
-	// Check if user is logged in
-	if !c.Get("IsLoggedIn").(bool) {
-		return c.JSON(http.StatusMethodNotAllowed, map[string]interface{}{
-			"success": false,
-		})
-	}
 
 	user := c.Get("User").(entities.User)
 	followingUser := c.Param("followUser")

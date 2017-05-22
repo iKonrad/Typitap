@@ -40,7 +40,7 @@ export function run() {
 export const renderToString = toString;
 
 require('assets/scss/main.scss');
-
+require('react-table/react-table.css');
 
 
 

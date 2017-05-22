@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/iKonrad/typitap/server/services/roles"
 	"net/http"
+	"strings"
 )
 
 // Declare global variables
@@ -26,13 +27,16 @@ func CheckRoleHandler(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		url := c.Request().RequestURI
-
 		canAccess := roles.CanRoleAccessURL(userRole, url);
 		if canAccess {
 			return next(c)
 		}
 
-		return c.Redirect(http.StatusTemporaryRedirect, "/login")
-
+		if strings.HasPrefix(url, "/api") {
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
+				"success": false,
+			});
+		}
+		return c.Redirect(http.StatusTemporaryRedirect, "/404")
 	}
 }

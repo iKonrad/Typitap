@@ -117,6 +117,11 @@ class Navbar extends Component {
                                     }
                                 }
                             })}
+
+                            { (this.props.user.data !== undefined && ["ROLE_ADMIN", "ROLE_SUPER_ADMIN"].indexOf(this.props.user.data.Role) > -1 ) ?
+                                (<NavLink to="/admin" key={'menu-item-admin'}>ACP</NavLink>) :
+                                ("")
+                            }
                         </ul>
                     </div>
                 </div>

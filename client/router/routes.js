@@ -12,6 +12,9 @@ import AccountDetails from 'scenes/Account/scenes/AccountDetails';
 import AvatarSettings from 'scenes/Account/scenes/AvatarSettings';
 import Profile from 'scenes/Profile';
 import Permissions from 'utils/permissions';
+import AdminBase from 'scenes/Admin';
+import AdminUsers from 'scenes/Admin/scenes/AdminUsers';
+
 
 /**
  * Returns configured routes for different
@@ -38,6 +41,11 @@ export default ({store, first}) => {
             <Route path="/play" component={Play} />
             <Route path="/play/:type" component={GameWindow} />
 
+            <Route emptyBase={true} path="/admin" component={AdminBase}>
+                <IndexRoute component={Permissions.OnlyAdmins(AdminUsers)} />
+                <Route emptyBase={true} path="users" component={Permissions.OnlyAdmins(AdminUsers)}/>
+            </Route>
+
 
             <Route path="/u/:user" component={Profile} />
 
@@ -45,6 +53,7 @@ export default ({store, first}) => {
             <Route path="auth/logout" component={Logout} />
             <Route path="/auth/password/reset/:token" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)}/>
             <Route path="/auth/password/forgot" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)}/>
+
 
 
             {/* Replace with 404 */}

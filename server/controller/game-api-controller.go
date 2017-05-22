@@ -59,12 +59,6 @@ func (ac *GameAPIController) GetSession(c echo.Context) error {
 
 func (ac *GameAPIController) SaveResult(c echo.Context) error {
 
-	if !c.Get("IsLoggedIn").(bool) {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"success": false,
-		})
-	}
-
 	user := c.Get("User").(entities.User)
 
 	var mistakes map[string]int

@@ -4,10 +4,6 @@ import {connect} from 'react-redux';
 import Sidebar from './components/Sidebar';
 
 class Account extends Component {
-    // Runs after side-server rendering
-    static initialize(response, params, store) {
-        return "";
-    }
 
     render() {
         return (

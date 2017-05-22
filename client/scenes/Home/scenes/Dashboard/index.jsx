@@ -7,7 +7,7 @@ import ProgressChart from './components/ProgressChart';
 import RecentGames from 'components/user/RecentGames';
 import * as DashboardActions from 'store/modules/dashboardModule';
 import Follow from 'components/user/UserFollow';
-
+import * as UserActions from 'store/modules/userModule';
 class Dashboard extends Component {
 
     componentWillMount() {

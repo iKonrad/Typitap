@@ -43,19 +43,13 @@ class Base extends Component {
             }
         });
 
-        if (showEmptyBase) {
-            return this.props.children;
-        }
-
         return (
             <div>
-                <Navbar />
+                { showEmptyBase ? "" : (<Navbar />) }
                 <div id="react-container" className="main-content">
                     { this.props.children }
                 </div>
-                <Notifications
-                    notifications={this.props.notifications} ref="notificationSystem" style={ false }
-                />
+                <Notifications notifications={this.props.notifications} ref="notificationSystem" style={ false } />
 
             </div>
         );
