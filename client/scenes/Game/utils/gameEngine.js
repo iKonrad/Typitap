@@ -1,8 +1,8 @@
 import {getStore} from 'store/store';
 import * as GameActions from 'store/modules/gameModule';
 import * as SocketActions from 'store/modules/socketModule';
+import Notifications from 'utils/notifications';
 
-import Notifications from 'react-notification-system-redux';
 import React from 'react';
 
 class GameEngine {
@@ -98,12 +98,7 @@ class GameEngine {
             this.postGameResultData(results);
             let mistakesCount = state.mistakes === undefined ? '0' : Object.keys(state.mistakes).length;
 
-            // Show notification with the results to the user
-            this.store.dispatch(Notifications.success({
-                children: (
-                    <p>Game finished in {seconds} seconds with score <strong>{speed}</strong> wpm. Your accuracy:
-                        <strong>{ accuracy }%</strong> ({mistakesCount} mistakes)</p>)
-            }));
+            this.store.dispatch(Notifications.gameCompleted(seconds, speed, accuracy, mistakesCount));
         }
 
     }

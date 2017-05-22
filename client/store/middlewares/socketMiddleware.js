@@ -1,7 +1,7 @@
 import * as socketActions from "store/modules/socketModule";
 import * as gameActions from "store/modules/gameModule";
 import GameEngine from "scenes/Game/utils/gameEngine";
-import Notifications from 'react-notification-system-redux';
+import Notifications from 'utils/notifications';
 import React from 'react';
 const CODE_RECONNECT = 5001;
 const CODE_DISCONNECT = 5000;
@@ -68,11 +68,7 @@ const socketMiddleware = (function(){
             case "PLAYER_COMPLETED_GAME":
                 if (msg.data.identifier === store.getState().socket.identifier) {
                     let mistakes = store.getState().game.mistakes !== undefined ? Object.keys(store.getState().game.mistakes).length : 0;
-                    store.dispatch(Notifications.success({
-                        children: (
-                            <p>Game finished in {msg.data.time} seconds with score <strong>{msg.data.wpm}</strong> wpm. Your accuracy:
-                                <strong>{ msg.data.accuracy }%</strong> ({mistakes} mistakes)</p>)
-                    }));
+                    store.dispatch(Notifications.gameCompleted(msg.data.time, msg.data.wpm, msg.data.accuracy, mistakes))
                 }
                 store.dispatch(gameActions.setPlayerCompleted(msg.data.identifier, msg.data.place));
                 break;

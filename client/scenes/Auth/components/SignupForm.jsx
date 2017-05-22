@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import Input from 'components/form/fields/Input';
 import * as FormActions from 'store/modules/formModule';
 import * as UserActions from 'store/modules/userModule';
-import Notifications from 'react-notification-system-redux';
+import Notifications from 'utils/notifications';
 import * as socketActions from "store/modules/socketModule";
 import { connect } from 'react-redux';
 
@@ -23,10 +23,8 @@ class SignupForm extends Component {
             return details;
         }).then((details) => {
             if (details && details.user && details.user.Id) {
-                this.props.dispatch(Notifications.success({
-                    'message': `We have sent you an e-mail with activation link to activate your account`,
-                    'title': 'Account created'
-                }));
+
+                this.props.dispatch(Notifications.accountCreated());
                 this.props.dispatch(socketActions.reconnect());
                 this.props.dispatch(push("/"));
             }

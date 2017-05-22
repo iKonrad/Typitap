@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {push} from 'react-router-redux';
 import {connect} from 'react-redux';
 
-import Notifications from 'react-notification-system-redux';
+
 
 class Activate extends Component {
 

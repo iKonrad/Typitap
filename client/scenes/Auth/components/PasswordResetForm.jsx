@@ -4,12 +4,13 @@ import * as FormActions from 'store/modules/formModule';
 import Input from 'components/form/fields/Input';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
-import Notifications from 'react-notification-system-redux';
+import Notifications from 'utils/notifications';
+
 class PasswordResetForm extends Component {
 
     handleSubmitForm(values) {
         return FormActions.submitPasswordReset(values).then((details) => {
-            this.props.dispatch(Notifications.success({'message': `Your password has been reset. You can now log in using your new credentials`}));
+            this.props.dispatch(Notifications.success("Your password has been reset. You can now log in using your new credentials"));
         }).then(() => {
             this.props.dispatch(push("/login"));
         });

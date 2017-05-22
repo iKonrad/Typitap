@@ -14,11 +14,11 @@ import GameControls from './GameControls';
 import GameCountdown from './GameCountdown';
 import GamePlayerList from './GamePlayerList';
 import WaitPlayersModal from './WaitPlayersModal';
-
+import Notifications from 'utils/notifications';
 import * as GameActions from 'store/modules/gameModule';
 import * as SocketActions from 'store/modules/socketModule';
 
-import Notifications from 'react-notification-system-redux';
+
 
 class Game extends Component {
 
@@ -37,10 +37,7 @@ class Game extends Component {
                 if (this.props.socket.connected) {
                     this.handleGameStart();
                 } else {
-                    this.props.dispatch(Notifications.warning({
-                        'message': "You're not connected to the server. Refresh the page and try again.",
-                        'title': "Connection issue"
-                    }));
+                    this.props.dispatch(Notifications.connectionIssue());
                     this.props.dispatch(push("/play"));
                 }
             }, 1000);

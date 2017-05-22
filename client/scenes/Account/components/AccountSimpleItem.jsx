@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {push} from 'react-router-redux';
+
 import * as AccountActions from 'store/modules/accountModule';
 import * as UserActions from 'store/modules/userModule';
-import Notifications from 'react-notification-system-redux';
+import Notifications from 'utils/notifications';
 
 class AccountSimpleItem extends React.Component {
     static onEnter({store, next, replace, callback}) {
@@ -97,10 +97,10 @@ class AccountSimpleItem extends React.Component {
         this.props.dispatch(AccountActions.submitField(this.props.name, field.value)).then((response) => {
             if (response.success) {
                 this.toggleButton();
-                this.props.dispatch(Notifications.success({title: `${this.props.name} updated`, message: "Your details have been updated successfully"}))
+                this.props.dispatch(Notifications.success(`${this.props.name} has been updated successfully`));
                 that.props.dispatch(UserActions.updateUserField(that.props.name, field.value));
             } else {
-                this.props.dispatch(Notifications.error({title: `Error`, message: response.message}))
+                this.props.dispatch(Notifications.error(response.message));
             }
         })
     }

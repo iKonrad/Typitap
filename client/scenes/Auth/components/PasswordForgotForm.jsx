@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { Field, reduxForm, reset } from 'redux-form';
 import * as FormActions from 'store/modules/formModule';
 import Input from 'components/form/fields/Input';
-import Notifications from 'react-notification-system-redux';
 import { Link } from 'react-router';
+import Notifications from 'utils/notifications';
+
 class PasswordForgotForm extends Component {
 
 
     handleSubmitForm(values) {
         return FormActions.submitForgot(values).then((details) => {
-            this.props.dispatch(Notifications.success({'message': `We have sent you an e-mail with further instructions on how to reset your password`, title: "E-mail sent"}));
+            this.props.dispatch(Notifications.success("We have sent you an e-mail with further instructions on how to reset your password"));
             this.props.dispatch(reset("passwordForgot"));
         });
     };

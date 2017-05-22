@@ -1,8 +1,9 @@
 /**
  * Created by konrad on 22/05/2017.
  */
-import Notifications from 'react-notification-system-redux';
+
 import {getStore} from 'store/store';
+import Notifications from 'utils/notifications';
 
 function updateTableField(table, id, property, value, type) {
 
@@ -27,9 +28,9 @@ function updateTableField(table, id, property, value, type) {
         return response.json();
     }).then((response) => {
         if (response.success) {
-            getStore().dispatch(Notifications.success({title: "Row updated", message: `${property} saved successfully`}))
+            getStore().dispatch(Notifications.success(`${property} saved`));
         } else {
-            getStore().dispatch(Notifications.error({title: "Error occurred", message: `Could not update ${property}.`}))
+            getStore().dispatch(Notifications.error(`Could not update ${property}`));
         }
         return response;
     });

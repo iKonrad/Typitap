@@ -5,7 +5,7 @@ import * as UserActions from 'store/modules/userModule';
 import Input from 'components/form/fields/Input';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux'
-import Notifications from 'react-notification-system-redux';
+import Notifications from 'utils/notifications';
 import { connect } from 'react-redux';
 import * as socketActions from "store/modules/socketModule";
 
@@ -23,7 +23,7 @@ class LoginForm extends Component {
 
         return FormActions.submitLogin(values).then((details) => {
             this.props.dispatch(UserActions.loginUser(details.user));
-            this.props.dispatch(Notifications.info({'message': `Welcome back, ${details.user.Name}!`}));
+            this.props.dispatch(Notifications.welcomeBack(details.user.Name));
         }).then(() => {
             this.props.dispatch(socketActions.reconnect());
             this.props.dispatch(push("/"));
