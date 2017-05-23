@@ -13,12 +13,18 @@
     min-height: 70px;
     font-family: Dosis, 'sans-serif';
 
+    .navbar-toggle {
+      color: white;
+      top: 2px;
+      .fa-bars {
+        font-size: 24px;
+      }
+    }
 
     .navbar-brand {
       padding-top: 13px;
     }
   }
-
 
   ul.navbar-nav {
     li {
@@ -62,13 +68,8 @@
     }
   }
 
-
-
   &-collapse {
     .navbar-nav {
-
-
-
       li {
 
         a {
@@ -76,7 +77,9 @@
           color: white;
         }
         &.active {
-          a { color: white; }
+          a {
+            color: white;
+          }
           .navbar-btn {
             a {
               background-color: $brand-secondary;
@@ -84,7 +87,6 @@
           }
 
         }
-
 
         .navbar-btn {
           a {
@@ -101,9 +103,26 @@
           }
         }
         .dropdown-menu {
+          li {
+            a {
+              padding-top: 23px;
+            }
+          }
           border: none;
           border-radius: $border-radius;
 
+        }
+      }
+    }
+
+    &.in {
+      li {
+        .dropdown-menu {
+          li {
+            a {
+              color: white;
+            }
+          }
         }
       }
     }

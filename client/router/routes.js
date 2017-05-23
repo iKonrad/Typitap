@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route, IndexRoute, Redirect} from 'react-router';
-import Base from 'scenes/base';
+import Base from 'scenes/Base';
 import Auth from "scenes/Auth";
 import Home from 'scenes/Home';
 import Logout from 'scenes/Auth/scenes/Logout';

@@ -94,14 +94,18 @@ class Navbar extends Component {
 
         return (
             <nav className="navbar">
-                <div className="container">
+                <div className="container-fluid">
                     <div className="navbar-header">
+                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#menu-collapse" aria-expanded="false">
+                            <i className="fa fa-bars"></i>
+                        </button>
                         <Link className="navbar-brand" to="/">
                             <img src="/images/identity/typitap-logo-white@1.25x.png" alt=""/>
                         </Link>
                     </div>
-                    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul className="nav navbar-nav pull-right">
+                    <div className="collapse navbar-collapse" id="menu-collapse">
+                        <ul className="nav navbar-nav navbar-right">
                             { this.state.menu.map((obj, index) => {
                                 if (this.props.user && ((!obj.authenticated && this.props.user.loggedIn === undefined) || obj.authenticated === this.props.user.loggedIn)) {
                                     let parsedObj = obj;
