@@ -11,6 +11,7 @@ import (
 	"github.com/iKonrad/typitap/server/services/game"
 	"github.com/iKonrad/typitap/server/services/topchart"
 	"github.com/labstack/echo"
+	"github.com/iKonrad/typitap/server/services/stats"
 )
 
 type GameAPIController struct {
@@ -88,6 +89,7 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 	}
 
 	topchart.CheckTopChart(&newResult)
+	stats.IncrementGamesStat(user.Id)
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success":  true,

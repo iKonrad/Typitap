@@ -6,7 +6,21 @@ import (
 
 	db "github.com/iKonrad/typitap/server/services/database"
 	r "gopkg.in/gorethink/gorethink.v3"
+	"github.com/iKonrad/typitap/server/entities"
 )
+
+
+func NewStats(user entities.User) entities.UserStats {
+	return entities.UserStats{
+		User:           user,
+		WPM:            0,
+		Accuracy:       0,
+		GoldenTrophies: 0,
+		SilverTrophies: 0,
+		BronzeTrophies: 0,
+		GamesPlayed:	0,
+	}
+}
 
 func calculateStatsForUser(userId string) {
 	log.Println("-> Calculating stats for " + userId)
@@ -95,6 +109,13 @@ func IncrementTrophyStat(place int8, userId string) {
 	}
 }
 
+
+func IncrementGamesStat(userId string) {
+	IncrementStat("gamesPlayed", userId)
+}
+
+
+
 func GetStatsForUser(userId string) (map[string]interface{}, bool) {
 
 	resp, err := r.Table("user_stats").Get(userId).Without("userId").Run(db.Session)
@@ -105,6 +126,8 @@ func GetStatsForUser(userId string) (map[string]interface{}, bool) {
 
 	var userStats map[string]interface{}
 	err = resp.One(&userStats)
+
+
 
 	return userStats, true
 

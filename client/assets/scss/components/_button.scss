@@ -50,6 +50,59 @@
     color: $brand-primary;
   }
 
+  &.btn-follow {
+    background-color: white;
+    border: 1px solid $blue-follow;
+    color: $blue-follow;
+    font-size: 13px;
+    @include transition();
+
+
+    &:hover {
+      background-color: $blue-follow;
+      color: white;
+      i.fa {
+        color: white;
+      }
+    }
+
+    i.fa {
+      @include transition();
+      color: $blue-follow;
+      margin-right: 5px;
+
+    }
+
+    &.btn-xs {
+      height: 23px;
+      padding: 2px 10px;
+      border-radius: 9px;
+      i.fa {
+        font-size: 14px;
+      }
+    }
+
+
+    &--following {
+
+      border-color: $grey-200;
+      color: $grey-200;
+
+      i.fa {
+        color: $grey-200;
+      }
+
+      &:hover {
+        border-color: $grey-200;
+        background-color: $grey-200;
+        color: white;
+        i.fa {
+          color: white;
+        }
+      }
+    }
+  }
+
   //&.btn-primary {
   //  border: none;
   //  background-color: $brand-primary;

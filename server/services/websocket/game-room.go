@@ -10,9 +10,9 @@ import (
 	"github.com/iKonrad/typitap/server/services/feed"
 	"github.com/iKonrad/typitap/server/services/game"
 	"github.com/iKonrad/typitap/server/services/logs"
+	"github.com/iKonrad/typitap/server/services/stats"
 	"github.com/iKonrad/typitap/server/services/topchart"
 	us "github.com/iKonrad/typitap/server/services/user"
-	"github.com/iKonrad/typitap/server/services/stats"
 )
 
 type Room struct {
@@ -355,6 +355,8 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 			if r.nextPlace <= 3 && int(r.nextPlace) < len(r.Players) {
 				stats.IncrementTrophyStat(r.nextPlace, user.Id)
 			}
+
+			stats.IncrementGamesStat(user.Id)
 
 		}
 

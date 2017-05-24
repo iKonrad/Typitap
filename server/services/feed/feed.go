@@ -112,7 +112,7 @@ func GetFeedForUser(userId string, offset int) (entities.UserFeed, bool) {
 	defer resp.Close()
 
 	if err != nil {
-		log.Println("LOL? ", err.Error())
+		log.Println("Error while fetching feed", err.Error())
 		return entities.UserFeed{}, false
 	}
 
@@ -121,7 +121,7 @@ func GetFeedForUser(userId string, offset int) (entities.UserFeed, bool) {
 	err = resp.One(&userFeed)
 
 	if err != nil {
-		log.Println("LOL2? ", err.Error())
+		log.Println("Error while fetching feed", err.Error())
 		return entities.UserFeed{}, false
 	}
 
@@ -130,31 +130,23 @@ func GetFeedForUser(userId string, offset int) (entities.UserFeed, bool) {
 
 func FollowUser(userId string, followingUser string) {
 	resp, err := r.Table("user_feed_follow").Get(userId).Update(map[string]interface{} {
-			"following": r.Row.Field("following").SetInsert(followingUser),
+			"following": r.Row.Field("following").SetUnion([]string{followingUser}),
 	}).Run(db.Session)
 	log.Println(err)
 	defer resp.Close()
 	resp, err = r.Table("user_feed_follow").Get(followingUser).Update(map[string]interface{} {
-			"followers": r.Row.Field("following").SetInsert(userId),
+			"followers": r.Row.Field("followers").SetUnion([]string{userId}),
 	}).Run(db.Session)
 	defer resp.Close()
 	log.Println(err)
 }
 
 func UnfollowUser(userId string, followingUser string) {
-	r.Table("user_feed_follow").Get(userId).Update(func(p r.Term) interface{} {
-		return map[string]interface{}{
-			"following": r.Row.Field("following").Filter(func(s r.Term) interface{} {
-				return s.Ne(followingUser)
-			}),
-		}
+	r.Table("user_feed_follow").Get(userId).Update(map[string]interface{}{
+		"following": r.Row.Field("following").SetDifference([]string{followingUser}),
 	}).Exec(db.Session)
-	r.Table("user_feed_follow").Get(followingUser).Update(func(p r.Term) interface{} {
-		return map[string]interface{}{
-			"followers": r.Row.Field("followers").Filter(func(s r.Term) interface{} {
-				return s.Ne(userId)
-			}),
-		}
+	r.Table("user_feed_follow").Get(followingUser).Update(map[string]interface{}{
+		"followers": r.Row.Field("followers").SetDifference([]string{userId}),
 	}).Exec(db.Session)
 }
 

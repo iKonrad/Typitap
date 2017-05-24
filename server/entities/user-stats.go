@@ -8,4 +8,5 @@ type UserStats struct {
 	GoldenTrophies int `gorethink:"goldenTrophies"`
 	SilverTrophies int `gorethink:"silverTrophies"`
 	BronzeTrophies int `gorethink:"bronzeTrophies"`
+	GamesPlayed int `gorethink:"gamesPlayed"`
 }

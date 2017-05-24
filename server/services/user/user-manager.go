@@ -7,6 +7,7 @@ import (
 
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
+	"github.com/iKonrad/typitap/server/services/stats"
 	"github.com/nu7hatch/gouuid"
 	errorGen "github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
@@ -35,8 +36,8 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 		Email:    details["email"].(string),
 		Username: details["username"].(string),
 		Active:   false,
-		Role: "ROLE_USER",
-		Created: time.Now(),
+		Role:     "ROLE_USER",
+		Created:  time.Now(),
 		Password: hashedPassword,
 	}
 
@@ -56,18 +57,11 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 		}
 		defer cursor.Close()
 
-		newStats := entities.UserStats{
-			User:           newUser,
-			WPM:            0,
-			Accuracy:       0,
-			GoldenTrophies: 0,
-			SilverTrophies: 0,
-			BronzeTrophies: 0,
-		}
+		newStats := stats.NewStats(newUser)
 
 		statsCursor, err := r.Table("user_stats").Insert(newStats).Run(db.Session)
 		if err != nil {
-			log.Println(err);
+			log.Println(err)
 		}
 		defer statsCursor.Close()
 
@@ -78,7 +72,7 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 
 		followCursor, err := r.Table("user_feed_follow").Insert(newUserFollow).Run(db.Session)
 		if err != nil {
-			log.Println(err);
+			log.Println(err)
 		}
 		defer followCursor.Close()
 

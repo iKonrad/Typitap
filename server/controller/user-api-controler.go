@@ -175,14 +175,14 @@ func (gc UserAPIController) FollowUser(c echo.Context) error {
 
 	if !userExists {
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"status":  false,
+			"success":  false,
 			"message": "User doesn't exist",
 		})
 	}
 
 	feed.FollowUser(user.Id, followingUser)
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status": true,
+		"success": true,
 	})
 }
 
@@ -195,14 +195,14 @@ func (gc UserAPIController) UnfollowUser(c echo.Context) error {
 
 	if !userExists {
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"status":  false,
+			"success":  false,
 			"message": "User doesn't exist",
 		})
 	}
 
 	feed.UnfollowUser(user.Id, followingUser)
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status": true,
+		"success": true,
 	})
 }
 

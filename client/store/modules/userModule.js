@@ -5,17 +5,23 @@ const ACTIVATE_USER_FAILURE =  "ACTIVATE_USER_FAILURE";
 const SAVE_USER_DATA =  "SAVE_USER_DATA";
 const UPDATE_USER_FIELD = "UPDATE_USER_FIELD";
 const SET_USER_STATS = "SET_USER_STATS";
+const SET_FOLLOW_DATA = "SET_FOLLOW_DATA";
 
 const initialState = {
     loggedIn: false,
     data: {},
     stats: {},
+    follow: {
+        followers: [],
+        following: [],
+    },
 };
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case LOGIN_USER_SUCCESS:
             return {
+                ...state,
                 loggedIn: true,
                 data:  {
                     ...action.user
@@ -23,6 +29,7 @@ export default function reducer(state = initialState, action) {
             };
         case LOGOUT_USER_SUCCESS:
             return {
+                ...state,
                 loggedIn: false,
                 data: {},
             };
@@ -51,6 +58,13 @@ export default function reducer(state = initialState, action) {
                 stats: {
                     ...state.stats,
                     ...action.stats,
+                }
+            }
+        case SET_FOLLOW_DATA:
+            return {
+                ...state,
+                follow: {
+                    ...action.follow
                 }
             }
     }
@@ -100,12 +114,32 @@ export function fetchUserStats() {
         return fetch("/api/user/stats", {
             method: "GET",
             credentials: "same-origin",
-            headers: global.clientCookies
+            headers: typeof window === "undefined" ? global.clientCookies : "",
         }).then((response) => {
             return response.json();
         }).then((response) => {
             if (response.success && response.data !== undefined) {
                 return dispatch({type: SET_USER_STATS, stats: response.data});
+            }
+        });
+    }
+}
+
+export function fetchFollowData() {
+    return (dispatch) => {
+
+        return fetch(`/api/user/followers`, {
+            credentials: "same-origin",
+            headers: {
+                "Cookie": global.clientCookies
+            }
+        }).then((response) => {
+            return response.json();
+        }).then((response) => {
+            if (response.success) {
+                if (response.data !== undefined && response.data !== null) {
+                    return dispatch({type: SET_FOLLOW_DATA, follow: response.data});
+                }
             }
         });
     }

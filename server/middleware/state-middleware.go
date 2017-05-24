@@ -4,6 +4,7 @@ import (
 	"strings"
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/labstack/echo"
+	"github.com/iKonrad/typitap/server/services/feed"
 )
 
 func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
@@ -18,9 +19,20 @@ func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
 		// Get the logged in user if exists
 		if c.Get("IsLoggedIn").(bool) {
 			user := c.Get("User").(entities.User)
-			user.Password = "";
+
+			userFeed, _ := feed.GetFollowForUser(user.Id);
+
 			newStore["user"] = map[string]interface{}{
-				"data": user,
+				"data": map[string]interface{}{
+					"Id": user.Id,
+					"Username": user.Username,
+					"Name": user.Name,
+					"Active": user.Active,
+					"Created": user.Created.String(),
+					"Email": user.Email,
+					"Role": user.Role,
+				},
+				"follow": userFeed,
 				"loggedIn": true,
 			}
 		} else {

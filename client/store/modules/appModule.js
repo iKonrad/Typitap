@@ -2,6 +2,8 @@ const SET_RESPONSE = "SET_RESPONSE";
 const SET_CHARTS_DATA = "SET_CHARTS_DATA";
 const SET_USER_PROFILE_DATA = "SET_USER_PROFILE_DATA";
 const FETCH_USER_PROFILE_DATA = "FETCH_USER_PROFILE_DATA";
+const FOLLOW_USER = "FOLLOW_USER";
+const UNFOLLOW_USER = "UNFOLLOW_USER";
 
 const initialState = {
     response: {},
@@ -12,7 +14,10 @@ const initialState = {
         all: {}
     },
     profile: {
-        user: {},
+        user: {
+            Email: "test@test.com",
+            Created: "0000-00-00 00:00:00",
+        },
         fetching: false,
         follow: {
             followers: [],
@@ -52,10 +57,38 @@ export default function reducer(state = initialState, action) {
                     fetching: false,
                 }
             }
+        case FOLLOW_USER:
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    follow: {
+                        ...state.profile.follow,
+                        followers: [
+                            ...state.profile.follow.followers,
+                            {
+                                id: action.id,
+                                username: action.username,
+                                email: action.email,
+                            }
+                        ]
+                    }
+                }
+            }
+        case UNFOLLOW_USER:
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    follow: {
+                        ...state.profile.follow,
+                        followers: state.profile.follow.followers.filter(obj => obj.id !== action.id),
+                    }
+                }
+            }
     }
     return state;
 }
-
 
 
 export function setResponse(response) {
@@ -104,4 +137,13 @@ export function fetchUserProfile(username) {
         })
 
     }
+}
+
+
+export function followUser(id, username, email) {
+    return {type: FOLLOW_USER, id, username, email};
+}
+
+export function unfollowUser(id) {
+    return {type: UNFOLLOW_USER, id};
 }

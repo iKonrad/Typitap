@@ -2,15 +2,11 @@ const SET_RECENT_GAMES_DATA = "SET_RECENT_GAMES_DATA";
 const RESET_RECENT_GAMES_DATA = "RESET_RECENT_GAMES_DATA";
 const SET_ACTIVITY_FEED = "SET_ACTIVITY_FEED";
 const RESET_ACTIVITY_FEED = "RESET_ACTIVITY_FEED";
-const SET_FOLLOW_DATA = "SET_FOLLOW_DATA";
+
 
 const initialState = {
     games: [],
-    feed: [],
-    follow: {
-        followers: [],
-        following: [],
-    },
+    feed: []
 };
 
 export default function reducer(state = initialState, action) {
@@ -40,13 +36,6 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 feed: [],
-            }
-        case SET_FOLLOW_DATA:
-            return {
-                ...state,
-                follow: {
-                    ...action.follow
-                }
             }
     }
 
@@ -109,22 +98,3 @@ export function resetActivityFeed() {
     }
 }
 
-export function fetchFollowData() {
-    return (dispatch) => {
-
-        return fetch(`/api/user/followers`, {
-            credentials: "same-origin",
-            headers: {
-                "Cookie": global.clientCookies
-            }
-        }).then((response) => {
-            return response.json();
-        }).then((response) => {
-            if (response.success) {
-                if (response.data !== undefined && response.data !== null) {
-                    return dispatch({type: SET_FOLLOW_DATA, follow: response.data});
-                }
-            }
-        });
-    }
-}
