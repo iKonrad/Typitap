@@ -86,7 +86,9 @@ export function logoutUser() {
         return fetch("/api/auth/logout", {
             method: "POST",
             credentials: "same-origin",
-            headers: global.clientCookies
+            headers: {
+                "Cookie": global.clientCookies
+            }
         }).then((response) => {
             return response.json();
         }).then((response) => {
@@ -114,7 +116,9 @@ export function fetchUserStats() {
         return fetch("/api/user/stats", {
             method: "GET",
             credentials: "same-origin",
-            headers: typeof window === "undefined" ? global.clientCookies : "",
+            headers: {
+                "Cookie": global.clientCookies
+            }
         }).then((response) => {
             return response.json();
         }).then((response) => {

@@ -21,9 +21,9 @@ export function toggleFollow(userId, follow = true) {
 
 
 export function isUserFollowing(userId) {
-
     let state = getStore().getState();
-    if (state.user.follow.following.length === 0) {
+
+    if (!state.user.loggedIn || state.user.follow.following.length === 0) {
         return false;
     }
 

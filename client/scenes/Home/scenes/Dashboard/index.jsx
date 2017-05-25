@@ -54,12 +54,12 @@ class Dashboard extends Component {
                     <div className="col col-xs-12 col-md-4">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Follow title="Followers" items={ this.props.user.follow.followers }/>
+                                <Follow title="Followers" items={ this.props.user !== undefined && this.props.user.follow !== undefined ? this.props.user.follow.followers : [] }/>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Follow title="Following" items={ this.props.user.follow.following }/>
+                                <Follow title="Following" items={ this.props.user !== undefined && this.props.user.follow !== undefined ? this.props.user.follow.following : [] }/>
                             </div>
                         </div>
                         <div className="row">

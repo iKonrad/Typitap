@@ -39,7 +39,7 @@ class Profile extends Component {
                     <div className="col col-xs-12 col-md-8">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <ProfileInfo user={  this.props.app.profile.user  } stats={ this.props.app.profile.stats } />
+                                <ProfileInfo loggedIn={ this.props.user.loggedIn } user={  this.props.app.profile.user  } stats={ this.props.app.profile.stats } />
                             </div>
                         </div>
                         <div className="row">

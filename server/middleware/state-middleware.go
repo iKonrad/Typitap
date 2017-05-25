@@ -5,6 +5,7 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/labstack/echo"
 	"github.com/iKonrad/typitap/server/services/feed"
+	"time"
 )
 
 func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
@@ -28,7 +29,7 @@ func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
 					"Username": user.Username,
 					"Name": user.Name,
 					"Active": user.Active,
-					"Created": user.Created.String(),
+					"Created": user.Created.Format(time.RFC3339),
 					"Email": user.Email,
 					"Role": user.Role,
 				},

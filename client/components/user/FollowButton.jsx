@@ -9,6 +9,7 @@ class FollowButton extends React.Component {
         if (props.id !== undefined && props.id !== "") {
 
         }
+
         this.state = {
             following: following,
         }
@@ -28,19 +29,22 @@ class FollowButton extends React.Component {
     // Call the follow action
     handleFollow() {
 
-        FollowUtils.toggleFollow(this.props.id, !this.state.following).then((response) => {
-            if (response.success) {
-                let state = this.state;
-                if (!this.state.following) {
-                    state.following = true;
-                    FollowUtils.followProfile();
-                } else {
-                    state.following = false;
-                    FollowUtils.unfollowProfile();
+
+            FollowUtils.toggleFollow(this.props.id, !this.state.following).then((response) => {
+                if (response.success) {
+                    let state = this.state;
+                    if (!this.state.following) {
+                        state.following = true;
+                        FollowUtils.followProfile();
+                    } else {
+                        state.following = false;
+                        FollowUtils.unfollowProfile();
+                    }
+                    this.setState(state);
                 }
-                this.setState(state);
-            }
-        })
+            })
+
+
     }
 
     render() {

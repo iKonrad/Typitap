@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Gravatar from 'components/user/Gravatar';
-import TimeAgo from "timeago-react";
+import NewTime from 'react-timeago';
+import { Link } from 'react-router';
 import FollowButton from 'components/user/FollowButton';
 
 class ProfileInfo extends Component {
@@ -23,20 +24,20 @@ class ProfileInfo extends Component {
     renderJoined () {
 
         if (this.state.created !== "") {
-            return <TimeAgo datetime={ this.props.user.Created } />
+            // return <TimeAgo datetime={ new Date(this.state.created) } />
+            return <NewTime date={this.props.user.Created} minPeriod={4} live={false} />
         }
         return "...";
     }
 
-    renderFollowButton() {
-
-        if (this.props.follow) {
-
-
-
-        }
-
+    renderButton() {
+        return <FollowButton id={ this.props.isDashboard ? "" : this.props.user.Id } />
     }
+
+    renderAnonMessage() {
+        return <p><Link to="/login">Log in</Link> to follow</p>;
+    }
+
 
     render() {
         return (
@@ -51,7 +52,8 @@ class ProfileInfo extends Component {
                         <div className="col col-xs-12 col-sm-3 col-md-2 profile-page__info__details">
                             <p className="profile-page__info__name">{ this.props.user.Name }</p>
                             <p className="profile-page__info__username">#{ this.props.user.Username }</p>
-                            <FollowButton id={ this.props.isDashboard ? "" : this.props.user.Id } />
+                            { this.props.loggedIn || this.props.isDashboard ? this.renderButton() : this.renderAnonMessage() }
+
                         </div>
                         <div className="col col-xs-12 col-sm-3 col-sm-offset-3 col-md-3 col-md-offset-4 profile-page__info__details--right">
                             <p>Joined  { this.renderJoined() }</p>
