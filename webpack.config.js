@@ -22,7 +22,8 @@ var plugins = [
 if (process.env.NODE_ENV === 'production') {
     plugins = plugins.concat([
         new webpack.DefinePlugin({
-            'process.env': {NODE_ENV: JSON.stringify('production')}
+            'process.env': {NODE_ENV: JSON.stringify('production')},
+            'process.env.REACT_SPINKIT_NO_STYLES': true,
         }),
         new webpack.optimize.AggressiveMergingPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),

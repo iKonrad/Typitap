@@ -1,10 +1,15 @@
-
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import StatsBadge from 'components/user/UserStatsBadge';
-import * as UserActions from 'store/modules/userModule';
 
 class UserStats extends Component {
+
+
+    componentWillUpdate(newProps) {
+        if (newProps.stats !== undefined && this.props.stats === undefined) {
+            this.props.onLoad();
+        }
+    }
 
 
 
@@ -15,13 +20,16 @@ class UserStats extends Component {
             return (
                 <div>
                     <div className="pull-left">
-                        <StatsBadge key={ `user-stat-wpm` } type="wpm" value={ items["wpm"] } />
-                        <StatsBadge key={ `user-stat-accuracy` } type="accuracy" value={ items["accuracy"] } />
+                        <StatsBadge key={ `user-stat-wpm` } type="wpm" value={ items["wpm"] }/>
+                        <StatsBadge key={ `user-stat-accuracy` } type="accuracy" value={ items["accuracy"] }/>
                     </div>
                     <div className="pull-right">
-                        <StatsBadge key={ `user-stat-goldenTrophies` } type="goldenTrophies" value={ items["goldenTrophies"] } />
-                        <StatsBadge key={ `user-stat-silverTrophies` } type="silverTrophies" value={ items["silverTrophies"] } />
-                        <StatsBadge key={ `user-stat-bronzeTrophies` } type="bronzeTrophies" value={ items["bronzeTrophies"] } />
+                        <StatsBadge key={ `user-stat-goldenTrophies` } type="goldenTrophies"
+                                    value={ items["goldenTrophies"] }/>
+                        <StatsBadge key={ `user-stat-silverTrophies` } type="silverTrophies"
+                                    value={ items["silverTrophies"] }/>
+                        <StatsBadge key={ `user-stat-bronzeTrophies` } type="bronzeTrophies"
+                                    value={ items["bronzeTrophies"] }/>
                     </div>
                 </div>
 
@@ -34,10 +42,8 @@ class UserStats extends Component {
 
     render() {
         return (
-            <div className="panel panel-default">
-                <div className="panel-body">
-                    { this.renderStatsItems(this.props.stats) }
-                </div>
+            <div>
+                { this.renderStatsItems(this.props.stats) }
             </div>
         );
     }

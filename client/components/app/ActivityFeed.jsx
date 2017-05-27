@@ -14,14 +14,17 @@ class ActivityFeed extends Component {
         this.props.dispatch(DashboardActions.resetActivityFeed());
     }
     parseMessage(text, data) {
-
         Object.keys(data).forEach((key, index) => {
             let value = data[key];
             text = text.replace("{" + key + "}", value);
         });
-
         return text;
+    }
 
+    componentWillUpdate(newProps) {
+        if (newProps.dashboard.feed !== undefined && this.props.dashboard.feed !== newProps.dashboard.feed) {
+            this.props.onLoad();
+        }
     }
 
 
@@ -35,22 +38,15 @@ class ActivityFeed extends Component {
             return items;
         }
 
-        return (
-            <div className="text-center text-muted" style={{padding: "20px"}}>Your feed is empty</div>
-        );
+        return "";
     }
 
     render() {
         return (
-            <div className="panel panel-default">
-                <div className="panel-heading">
-                    <h3>Activity Feed</h3>
-                </div>
+
                 <div id="feed" className="feed">
                     { this.renderItems() }
                 </div>
-
-            </div>
         );
     }
 }

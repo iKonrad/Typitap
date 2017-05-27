@@ -5,27 +5,30 @@ import ResultRow from 'components/app/ResultRow';
 
 class RecentGames extends Component {
 
-
-
-
     renderItems() {
-        if (this.props.games && this.props.games.length > 0) {
-            let items = this.props.games.map((item, index) => {
-                let isPerfect = 1;
-                if (item.mistakes !== undefined && item.mistakes !== null) {
-                    isPerfect = Object.keys(item.mistakes).length < 1 ? 1 : 0
-                }
-                return (
-                    <ResultRow perfect={ isPerfect }
-                                    key={ 'activity-item-' + index } date={ new Date(item.created) }
-                                    name={item.session.online ? "Online race" : "Offline race"} score={item.wpm}/>
-                );
-            });
-            return items;
-        } else {
-            return (<div className="panel-body text-muted text-center">No games played yet</div>);
+        if (this.props.games !== undefined) {
+            if (this.props.games.length > 0) {
+                let items = this.props.games.map((item, index) => {
+                    let isPerfect = 1;
+                    if (item.mistakes !== undefined && item.mistakes !== null) {
+                        isPerfect = Object.keys(item.mistakes).length < 1 ? 1 : 0
+                    }
+                    return (
+                        <ResultRow perfect={ isPerfect }
+                                   key={ 'activity-item-' + index } date={ new Date(item.created) }
+                                   name={item.session.online ? "Online race" : "Offline race"} score={item.wpm}/>
+                    );
+                });
+                return items;
+            }
+            return "";
         }
+    }
 
+    componentWillUpdate(newProps) {
+        if (newProps.games !== undefined && newProps.games !== this.props.games) {
+            this.props.onLoad()
+        }
     }
 
     fetchMoreResults() {
@@ -47,16 +50,7 @@ class RecentGames extends Component {
     }
 
     render() {
-        return (
-            <div className="panel panel-default">
-                <div className="panel-heading">
-                    <h3>Recent Games</h3>
-                </div>
-                { this.renderItems() }
-
-
-            </div>
-        );
+        return (<div>{this.renderItems()}</div>)
     }
 }
 

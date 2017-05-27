@@ -8,6 +8,9 @@ import RecentGames from 'components/user/RecentGames';
 import * as DashboardActions from 'store/modules/dashboardModule';
 import Follow from 'components/user/UserFollow';
 import * as UserActions from 'store/modules/userModule';
+import Panel from 'components/app/Panel';
+
+
 class Dashboard extends Component {
 
     componentWillMount() {
@@ -37,12 +40,12 @@ class Dashboard extends Component {
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <UserStats stats={ this.props.user.stats }/>
+                                <Panel loaded={ this.props.user.stats !== undefined }><UserStats stats={ this.props.user.stats }/></Panel>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-xs-12">
-                                <ActivityFeed />
+                                <Panel title="Activity feed"><ActivityFeed /></Panel>
                             </div>
                         </div>
                         <div className="row">
@@ -64,7 +67,7 @@ class Dashboard extends Component {
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <RecentGames games={this.props.dashboard.games}/>
+                                <Panel title="Recent games"><RecentGames games={this.props.dashboard.games}/></Panel>
                             </div>
                         </div>
                     </div>
