@@ -22,7 +22,6 @@ func init() {
 
 func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 
-
 	user := c.Get("User").(entities.User)
 
 	filters := map[string]interface{}{}
@@ -60,7 +59,6 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 }
 
 func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
-
 
 	field := c.FormValue("field")
 	value := c.FormValue("value")
@@ -120,7 +118,6 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 
 func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
 
-
 	o := c.QueryParam("offset")
 	if o == "" {
 		o = "0"
@@ -170,17 +167,22 @@ func (gc UserAPIController) GetUserStats(c echo.Context) error {
 func (gc UserAPIController) FollowUser(c echo.Context) error {
 
 	user := c.Get("User").(entities.User)
-	followingUser := c.Param("followUser")
-	userExists := us.UserExists(followingUser)
+	followingUserId := c.Param("followUser")
 
-	if !userExists {
+	followingUser, ok := us.GetUser(followingUserId)
+	if !ok {
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"success":  false,
+			"success": false,
 			"message": "User doesn't exist",
 		})
 	}
 
-	feed.FollowUser(user.Id, followingUser)
+	feed.FollowUser(user.Id, followingUser.Id)
+
+	feed.SendActivityToFollowers(user.Id, feed.Activities.UserFollows(user.Username, followingUser.Username))
+
+	feed.SendActivity(followingUser.Id, feed.Activities.UserFollowsYou(user.Username))
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
 	})
@@ -188,14 +190,13 @@ func (gc UserAPIController) FollowUser(c echo.Context) error {
 
 func (gc UserAPIController) UnfollowUser(c echo.Context) error {
 
-
 	user := c.Get("User").(entities.User)
 	followingUser := c.Param("followUser")
 	userExists := us.UserExists(followingUser)
 
 	if !userExists {
 		return c.JSON(http.StatusOK, map[string]interface{}{
-			"success":  false,
+			"success": false,
 			"message": "User doesn't exist",
 		})
 	}
@@ -232,19 +233,18 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 	filters["userId"] = user.Id
 	recentGames, _ := us.GetGameResultsForUser(offset, filters)
 
-	follow, _ := feed.GetFollowForUser(user.Id)
+	follow, _ := feed.GetUserFollow(user.Id)
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
 		"data": map[string]interface{}{
-			"user":  user,
-			"stats": userStats,
-			"games": recentGames,
+			"user":   user,
+			"stats":  userStats,
+			"games":  recentGames,
 			"follow": follow,
 		},
 	})
 }
-
 
 func (gc UserAPIController) GetUserFollow(c echo.Context) error {
 
@@ -257,11 +257,11 @@ func (gc UserAPIController) GetUserFollow(c echo.Context) error {
 
 	user := c.Get("User").(entities.User)
 
-	follow, _ := feed.GetFollowForUser(user.Id)
+	follow, _ := feed.GetUserFollow(user.Id)
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
-		"data": follow,
+		"data":    follow,
 	})
 
 }

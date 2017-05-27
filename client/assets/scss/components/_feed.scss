@@ -40,6 +40,21 @@
         }
       }
 
+      &--follow {
+        background-color: $blue-200;
+        &:after {
+          content: "\f087";
+        }
+      }
+
+      &--follow-you {
+        background-color: $green-200;
+        &:after {
+          content: "\f087";
+        }
+      }
+
+
     }
 
     &__text {

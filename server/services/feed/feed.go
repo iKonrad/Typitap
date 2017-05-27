@@ -17,27 +17,9 @@ var Activities = ActivityActions{}
 
 func SendActivity(ownerId string, details map[string]string) bool {
 
-	activityType, ok := details["activityType"]
-	delete(details, "activityType")
-	if !ok {
-		return false
-	}
-
-	activity := newActivity()
-	aType, ok := getActivityType(activityType)
+	activity, ok := addNewActivity(details)
 
 	if !ok {
-		return false
-	}
-
-	activity.Type = aType
-	activity.Data = details
-
-	// @TODO: Send activity to followers
-
-	_, err := r.Table("activities").Insert(activity).RunWrite(db.Session)
-	if err != nil {
-		logs.Error("Error while creating activity", "Activity "+activityType+"couldn't be created. Error: "+err.Error(), []string{"error", "activity"}, "Error")
 		return false
 	}
 
@@ -46,10 +28,64 @@ func SendActivity(ownerId string, details map[string]string) bool {
 	return ok
 }
 
+func SendActivityToFollowers(following string, details map[string]string) bool {
+
+	activity, ok := addNewActivity(details)
+	if !ok {
+		return false
+	}
+
+	followers, ok := GetUserFollowerIds(following)
+	log.Println("FOLLOWERS", followers)
+	ok = addActivityToUserFeeds(activity.Id, followers)
+
+	return ok
+}
+
+func addNewActivity(details map[string]string) (entities.Activity, bool) {
+
+	activityType, ok := details["activityType"]
+	delete(details, "activityType")
+	if !ok {
+		return entities.Activity{}, false
+	}
+
+	activity := newActivity()
+	aType, ok := getActivityType(activityType)
+
+	if !ok {
+		return entities.Activity{}, false
+	}
+
+	activity.Type = aType
+	activity.Data = details
+
+	_, err := r.Table("activities").Insert(activity).RunWrite(db.Session)
+	if err != nil {
+		logs.Error("Error while creating activity", "Activity "+activityType+"couldn't be created. Error: "+err.Error(), []string{"error", "activity"}, "Error")
+		return entities.Activity{}, false
+	}
+
+	return activity, true
+}
+
+func addActivityToUserFeeds(activityId string, userIds []interface{}) bool {
+	_, err := r.Table("user_feed_activity").GetAll(userIds...).Update(map[string]interface{}{
+		"items": r.Row.Field("items").Prepend(activityId),
+	}).Run(db.Session)
+
+	if err != nil {
+		logs.Error("Error while adding activity to feed", "Activity "+activityId+" couldn't be added to users. Error: "+err.Error(), []string{"error", "activity", "user"}, "Error")
+		return false
+	}
+
+	return true
+}
+
 // Adds activity to a user feed (for example, a follower)
 func addActivityToUserFeed(activityId string, userId string) bool {
 	_, err := r.Table("user_feed_activity").Get(userId).Update(map[string]interface{}{
-		"items": r.Row.Field("items").Append(activityId),
+		"items": r.Row.Field("items").Prepend(activityId),
 	}).RunWrite(db.Session)
 
 	if err != nil {
@@ -129,13 +165,13 @@ func GetFeedForUser(userId string, offset int) (entities.UserFeed, bool) {
 }
 
 func FollowUser(userId string, followingUser string) {
-	resp, err := r.Table("user_feed_follow").Get(userId).Update(map[string]interface{} {
-			"following": r.Row.Field("following").SetUnion([]string{followingUser}),
+	resp, err := r.Table("user_feed_follow").Get(userId).Update(map[string]interface{}{
+		"following": r.Row.Field("following").SetUnion([]string{followingUser}),
 	}).Run(db.Session)
 	log.Println(err)
 	defer resp.Close()
-	resp, err = r.Table("user_feed_follow").Get(followingUser).Update(map[string]interface{} {
-			"followers": r.Row.Field("followers").SetUnion([]string{userId}),
+	resp, err = r.Table("user_feed_follow").Get(followingUser).Update(map[string]interface{}{
+		"followers": r.Row.Field("followers").SetUnion([]string{userId}),
 	}).Run(db.Session)
 	defer resp.Close()
 	log.Println(err)
@@ -150,10 +186,9 @@ func UnfollowUser(userId string, followingUser string) {
 	}).Exec(db.Session)
 }
 
+func GetUserFollow(userId string) (map[string]interface{}, bool) {
 
-func GetFollowForUser(userId string) (map[string]interface{}, bool) {
-
-	resp, err := r.Table("user_feed_follow").Get(userId).Without("userId").Merge(func (p r.Term) interface{} {
+	resp, err := r.Table("user_feed_follow").Get(userId).Without("userId").Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
 			"following": r.Table("users").GetAll(r.Args(p.Field("following"))).Without("password", "active", "created").CoerceTo("array"),
 			"followers": r.Table("users").GetAll(r.Args(p.Field("followers"))).Without("password", "active", "created").CoerceTo("array"),
@@ -168,4 +203,24 @@ func GetFollowForUser(userId string) (map[string]interface{}, bool) {
 	err = resp.One(&follow)
 
 	return follow, true
+}
+
+func GetUserFollowerIds(userId string) ([]interface{}, bool) {
+
+	resp, err := r.Table("user_feed_follow").Get(userId).Pluck("followers").Run(db.Session)
+	defer resp.Close()
+
+	if err != nil || resp.IsNil() {
+		return []interface{}{}, false
+	}
+
+	var follow map[string]interface{}
+	err = resp.One(&follow)
+
+	if err != nil {
+		log.Println(err.Error())
+		return []interface{}{}, false
+	}
+
+	return follow["followers"].([]interface{}), true
 }

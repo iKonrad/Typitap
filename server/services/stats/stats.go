@@ -2,7 +2,6 @@ package stats
 
 import (
 	"log"
-	"strconv"
 
 	db "github.com/iKonrad/typitap/server/services/database"
 	r "gopkg.in/gorethink/gorethink.v3"
@@ -23,7 +22,6 @@ func NewStats(user entities.User) entities.UserStats {
 }
 
 func calculateStatsForUser(userId string) {
-	log.Println("-> Calculating stats for " + userId)
 
 	resp, err := r.Table("game_results").Filter(map[string]string{
 		"userId": userId,
@@ -40,11 +38,9 @@ func calculateStatsForUser(userId string) {
 	var results []map[string]interface{}
 	err = resp.All(&results)
 
-	log.Println("Pulled " + strconv.Itoa(len(results)) + " results")
 
 	// No returns, we can stop the function
 	if len(results) == 0 {
-		log.Println("Returning...")
 		return
 	}
 
@@ -53,13 +49,10 @@ func calculateStatsForUser(userId string) {
 	for _, result := range results {
 		sumWpm += int(result["wpm"].(float64))
 		sumAccuracy += int(result["accuracy"].(float64))
-		log.Println("Added WPM: " + strconv.Itoa(int(result["wpm"].(float64))) + " and Accuracy: " + strconv.Itoa(int(result["accuracy"].(float64))) + " results")
 	}
 
 	averageWpm := int(float32(sumWpm) / float32(len(results)))
 	averageAccuracy := int(float32(sumAccuracy) / float32(len(results)))
-
-	log.Println("-> !! Average WPM: " + strconv.Itoa(averageWpm) + " and Accuracy: " + strconv.Itoa(averageAccuracy) + " results")
 
 	r.Table("user_stats").Get(userId).Update(map[string]interface{}{
 		"wpm":      averageWpm,
@@ -69,18 +62,16 @@ func calculateStatsForUser(userId string) {
 
 func CalculateStats() {
 
-	log.Println("---> Calculating stats...")
+
 	resp, err := r.Table("users").Pluck("id").Run(db.Session)
 	defer resp.Close()
 	if err != nil {
-		log.Println("Error while fetching users from database", err)
 		return
 	}
 
 	var userIds []map[string]string
 
 	err = resp.All(&userIds)
-	log.Println("Loaded " + strconv.Itoa(len(userIds)) + " users")
 	for _, u := range userIds {
 		calculateStatsForUser(u["id"])
 	}

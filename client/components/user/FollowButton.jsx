@@ -12,6 +12,7 @@ class FollowButton extends React.Component {
 
         this.state = {
             following: following,
+            blocked: false,
         }
 
     }
@@ -30,11 +31,13 @@ class FollowButton extends React.Component {
     handleFollow() {
 
 
+        if (!this.state.blocked) {
             FollowUtils.toggleFollow(this.props.id, !this.state.following).then((response) => {
                 if (response.success) {
                     let state = this.state;
                     if (!this.state.following) {
                         state.following = true;
+                        state.blocked = true;
                         FollowUtils.followProfile();
                     } else {
                         state.following = false;
@@ -43,8 +46,7 @@ class FollowButton extends React.Component {
                     this.setState(state);
                 }
             })
-
-
+        }
     }
 
     render() {

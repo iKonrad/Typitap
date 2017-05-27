@@ -2,6 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 var functions = require('postcss-functions');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var CompressionPlugin = require("compression-webpack-plugin");
+
 
 const jQueryPlugin = new webpack.ProvidePlugin({
     _: 'lodash',
@@ -19,13 +21,41 @@ var plugins = [
 
 if (process.env.NODE_ENV === 'production') {
     plugins = plugins.concat([
-        new webpack.optimize.UglifyJsPlugin({
-            output: {comments: false},
-            test: /bundle\.js?$/
-        }),
         new webpack.DefinePlugin({
             'process.env': {NODE_ENV: JSON.stringify('production')}
-        })
+        }),
+        new webpack.optimize.AggressiveMergingPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            mangle: true,
+            compress: {
+                warnings: false, // Suppress uglification warnings
+                pure_getters: true,
+                unsafe: true,
+                unsafe_comps: true,
+                screw_ie8: true,
+                conditionals: true,
+                unused: true,
+                comparisons: true,
+                sequences: true,
+                dead_code: true,
+                evaluate: true,
+                if_return: true,
+                join_vars: true
+            },
+            output: {
+                comments: false,
+            },
+            exclude: [/\.min\.js$/gi] // skip pre-minified libs
+        }),
+        new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
+        // new CompressionPlugin({
+        //     asset: "[path].gz[query]",
+        //     algorithm: "gzip",
+        //     test: /\.js$|\.css$|\.html$/,
+        //     threshold: 10240,
+        //     minRatio: 0
+        // })
     ]);
 };
 

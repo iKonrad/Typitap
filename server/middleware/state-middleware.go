@@ -21,7 +21,7 @@ func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
 		if c.Get("IsLoggedIn").(bool) {
 			user := c.Get("User").(entities.User)
 
-			userFeed, _ := feed.GetFollowForUser(user.Id);
+			userFeed, _ := feed.GetUserFollow(user.Id);
 
 			newStore["user"] = map[string]interface{}{
 				"data": map[string]interface{}{

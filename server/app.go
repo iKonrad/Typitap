@@ -7,6 +7,7 @@ import (
 
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/gorilla/websocket"
+
 	"github.com/iKonrad/typitap/server/assets"
 	"github.com/iKonrad/typitap/server/cron"
 	middlewares "github.com/iKonrad/typitap/server/middleware"
