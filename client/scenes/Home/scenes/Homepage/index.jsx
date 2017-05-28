@@ -3,15 +3,26 @@ import {connect} from 'react-redux';
 import { Link } from 'react-router';
 import * as AppActions from 'store/ducks/appModule';
 import TopChart from 'components/app/TopChart';
+import { resolveAll } from 'utils/jsUtils';
+import * as PlayActions from 'scenes/Play/ducks/playModule';
+import Panel from 'components/app/Panel';
+import ActivityFeed from 'components/app/ActivityFeed';
+
 
 class Homepage extends Component {
 
-    componentWillMount() {
-        this.props.dispatch(AppActions.fetchChartsData());
+    static clientInit({store, nextState, replaceState, callback}) {
+        resolveAll([
+            store.dispatch(AppActions.fetchChartsData()),
+            store.dispatch(PlayActions.fetchGlobalFeed()),
+        ], callback)
     }
 
     static serverInit(response, params, store) {
-        return [store.dispatch(AppActions.fetchChartsData())];
+        return [
+            store.dispatch(AppActions.fetchChartsData()),
+            store.dispatch(PlayActions.fetchGlobalFeed()),
+        ];
     }
 
     render() {
@@ -92,14 +103,7 @@ class Homepage extends Component {
                                 <h3>Straight from the race tracks</h3>
                             </div>
                             <div className="col col-xs-12 col-md-8">
-                                <div className="panel panel-white">
-                                    <div className="panel-heading">
-                                        <h5>Recent Activities</h5>
-                                    </div>
-                                    <div className="panel-body">
-                                        Panel content
-                                    </div>
-                                </div>
+                                <Panel title="Recent news" bodyClass="" loaded={ this.props.play.feed !== undefined }><ActivityFeed feed={ this.props.play.feed } /></Panel>
                             </div>
                             <div className="col col-xs-12 col-md-4">
                                 <TopChart name="today" title="Today's bests" />
@@ -150,7 +154,8 @@ class Homepage extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user
+        user: state.user,
+        play: state.play,
     }
 };
 

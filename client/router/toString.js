@@ -72,16 +72,17 @@ export default function (options, cbk) {
                     }
 
                     store.dispatch(AppActions.setResponse(responseData));
-
                     // Check if checkAuth function is present as well
                     if (typeof(comp.serverInit) !== 'undefined') {
 
                         promise = comp.serverInit(responseData, params, store);
                         switch (typeof promise) {
                             case "undefined":
+
                                 renderComponent();
                                 break;
                             case "object":
+                                console.log('uwot');
                                 if (Object.prototype.toString.call( promise ) === '[object Array]') {
                                     let resolved = 0;
                                     promise.forEach((pro) => {

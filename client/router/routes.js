@@ -58,14 +58,12 @@ export default ({store, first}) => {
             </Route>
 
 
-            <Route path="/u/:user" component={Profile} />
+            <Route path="/u/:user" component={Profile} onEnter={w(Profile.clientInit)}/>
 
             <Route path="/auth/activate/:token" emptyBase={true} component={Activate} onEnter={w(Activate.clientInit)} />
             <Route path="auth/logout" component={Logout} onEnter={w(Logout.clientInit)} />
             <Route path="/auth/password/reset/:token" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)} />
             <Route path="/auth/password/forgot" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)} />
-
-
 
             {/* Replace with 404 */}
             <Route path="*" component={Home} />

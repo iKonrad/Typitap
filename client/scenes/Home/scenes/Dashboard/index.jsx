@@ -24,7 +24,6 @@ class Dashboard extends Component {
     }
 
     static serverInit(response, params, store) {
-        console.log("initing");
         return [
             store.dispatch(DashboardActions.getRecentGames(0)),
             store.dispatch(UserActions.fetchFollowData()),
