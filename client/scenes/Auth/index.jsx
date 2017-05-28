@@ -9,6 +9,11 @@ import {Link} from 'react-router';
 class Auth extends Component {
 
 
+    static clientInit({store, nextState, replaceState, callback}) {
+        callback();
+    }
+
+
     renderForm() {
 
         if (this.props.route.path === '/signup') {

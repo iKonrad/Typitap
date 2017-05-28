@@ -28,6 +28,9 @@ class Game extends Component {
         this.onUnload = this.resetGame.bind(this)
     }
 
+    static clientInit({store, nextState, replaceState, callback}) {
+        callback();
+    }
 
     componentWillMount() {
         // Check if the client is connected to the websocket.

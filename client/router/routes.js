@@ -25,34 +25,45 @@ import AdminUsers from 'scenes/Admin/scenes/AdminUsers';
  */
 export default ({store, first}) => {
 
+    // Make a closure to skip first request
+    function w(loader) {
+        return (nextState, replaceState, callback) => {
+            if (first.time) {
+                first.time = false;
+                return callback();
+            }
+            return loader ? loader({store, nextState, replaceState, callback}) : callback();
+        };
+    }
+
     return (
         <Route path="/" component={Base}>
-            <IndexRoute component={Home} />
-            <Route path="/login" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} />
-            <Route path="/signup" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} />
+            <IndexRoute component={Home} onEnter={w(Home.clientInit)} />
+            <Route path="/login" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)}/>
+            <Route path="/signup" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)}/>
 
-            <Route path="/account" component={Account}>
-                <IndexRoute component={Permissions.OnlyUsers(AccountDetails)} />
-                <Route path="details" component={Permissions.OnlyUsers(AccountDetails)}/>
-                <Route path="avatar" component={Permissions.OnlyUsers(AvatarSettings)}/>
-                <Route path="keyboard" component={Permissions.OnlyUsers(AccountDetails)}/>
+            <Route path="/account" component={Account} >
+                <IndexRoute component={Permissions.OnlyUsers(AccountDetails)} onEnter={w(AccountDetails.clientInit)} />
+                <Route path="details" component={Permissions.OnlyUsers(AccountDetails)} onEnter={w(AccountDetails.clientInit)} />
+                <Route path="avatar" component={Permissions.OnlyUsers(AvatarSettings)} onEnter={w(AvatarSettings.clientInit)} />
+                <Route path="keyboard" component={Permissions.OnlyUsers(AccountDetails)} onEnter={w(AccountDetails.clientInit)} />
             </Route>
 
-            <Route path="/play" component={Play} />
-            <Route path="/play/:type" component={GameWindow} />
+            <Route path="/play" component={Play} onEnter={w(Play.clientInit)} />
+            <Route path="/play/:type" component={GameWindow} onEnter={w(GameWindow.clientInit)} />
 
             <Route emptyBase={true} path="/admin" component={AdminBase}>
-                <IndexRoute component={Permissions.OnlyAdmins(AdminUsers)} />
-                <Route emptyBase={true} path="users" component={Permissions.OnlyAdmins(AdminUsers)}/>
+                <IndexRoute component={Permissions.OnlyAdmins(AdminUsers)} onEnter={w(AdminUsers.clientInit)} />
+                <Route emptyBase={true} path="users" component={Permissions.OnlyAdmins(AdminUsers)} onEnter={w(AdminUsers.clientInit)} />
             </Route>
 
 
             <Route path="/u/:user" component={Profile} />
 
-            <Route path="/auth/activate/:token" emptyBase={true} component={Activate} />
-            <Route path="auth/logout" component={Logout} />
-            <Route path="/auth/password/reset/:token" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)}/>
-            <Route path="/auth/password/forgot" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)}/>
+            <Route path="/auth/activate/:token" emptyBase={true} component={Activate} onEnter={w(Activate.clientInit)} />
+            <Route path="auth/logout" component={Logout} onEnter={w(Logout.clientInit)} />
+            <Route path="/auth/password/reset/:token" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)} />
+            <Route path="/auth/password/forgot" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)} />
 
 
 

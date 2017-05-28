@@ -6,11 +6,9 @@ import {connect} from 'react-redux';
 
 class Activate extends Component {
 
-
-    static onEnter({store, next, replace, callback}) {
+    static clientInit({store, nextState, replaceState, callback}) {
         callback();
     }
-
 
     renderSuccessMessage() {
         return "Your account has been activated. You can now log in using your login and password";

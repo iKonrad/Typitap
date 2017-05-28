@@ -3,6 +3,11 @@ import ReactTable from 'react-table'
 import * as tableUtils from 'utils/tableUtils';
 
 class AdminUsers extends React.Component {
+
+    static clientInit({store, nextState, replaceState, callback}) {
+        callback();
+    }
+
     constructor(props) {
         super(props);
 

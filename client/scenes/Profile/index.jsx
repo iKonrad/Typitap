@@ -10,7 +10,7 @@ import Panel from 'components/app/Panel';
 
 class Profile extends Component {
     // Runs after side-server rendering
-    static initialize(response, params, store) {
+    static serverInit(response, params, store) {
         return [
             store.dispatch(ProfileActions.fetchUserProfile(params.user))
         ];

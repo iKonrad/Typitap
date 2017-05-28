@@ -10,7 +10,7 @@ class Homepage extends Component {
         this.props.dispatch(AppActions.fetchChartsData());
     }
 
-    static initialize(response, params, store) {
+    static serverInit(response, params, store) {
         return [store.dispatch(AppActions.fetchChartsData())];
     }
 

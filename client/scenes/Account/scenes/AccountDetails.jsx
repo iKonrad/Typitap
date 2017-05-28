@@ -4,10 +4,10 @@ import {push} from 'react-router-redux';
 import SimpleItem from './../components/AccountSimpleItem';
 
 class Details extends React.Component {
-    static onEnter({store, next, replace, callback}) {
+
+    static clientInit({store, nextState, replaceState, callback}) {
         callback();
     }
-
 
     render() {
         return (

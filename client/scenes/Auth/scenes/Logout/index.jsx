@@ -8,11 +8,9 @@ import Notifications from 'utils/notifications';
 
 class Logout extends Component {
 
-    static onEnter({store, next, replace, callback}) {
+    static clientInit({store, nextState, replaceState, callback}) {
         callback();
     }
-
-
 
     componentDidMount(props) {
         return this.props.dispatch(UserActions.logoutUser()).then(() => {

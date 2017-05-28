@@ -4,6 +4,10 @@ import Gravatar from 'components/user/Gravatar';
 
 class AvatarSettings extends Component {
 
+    static clientInit({store, nextState, replaceState, callback}) {
+        callback();
+    }
+
     render() {
         return (
             <div className="avatar-page">

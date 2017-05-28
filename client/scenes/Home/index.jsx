@@ -7,10 +7,16 @@ import Homepage from './scenes/Homepage';
 
 class Home extends Component {
 
-    static initialize(response, params, store) {
+    static clientInit({store, nextState, replaceState, callback}) {
+        if (store.getState().user.loggedIn) {
+            return Dashboard.clientInit({store, nextState, replaceState, callback});
+        }
+    }
 
-        if (!store.getState().user.loggedIn) {
-            return [Homepage.initialize(response, params, store)];
+    static serverInit(response, params, store) {
+
+        if (store.getState().user.loggedIn) {
+            return Dashboard.serverInit(response, params, store);
         }
     }
 

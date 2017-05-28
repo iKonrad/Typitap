@@ -11,15 +11,18 @@ import * as AppActions from 'store/ducks/appModule';
 import TopChart from 'components/app/TopChart';
 import Panel from 'components/app/Panel';
 import ActivityFeed from 'components/app/ActivityFeed';
+import { resolveAll } from 'utils/jsUtils';
 
 class Play extends Component {
 
-    componentDidMount() {
-        this.props.dispatch(AppActions.fetchChartsData());
-        this.props.dispatch(PlayActions.fetchGlobalFeed());
+    static clientInit({store, nextState, replaceState, callback}) {
+        resolveAll([
+            store.dispatch(AppActions.fetchChartsData()),
+            store.dispatch(PlayActions.fetchGlobalFeed())
+        ], callback);
     }
 
-    static initialize(response, params, store) {
+    static serverInit(response, params, store) {
         return [
             store.dispatch(AppActions.fetchChartsData()),
             store.dispatch(PlayActions.fetchGlobalFeed()),
