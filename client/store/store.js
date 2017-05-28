@@ -1,5 +1,5 @@
 import {compose, applyMiddleware, createStore as reduxCreateStore} from 'redux';
-import reducers from './modules';
+import reducers from './ducks';
 import thunkMiddleware from 'redux-thunk';
 import {routerMiddleware} from 'react-router-redux'
 import socketMiddleware from "./middlewares/socketMiddleware";

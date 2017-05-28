@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import { Link } from 'react-router';
-import * as AppActions from 'store/modules/appModule';
+import * as AppActions from 'store/ducks/appModule';
 import TopChart from 'components/app/TopChart';
 
 class Homepage extends Component {
@@ -11,7 +11,7 @@ class Homepage extends Component {
     }
 
     static initialize(response, params, store) {
-        return store.dispatch(AppActions.fetchChartsData());
+        return [store.dispatch(AppActions.fetchChartsData())];
     }
 
     render() {

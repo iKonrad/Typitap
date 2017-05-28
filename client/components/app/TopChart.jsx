@@ -7,6 +7,7 @@ class TopChart extends Component {
 
     renderItems(name) {
 
+
         if (this.props.app.charts !== undefined && Object.keys(this.props.app.charts[name]).length > 0) {
             let chart = this.props.app.charts[name];
             let items = chart.Items.map((item, index) => {

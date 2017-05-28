@@ -1,4 +1,6 @@
 .profile-page {
+  margin-top: 40px;
+
   &__picture {
     height: 120px;
     text-align: center;
@@ -17,10 +19,9 @@
 
     &__username {
       font-size: 14px;
-      margin: -5px 0 0 0;
+      margin: -5px 0 5px 0;
       font-weight: 200;
       color: $grey-200;
-      margin-bottom: 5px;
     }
 
     &__details {

@@ -54,6 +54,13 @@
         }
       }
 
+      &--player-chart {
+        background-color: $yellow-200;
+        &:after {
+          content: "\f091";
+        }
+      }
+
 
     }
 

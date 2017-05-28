@@ -3,11 +3,10 @@ import {connect} from 'react-redux';
 import ProfileInfo from 'components/user/ProfileInfo';
 import UserStats from 'components/user/UserStats';
 import ActivityFeed from 'components/app/ActivityFeed';
-import ProgressChart from './components/ProgressChart';
 import RecentGames from 'components/user/RecentGames';
-import * as DashboardActions from 'store/modules/dashboardModule';
+import * as DashboardActions from './ducks/dashboardModule';
 import Follow from 'components/user/UserFollow';
-import * as UserActions from 'store/modules/userModule';
+import * as UserActions from 'store/ducks/userModule';
 import Panel from 'components/app/Panel';
 
 
@@ -16,6 +15,7 @@ class Dashboard extends Component {
     componentWillMount() {
         this.props.dispatch(DashboardActions.getRecentGames(0));
         this.props.dispatch(UserActions.fetchFollowData());
+        this.props.dispatch(DashboardActions.fetchActivityFeed(0));
 
         if (this.props.user.data !== undefined && this.props.user.stats === undefined || Object.keys(this.props.user.stats).length === 0) {
             this.props.dispatch(UserActions.fetchUserStats());
@@ -25,6 +25,12 @@ class Dashboard extends Component {
 
     componentWillUnmount() {
         this.props.dispatch(DashboardActions.resetRecentGames());
+        this.props.dispatch(DashboardActions.resetActivityFeed());
+    }
+
+    handleFetchMoreRecentGames() {
+            let offset = this.props.dashboard.games.length;
+            this.props.dispatch(DashboardActions.getRecentGames(offset));
     }
 
 
@@ -45,12 +51,7 @@ class Dashboard extends Component {
                         </div>
                         <div className="row">
                             <div className="col-xs-12">
-                                <Panel title="Activity feed"><ActivityFeed /></Panel>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-xs-12">
-                                <ProgressChart/>
+                                <Panel title="Activity feed" bodyClass=""><ActivityFeed feed={ this.props.dashboard.feed } /></Panel>
                             </div>
                         </div>
                     </div>
@@ -67,7 +68,7 @@ class Dashboard extends Component {
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Panel title="Recent games"><RecentGames games={this.props.dashboard.games}/></Panel>
+                                <Panel title="Recent games" bodyClass=""><RecentGames onMore={ this.handleFetchMoreRecentGames.bind(this) } games={this.props.dashboard.games}/></Panel>
                             </div>
                         </div>
                     </div>

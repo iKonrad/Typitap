@@ -1,6 +1,6 @@
 import {getStore} from 'store/store';
-import * as GameActions from 'store/modules/gameModule';
-import * as SocketActions from 'store/modules/socketModule';
+import * as GameActions from 'store/ducks/gameModule';
+import * as SocketActions from 'store/ducks/socketModule';
 import Notifications from 'utils/notifications';
 
 import React from 'react';

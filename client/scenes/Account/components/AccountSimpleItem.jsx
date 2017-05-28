@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import * as AccountActions from 'store/modules/accountModule';
-import * as UserActions from 'store/modules/userModule';
+import * as AccountActions from 'store/ducks/accountModule';
+import * as UserActions from 'store/ducks/userModule';
 import Notifications from 'utils/notifications';
 
 class AccountSimpleItem extends React.Component {
@@ -10,10 +10,6 @@ class AccountSimpleItem extends React.Component {
         callback();
     }
 
-    // Runs after side-server rendering
-    static initialize(response, params, store) {
-        return "";
-    }
 
     renderField() {
 

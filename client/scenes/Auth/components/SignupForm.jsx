@@ -3,10 +3,10 @@ import {Field, reduxForm} from 'redux-form';
 import {push} from 'react-router-redux';
 import { Link } from 'react-router';
 import Input from 'components/form/fields/Input';
-import * as FormActions from 'store/modules/formModule';
-import * as UserActions from 'store/modules/userModule';
+import * as FormActions from 'store/ducks/formModule';
+import * as UserActions from 'store/ducks/userModule';
 import Notifications from 'utils/notifications';
-import * as socketActions from "store/modules/socketModule";
+import * as socketActions from "store/ducks/socketModule";
 import { connect } from 'react-redux';
 
 class SignupForm extends Component {

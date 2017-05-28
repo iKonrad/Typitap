@@ -8,10 +8,6 @@ class Details extends React.Component {
         callback();
     }
 
-    // Runs after side-server rendering
-    static initialize(response, params, store) {
-        return "";
-    }
 
     render() {
         return (

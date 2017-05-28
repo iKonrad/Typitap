@@ -6,7 +6,7 @@ import Helmet from 'react-helmet';
 import createRoutes from './routes';
 import {createStore, setAsCurrentStore} from 'store/store';
 import {syncHistoryWithStore} from 'react-router-redux'
-import * as AppActions from 'store/modules/appModule';
+import * as AppActions from 'store/ducks/appModule';
 
 
 var clientCookies;
@@ -75,15 +75,27 @@ export default function (options, cbk) {
 
                     // Check if checkAuth function is present as well
                     if (typeof(comp.initialize) !== 'undefined') {
+
                         promise = comp.initialize(responseData, params, store);
+                        switch (typeof promise) {
+                            case "undefined":
+                                renderComponent();
+                                break;
+                            case "object":
+                                if (Object.prototype.toString.call( promise ) === '[object Array]') {
+                                    let resolved = 0;
+                                    promise.forEach((pro) => {
+                                        pro.then(() => {
+                                            resolved++;
+                                            if (resolved === promise.length) {
+                                                renderComponent();
+                                            }
+                                        })
+                                    });
+                                }
+                                break;
 
-                        if (promise.then !== undefined && typeof promise.then === 'function') {
-                            promise.then(() => {renderComponent();
-                            });
-                        } else {
-                            renderComponent();
                         }
-
                     } else {
                         renderComponent();
                     }

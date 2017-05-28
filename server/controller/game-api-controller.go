@@ -71,12 +71,24 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 	accuracy, _ := strconv.ParseFloat(c.FormValue("accuracy"), 32)
 	gameTime, _ := strconv.Atoi(c.FormValue("time"))
 
-	log.Println("Acc", accuracy);
+	// Save result to the database
 	newResult, err := game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, int(accuracy), gameTime, 0)
 
-	feed.SendActivity(user.Id, feed.Activities.PlayerCompletedOfflineGameActivity(user.Username, wpm))
-
 	game.MarkSessionFinished(c.FormValue("sessionId"))
+
+	// Check if user made it to the top chart
+	madeToChart := topchart.CheckTopChart(&newResult)
+
+	if madeToChart {
+		feed.SendActivityToUserAndFollowers(user.Id, feed.Activities.PlayerMakesToTopChart(user.Username, wpm))
+		feed.SendGlobalActivity(feed.Activities.PlayerMakesToTopChart(user.Username, wpm))
+	} else {
+		feed.SendActivityToUserAndFollowers(user.Id, feed.Activities.PlayerCompletedOfflineGameActivity(user.Username, wpm))
+		feed.SendGlobalActivity(feed.Activities.PlayerCompletedOfflineGameActivity(user.Username, wpm))
+	}
+
+
+	stats.IncrementGamesStat(user.Id)
 
 	// Submit the result for the top chart
 	if err != nil {
@@ -88,8 +100,7 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 		})
 	}
 
-	topchart.CheckTopChart(&newResult)
-	stats.IncrementGamesStat(user.Id)
+
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success":  true,
@@ -114,5 +125,26 @@ func (ac *GameAPIController) GetChartData(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
 		"data":    chart,
+	})
+}
+
+func (gc *GameAPIController) GetGlobalFeed(c echo.Context) error {
+
+	o := c.QueryParam("offset")
+	if o == "" {
+		o = "0"
+	}
+
+	offset, _ := strconv.Atoi(o)
+	if appFeed, ok := feed.GetFeedForUser("global", offset); ok {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"success": true,
+			"data":    appFeed,
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": true,
+		"data": []string{},
 	})
 }

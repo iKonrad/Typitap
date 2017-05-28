@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import * as UserActions from 'store/modules/userModule';
+import * as UserActions from 'store/ducks/userModule';
 import { connect } from 'react-redux';
 
-import * as socketActions from 'store/modules/socketModule';
+import * as socketActions from 'store/ducks/socketModule';
 import { push } from 'react-router-redux';
 import Notifications from 'utils/notifications';
 

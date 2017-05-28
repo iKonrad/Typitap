@@ -18,4 +18,5 @@ func (api *GameAPIRoutes) Bind(group *echo.Group) {
 	group.POST("/session/result", controller.GameAPI.SaveResult)
 	group.GET("/charts", controller.GameAPI.GetChartsData)
 	group.GET("/charts/:name", controller.GameAPI.GetChartData)
+	group.GET("/feed", controller.GameAPI.GetGlobalFeed)
 }

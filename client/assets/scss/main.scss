@@ -2,6 +2,10 @@
 @import "colours";
 @import "variables";
 //@import "~bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome";
+
 $icon-font-path: "./../libs/bootstrap-sass/assets/fonts/bootstrap/";
 @import './../libs/bootstrap-sass/assets/stylesheets/bootstrap';
 @import 'flatly/flatly_theme';
@@ -53,5 +57,13 @@ body {
 
 #app {
   width: 100%;
+  height: 100%;
+
+  .app-wrapper {
+    height: 100%;
+  }
+}
+
+.main-content {
   height: 100%;
 }

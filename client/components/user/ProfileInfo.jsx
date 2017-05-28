@@ -49,13 +49,13 @@ class ProfileInfo extends Component {
                                 <Gravatar email={  this.props.user.Email  } size={120} className="img-circle" />
                             </div>
                         </div>
-                        <div className="col col-xs-12 col-sm-3 col-md-2 profile-page__info__details">
+                        <div className="col col-xs-12 col-sm-3 col-md-4 profile-page__info__details">
                             <p className="profile-page__info__name">{ this.props.user.Name }</p>
                             <p className="profile-page__info__username">#{ this.props.user.Username }</p>
                             { this.props.loggedIn || this.props.isDashboard ? this.renderButton() : this.renderAnonMessage() }
 
                         </div>
-                        <div className="col col-xs-12 col-sm-3 col-sm-offset-3 col-md-3 col-md-offset-4 profile-page__info__details--right">
+                        <div className="col col-xs-12 col-sm-3 col-sm-offset-3 col-md-3 col-md-offset-2 profile-page__info__details--right">
                             <p>Joined  { this.renderJoined() }</p>
                             <p>Played <strong>{ this.props.stats !== undefined ? this.props.stats.gamesPlayed : "-"  }</strong> games</p>
                         </div>

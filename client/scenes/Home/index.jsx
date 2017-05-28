@@ -9,12 +9,9 @@ class Home extends Component {
 
     static initialize(response, params, store) {
 
-        if (store.getState().user.loggedIn) {
-            return "";
-        } else {
-            return Homepage.initialize(response, params, store);
+        if (!store.getState().user.loggedIn) {
+            return [Homepage.initialize(response, params, store)];
         }
-
     }
 
     render() {

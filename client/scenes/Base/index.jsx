@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Navbar from 'components/navigation/Navbar';
 import NotificationsSystem from 'reapop';
 import theme from 'reapop-theme-wybo';
-import * as socketActions from 'store/modules/socketModule';
+import * as socketActions from 'store/ducks/socketModule';
 
 class Base extends Component {
 
@@ -58,7 +58,7 @@ class Base extends Component {
         });
 
         return (
-            <div>
+            <div className="app-wrapper">
                 { showEmptyBase ? "" : (<Navbar />) }
                 <div id="react-container" className="main-content">
                     { this.props.children }

@@ -12,7 +12,6 @@ class Panel extends React.Component {
     }
 
     handleLoaded() {
-        console.log("upatinggg");
         let state = this.state;
         state.loaded = true;
         this.setState(state);
@@ -46,7 +45,7 @@ class Panel extends React.Component {
         return (
             <div className="panel panel-default">
                 { this.renderTitle() }
-                <div className="panel-body">
+                <div className={ this.props.bodyClass !== undefined ? this.props.bodyClass : "panel-body" }>
                     { this.renderSpinner() }
                     { childrenWithProps }
                 </div>

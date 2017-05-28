@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import * as FormActions from 'store/modules/formModule';
+import * as FormActions from 'store/ducks/formModule';
 import Input from 'components/form/fields/Input';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';

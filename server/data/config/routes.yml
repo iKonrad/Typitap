@@ -30,7 +30,6 @@ user_account:
   path: /account
   role: ROLE_USER
 
-
 # ADMIN API
 admin_api:
   path: /api/admin

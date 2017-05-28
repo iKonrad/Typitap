@@ -6,23 +6,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import * as AppActions from 'store/modules/appModule';
+import * as PlayActions from './ducks/playModule';
+import * as AppActions from 'store/ducks/appModule';
 import TopChart from 'components/app/TopChart';
+import Panel from 'components/app/Panel';
+import ActivityFeed from 'components/app/ActivityFeed';
 
 class Play extends Component {
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.dispatch(AppActions.fetchChartsData());
-    }
-
-    static onEnter({store, next, replace, callback}) {
-        callback();
+        this.props.dispatch(PlayActions.fetchGlobalFeed());
     }
 
     static initialize(response, params, store) {
-        return store.dispatch(AppActions.fetchChartsData());
+        return [
+            store.dispatch(AppActions.fetchChartsData()),
+            store.dispatch(PlayActions.fetchGlobalFeed()),
+        ];
     }
-
 
     handleOnlineButton() {
         this.props.dispatch(push("/play/online"));
@@ -39,14 +41,8 @@ class Play extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col col-xs-12 col-md-8">
-                            <div className="panel panel-default">
-                                <div className="panel-heading"><h3>Recent news</h3></div>
-                            </div>
-                            <div className="panel panel-default">
-                                <div className="panel-heading"><h3>Something else here</h3></div>
-                            </div>
+                            <Panel title="Recent news" bodyClass="" loaded={ this.props.play.feed !== undefined }><ActivityFeed feed={ this.props.play.feed } /></Panel>
                         </div>
-
                         <div className="col col-xs-12 col-md-4">
 
                                     <button type="button" className="btn btn-secondary btn-block" onClick={ this.handleOnlineButton.bind(this) }>Play Online</button>
@@ -67,7 +63,8 @@ class Play extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user
+        user: state.user,
+        play: state.play,
     }
 };
 

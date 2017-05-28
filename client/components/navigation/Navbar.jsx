@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link, Router} from 'react-router'
 import {connect} from 'react-redux';
 import NavLink from './NavLink';
+import Icon from 'react-fontawesome';
 
 class Navbar extends Component {
 
@@ -98,7 +99,7 @@ class Navbar extends Component {
                     <div className="navbar-header">
                         <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
                                 data-target="#menu-collapse" aria-expanded="false">
-                            <i className="fa fa-bars"></i>
+                            <Icon name="bars" />
                         </button>
                         <Link className="navbar-brand" to="/">
                             <img src="/images/identity/typitap-logo-white@1.25x.png" alt=""/>

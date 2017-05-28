@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import * as DashboardActions from 'store/modules/dashboardModule';
 import ResultRow from 'components/app/ResultRow';
 
 class RecentGames extends Component {
 
     renderItems() {
-        if (this.props.games !== undefined) {
+
+        if (this.props.games !== undefined && this.props.games !== null) {
             if (this.props.games.length > 0) {
                 let items = this.props.games.map((item, index) => {
                     let isPerfect = 1;
@@ -23,17 +23,23 @@ class RecentGames extends Component {
             }
             return "";
         }
+
+        return "";
     }
 
     componentWillUpdate(newProps) {
         if (newProps.games !== undefined && newProps.games !== this.props.games) {
-            this.props.onLoad()
+            if (this.props.onLoad !== undefined) {
+                this.props.onLoad()
+            }
+
         }
     }
 
     fetchMoreResults() {
-        let offset = this.props.games.length;
-        this.props.dispatch(DashboardActions.getRecentGames(offset));
+        if (this.props.onMore !== undefined) {
+            this.props.onMore();
+        }
     }
 
     renderMoreButton() {

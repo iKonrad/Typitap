@@ -1,5 +1,5 @@
-import * as socketActions from "store/modules/socketModule";
-import * as gameActions from "store/modules/gameModule";
+import * as socketActions from "store/ducks/socketModule";
+import * as gameActions from "store/ducks/gameModule";
 import GameEngine from "scenes/Game/utils/gameEngine";
 import Notifications from 'utils/notifications';
 import React from 'react';

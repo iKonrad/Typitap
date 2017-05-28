@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import * as FormActions from 'store/modules/formModule';
-import * as UserActions from 'store/modules/userModule';
+import * as FormActions from 'store/ducks/formModule';
+import * as UserActions from 'store/ducks/userModule';
 import Input from 'components/form/fields/Input';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux'
 import Notifications from 'utils/notifications';
 import { connect } from 'react-redux';
-import * as socketActions from "store/modules/socketModule";
+import * as socketActions from "store/ducks/socketModule";
 
 
 class LoginForm extends Component {

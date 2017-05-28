@@ -4,13 +4,22 @@
 // server/data/config/config.yml
 // server/data/config/routes.yml
 // server/data/static/.DS_Store
+// server/data/static/build/448c34a56d699c29117adc64c43affeb.woff2
+// server/data/static/build/674f50d287a8c48dc19ba404d20fe713.eot
+// server/data/static/build/89889688147bd7575d6327160d64e760.svg
+// server/data/static/build/912ec66d7572ff821749319396470bde.svg
+// server/data/static/build/af7ae505a9eed503f8b8e6982036873e.woff2
+// server/data/static/build/b06871f281fee6b241d60582ae9369b9.ttf
 // server/data/static/build/bundle.css
 // server/data/static/build/bundle.js
-// server/data/static/build/glyphicons-halflings-regular-89889688147bd7575d6327160d64e760.svg
-// server/data/static/build/glyphicons-halflings-regular-e18bbf611f2a2e43afc071aa2f4e1512.ttf
-// server/data/static/build/glyphicons-halflings-regular@39add9c7a1f4a4518e3df09c8cea5a7d.eot
-// server/data/static/build/glyphicons-halflings-regular@9d6e95fb59f8df43b8fac50a249fa351.ttf
-// server/data/static/build/glyphicons-halflings-regular@aab920e04211577da140c01f1f39adff.woff
+// server/data/static/build/e18bbf611f2a2e43afc071aa2f4e1512.ttf
+// server/data/static/build/f4769f9bdb7466be65088239c12046d1.eot
+// server/data/static/build/fa2772327f55d8198301fdb8bcfc8158.woff
+// server/data/static/build/fee66e712a8a08eef5805a46892932ad.woff
+// server/data/static/build/fontawesome-webfont@6045cd568079c6e57108705d7773fe11.eot
+// server/data/static/build/glyphicons-halflings-regular@8497bd0c73f50b6afd254f5c735c9dc9.eot
+// server/data/static/build/glyphicons-halflings-regular@aa2a73c7454e26a3cfc9e000da0de92f.ttf
+// server/data/static/build/glyphicons-halflings-regular@d84e980ff3de735316d86a48d6b6288e.woff
 // server/data/templates/react.html
 // DO NOT EDIT!
 
@@ -110,6 +119,114 @@ func staticDs_store() (*asset, error) {
 	return a, err
 }
 
+// staticBuild448c34a56d699c29117adc64c43affebWoff2 reads file data from disk. It returns an error on failure.
+func staticBuild448c34a56d699c29117adc64c43affebWoff2() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/448c34a56d699c29117adc64c43affeb.woff2"
+	name := "static/build/448c34a56d699c29117adc64c43affeb.woff2"
+	bytes, err := bindataRead(path, name)
+	if err != nil {
+		return nil, err
+	}
+
+	fi, err := os.Stat(path)
+	if err != nil {
+		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
+	}
+
+	a := &asset{bytes: bytes, info: fi}
+	return a, err
+}
+
+// staticBuild674f50d287a8c48dc19ba404d20fe713Eot reads file data from disk. It returns an error on failure.
+func staticBuild674f50d287a8c48dc19ba404d20fe713Eot() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/674f50d287a8c48dc19ba404d20fe713.eot"
+	name := "static/build/674f50d287a8c48dc19ba404d20fe713.eot"
+	bytes, err := bindataRead(path, name)
+	if err != nil {
+		return nil, err
+	}
+
+	fi, err := os.Stat(path)
+	if err != nil {
+		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
+	}
+
+	a := &asset{bytes: bytes, info: fi}
+	return a, err
+}
+
+// staticBuild89889688147bd7575d6327160d64e760Svg reads file data from disk. It returns an error on failure.
+func staticBuild89889688147bd7575d6327160d64e760Svg() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/89889688147bd7575d6327160d64e760.svg"
+	name := "static/build/89889688147bd7575d6327160d64e760.svg"
+	bytes, err := bindataRead(path, name)
+	if err != nil {
+		return nil, err
+	}
+
+	fi, err := os.Stat(path)
+	if err != nil {
+		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
+	}
+
+	a := &asset{bytes: bytes, info: fi}
+	return a, err
+}
+
+// staticBuild912ec66d7572ff821749319396470bdeSvg reads file data from disk. It returns an error on failure.
+func staticBuild912ec66d7572ff821749319396470bdeSvg() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/912ec66d7572ff821749319396470bde.svg"
+	name := "static/build/912ec66d7572ff821749319396470bde.svg"
+	bytes, err := bindataRead(path, name)
+	if err != nil {
+		return nil, err
+	}
+
+	fi, err := os.Stat(path)
+	if err != nil {
+		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
+	}
+
+	a := &asset{bytes: bytes, info: fi}
+	return a, err
+}
+
+// staticBuildAf7ae505a9eed503f8b8e6982036873eWoff2 reads file data from disk. It returns an error on failure.
+func staticBuildAf7ae505a9eed503f8b8e6982036873eWoff2() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/af7ae505a9eed503f8b8e6982036873e.woff2"
+	name := "static/build/af7ae505a9eed503f8b8e6982036873e.woff2"
+	bytes, err := bindataRead(path, name)
+	if err != nil {
+		return nil, err
+	}
+
+	fi, err := os.Stat(path)
+	if err != nil {
+		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
+	}
+
+	a := &asset{bytes: bytes, info: fi}
+	return a, err
+}
+
+// staticBuildB06871f281fee6b241d60582ae9369b9Ttf reads file data from disk. It returns an error on failure.
+func staticBuildB06871f281fee6b241d60582ae9369b9Ttf() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/b06871f281fee6b241d60582ae9369b9.ttf"
+	name := "static/build/b06871f281fee6b241d60582ae9369b9.ttf"
+	bytes, err := bindataRead(path, name)
+	if err != nil {
+		return nil, err
+	}
+
+	fi, err := os.Stat(path)
+	if err != nil {
+		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
+	}
+
+	a := &asset{bytes: bytes, info: fi}
+	return a, err
+}
+
 // staticBuildBundleCss reads file data from disk. It returns an error on failure.
 func staticBuildBundleCss() (*asset, error) {
 	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/bundle.css"
@@ -146,10 +263,10 @@ func staticBuildBundleJs() (*asset, error) {
 	return a, err
 }
 
-// staticBuildGlyphiconsHalflingsRegular89889688147bd7575d6327160d64e760Svg reads file data from disk. It returns an error on failure.
-func staticBuildGlyphiconsHalflingsRegular89889688147bd7575d6327160d64e760Svg() (*asset, error) {
-	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/glyphicons-halflings-regular-89889688147bd7575d6327160d64e760.svg"
-	name := "static/build/glyphicons-halflings-regular-89889688147bd7575d6327160d64e760.svg"
+// staticBuildE18bbf611f2a2e43afc071aa2f4e1512Ttf reads file data from disk. It returns an error on failure.
+func staticBuildE18bbf611f2a2e43afc071aa2f4e1512Ttf() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/e18bbf611f2a2e43afc071aa2f4e1512.ttf"
+	name := "static/build/e18bbf611f2a2e43afc071aa2f4e1512.ttf"
 	bytes, err := bindataRead(path, name)
 	if err != nil {
 		return nil, err
@@ -164,10 +281,10 @@ func staticBuildGlyphiconsHalflingsRegular89889688147bd7575d6327160d64e760Svg() 
 	return a, err
 }
 
-// staticBuildGlyphiconsHalflingsRegularE18bbf611f2a2e43afc071aa2f4e1512Ttf reads file data from disk. It returns an error on failure.
-func staticBuildGlyphiconsHalflingsRegularE18bbf611f2a2e43afc071aa2f4e1512Ttf() (*asset, error) {
-	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/glyphicons-halflings-regular-e18bbf611f2a2e43afc071aa2f4e1512.ttf"
-	name := "static/build/glyphicons-halflings-regular-e18bbf611f2a2e43afc071aa2f4e1512.ttf"
+// staticBuildF4769f9bdb7466be65088239c12046d1Eot reads file data from disk. It returns an error on failure.
+func staticBuildF4769f9bdb7466be65088239c12046d1Eot() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/f4769f9bdb7466be65088239c12046d1.eot"
+	name := "static/build/f4769f9bdb7466be65088239c12046d1.eot"
 	bytes, err := bindataRead(path, name)
 	if err != nil {
 		return nil, err
@@ -182,10 +299,10 @@ func staticBuildGlyphiconsHalflingsRegularE18bbf611f2a2e43afc071aa2f4e1512Ttf() 
 	return a, err
 }
 
-// staticBuildGlyphiconsHalflingsRegular39add9c7a1f4a4518e3df09c8cea5a7dEot reads file data from disk. It returns an error on failure.
-func staticBuildGlyphiconsHalflingsRegular39add9c7a1f4a4518e3df09c8cea5a7dEot() (*asset, error) {
-	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/glyphicons-halflings-regular@39add9c7a1f4a4518e3df09c8cea5a7d.eot"
-	name := "static/build/glyphicons-halflings-regular@39add9c7a1f4a4518e3df09c8cea5a7d.eot"
+// staticBuildFa2772327f55d8198301fdb8bcfc8158Woff reads file data from disk. It returns an error on failure.
+func staticBuildFa2772327f55d8198301fdb8bcfc8158Woff() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/fa2772327f55d8198301fdb8bcfc8158.woff"
+	name := "static/build/fa2772327f55d8198301fdb8bcfc8158.woff"
 	bytes, err := bindataRead(path, name)
 	if err != nil {
 		return nil, err
@@ -200,10 +317,10 @@ func staticBuildGlyphiconsHalflingsRegular39add9c7a1f4a4518e3df09c8cea5a7dEot() 
 	return a, err
 }
 
-// staticBuildGlyphiconsHalflingsRegular9d6e95fb59f8df43b8fac50a249fa351Ttf reads file data from disk. It returns an error on failure.
-func staticBuildGlyphiconsHalflingsRegular9d6e95fb59f8df43b8fac50a249fa351Ttf() (*asset, error) {
-	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/glyphicons-halflings-regular@9d6e95fb59f8df43b8fac50a249fa351.ttf"
-	name := "static/build/glyphicons-halflings-regular@9d6e95fb59f8df43b8fac50a249fa351.ttf"
+// staticBuildFee66e712a8a08eef5805a46892932adWoff reads file data from disk. It returns an error on failure.
+func staticBuildFee66e712a8a08eef5805a46892932adWoff() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/fee66e712a8a08eef5805a46892932ad.woff"
+	name := "static/build/fee66e712a8a08eef5805a46892932ad.woff"
 	bytes, err := bindataRead(path, name)
 	if err != nil {
 		return nil, err
@@ -218,10 +335,64 @@ func staticBuildGlyphiconsHalflingsRegular9d6e95fb59f8df43b8fac50a249fa351Ttf() 
 	return a, err
 }
 
-// staticBuildGlyphiconsHalflingsRegularAab920e04211577da140c01f1f39adffWoff reads file data from disk. It returns an error on failure.
-func staticBuildGlyphiconsHalflingsRegularAab920e04211577da140c01f1f39adffWoff() (*asset, error) {
-	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/glyphicons-halflings-regular@aab920e04211577da140c01f1f39adff.woff"
-	name := "static/build/glyphicons-halflings-regular@aab920e04211577da140c01f1f39adff.woff"
+// staticBuildFontawesomeWebfont6045cd568079c6e57108705d7773fe11Eot reads file data from disk. It returns an error on failure.
+func staticBuildFontawesomeWebfont6045cd568079c6e57108705d7773fe11Eot() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/fontawesome-webfont@6045cd568079c6e57108705d7773fe11.eot"
+	name := "static/build/fontawesome-webfont@6045cd568079c6e57108705d7773fe11.eot"
+	bytes, err := bindataRead(path, name)
+	if err != nil {
+		return nil, err
+	}
+
+	fi, err := os.Stat(path)
+	if err != nil {
+		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
+	}
+
+	a := &asset{bytes: bytes, info: fi}
+	return a, err
+}
+
+// staticBuildGlyphiconsHalflingsRegular8497bd0c73f50b6afd254f5c735c9dc9Eot reads file data from disk. It returns an error on failure.
+func staticBuildGlyphiconsHalflingsRegular8497bd0c73f50b6afd254f5c735c9dc9Eot() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/glyphicons-halflings-regular@8497bd0c73f50b6afd254f5c735c9dc9.eot"
+	name := "static/build/glyphicons-halflings-regular@8497bd0c73f50b6afd254f5c735c9dc9.eot"
+	bytes, err := bindataRead(path, name)
+	if err != nil {
+		return nil, err
+	}
+
+	fi, err := os.Stat(path)
+	if err != nil {
+		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
+	}
+
+	a := &asset{bytes: bytes, info: fi}
+	return a, err
+}
+
+// staticBuildGlyphiconsHalflingsRegularAa2a73c7454e26a3cfc9e000da0de92fTtf reads file data from disk. It returns an error on failure.
+func staticBuildGlyphiconsHalflingsRegularAa2a73c7454e26a3cfc9e000da0de92fTtf() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/glyphicons-halflings-regular@aa2a73c7454e26a3cfc9e000da0de92f.ttf"
+	name := "static/build/glyphicons-halflings-regular@aa2a73c7454e26a3cfc9e000da0de92f.ttf"
+	bytes, err := bindataRead(path, name)
+	if err != nil {
+		return nil, err
+	}
+
+	fi, err := os.Stat(path)
+	if err != nil {
+		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
+	}
+
+	a := &asset{bytes: bytes, info: fi}
+	return a, err
+}
+
+// staticBuildGlyphiconsHalflingsRegularD84e980ff3de735316d86a48d6b6288eWoff reads file data from disk. It returns an error on failure.
+func staticBuildGlyphiconsHalflingsRegularD84e980ff3de735316d86a48d6b6288eWoff() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/glyphicons-halflings-regular@d84e980ff3de735316d86a48d6b6288e.woff"
+	name := "static/build/glyphicons-halflings-regular@d84e980ff3de735316d86a48d6b6288e.woff"
 	bytes, err := bindataRead(path, name)
 	if err != nil {
 		return nil, err
@@ -310,13 +481,22 @@ var _bindata = map[string]func() (*asset, error){
 	"config/config.yml": configConfigYml,
 	"config/routes.yml": configRoutesYml,
 	"static/.DS_Store": staticDs_store,
+	"static/build/448c34a56d699c29117adc64c43affeb.woff2": staticBuild448c34a56d699c29117adc64c43affebWoff2,
+	"static/build/674f50d287a8c48dc19ba404d20fe713.eot": staticBuild674f50d287a8c48dc19ba404d20fe713Eot,
+	"static/build/89889688147bd7575d6327160d64e760.svg": staticBuild89889688147bd7575d6327160d64e760Svg,
+	"static/build/912ec66d7572ff821749319396470bde.svg": staticBuild912ec66d7572ff821749319396470bdeSvg,
+	"static/build/af7ae505a9eed503f8b8e6982036873e.woff2": staticBuildAf7ae505a9eed503f8b8e6982036873eWoff2,
+	"static/build/b06871f281fee6b241d60582ae9369b9.ttf": staticBuildB06871f281fee6b241d60582ae9369b9Ttf,
 	"static/build/bundle.css": staticBuildBundleCss,
 	"static/build/bundle.js": staticBuildBundleJs,
-	"static/build/glyphicons-halflings-regular-89889688147bd7575d6327160d64e760.svg": staticBuildGlyphiconsHalflingsRegular89889688147bd7575d6327160d64e760Svg,
-	"static/build/glyphicons-halflings-regular-e18bbf611f2a2e43afc071aa2f4e1512.ttf": staticBuildGlyphiconsHalflingsRegularE18bbf611f2a2e43afc071aa2f4e1512Ttf,
-	"static/build/glyphicons-halflings-regular@39add9c7a1f4a4518e3df09c8cea5a7d.eot": staticBuildGlyphiconsHalflingsRegular39add9c7a1f4a4518e3df09c8cea5a7dEot,
-	"static/build/glyphicons-halflings-regular@9d6e95fb59f8df43b8fac50a249fa351.ttf": staticBuildGlyphiconsHalflingsRegular9d6e95fb59f8df43b8fac50a249fa351Ttf,
-	"static/build/glyphicons-halflings-regular@aab920e04211577da140c01f1f39adff.woff": staticBuildGlyphiconsHalflingsRegularAab920e04211577da140c01f1f39adffWoff,
+	"static/build/e18bbf611f2a2e43afc071aa2f4e1512.ttf": staticBuildE18bbf611f2a2e43afc071aa2f4e1512Ttf,
+	"static/build/f4769f9bdb7466be65088239c12046d1.eot": staticBuildF4769f9bdb7466be65088239c12046d1Eot,
+	"static/build/fa2772327f55d8198301fdb8bcfc8158.woff": staticBuildFa2772327f55d8198301fdb8bcfc8158Woff,
+	"static/build/fee66e712a8a08eef5805a46892932ad.woff": staticBuildFee66e712a8a08eef5805a46892932adWoff,
+	"static/build/fontawesome-webfont@6045cd568079c6e57108705d7773fe11.eot": staticBuildFontawesomeWebfont6045cd568079c6e57108705d7773fe11Eot,
+	"static/build/glyphicons-halflings-regular@8497bd0c73f50b6afd254f5c735c9dc9.eot": staticBuildGlyphiconsHalflingsRegular8497bd0c73f50b6afd254f5c735c9dc9Eot,
+	"static/build/glyphicons-halflings-regular@aa2a73c7454e26a3cfc9e000da0de92f.ttf": staticBuildGlyphiconsHalflingsRegularAa2a73c7454e26a3cfc9e000da0de92fTtf,
+	"static/build/glyphicons-halflings-regular@d84e980ff3de735316d86a48d6b6288e.woff": staticBuildGlyphiconsHalflingsRegularD84e980ff3de735316d86a48d6b6288eWoff,
 	"templates/react.html": templatesReactHtml,
 }
 
@@ -368,13 +548,22 @@ var _bintree = &bintree{nil, map[string]*bintree{
 	"static": &bintree{nil, map[string]*bintree{
 		".DS_Store": &bintree{staticDs_store, map[string]*bintree{}},
 		"build": &bintree{nil, map[string]*bintree{
+			"448c34a56d699c29117adc64c43affeb.woff2": &bintree{staticBuild448c34a56d699c29117adc64c43affebWoff2, map[string]*bintree{}},
+			"674f50d287a8c48dc19ba404d20fe713.eot": &bintree{staticBuild674f50d287a8c48dc19ba404d20fe713Eot, map[string]*bintree{}},
+			"89889688147bd7575d6327160d64e760.svg": &bintree{staticBuild89889688147bd7575d6327160d64e760Svg, map[string]*bintree{}},
+			"912ec66d7572ff821749319396470bde.svg": &bintree{staticBuild912ec66d7572ff821749319396470bdeSvg, map[string]*bintree{}},
+			"af7ae505a9eed503f8b8e6982036873e.woff2": &bintree{staticBuildAf7ae505a9eed503f8b8e6982036873eWoff2, map[string]*bintree{}},
+			"b06871f281fee6b241d60582ae9369b9.ttf": &bintree{staticBuildB06871f281fee6b241d60582ae9369b9Ttf, map[string]*bintree{}},
 			"bundle.css": &bintree{staticBuildBundleCss, map[string]*bintree{}},
 			"bundle.js": &bintree{staticBuildBundleJs, map[string]*bintree{}},
-			"glyphicons-halflings-regular-89889688147bd7575d6327160d64e760.svg": &bintree{staticBuildGlyphiconsHalflingsRegular89889688147bd7575d6327160d64e760Svg, map[string]*bintree{}},
-			"glyphicons-halflings-regular-e18bbf611f2a2e43afc071aa2f4e1512.ttf": &bintree{staticBuildGlyphiconsHalflingsRegularE18bbf611f2a2e43afc071aa2f4e1512Ttf, map[string]*bintree{}},
-			"glyphicons-halflings-regular@39add9c7a1f4a4518e3df09c8cea5a7d.eot": &bintree{staticBuildGlyphiconsHalflingsRegular39add9c7a1f4a4518e3df09c8cea5a7dEot, map[string]*bintree{}},
-			"glyphicons-halflings-regular@9d6e95fb59f8df43b8fac50a249fa351.ttf": &bintree{staticBuildGlyphiconsHalflingsRegular9d6e95fb59f8df43b8fac50a249fa351Ttf, map[string]*bintree{}},
-			"glyphicons-halflings-regular@aab920e04211577da140c01f1f39adff.woff": &bintree{staticBuildGlyphiconsHalflingsRegularAab920e04211577da140c01f1f39adffWoff, map[string]*bintree{}},
+			"e18bbf611f2a2e43afc071aa2f4e1512.ttf": &bintree{staticBuildE18bbf611f2a2e43afc071aa2f4e1512Ttf, map[string]*bintree{}},
+			"f4769f9bdb7466be65088239c12046d1.eot": &bintree{staticBuildF4769f9bdb7466be65088239c12046d1Eot, map[string]*bintree{}},
+			"fa2772327f55d8198301fdb8bcfc8158.woff": &bintree{staticBuildFa2772327f55d8198301fdb8bcfc8158Woff, map[string]*bintree{}},
+			"fee66e712a8a08eef5805a46892932ad.woff": &bintree{staticBuildFee66e712a8a08eef5805a46892932adWoff, map[string]*bintree{}},
+			"fontawesome-webfont@6045cd568079c6e57108705d7773fe11.eot": &bintree{staticBuildFontawesomeWebfont6045cd568079c6e57108705d7773fe11Eot, map[string]*bintree{}},
+			"glyphicons-halflings-regular@8497bd0c73f50b6afd254f5c735c9dc9.eot": &bintree{staticBuildGlyphiconsHalflingsRegular8497bd0c73f50b6afd254f5c735c9dc9Eot, map[string]*bintree{}},
+			"glyphicons-halflings-regular@aa2a73c7454e26a3cfc9e000da0de92f.ttf": &bintree{staticBuildGlyphiconsHalflingsRegularAa2a73c7454e26a3cfc9e000da0de92fTtf, map[string]*bintree{}},
+			"glyphicons-halflings-regular@d84e980ff3de735316d86a48d6b6288e.woff": &bintree{staticBuildGlyphiconsHalflingsRegularD84e980ff3de735316d86a48d6b6288eWoff, map[string]*bintree{}},
 		}},
 	}},
 	"templates": &bintree{nil, map[string]*bintree{

@@ -344,18 +344,40 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 		)
 
 		if user, ok := us.FindUserBy("username", identifier); ok {
+
+			// Save result in database
 			result, err := game.SaveResult(&user, r.Id, mistakes, wpm, accuracy, int(r.time), int(r.nextPlace))
 			if err != nil {
 				logs.Error("Error while saving a result", "An error occurred while saving results for user "+identifier, []string{"errors", "websocket", "game"}, "Game Session "+r.Id)
 			}
-			topchart.CheckTopChart(&result)
-			feed.SendActivity(user.Id, feed.Activities.PlayerCompletedOnlineGameActivity(user.Username, int(r.nextPlace), wpm))
+
+			// Check if user shouldn't be added to any Top Chart
+			madeToChart := topchart.CheckTopChart(&result)
+
+			// Check if user has made to the chart and send appropriate activities to users
+			if madeToChart {
+				// Add activity to user's followers
+				feed.SendActivityToUserAndFollowers(user.Id, feed.Activities.PlayerMakesToTopChart(user.Username, wpm))
+			} else {
+				// Add activity to user's followers
+				feed.SendActivityToUserAndFollowers(user.Id, feed.Activities.PlayerCompletedOnlineGameActivity(user.Username, int(r.nextPlace), wpm))
+			}
 
 			// Increment trophy stat only if there's more players than the trophy (to get silver trophy, there must be at least 3 people)
 			if r.nextPlace <= 3 && int(r.nextPlace) < len(r.Players) {
 				stats.IncrementTrophyStat(r.nextPlace, user.Id)
 			}
 
+			// Add global activity for the /play page
+			if r.nextPlace == 1 && len(r.Players) > 1 {
+				if madeToChart {
+					feed.SendGlobalActivity(feed.Activities.PlayerMakesToTopChart(user.Username, wpm))
+				} else {
+					feed.SendGlobalActivity(feed.Activities.GlobalGameFinished(user.Username, wpm, len(r.Players)))
+				}
+			}
+
+			// Increment game stats for user profile
 			stats.IncrementGamesStat(user.Id)
 
 		}

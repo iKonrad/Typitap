@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import * as GameActions from 'store/modules/gameModule';
+import * as GameActions from 'store/ducks/gameModule';
 
 const FIELD_REF = "game__input-field";
 

@@ -140,6 +140,7 @@ func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
 
 }
 
+
 func (gc UserAPIController) GetUserStats(c echo.Context) error {
 
 	// Check if user is logged in

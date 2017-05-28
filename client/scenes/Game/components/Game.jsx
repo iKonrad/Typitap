@@ -15,8 +15,8 @@ import GameCountdown from './GameCountdown';
 import GamePlayerList from './GamePlayerList';
 import WaitPlayersModal from './WaitPlayersModal';
 import Notifications from 'utils/notifications';
-import * as GameActions from 'store/modules/gameModule';
-import * as SocketActions from 'store/modules/socketModule';
+import * as GameActions from 'store/ducks/gameModule';
+import * as SocketActions from 'store/ducks/socketModule';
 
 
 

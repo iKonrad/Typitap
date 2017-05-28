@@ -2,17 +2,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Activity from 'components/app/Activity';
-import * as DashboardActions from 'store/modules/dashboardModule';
 
 class ActivityFeed extends Component {
 
-    componentWillMount() {
-        this.props.dispatch(DashboardActions.fetchActivityFeed(0));
-    }
-
-    componentWillUnmount() {
-        this.props.dispatch(DashboardActions.resetActivityFeed());
-    }
     parseMessage(text, data) {
         Object.keys(data).forEach((key, index) => {
             let value = data[key];
@@ -22,7 +14,7 @@ class ActivityFeed extends Component {
     }
 
     componentWillUpdate(newProps) {
-        if (newProps.dashboard.feed !== undefined && this.props.dashboard.feed !== newProps.dashboard.feed) {
+        if (newProps.feed !== undefined && this.props.feed !== newProps.feed) {
             this.props.onLoad();
         }
     }
@@ -30,14 +22,13 @@ class ActivityFeed extends Component {
 
     renderItems() {
         let that = this;
-        if (this.props.dashboard.feed !== undefined && this.props.dashboard.feed.length > 0) {
-            let items = this.props.dashboard.feed.map((item, index) => {
+        if (this.props.feed !== undefined && this.props.feed.length > 0) {
+            let items = this.props.feed.map((item, index) => {
                 return (<Activity key={ "activity-" + index } icon={ item.Type.Icon } text={ that.parseMessage(item.Type.Text, item.Data) } date={new Date(item.Created)} />
                 );
             });
             return items;
         }
-
         return "";
     }
 

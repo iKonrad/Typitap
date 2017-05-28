@@ -7,7 +7,9 @@ class UserStats extends Component {
 
     componentWillUpdate(newProps) {
         if (newProps.stats !== undefined && this.props.stats === undefined) {
-            this.props.onLoad();
+            if (this.props.onLoad !== undefined) {
+                this.props.onLoad();
+            }
         }
     }
 

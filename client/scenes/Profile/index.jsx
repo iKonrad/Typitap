@@ -1,24 +1,35 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import * as AppActions from 'store/modules/appModule';
+import * as ProfileActions from 'store/ducks/profileModule';
 import ProfileInfo from 'components/user/ProfileInfo';
 import UserStats from 'components/user/UserStats';
 import RecentGames from 'components/user/RecentGames';
 import Follow from 'components/user/UserFollow';
 import { push } from 'react-router-redux';
+import Panel from 'components/app/Panel';
 
 class Profile extends Component {
     // Runs after side-server rendering
     static initialize(response, params, store) {
-        return store.dispatch(AppActions.fetchUserProfile(params.user))
+        return [
+            store.dispatch(ProfileActions.fetchUserProfile(params.user))
+        ];
     }
 
     componentWillMount() {
         if (this.props.user.loggedIn && (this.props.user.data.Username === this.props.router.params.user)) {
             this.props.dispatch(push("/"));
         } else {
-            this.props.dispatch(AppActions.fetchUserProfile(this.props.router.params.user))
+            this.props.dispatch(ProfileActions.fetchUserProfile(this.props.router.params.user)).then(() => {
+                if (this.onLoad !== undefined) {
+                    this.onLoad();
+                }
+            });
         }
+    }
+
+    componentWillUnmount() {
+        this.props.dispatch(ProfileActions.resetUserProfile());
     }
 
     componentWillReceiveProps(newProps) {
@@ -26,10 +37,12 @@ class Profile extends Component {
             if (this.props.user.loggedIn && (this.props.user.data.Username === this.props.router.params.user)) {
                 this.props.dispatch(push("/"));
             } else {
-                this.props.dispatch(AppActions.fetchUserProfile(this.props.router.params.user))
+                this.props.dispatch(ProfileActions.resetUserProfile());
+                this.props.dispatch(ProfileActions.fetchUserProfile(this.props.router.params.user))
             }
         }
     }
+
 
 
     render() {
@@ -39,12 +52,12 @@ class Profile extends Component {
                     <div className="col col-xs-12 col-md-8">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <ProfileInfo loggedIn={ this.props.user.loggedIn } user={  this.props.app.profile.user  } stats={ this.props.app.profile.stats } />
+                                <ProfileInfo loggedIn={ this.props.user.loggedIn } user={  this.props.profile.user  } stats={ this.props.profile.stats } />
                             </div>
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <UserStats stats={ this.props.app.profile.stats } />
+                                <Panel loaded={ this.props.profile.stats !== undefined }><UserStats stats={ this.props.profile.stats } /></Panel>
                             </div>
                         </div>
 
@@ -52,12 +65,12 @@ class Profile extends Component {
                     <div className="col col-xs-12 col-md-4">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Follow title="Followers" items={ this.props.app.profile.follow.followers } />
+                                <Follow title="Followers" items={ this.props.profile.follow.followers } />
                             </div>
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Follow title="Following" items={ this.props.app.profile.follow.following } />
+                                <Follow title="Following" items={ this.props.profile.follow.following } />
                             </div>
                         </div>
                     </div>
@@ -71,7 +84,7 @@ class Profile extends Component {
                         </div>
                     </div>
                     <div className="col col-xs-12 col-md-4">
-                        <RecentGames games={ this.props.app.profile.games } hideButton={true} />
+                        <Panel title="Recent games" loaded={ this.props.profile.games !== undefined }><RecentGames games={ this.props.profile.games } hideButton={true} /></Panel>
                     </div>
                 </div>
             </div>
@@ -84,6 +97,7 @@ const mapStateToProps = (state) => {
         app: state.app,
         routing: state.routing,
         user: state.user,
+        profile: state.profile,
     };
 };
 
