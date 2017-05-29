@@ -46,6 +46,7 @@
     "react-router-redux": "^4.0.8",
     "react-spinkit": "^3.0.0",
     "react-table": "^6.0.5",
+    "react-typist": "git+ssh://git@github.com/iKonrad/react-typist.git",
     "reapop": "^1.1.1",
     "reapop-theme-wybo": "^0.4.1",
     "redux": "^3.6.0",

@@ -1,15 +1,22 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 import * as AppActions from 'store/ducks/appModule';
 import TopChart from 'components/app/TopChart';
-import { resolveAll } from 'utils/jsUtils';
+import {resolveAll} from 'utils/jsUtils';
 import * as PlayActions from 'scenes/Play/ducks/playModule';
 import Panel from 'components/app/Panel';
 import ActivityFeed from 'components/app/ActivityFeed';
-
+import Typist from 'react-typist';
 
 class Homepage extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            loaded: false,
+        }
+    }
 
     static clientInit({store, nextState, replaceState, callback}) {
         resolveAll([
@@ -25,6 +32,41 @@ class Homepage extends Component {
         ];
     }
 
+    componentDidMount() {
+        let state = this.state;
+        state.loaded = true;
+        this.setState(state);
+    }
+
+    delayGenerator({line, lineIdx, character, charIdx, defDelayGenerator}) {
+        console.log(character);
+        if (character === "." || character === "?" || character === "!") {
+            return 60;
+        } else {
+            return 10;
+        }
+    }
+
+    renderTyping() {
+        if (this.state.loaded) {
+            return (<Typist show={false} avgTypingDelay={60} stdTypingDelay={40}
+                            delayGenerator={ function (mean, std, {line, lineIdx, character, charIdx, defDelayGenerator}) {
+                                if (character === "." || character === "?" || character === "!") {
+                                    return 1200;
+                                } else {
+                                    return 60;
+                                }
+                            } }>
+                <span className="game__paragraph">Typitap is the most advanced online typing game made for people who love to type on their <span
+                    className="word-error">keyboadrs</span>.</span>
+                <span className="game__paragraph">Do you have what it <span className="word-error">tkaes</span> to make it to the top?</span>
+                <span className="game__paragraph"><strong>Sign up</strong> or jump straight into the race track!</span>
+            </Typist>)
+        } else {
+            return "";
+        }
+    }
+
     render() {
         return (
             <div id="homepage">
@@ -33,19 +75,25 @@ class Homepage extends Component {
                         <div className="row">
                             <div className="col col-xs-12 text-center">
                                 <div className="banner__titles">
-                                    <h1 className="white"><img src="/images/identity/typitap-logo-white@2x.png" alt=""/></h1>
+                                    <h1 className="white"><img src="/images/identity/typitap-logo-white@2x.png" alt=""/>
+                                    </h1>
                                     <h3 className="white">Ultimate online typing game</h3>
                                 </div>
                                 <div className="row">
-                                    <div className="col col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3" >
-                                        <textarea name="demo" id="" cols="30" rows="5" className="form-control" style={{resize: "none"}}></textarea>
+                                    <div className="col col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                                        <div className="game">
+                                            <div className="game__text">
+                                                { this.renderTyping() }
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col col-xs-12 text-center">
                                         <div className="banner__buttons">
                                             <Link to="/play" className="btn btn-round btn-secondary">Play</Link>
-                                            <Link to="/signup" className="btn btn-round btn-outline btn-white">Sign up</Link>
+                                            <Link to="/signup" className="btn btn-round btn-outline btn-white">Sign
+                                                up</Link>
                                         </div>
                                     </div>
                                 </div>
@@ -63,7 +111,8 @@ class Homepage extends Component {
                                     </div>
 
                                     <h3 className="blob__title">Compete with the world</h3>
-                                    <p className="blob__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam aliquid delectus et fugit hic odit optio provident quisquam sint veniam!</p>
+                                    <p className="blob__text">Jump into the race track with people from around the
+                                        entire world and challenge your typing skills.</p>
                                 </div>
 
                             </div>
@@ -73,7 +122,8 @@ class Homepage extends Component {
                                         <img src="/images/pages/homepage/icon-trophy.png" alt="Icon Trophy"/>
                                     </div>
                                     <h3 className="blob__title">Climb the ladder to the top</h3>
-                                    <p className="blob__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci architecto aut corporis doloremque id iusto nisi officia quidem sapiente, voluptates?</p>
+                                    <p className="blob__text">Make your way to the very top of the
+                                        <strong>typitap</strong> charts and show off your progress</p>
                                 </div>
                             </div>
                             <div className="col col-xs-12 col-sm-6 col-md-3">
@@ -82,7 +132,8 @@ class Homepage extends Component {
                                         <img src="/images/pages/homepage/icon-chart.png" alt="Icon Chart"/>
                                     </div>
                                     <h3 className="blob__title">Track your progress</h3>
-                                    <p  className="blob__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dicta earum error eveniet expedita hic pariatur quod suscipit, voluptatem! Porro?</p>
+                                    <p className="blob__text">Make use of the <strong>stunning charts</strong> to keep
+                                        track on your progress and see how you perform on a long term basis</p>
                                 </div>
                             </div>
                             <div className="col col-xs-12 col-sm-6 col-md-3">
@@ -91,7 +142,9 @@ class Homepage extends Component {
                                         <img src="/images/pages/homepage/icon-comment.png" alt="Icon Comment"/>
                                     </div>
                                     <h3 className="blob__title">Socialize</h3>
-                                    <p className="blob__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquam nostrum pariatur quisquam quos reiciendis similique, vitae. Atque, libero, natus.</p>                                </div>
+                                    <p className="blob__text">Follow your friends and stay up to date with their
+                                        recent results and never miss out a tiny detail.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -103,10 +156,12 @@ class Homepage extends Component {
                                 <h3>Straight from the race tracks</h3>
                             </div>
                             <div className="col col-xs-12 col-md-8">
-                                <Panel title="Recent news" bodyClass="" loaded={ this.props.play.feed !== undefined }><ActivityFeed feed={ this.props.play.feed } /></Panel>
+                                <Panel title="Recent news" bodyClass=""
+                                       loaded={ this.props.play.feed !== undefined }><ActivityFeed
+                                    feed={ this.props.play.feed }/></Panel>
                             </div>
                             <div className="col col-xs-12 col-md-4">
-                                <TopChart name="today" title="Today's bests" />
+                                <TopChart name="today" title="Today's bests"/>
                             </div>
                         </div>
                     </div>
@@ -134,7 +189,8 @@ class Homepage extends Component {
                                             <li>Track your progress with stunning charts</li>
                                             <li>Add friends and beat their records</li>
                                             <li>Track your performance on different keyboards</li>
-                                            <li>Climb the ladder to the TOP and achieve the <i>typitap master</i> title</li>
+                                            <li>Climb the ladder to the TOP and achieve the <i>typitap master</i> title
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -146,17 +202,17 @@ class Homepage extends Component {
                     </div>
                 </div>
             </div>
-        );
+    );
     }
 
-}
+    }
 
 
-const mapStateToProps = (state) => {
-    return {
+    const mapStateToProps = (state) => {
+        return {
         user: state.user,
         play: state.play,
     }
-};
+    };
 
-export default connect(mapStateToProps)(Homepage);
+    export default connect(mapStateToProps)(Homepage);
