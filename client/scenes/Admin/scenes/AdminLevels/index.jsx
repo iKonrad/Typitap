@@ -2,10 +2,14 @@ import React from 'react';
 import ReactTable from 'react-table'
 import * as tableUtils from 'utils/tableUtils';
 
-class AdminUsers extends React.Component {
+class AdminLevels extends React.Component {
 
     static clientInit({store, nextState, replaceState, callback}) {
         callback();
+    }
+
+    handleAddNew() {
+
     }
 
     constructor(props) {
@@ -15,33 +19,17 @@ class AdminUsers extends React.Component {
         this.state = {
             data: [],
             columns: [{
-                Header: 'ID',
-                accessor: 'id', // String-based value accessors!
-            }, {
-                Header: 'Username',
-                accessor: 'username',
-                Cell: tableUtils.renderAdminEditableField.bind(this, "users"),
-                type: "string",
+                Header: 'Level',
+                accessor: 'Level', // String-based value accessors!
             }, {
                 Header: 'Name',
-                accessor: 'name',
-                Cell: tableUtils.renderAdminEditableField.bind(this, "users")
+                accessor: 'Name',
+                Cell: tableUtils.renderAdminEditableField.bind(this, "levels"),
+                type: "string",
             }, {
-                Header: 'E-mail',
-                accessor: "email",
-                Cell: tableUtils.renderAdminEditableField.bind(this, "users")
-            }, {
-                Header: "Active",
-                accessor: 'active',
-                Cell: tableUtils.renderAdminEditableField.bind(this, "users"),
-                type: "bool"
-            }, {
-                Header: "Created",
-                accessor: 'created',
-            }, {
-                Header: "Role",
-                accessor: "role",
-                Cell: tableUtils.renderAdminEditableField.bind(this, "users")
+                Header: 'Icon',
+                accessor: 'Icon',
+                Cell: tableUtils.renderAdminEditableField.bind(this, "levels")
             }, {
                 Header: "Actions",
                 Cell: props => (<a className="btn btn-default btn-xs">Lol</a>),
@@ -51,8 +39,7 @@ class AdminUsers extends React.Component {
 
     componentWillMount() {
 
-
-        fetch(`/api/admin/users`, {
+        fetch(`/api/admin/levels`, {
             credentials: "same-origin",
             headers: {
                 "Cookie": global.clientCookies
@@ -61,6 +48,7 @@ class AdminUsers extends React.Component {
             return response.json();
         }).then((response) => {
             if (response.success) {
+                console.log("RES", response);
                 let state = this.state;
                 if (response.data !== undefined && response.data !== null) {
                     state.data = response.data;
@@ -99,4 +87,4 @@ class AdminUsers extends React.Component {
 }
 
 
-export default AdminUsers;
+export default AdminLevels;

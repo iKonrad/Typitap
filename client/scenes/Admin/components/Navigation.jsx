@@ -9,6 +9,7 @@ class Navigation extends Component {
                 <ul className="horizontal_navigation">
                     <li>
                         <Link to="/admin/users" activeClassName="active">Users</Link>
+                        <Link to="/admin/levels" activeClassName="active">Levels</Link>
                     </li>
                 </ul>
             </div>

@@ -1,34 +1,10 @@
 import React, {Component} from 'react';
 import Gravatar from 'components/user/Gravatar';
-import NewTime from 'react-timeago';
+import TimeAgo from 'components/app/TimeAgo';
 import { Link } from 'react-router';
 import FollowButton from 'components/user/FollowButton';
 
 class ProfileInfo extends Component {
-
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            created: "",
-        }
-    }
-
-    componentDidMount() {
-        let state = this.state;
-        state.created = this.props.user.Created;
-        this.setState(state);
-    }
-
-    renderJoined () {
-
-        if (this.state.created !== "") {
-            // return <TimeAgo datetime={ new Date(this.state.created) } />
-            return <NewTime date={this.props.user.Created} minPeriod={4} live={false} />
-        }
-        return "...";
-    }
 
     renderButton() {
         return <FollowButton id={ this.props.isDashboard ? "" : this.props.user.Id } />
@@ -56,7 +32,7 @@ class ProfileInfo extends Component {
 
                         </div>
                         <div className="col col-xs-12 col-sm-3 col-sm-offset-3 col-md-3 col-md-offset-2 profile-page__info__details--right">
-                            <p>Joined  { this.renderJoined() }</p>
+                            <p>Joined  <TimeAgo date={this.props.user.Created} /></p>
                             <p>Played <strong>{ this.props.stats !== undefined ? this.props.stats.gamesPlayed : "-"  }</strong> games</p>
                         </div>
                     </div>

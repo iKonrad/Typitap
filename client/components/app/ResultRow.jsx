@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TimeAgo from 'timeago-react';
+import TimeAgo from 'components/app/TimeAgo';
 import ScoreBadge from 'components/game/ScoreBadge';
 
 class ResultRow extends Component {
@@ -25,7 +25,7 @@ class ResultRow extends Component {
                 { this.renderPlace(this.props.place) }
                 <div className={"col col-xs-"+ (this.props.place ? 7 : 8) +" data-table--cell"}>
                     <p className="text-md">{ this.props.name }</p>
-                    <div className="text-caption"><small><TimeAgo datetime={ this.props.date } /></small></div>
+                    <div className="text-caption"><small><TimeAgo date={ this.props.date } /></small></div>
                 </div>
                 <div className="col col-xs-4 data-table--cell">
                     <div className="pull-right text-xl" >

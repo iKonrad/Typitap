@@ -5,7 +5,7 @@
 import {getStore} from 'store/store';
 import Notifications from 'utils/notifications';
 
-function updateTableField(table, id, property, value, type) {
+export function updateTableField(table, id, property, value, type) {
 
     const formData = new FormData();
 
@@ -14,6 +14,8 @@ function updateTableField(table, id, property, value, type) {
     formData.append("property", property);
     formData.append("value", value);
     formData.append("type", type);
+
+    console.log(table, id, property, value, type);
 
 
 
@@ -45,4 +47,13 @@ export function updateUserField(id, property, value, type = "string") {
     }
 
     return updateTableField("users", id, property, value, type);
+}
+
+export function updateLevelField(id, property, value, type = "string") {
+
+    if (type === undefined) {
+        type = "string";
+    }
+
+    return updateTableField("levels", id, property, value, type);
 }

@@ -9,6 +9,7 @@ import (
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/iKonrad/typitap/server/services/feed"
 	"github.com/iKonrad/typitap/server/services/game"
+	"github.com/iKonrad/typitap/server/services/levels"
 	"github.com/iKonrad/typitap/server/services/logs"
 	"github.com/iKonrad/typitap/server/services/stats"
 	"github.com/iKonrad/typitap/server/services/topchart"
@@ -324,7 +325,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 		playerTime := int(r.time)
 
 		// Calculate WPM and accuracy
-		wpm, accuracy := game.CalculateResult(playerTime, len(mistakes), text.Val())
+		wpm, accuracy := game.CalculateScore(playerTime, len(mistakes), text.Val())
 		r.SendMessage(
 			TYPE_PLAYER_COMPLETED_GAME,
 			map[string]interface{}{
@@ -375,6 +376,14 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 				} else {
 					feed.SendGlobalActivity(feed.Activities.GlobalGameFinished(user.Username, wpm, len(r.Players)))
 				}
+			}
+
+			// Calculate experience points for a game result
+			points := levels.CalculatePoints(&result, len(r.Players))
+
+			// Apply points to the user
+			if points > 0 {
+				levels.ApplyPoints(&user, points)
 			}
 
 			// Increment game stats for user profile

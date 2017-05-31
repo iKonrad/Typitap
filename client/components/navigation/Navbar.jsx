@@ -3,58 +3,14 @@ import {Link, Router} from 'react-router'
 import {connect} from 'react-redux';
 import NavLink from './NavLink';
 import Icon from 'react-fontawesome';
+import * as Constants from 'utils/constants';
 
 class Navbar extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            menu: [
-                {
-                    label: 'Log in',
-                    type: 'link',
-                    url: '/login',
-                    authenticated: false
-                },
-                {
-                    label: 'Sign up',
-                    type: 'link',
-                    url: '/signup',
-                    authenticated: false
-                },
-                {
-                    label: '%%Name%%',
-                    type: 'dropdown',
-                    url: '#',
-                    authenticated: true,
-                    items: [
-                        {
-                            label: 'Account',
-                            type: 'link',
-                            url: '/account/details',
-                            authenticated: true
-                        },
-                        {
-                            label: 'Log out',
-                            type: 'logout',
-                            url: '/auth/logout',
-                            authenticated: true
-                        },
-                    ]
-                },
-                {
-                    label: 'Play',
-                    type: 'button',
-                    url: '/play',
-                    authenticated: false
-                },
-                {
-                    label: 'Play',
-                    type: 'button',
-                    url: '/play',
-                    authenticated: true
-                },
-            ]
+            menu: Constants.MENU_TREE,
         };
     }
 
@@ -124,7 +80,7 @@ class Navbar extends Component {
                             })}
 
                             { (this.props.user.data !== undefined && ["ROLE_ADMIN", "ROLE_SUPER_ADMIN"].indexOf(this.props.user.data.Role) > -1 ) ?
-                                (<NavLink to="/admin" key={'menu-item-admin'}>ACP</NavLink>) :
+                                (<NavLink to="/admin/users" key={'menu-item-admin'}>ACP</NavLink>) :
                                 ("")
                             }
                         </ul>

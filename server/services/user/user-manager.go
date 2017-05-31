@@ -31,14 +31,16 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 
 	hashedPassword := generatePassword(details["password"].(string))
 	newUser := entities.User{
-		Id:       newId.String(),
-		Name:     details["name"].(string),
-		Email:    details["email"].(string),
-		Username: details["username"].(string),
-		Active:   false,
-		Role:     "ROLE_USER",
-		Created:  time.Now(),
-		Password: hashedPassword,
+		Id:        newId.String(),
+		Name:      details["name"].(string),
+		Email:     details["email"].(string),
+		Username:  details["username"].(string),
+		Active:    false,
+		Role:      "ROLE_USER",
+		Created:   time.Now(),
+		Password:  hashedPassword,
+		Exp: 0,
+		Level: 1,
 	}
 
 	cursor, err := r.Table("users").Insert(newUser).Run(db.Session)

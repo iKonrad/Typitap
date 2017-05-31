@@ -115,7 +115,10 @@ class GameEngine {
             credentials: "same-origin",
             body: formData,
         }).then((response) => {
+
             return response.json();
+        }).then((response) => {
+            console.log(response);
         });
 
     }

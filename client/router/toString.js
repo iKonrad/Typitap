@@ -82,7 +82,6 @@ export default function (options, cbk) {
                                 renderComponent();
                                 break;
                             case "object":
-                                console.log('uwot');
                                 if (Object.prototype.toString.call( promise ) === '[object Array]') {
                                     let resolved = 0;
                                     promise.forEach((pro) => {

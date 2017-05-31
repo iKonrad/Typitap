@@ -14,6 +14,7 @@ import Profile from 'scenes/Profile';
 import Permissions from 'utils/permissions';
 import AdminBase from 'scenes/Admin';
 import AdminUsers from 'scenes/Admin/scenes/AdminUsers';
+import AdminLevels from 'scenes/Admin/scenes/AdminLevels';
 
 
 /**
@@ -55,6 +56,7 @@ export default ({store, first}) => {
             <Route emptyBase={true} path="/admin" component={AdminBase}>
                 <IndexRoute component={Permissions.OnlyAdmins(AdminUsers)} onEnter={w(AdminUsers.clientInit)} />
                 <Route emptyBase={true} path="users" component={Permissions.OnlyAdmins(AdminUsers)} onEnter={w(AdminUsers.clientInit)} />
+                <Route emptyBase={true} path="levels" component={Permissions.OnlyAdmins(AdminLevels)} onEnter={w(AdminLevels.clientInit)} />
             </Route>
 
 

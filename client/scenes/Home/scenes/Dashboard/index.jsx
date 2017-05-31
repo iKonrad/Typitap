@@ -13,25 +13,13 @@ import { resolveAll } from 'utils/jsUtils';
 class Dashboard extends Component {
 
     static clientInit({store, nextState, replaceState, callback}) {
-
         resolveAll([
             store.dispatch(DashboardActions.getRecentGames(0)),
             store.dispatch(UserActions.fetchFollowData()),
             store.dispatch(DashboardActions.fetchActivityFeed(0)),
             store.dispatch(UserActions.fetchUserStats()),
         ], callback);
-
     }
-
-    static serverInit(response, params, store) {
-        return [
-            store.dispatch(DashboardActions.getRecentGames(0)),
-            store.dispatch(UserActions.fetchFollowData()),
-            store.dispatch(DashboardActions.fetchActivityFeed(0)),
-            store.dispatch(UserActions.fetchUserStats()),
-        ];
-    }
-
 
     componentWillUnmount() {
         this.props.dispatch(DashboardActions.resetRecentGames());
@@ -42,7 +30,6 @@ class Dashboard extends Component {
         let offset = this.props.dashboard.games.length;
         this.props.dispatch(DashboardActions.getRecentGames(offset));
     }
-
 
     render() {
         return (

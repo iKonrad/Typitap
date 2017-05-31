@@ -13,4 +13,7 @@ type User struct {
 	Role string `gorethink:"role"`
 
 	Created time.Time `gorethink:"created"`
+
+	Level int `gorethink:"level"`
+	Exp int `gorethink:"exp"`
 }

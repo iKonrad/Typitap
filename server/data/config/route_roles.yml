@@ -34,3 +34,7 @@ user_account:
 admin_api:
   path: /api/admin
   role: ROLE_ADMIN
+
+admin_api_roles:
+  path: /api/admin/roles
+  role: ROLE_SUPER_ADMIN

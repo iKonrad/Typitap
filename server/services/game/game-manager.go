@@ -3,11 +3,11 @@ package game
 import (
 	"errors"
 	"log"
-	"strings"
 	"time"
 
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
+	"github.com/iKonrad/typitap/server/services/utils"
 	"github.com/satori/go.uuid"
 	r "gopkg.in/gorethink/gorethink.v3"
 )
@@ -223,20 +223,10 @@ func DeleteOldSessionsForUser(userId string) {
 	}).Delete().Exec(db.Session)
 }
 
-func CalculateResult(time int, errors int, text string) (int, int) {
+func CalculateScore(time int, errors int, text string) (int, int) {
 
-	// Remove spaces form the text
-	oneString := strings.Replace(text, " ", "", -1)
-
-	// Count number of characters in a string
-	characters := len([]rune(oneString))
-
-	// Divide the text by 5 to get number of average words
-	virtualWords := int(characters / 5)
-
-	if characters%5 > 2 {
-		virtualWords++
-	}
+	// Get count of virtual, 5 characters words
+	virtualWords := utils.WordsCount(text)
 
 	// Calculate the WPM
 	speed := int(float64(virtualWords) * (60.0 / float64(time)))

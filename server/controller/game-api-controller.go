@@ -9,9 +9,10 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/iKonrad/typitap/server/services/feed"
 	"github.com/iKonrad/typitap/server/services/game"
+	"github.com/iKonrad/typitap/server/services/levels"
+	"github.com/iKonrad/typitap/server/services/stats"
 	"github.com/iKonrad/typitap/server/services/topchart"
 	"github.com/labstack/echo"
-	"github.com/iKonrad/typitap/server/services/stats"
 )
 
 type GameAPIController struct {
@@ -87,8 +88,17 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 		feed.SendGlobalActivity(feed.Activities.PlayerCompletedOfflineGameActivity(user.Username, wpm))
 	}
 
-
 	stats.IncrementGamesStat(user.Id)
+
+	// Calculate experience points for a game result
+	points := levels.CalculatePoints(&newResult, 0)
+
+	log.Println("Points", points)
+
+	// Apply points to user
+	if points > 0 {
+		levels.ApplyPoints(&user, points)
+	}
 
 	// Submit the result for the top chart
 	if err != nil {
@@ -100,11 +110,10 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 		})
 	}
 
-
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success":  true,
 		"resultId": newResult.Id,
+		"points":   points,
 	})
 
 }
@@ -145,6 +154,6 @@ func (gc *GameAPIController) GetGlobalFeed(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
-		"data": []string{},
+		"data":    []string{},
 	})
 }

@@ -1,0 +1,52 @@
+export const MENU_TREE = [
+    {
+        label: 'Log in',
+        type: 'link',
+        url: '/login',
+        authenticated: false
+    },
+    {
+        label: 'Sign up',
+        type: 'link',
+        url: '/signup',
+        authenticated: false
+    },
+    {
+        label: 'Dashboard',
+        type: 'link',
+        url: '/',
+        authenticated: true,
+    },
+    {
+        label: '%%Name%%',
+        type: 'dropdown',
+        url: '#',
+        authenticated: true,
+        items: [
+            {
+                label: 'Account',
+                type: 'link',
+                url: '/account/details',
+                authenticated: true
+            },
+            {
+                label: 'Log out',
+                type: 'logout',
+                url: '/auth/logout',
+                authenticated: true
+            },
+        ]
+    },
+    {
+        label: 'Play',
+        type: 'button',
+        url: '/play',
+        authenticated: false
+    },
+    {
+        label: 'Play',
+        type: 'button',
+        url: '/play',
+        authenticated: true
+    },
+];

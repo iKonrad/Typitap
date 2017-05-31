@@ -2,7 +2,7 @@
 // sources:
 // server/data/.DS_Store
 // server/data/config/config.yml
-// server/data/config/routes.yml
+// server/data/config/route_roles.yml
 // server/data/static/.DS_Store
 // server/data/static/build/448c34a56d699c29117adc64c43affeb.woff2
 // server/data/static/build/674f50d287a8c48dc19ba404d20fe713.eot
@@ -83,10 +83,10 @@ func configConfigYml() (*asset, error) {
 	return a, err
 }
 
-// configRoutesYml reads file data from disk. It returns an error on failure.
-func configRoutesYml() (*asset, error) {
-	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/config/routes.yml"
-	name := "config/routes.yml"
+// configRoute_rolesYml reads file data from disk. It returns an error on failure.
+func configRoute_rolesYml() (*asset, error) {
+	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/config/route_roles.yml"
+	name := "config/route_roles.yml"
 	bytes, err := bindataRead(path, name)
 	if err != nil {
 		return nil, err
@@ -479,7 +479,7 @@ func AssetNames() []string {
 var _bindata = map[string]func() (*asset, error){
 	".DS_Store": Ds_store,
 	"config/config.yml": configConfigYml,
-	"config/routes.yml": configRoutesYml,
+	"config/route_roles.yml": configRoute_rolesYml,
 	"static/.DS_Store": staticDs_store,
 	"static/build/448c34a56d699c29117adc64c43affeb.woff2": staticBuild448c34a56d699c29117adc64c43affebWoff2,
 	"static/build/674f50d287a8c48dc19ba404d20fe713.eot": staticBuild674f50d287a8c48dc19ba404d20fe713Eot,
@@ -543,7 +543,7 @@ var _bintree = &bintree{nil, map[string]*bintree{
 	".DS_Store": &bintree{Ds_store, map[string]*bintree{}},
 	"config": &bintree{nil, map[string]*bintree{
 		"config.yml": &bintree{configConfigYml, map[string]*bintree{}},
-		"routes.yml": &bintree{configRoutesYml, map[string]*bintree{}},
+		"route_roles.yml": &bintree{configRoute_rolesYml, map[string]*bintree{}},
 	}},
 	"static": &bintree{nil, map[string]*bintree{
 		".DS_Store": &bintree{staticDs_store, map[string]*bintree{}},

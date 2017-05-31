@@ -1,5 +1,5 @@
 import React from 'react';
-import TimeAgo from 'timeago-react';
+import TimeAgo from 'components/app/TimeAgo';
 
 class Activity extends React.Component {
     constructor(props) {
@@ -18,7 +18,7 @@ class Activity extends React.Component {
                         <div className="activity__text" dangerouslySetInnerHTML={{__html: this.props.text}}>
                         </div>
                         <div className="activity__date">
-                            <TimeAgo datetime={ this.props.date }/>
+                            <TimeAgo date={ this.props.date }/>
                         </div>
                     </div>
 

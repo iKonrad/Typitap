@@ -25,13 +25,6 @@ class Homepage extends Component {
         ], callback)
     }
 
-    static serverInit(response, params, store) {
-        return [
-            store.dispatch(AppActions.fetchChartsData()),
-            store.dispatch(PlayActions.fetchGlobalFeed()),
-        ];
-    }
-
     componentDidMount() {
         let state = this.state;
         state.loaded = true;

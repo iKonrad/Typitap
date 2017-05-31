@@ -24,7 +24,7 @@ func init() {
 
 
 	// Fetch routing configuration
-	routeBytes, err := assets.Asset("config/routes.yml")
+	routeBytes, err := assets.Asset("config/route_roles.yml")
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}

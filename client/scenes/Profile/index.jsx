@@ -15,7 +15,6 @@ class Profile extends Component {
         if (store.getState().user.loggedIn && (store.getState().user.data.Username === nextState.params.user)) {
             store.dispatch(push("/"));
         } else {
-            console.log("FETCHING FROM PROPS")
             store.dispatch(ProfileActions.resetUserProfile());
             store.dispatch(ProfileActions.fetchUserProfile(nextState.params.user))
         }
@@ -24,7 +23,6 @@ class Profile extends Component {
 
     // Runs after side-server rendering
     static serverInit(response, params, store) {
-
         return [
             store.dispatch(ProfileActions.fetchUserProfile(params.user)).then(() => {
                 if (store.getState().user.loggedIn && (store.getState().user.data.Username === params.user)) {
