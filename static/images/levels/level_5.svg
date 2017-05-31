@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>Level 5</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Level-icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Level-5">
+            <circle id="Oval" stroke="#999999" stroke-width="4" fill="#B7B7B7" cx="15" cy="15" r="13"></circle>
+            <text id="Star---FontAwesome" font-family="FontAwesome" font-size="17" font-weight="normal" fill="#FFFFFF">
+                <tspan x="7" y="21"></tspan>
+            </text>
+        </g>
+    </g>
+</svg>
