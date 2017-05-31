@@ -6,9 +6,11 @@ import (
 
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/iKonrad/typitap/server/services/feed"
+	"github.com/iKonrad/typitap/server/services/levels"
 	"github.com/iKonrad/typitap/server/services/stats"
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/labstack/echo"
+	"encoding/json"
 )
 
 type UserAPIController struct {
@@ -140,7 +142,6 @@ func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
 
 }
 
-
 func (gc UserAPIController) GetUserStats(c echo.Context) error {
 
 	// Check if user is logged in
@@ -212,7 +213,15 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 
 	username := c.Param("user")
 
-	user, ok := us.FindUserBy("username", username)
+	u, ok := us.FindUserBy("username", username)
+
+	// Convert User struct into map
+	var user map[string]interface{}
+	var inInterface interface{}
+	inrec, _ := json.Marshal(u)
+	json.Unmarshal(inrec, &inInterface)
+	user = inInterface.(map[string]interface{})
+
 
 	if !ok {
 		return c.JSON(http.StatusNoContent, map[string]interface{}{
@@ -220,10 +229,11 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 		})
 	}
 
-	user.Password = ""
+	delete(user, user["Password"].(string))
+	user["LevelName"] = levels.GetLevelName(int(user["Level"].(float64)))
 
 	// Get stats for user
-	userStats, ok := stats.GetStatsForUser(user.Id)
+	userStats, ok := stats.GetStatsForUser(user["Id"].(string))
 	filters := map[string]interface{}{}
 	o := c.QueryParam("offset")
 	if o == "" {
@@ -231,10 +241,10 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 	}
 
 	offset, _ := strconv.Atoi(o)
-	filters["userId"] = user.Id
+	filters["userId"] = user["Id"].(string)
 	recentGames, _ := us.GetGameResultsForUser(offset, filters)
 
-	follow, _ := feed.GetUserFollow(user.Id)
+	follow, _ := feed.GetUserFollow(user["Id"].(string))
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,

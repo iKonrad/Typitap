@@ -1,0 +1,36 @@
+.user-level {
+
+
+  &__progress {
+    width: 100%;
+    background-color: $grey-100;
+    border-radius: 0;
+    height: 5px;
+    margin-bottom: 6px;
+    .progress-bar {
+      background-color: $teal;
+    }
+
+    &.transparent {
+      opacity: 0;
+    }
+  }
+
+  &__icon {
+    height: 30px;
+    width: 30px;
+    margin-right: 5px;
+    display: inline-block;
+  }
+
+  &__name {
+    display: inline-block;
+    font-size: 18px;
+    position: relative;
+    top: 3px;
+    span {
+      font-weight: 700;
+    }
+  }
+
+}

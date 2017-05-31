@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/iKonrad/typitap/server/services/feed"
 	"time"
+	"github.com/iKonrad/typitap/server/services/levels"
 )
 
 func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
@@ -32,6 +33,10 @@ func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
 					"Created": user.Created.Format(time.RFC3339),
 					"Email": user.Email,
 					"Role": user.Role,
+					"Level": user.Level,
+					"Exp": user.Exp,
+					"NextExp": levels.CalculateThresholdForLevel(user.Level + 1),
+					"LevelName": levels.GetLevelName(user.Level),
 				},
 				"follow": userFeed,
 				"loggedIn": true,

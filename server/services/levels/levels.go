@@ -18,7 +18,7 @@ func init() {
 
 	// Fetch level data from database
 
-	resp, err := r.Table("levels").Run(db.Session)
+	resp, err := r.Table("levels").OrderBy(r.Asc("level")).Run(db.Session)
 	defer resp.Close()
 
 	if err != nil || resp.IsNil() {
@@ -158,4 +158,14 @@ func getPlaceMultiplier(place int, players int) float32 {
 	diff = diff / 10
 	diff = diff + 1
 	return diff
+}
+
+func GetLevelName(level int) string {
+
+	if len(Levels) < level {
+		return Levels[len(Levels) - 1].Name
+	}
+
+	return Levels[level - 1].Name
+
 }
