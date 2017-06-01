@@ -4,7 +4,7 @@
 /src
 /server/bindata.go
 /server/data/static/build
-
+bindata.go
 .pid
 .DS_Store
 /.idea
@@ -13,3 +13,5 @@
 /server/config/bindata.go
 /rethinkdb_data
 dump.rdb
+rethinkdb_dump_*
+*.out
