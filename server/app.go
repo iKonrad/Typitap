@@ -77,7 +77,8 @@ func NewApp(opts ...AppOptions) *App {
 	// Register Redux State generator middleware
 	engine.Use(middlewares.GenerateStateHandler)
 
-	engine.Static("/images", "static/images")
+
+	engine.Static("/", "static")
 	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
 	}))
