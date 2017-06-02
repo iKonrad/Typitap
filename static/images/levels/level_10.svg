@@ -1,21 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
-    <title>Level 8 Copy</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Level-icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Level-8-Copy">
-            <circle id="Oval" stroke="#F6A623" stroke-width="4" fill="#F8C877" cx="15" cy="15" r="13"></circle>
-            <text id="Star---FontAwesome" font-family="FontAwesome" font-size="10" font-weight="normal" fill="#FFFFFF">
-                <tspan x="10" y="14"></tspan>
-            </text>
-            <text id="Star---FontAwesome-Copy" font-family="FontAwesome" font-size="10" font-weight="normal" fill="#FFFFFF">
-                <tspan x="5" y="22"></tspan>
-            </text>
-            <text id="Star---FontAwesome-Copy-2" font-family="FontAwesome" font-size="10" font-weight="normal" fill="#FFFFFF">
-                <tspan x="15" y="22"></tspan>
-            </text>
-        </g>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <g fill="none" fill-rule="evenodd">
+    <circle cx="15" cy="15" r="13" fill="#8CBCF3" stroke="#5BA1F1" stroke-width="4"/>
+    <path fill="#FFF" d="M22.7857331,12.5663962 C22.7857331,12.2817976 22.4821613,12.1679582 22.2544825,12.1300117 L17.4922,11.4374886 L15.3577109,7.12107721 C15.2723313,6.94083145 15.1110588,6.73212585 14.8928666,6.73212585 C14.6746743,6.73212585 14.5134018,6.94083145 14.4280222,7.12107721 L12.2935331,11.4374886 L7.53125063,12.1300117 C7.29408517,12.1679582 7,12.2817976 7,12.5663962 C7,12.7371553 7.12332604,12.8984278 7.23716546,13.0217539 L10.6902946,16.3800168 L9.87444539,21.123326 C9.86495877,21.1897324 9.85547215,21.2466521 9.85547215,21.3130584 C9.85547215,21.5597105 9.97879819,21.7873893 10.2539101,21.7873893 C10.3867228,21.7873893 10.5100488,21.7399562 10.6333749,21.6735499 L14.8928666,19.434708 L19.1523582,21.6735499 C19.2661977,21.7399562 19.3990103,21.7873893 19.531823,21.7873893 C19.8069349,21.7873893 19.9207743,21.5597105 19.9207743,21.3130584 C19.9207743,21.2466521 19.9207743,21.1897324 19.9112877,21.123326 L19.0954385,16.3800168 L22.539081,13.0217539 C22.6624071,12.8984278 22.7857331,12.7371553 22.7857331,12.5663962 Z"/>
+  </g>
 </svg>
