@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/iKonrad/typitap/server/entities"
+	"github.com/iKonrad/typitap/server/services/levels"
 	"github.com/iKonrad/typitap/server/services/mail"
 	"github.com/iKonrad/typitap/server/services/sessions"
 	us "github.com/iKonrad/typitap/server/services/user"
@@ -52,16 +53,19 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 	}
 
 	// Data is valid, so we can create a new user now
-	newUser, err := us.CreateUser(details)
+	nu, err := us.CreateUser(details)
+	newUser := us.ConvertUserToMap(&nu);
+
 
 	if err != nil {
 		log.Println(err)
 	}
 
-	newUser.Password = ""
+	newUser["Password"] = ""
+	newUser["LevelName"] = levels.GetLevelName(int(newUser["Level"].(float64)))
 
 	// Generate an activation token for the confirmation e-mail
-	token, ok := us.GenerateUserToken("activate", newUser)
+	token, ok := us.GenerateUserToken("activate", nu)
 
 	if !ok {
 
@@ -73,12 +77,12 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 
 	// Send confirmation e-mail with an activation link
 	emailTags := map[string]interface{}{
-		"name":       newUser.Name,
+		"name":       newUser["Name"],
 		"action_url": "http://" + c.Request().Host + "/auth/activate/" + token,
-		"username":   newUser.Username,
+		"username":   newUser["Username"],
 	}
 
-	mail.SendEmail(newUser.Email, "NEW_ACCOUNT", emailTags)
+	mail.SendEmail(newUser["Email"].(string), "NEW_ACCOUNT", emailTags)
 
 	// Now, that we have a user, we can log in automatically
 	session, err := sessions.Session.Get(c.Request(), "SESSION_ID")
@@ -95,7 +99,7 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 
 	// Create user data for the session
 	sessionCookie := entities.SessionCookie{
-		UserId: newUser.Id,
+		UserId: newUser["Id"].(string),
 		Role:   "ADMIN", // @TODO: Replace this when roles are implemented
 	}
 
@@ -133,7 +137,9 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 	}
 
 	// Get the user for e-mail address
-	user, ok := us.FindUserBy("username", username)
+	u, ok := us.FindUserBy("username", username)
+
+	user := us.ConvertUserToMap(&u)
 
 	// No user found for this username. Return an error
 	if !ok {
@@ -141,7 +147,7 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 	}
 
 	// Compare passwords
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	err := bcrypt.CompareHashAndPassword([]byte(user["Password"].(string)), []byte(password))
 
 	if err != nil {
 		return c.JSON(200, map[string]interface{}{"success": false, "error": "Invalid credentials"})
@@ -161,13 +167,14 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 	}
 
 	session.Values["SessionCookie"] = entities.SessionCookie{
-		UserId: user.Id,
+		UserId: user["Id"].(string),
 		Role:   "ADMIN", // @TODO: Replace this when roles are implemented
 	}
 
 	session.Options.MaxAge = 60 * 60 * 24 * 14
 
-	user.Password = ""
+	user["Password"] = ""
+	user["LevelName"] = levels.GetLevelName(int(user["Level"].(float64)))
 
 	session.Save(c.Request(), c.Response().Writer)
 

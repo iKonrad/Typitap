@@ -10,7 +10,6 @@ import (
 	"github.com/iKonrad/typitap/server/services/stats"
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/labstack/echo"
-	"encoding/json"
 )
 
 type UserAPIController struct {
@@ -216,13 +215,8 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 	u, ok := us.FindUserBy("username", username)
 
 	// Convert User struct into map
-	var user map[string]interface{}
-	var inInterface interface{}
-	inrec, _ := json.Marshal(u)
-	json.Unmarshal(inrec, &inInterface)
-	user = inInterface.(map[string]interface{})
 
-
+	user := us.ConvertUserToMap(&u)
 	if !ok {
 		return c.JSON(http.StatusNoContent, map[string]interface{}{
 			"success": false,

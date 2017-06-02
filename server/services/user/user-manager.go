@@ -5,6 +5,8 @@ import (
 	"log"
 	"time"
 
+	"encoding/json"
+
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/iKonrad/typitap/server/services/stats"
@@ -31,16 +33,16 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 
 	hashedPassword := generatePassword(details["password"].(string))
 	newUser := entities.User{
-		Id:        newId.String(),
-		Name:      details["name"].(string),
-		Email:     details["email"].(string),
-		Username:  details["username"].(string),
-		Active:    false,
-		Role:      "ROLE_USER",
-		Created:   time.Now(),
-		Password:  hashedPassword,
-		Exp: 0,
-		Level: 1,
+		Id:       newId.String(),
+		Name:     details["name"].(string),
+		Email:    details["email"].(string),
+		Username: details["username"].(string),
+		Active:   false,
+		Role:     "ROLE_USER",
+		Created:  time.Now(),
+		Password: hashedPassword,
+		Exp:      0,
+		Level:    1,
 	}
 
 	cursor, err := r.Table("users").Insert(newUser).Run(db.Session)
@@ -354,4 +356,15 @@ func GetGameResultsForUser(offset int, filters map[string]interface{}) ([]map[st
 
 	return results, true
 
+}
+
+func ConvertUserToMap(u *entities.User) map[string]interface{} {
+
+	var us map[string]interface{}
+	var inInterface interface{}
+	inrec, _ := json.Marshal(u)
+	json.Unmarshal(inrec, &inInterface)
+	us = inInterface.(map[string]interface{})
+
+	return us
 }
