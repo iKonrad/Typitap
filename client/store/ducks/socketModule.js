@@ -11,7 +11,7 @@ export const JOIN_ROOM = "@@socket/JOIN_ROOM";
 export const LEAVE_ROOM = "@@socket/LEAVE_ROOM";
 
 
-const SOCKET_URL = process.env.NODE_ENV !== undefined && process.env.NODE_ENV === "production" ? "wss://149.56.46.190:443/ws" : "ws://localhost:5000/ws";
+const SOCKET_URL = process.env.NODE_ENV !== undefined && process.env.NODE_ENV === "production" ? "wss://149.56.46.190/ws" : "ws://localhost:5000/ws";
 
 const initialState = {
     connected: false,
