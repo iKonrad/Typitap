@@ -76,13 +76,12 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 	}
 
 	// Send confirmation e-mail with an activation link
-	emailTags := map[string]interface{}{
-		"name":       newUser["Name"],
-		"action_url": "http://" + c.Request().Host + "/auth/activate/" + token,
-		"username":   newUser["Username"],
-	}
-
-	mail.SendEmail(newUser["Email"].(string), "NEW_ACCOUNT", emailTags)
+	link := "http://" + c.Request().Host + "/auth/activate/" + token
+	mail.SendEmail(newUser["Email"].(string), mail.TEMPLATE_NEW_ACCOUNT, mail.TemplateButtonLink(
+		newUser["Name"].(string),
+		newUser["Username"].(string),
+		link,
+	))
 
 	// Now, that we have a user, we can log in automatically
 	session, err := sessions.Session.Get(c.Request(), "SESSION_ID")
@@ -246,13 +245,8 @@ func (ac AuthenticationAPIController) HandlePasswordForgot(c echo.Context) error
 	}
 
 	// Send the token to the e-mail address
-	emailTags := map[string]interface{}{
-		"name":       user.Name,
-		"action_url": "http://" + c.Request().Host + "/auth/password/reset/" + userToken,
-		"username":   user.Username,
-	}
-
-	mail.SendEmail(user.Email, "PASSWORD_RESET", emailTags)
+	link := "http://" + c.Request().Host + "/auth/password/reset/" + userToken;
+	mail.SendEmail(user.Email, mail.TEMPLATE_PASSWORD_RESET, mail.TemplateButtonLink(user.Name, user.Username, link))
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,

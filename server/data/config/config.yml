@@ -1,4 +1,7 @@
-debug: true
+debug: false
+
+# App
+app_port: 5000
 
 # Database
 database_host: 127.0.0.1
@@ -9,12 +12,12 @@ redis_host: localhost:6379
 redis_database: 1
 
 # Mail Manager
-mail_api_token: 256a4c09-3bb2-48ff-81af-d1b5188cfa0b
-mail_server_token: bc63297f-66c5-4a0b-b95a-e1ea46ca0c67
+mail_public_key: ce2632d96a1f1b75ba6ae274c99b1d67
+mail_secret_key: 668c655b2163210f81a91dd4b4f4c8b0
 mail_from_address: noreply@typitap.com
 
 # Duktape
-duktape_path: static/build/bundle.jszw
+duktape_path: static/build/bundle.js
 
 roles:
   ROLE_GUEST: 0
