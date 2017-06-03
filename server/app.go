@@ -21,7 +21,6 @@ import (
 	"github.com/olebedev/config"
 	"golang.org/x/crypto/acme/autocert"
 	"os"
-	"log"
 )
 
 // App struct.
