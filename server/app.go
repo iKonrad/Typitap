@@ -19,6 +19,9 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
+	"golang.org/x/crypto/acme/autocert"
+	"os"
+	"log"
 )
 
 // App struct.
@@ -57,6 +60,7 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Make an engine
 	engine := echo.New()
+	engine.AutoTLSManager.Cache = autocert.DirCache("~/go/bin/.cache")
 
 	// Use precompiled embedded templates
 	engine.Renderer = NewTemplate()
@@ -214,7 +218,12 @@ func NoJsRender(c echo.Context) error {
 
 // Run runs the app
 func (app *App) Run() {
-	Must(app.Engine.Start(":" + app.Conf.UString("port")))
+	if os.Getenv("ENV") == "production" {
+		Must(app.Engine.StartAutoTLS(":" + "443"))
+	} else {
+		Must(app.Engine.Start(":" + app.Conf.UString("port")))
+	}
+
 }
 
 func (app *App) handleWebsocket(c echo.Context) error {
