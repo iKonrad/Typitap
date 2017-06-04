@@ -67,7 +67,7 @@ class Homepage extends Component {
                         <div className="row">
                             <div className="col col-xs-12 text-center">
                                 <div className="banner__titles">
-                                    <h1 className="white"><img src="/images/identity/typitap-logo-white@2x.png" alt=""/>
+                                    <h1 className="white"><img src="/static/images/identity/typitap-logo-white@2x.png" alt=""/>
                                     </h1>
                                     <h3 className="white">Ultimate online typing game</h3>
                                 </div>
@@ -99,7 +99,7 @@ class Homepage extends Component {
                             <div className="col col-xs-12 col-sm-6 col-md-3 ">
                                 <div className="blob">
                                     <div className="blob__icon">
-                                        <img src="/images/pages/homepage/icon-globe.png" alt="Icon Globe"/>
+                                        <img src="/static/images/pages/homepage/icon-globe.png" alt="Icon Globe"/>
                                     </div>
 
                                     <h3 className="blob__title">Compete with the world</h3>
@@ -111,7 +111,7 @@ class Homepage extends Component {
                             <div className="col col-xs-12 col-sm-6 col-md-3">
                                 <div className="blob">
                                     <div className="blob__icon">
-                                        <img src="/images/pages/homepage/icon-trophy.png" alt="Icon Trophy"/>
+                                        <img src="/static/images/pages/homepage/icon-trophy.png" alt="Icon Trophy"/>
                                     </div>
                                     <h3 className="blob__title">Climb the ladder to the top</h3>
                                     <p className="blob__text">Make your way to the very top of the
@@ -121,7 +121,7 @@ class Homepage extends Component {
                             <div className="col col-xs-12 col-sm-6 col-md-3">
                                 <div className="blob">
                                     <div className="blob__icon">
-                                        <img src="/images/pages/homepage/icon-chart.png" alt="Icon Chart"/>
+                                        <img src="/static/images/pages/homepage/icon-chart.png" alt="Icon Chart"/>
                                     </div>
                                     <h3 className="blob__title">Track your progress</h3>
                                     <p className="blob__text">Make use of the <strong>stunning charts</strong> to keep
@@ -131,7 +131,7 @@ class Homepage extends Component {
                             <div className="col col-xs-12 col-sm-6 col-md-3">
                                 <div className="blob">
                                     <div className="blob__icon">
-                                        <img src="/images/pages/homepage/icon-comment.png" alt="Icon Comment"/>
+                                        <img src="/static/images/pages/homepage/icon-comment.png" alt="Icon Comment"/>
                                     </div>
                                     <h3 className="blob__title">Socialize</h3>
                                     <p className="blob__text">Follow your friends and stay up to date with their
@@ -165,7 +165,7 @@ class Homepage extends Component {
                                 <div className="row">
                                     <div className="col-xs-12 feature-title">
                                         <div className="feature-title__icon">
-                                            <img src="/images/pages/homepage/icon-trophy.png" alt=""/>
+                                            <img src="/static/images/pages/homepage/icon-trophy.png" alt=""/>
                                         </div>
                                         <div className="feature-title__text">
                                             <h2 className="white">Create account</h2>

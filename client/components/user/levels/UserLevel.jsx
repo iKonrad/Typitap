@@ -8,9 +8,9 @@ class UserLevel extends React.Component {
 
     getIconAddress() {
         if (this.props.level > 15) {
-            return "/images/levels/level_15.svg";
+            return "/static/images/levels/level_15.svg";
         } else {
-            return `/images/levels/level_${this.props.level}.svg`;
+            return `/static/images/levels/level_${this.props.level}.svg`;
         }
     }
 

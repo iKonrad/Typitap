@@ -43,7 +43,7 @@ class Auth extends Component {
 
                 <div className="auth__panel">
                     <div className="text-center">
-                <Link to="/"><img src="/images/identity/typitap-logo-white@1.5x.png" alt="Typitap logo" /></Link>
+                <Link to="/"><img src="/static/images/identity/typitap-logo-white@1.5x.png" alt="Typitap logo" /></Link>
             </div>
                 { this.renderForm() }
             </div>

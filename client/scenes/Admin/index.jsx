@@ -20,7 +20,7 @@ class AdminBase extends Component {
                     <div className="row">
                         <div className="col col-xs-12">
                             <div className="text-center margin-top-3">
-                                <img src="/images/identity/typitap-logo@1.25x.png" alt=""/>
+                                <img src="/static/images/identity/typitap-logo@1.25x.png" alt=""/>
                                 <h3>Administration Panel</h3>
                             </div>
                         </div>
