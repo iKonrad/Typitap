@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var functions = require('postcss-functions');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CompressionPlugin = require("compression-webpack-plugin");
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 const jQueryPlugin = new webpack.ProvidePlugin({
@@ -16,7 +17,8 @@ var plugins = [
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.DedupePlugin(),
     new ExtractTextPlugin('bundle.css'),
-    jQueryPlugin
+    jQueryPlugin,
+    new BundleAnalyzerPlugin()
 ];
 
 if (process.env.NODE_ENV === 'production') {
@@ -50,13 +52,13 @@ if (process.env.NODE_ENV === 'production') {
             exclude: [/\.min\.js$/gi] // skip pre-minified libs
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
-        // new CompressionPlugin({
-        //     asset: "[path].gz[query]",
-        //     algorithm: "gzip",
-        //     test: /\.js$|\.css$|\.html$/,
-        //     threshold: 10240,
-        //     minRatio: 0
-        // })
+        new CompressionPlugin({
+            asset: "[path].gz[query]",
+            algorithm: "gzip",
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0
+        })
     ]);
 };
 

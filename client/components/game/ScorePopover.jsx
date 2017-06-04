@@ -92,7 +92,7 @@ class ScorePopover extends React.Component {
     render() {
         return (
             <Popover onOuterAction={ this.props.onOuterAction } target={ this.props.target } isOpen={this.props.open}
-                     body={ this.renderBody() } tipSize={15}>
+                     body={ this.renderBody() } tipSize={15} refreshIntervalMs={40}>
                 { this.props.children }
             </Popover>
         );
