@@ -18,7 +18,6 @@ var plugins = [
     new webpack.optimize.DedupePlugin(),
     new ExtractTextPlugin('bundle.css'),
     jQueryPlugin,
-    new BundleAnalyzerPlugin()
 ];
 
 if (process.env.NODE_ENV === 'production') {
