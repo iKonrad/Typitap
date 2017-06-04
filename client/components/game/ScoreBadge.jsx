@@ -62,7 +62,7 @@ class ScoreBadge extends Component {
         return (
 
             <div>
-                <ScorePopover onOuterAction={ this.handleOuterClick.bind(this) } open={ this.state.show } resultId={ this.props.resultId } />
+                <ScorePopover onOuterAction={ this.handleOuterClick.bind(this) } target={ this } open={ this.state.show } resultId={ this.props.resultId } />
                 <div className={ this.getBadgeClass() } onClick={ this.handleClick.bind(this) } >
                     { this.props.score }
                     { this.renderIcon(this.props.perfect) }
