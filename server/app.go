@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+	"os"
 
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/gorilla/websocket"
@@ -20,7 +21,6 @@ import (
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 	"golang.org/x/crypto/acme/autocert"
-	"os"
 )
 
 // App struct.
@@ -79,7 +79,6 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Register Redux State generator middleware
 	engine.Use(middlewares.GenerateStateHandler)
-
 
 	engine.Static("/images", "static/images")
 	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{

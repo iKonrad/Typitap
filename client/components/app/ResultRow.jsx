@@ -29,7 +29,7 @@ class ResultRow extends Component {
                 </div>
                 <div className="col col-xs-4 data-table--cell">
                     <div className="pull-right text-xl" >
-                        <ScoreBadge score={ this.props.score } perfect={ this.props.perfect }  />
+                        <ScoreBadge score={ this.props.score } perfect={ this.props.perfect } resultId={ this.props.resultId }  />
                     </div>
                 </div>
             </div>

@@ -16,7 +16,7 @@ class RecentGames extends Component {
                     return (
                         <ResultRow perfect={ isPerfect }
                                    key={ 'activity-item-' + index } date={ new Date(item.created) }
-                                   name={item.session.online ? "Online race" : "Offline race"} score={item.wpm}/>
+                                   name={item.session.online ? "Online race" : "Offline race"} score={item.wpm} resultId={ item.id } />
                     );
                 });
                 return items;

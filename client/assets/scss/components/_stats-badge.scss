@@ -4,7 +4,7 @@
 
   width: 40px;
   height: 40px;
-  margin: 0 5px;
+  margin-right: 5px;
   padding-top: 5px;
 
 
@@ -31,15 +31,33 @@
     opacity: 0;
     color: white;
     margin-top: -5px;
+  }
+
+  .badge-trophy {
+    @extend .badge-icon;
     &:after {
       content: "\f091";
+    }
+  }
+
+  .badge-time {
+    @extend .badge-icon;
+    &:after {
+      content: "\f017";
+    }
+  }
+
+  .badge-mistakes {
+    @extend .badge-icon;
+    &:after {
+      content: "\f188";
     }
   }
 
   @media screen and (min-width: $screen-sm-min) {
     width: 80px;
     height: 80px;
-    margin: 0 10px;
+    margin-right: 10px;
     padding-top: 5px;
 
     .badge-icon {
@@ -74,5 +92,32 @@
 
   &.badge-bronzeTrophies {
     background-color: #db7c1b;
+  }
+
+
+
+  &.badge-grey {
+    background-color: $grey-050;
+    & * {
+      color: $grey-500;
+    }
+  }
+
+  &.badge-mistakes {
+    @extend .badge-grey;
+  }
+
+  &.badge-time {
+    @extend .badge-grey;
+  }
+
+  &.badge-transparent {
+    background-color: transparent;
+    .badge-label {
+      color: $grey-500;
+    }
+    .badge-value {
+      color: $yellow-200;
+    }
   }
 }

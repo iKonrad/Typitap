@@ -15,6 +15,7 @@ export function run() {
     require('jquery');
     require('assets/libs/bootstrap-sass/assets/javascripts/bootstrap.js');
 
+
     // init promise polyfill
     window.Promise = window.Promise || Promise;
     // init fetch polyfill

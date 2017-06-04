@@ -236,3 +236,33 @@ func CalculateScore(time int, errors int, text string) (int, int) {
 
 	return speed, accuracy
 }
+
+func GetResultData(id string) (entities.GameResult, bool) {
+
+	resp, err := r.Table("game_results").Get(id).Without("userId").Merge(func(p r.Term) interface{} {
+		return map[string]interface{}{
+			"sessionId": r.Table("game_sessions").Get(p.Field("sessionId")).
+				Merge(func(s r.Term) interface{} {
+					return map[string]interface{}{
+						"textId": r.Table("game_texts").Get(s.Field("textId")),
+					}
+				}),
+		}
+	}).Run(db.Session)
+
+	if err != nil {
+		log.Println("ERR", err);
+		return entities.GameResult{}, false
+	}
+
+	var result entities.GameResult
+	err = resp.One(&result)
+
+	if err != nil {
+		log.Println("ERR2", err);
+		return entities.GameResult{}, false
+	}
+
+	return result, true
+
+}

@@ -117,11 +117,10 @@ class GameEngine {
         }).then((response) => {
 
             return response.json();
-        }).then((response) => {
-            console.log(response);
         });
 
     }
+
 
 }
 

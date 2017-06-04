@@ -157,3 +157,14 @@ func (gc *GameAPIController) GetGlobalFeed(c echo.Context) error {
 		"data":    []string{},
 	})
 }
+
+func (gc *GameAPIController) GetResultsData(c echo.Context) error {
+
+	resultId := c.Param("id")
+	result, ok := game.GetResultData(resultId)
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": ok,
+		"data":    result,
+	})
+}

@@ -11,27 +11,31 @@ class UserStatsBadge extends React.Component {
 
     renderIcon(type) {
 
-        if (['goldenTrophies', 'silverTrophies', 'bronzeTrophies'].indexOf(type) > -1) {
-            return (
-                <div className="badge-icon"></div>
-            );
+        if (type !== undefined) {
+            if (['goldenTrophies', 'silverTrophies', 'bronzeTrophies'].indexOf(type) > -1) {
+                return (
+                    <div className="badge-trophy"></div>
+                );
+            } else {
+                return <div className={`badge-${type}`}></div>;
+            }
         } else {
             return "";
         }
 
     }
 
-    renderText(type) {
-
-        if (['goldenTrophies', 'silverTrophies', 'bronzeTrophies'].indexOf(type) === -1) {
+    renderText() {
+        if (this.props.label !== undefined) {
             return (
                 <div className="badge-label no-select">
-                    { this.props.type }
+                    { this.props.label }
                 </div>
             );
-        } else {
-            return "";
         }
+
+
+        return "";
 
     }
 

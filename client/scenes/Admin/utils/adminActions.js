@@ -15,10 +15,6 @@ export function updateTableField(table, id, property, value, type) {
     formData.append("value", value);
     formData.append("type", type);
 
-    console.log(table, id, property, value, type);
-
-
-
     return fetch(`/api/admin/update`, {
         credentials: "same-origin",
         method: "POST",

@@ -12,7 +12,7 @@ class TopChart extends Component {
             let chart = this.props.app.charts[name];
             let items = chart.Items.map((item, index) => {
 
-                return <ResultRow perfect={ item.Accuracy === 100 } key={ 'activity-item-' + index } date={ new Date(item.Created)} name={ "#" + item.User.Username } score={ item.WPM } place={ index + 1 }/>
+                return <ResultRow perfect={ item.Accuracy === 100 } key={ 'activity-item-' + index } date={ new Date(item.Created)} name={ "#" + item.User.Username } score={ item.WPM } place={ index + 1 } resultId={ item.Id } />
             });
             return items;
         }

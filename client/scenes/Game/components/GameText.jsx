@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import * as GameUtils from 'utils/gameUtils';
 
 class GameText extends Component {
 
@@ -12,11 +12,7 @@ class GameText extends Component {
             words[this.props.game.currentIndex] = '<span class="word-highlighted">' + words[this.props.game.currentIndex] + '</span>';
         }
 
-        for (let index in this.props.game.mistakes) {
-            let value = this.props.game.mistakes[index];
-            value = value <= 2 ? 1 : value < 5 ? 2 : 3;
-            words[parseInt(index)] = '<span class="word-error">'+ words[parseInt(index)] +'</span>';
-        }
+        words = GameUtils.renderText(this.props.game.mistakes, words);
 
         return words.join(' ');
     }

@@ -32,7 +32,6 @@ class Homepage extends Component {
     }
 
     delayGenerator({line, lineIdx, character, charIdx, defDelayGenerator}) {
-        console.log(character);
         if (character === "." || character === "?" || character === "!") {
             return 60;
         } else {

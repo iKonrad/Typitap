@@ -1,6 +1,17 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import ScorePopover from 'components/game/ScorePopover';
 
 class ScoreBadge extends Component {
+
+    constructor(props, context) {
+        super(props, context);
+
+        this.handleClick = e => {
+            this.setState({ target: e.target, show: !this.state.show });
+        };
+
+        this.state = { show: false };
+    }
 
     renderIcon(perfect) {
         if (perfect) {
@@ -40,12 +51,24 @@ class ScoreBadge extends Component {
         return badgeClass;
     }
 
+    handleOuterClick() {
+        let state = this.state;
+        state.show = false;
+        this.setState(state);
+    }
+
+
     render() {
         return (
-            <div className={ this.getBadgeClass() }>
-                { this.props.score }
-                { this.renderIcon(this.props.perfect) }
+
+            <div>
+                <ScorePopover onOuterAction={ this.handleOuterClick.bind(this) } open={ this.state.show } resultId={ this.props.resultId } />
+                <div className={ this.getBadgeClass() } onClick={ this.handleClick.bind(this) } >
+                    { this.props.score }
+                    { this.renderIcon(this.props.perfect) }
+                </div>
             </div>
+
         );
     }
 

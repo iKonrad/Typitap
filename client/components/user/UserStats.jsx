@@ -22,8 +22,8 @@ class UserStats extends Component {
             return (
                 <div>
                     <div className="pull-left">
-                        <StatsBadge key={ `user-stat-wpm` } type="wpm" value={ items["wpm"] }/>
-                        <StatsBadge key={ `user-stat-accuracy` } type="accuracy" value={ items["accuracy"] }/>
+                        <StatsBadge key={ `user-stat-wpm` } type="wpm" label="wpm" value={ items["wpm"] }/>
+                        <StatsBadge key={ `user-stat-accuracy` } type="accuracy" label="accuracy" value={ items["accuracy"] + "%" }/>
                     </div>
                     <div className="pull-right">
                         <StatsBadge key={ `user-stat-goldenTrophies` } type="goldenTrophies"

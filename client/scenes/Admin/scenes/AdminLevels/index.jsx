@@ -48,7 +48,6 @@ class AdminLevels extends React.Component {
             return response.json();
         }).then((response) => {
             if (response.success) {
-                console.log("RES", response);
                 let state = this.state;
                 if (response.data !== undefined && response.data !== null) {
                     state.data = response.data;
