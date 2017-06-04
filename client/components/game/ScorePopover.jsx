@@ -93,10 +93,7 @@ class ScorePopover extends React.Component {
         return (
             <Popover onOuterAction={ this.props.onOuterAction } target={ this.props.target } isOpen={this.props.open}
                      body={ this.renderBody() } tipSize={15}>
-                <div
-                    className={ this.props.open ? "target" : "" }
-                    onClick={this.toggle}>
-                </div>
+                { this.props.children }
             </Popover>
         );
     }
