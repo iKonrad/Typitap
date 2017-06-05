@@ -72,6 +72,8 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 	accuracy, _ := strconv.ParseFloat(c.FormValue("accuracy"), 32)
 	gameTime, _ := strconv.Atoi(c.FormValue("time"))
 
+	// @TODO : Parse playback json and save it to database
+
 	// Save result to the database
 	newResult, err := game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, int(accuracy), gameTime, 0)
 
