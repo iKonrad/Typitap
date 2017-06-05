@@ -6,8 +6,8 @@
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 
-$icon-font-path: "./../libs/bootstrap-sass/assets/fonts/bootstrap/";
-@import './../libs/bootstrap-sass/assets/stylesheets/bootstrap';
+
+@import 'bootstrap';
 @import 'flatly/flatly_theme';
 
 
