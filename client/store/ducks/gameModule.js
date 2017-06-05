@@ -37,6 +37,8 @@ const initialState = {
     countdownSeconds: 5,
     waitCountdown: false,
     waitCountdownSeconds: 10,
+    startedTimestamp: 0,
+    playback: [],
     online: false,
     room: {
         id: '',
@@ -54,12 +56,23 @@ export default function reducer(state = initialState, action) {
 
     switch (action.type) {
         case START_GAME:
+
+            let time = +new Date();
+
             return {
                 ...state,
                 started: true,
                 starting: false,
                 countdown: false,
                 online: action.online,
+                startedTimestamp: time,
+                playback: [
+                    ...state.playback,
+                    {
+                        t: 0,
+                        a: "start"
+                    }
+                ]
             };
         case STARTING_GAME:
             return {
@@ -73,9 +86,50 @@ export default function reducer(state = initialState, action) {
                 online: true,
             }
         case UPDATE_INPUT:
+
+            /*
+                Playback object:
+                t: time delta
+                a: action (n - new character, d - deleted character(
+                v: value (character added)
+                c: cursor offset from right side (0 - added on end, 1 - second from right etc)
+             */
+
+            time = +new Date();
+
+            let t = time - state.startedTimestamp;
+
+            let a = "n";
+            if (action.value.length < state.inputValue.length) {
+                a = "d";
+            }
+
+            let c = 0;
+            let v = "";
+
+            for (let i = 0; i < action.value.length; i++) {
+                if (action.value[i] !== state.inputValue[i]) {
+                    c = action.value.length - i;
+                    if ( a !== "d") {
+                        c--;
+                    }
+                    v = action.value[i];
+                    break;
+                }
+            }
+
             return {
                 ...state,
-                inputValue: action.value
+                inputValue: action.value,
+                playback: [
+                    ...state.playback,
+                    {
+                        t,
+                        a,
+                        v,
+                        c
+                    }
+                ]
             };
         case FINISH_WORD:
             return {
@@ -169,8 +223,18 @@ export default function reducer(state = initialState, action) {
                 place: action.place
             };
 
+            time = +new Date();
+            t = time - state.startedTimestamp;
+
             return {
                 ...state,
+                playback: [
+                    ...state.playback,
+                    {
+                        t,
+                        a: "finish",
+                    },
+                ],
                 room: {
                     ...state.room,
                     players

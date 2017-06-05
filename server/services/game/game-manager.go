@@ -266,3 +266,12 @@ func GetResultData(id string) (entities.GameResult, bool) {
 	return result, true
 
 }
+
+func SavePlayback(id string, playback map[string]interface{}) {
+
+	r.Table("game_playbacks").Insert(map[string]interface{}{
+		"id": id,
+		"playback": playback,
+	}).RunWrite(db.Session);
+
+}

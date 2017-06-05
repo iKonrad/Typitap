@@ -12,9 +12,7 @@
 // server/data/static/build/af7ae505a9eed503f8b8e6982036873e.woff2
 // server/data/static/build/b06871f281fee6b241d60582ae9369b9.ttf
 // server/data/static/build/bundle.css
-// server/data/static/build/bundle.css.gz
 // server/data/static/build/bundle.js
-// server/data/static/build/bundle.js.gz
 // server/data/static/build/e18bbf611f2a2e43afc071aa2f4e1512.ttf
 // server/data/static/build/f4769f9bdb7466be65088239c12046d1.eot
 // server/data/static/build/fa2772327f55d8198301fdb8bcfc8158.woff
@@ -266,46 +264,10 @@ func staticBuildBundleCss() (*asset, error) {
 	return a, err
 }
 
-// staticBuildBundleCssGz reads file data from disk. It returns an error on failure.
-func staticBuildBundleCssGz() (*asset, error) {
-	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/bundle.css.gz"
-	name := "static/build/bundle.css.gz"
-	bytes, err := bindataRead(path, name)
-	if err != nil {
-		return nil, err
-	}
-
-	fi, err := os.Stat(path)
-	if err != nil {
-		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
-	}
-
-	a := &asset{bytes: bytes, info: fi}
-	return a, err
-}
-
 // staticBuildBundleJs reads file data from disk. It returns an error on failure.
 func staticBuildBundleJs() (*asset, error) {
 	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/bundle.js"
 	name := "static/build/bundle.js"
-	bytes, err := bindataRead(path, name)
-	if err != nil {
-		return nil, err
-	}
-
-	fi, err := os.Stat(path)
-	if err != nil {
-		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
-	}
-
-	a := &asset{bytes: bytes, info: fi}
-	return a, err
-}
-
-// staticBuildBundleJsGz reads file data from disk. It returns an error on failure.
-func staticBuildBundleJsGz() (*asset, error) {
-	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/bundle.js.gz"
-	name := "static/build/bundle.js.gz"
 	bytes, err := bindataRead(path, name)
 	if err != nil {
 		return nil, err
@@ -546,9 +508,7 @@ var _bindata = map[string]func() (*asset, error){
 	"static/build/af7ae505a9eed503f8b8e6982036873e.woff2": staticBuildAf7ae505a9eed503f8b8e6982036873eWoff2,
 	"static/build/b06871f281fee6b241d60582ae9369b9.ttf": staticBuildB06871f281fee6b241d60582ae9369b9Ttf,
 	"static/build/bundle.css": staticBuildBundleCss,
-	"static/build/bundle.css.gz": staticBuildBundleCssGz,
 	"static/build/bundle.js": staticBuildBundleJs,
-	"static/build/bundle.js.gz": staticBuildBundleJsGz,
 	"static/build/e18bbf611f2a2e43afc071aa2f4e1512.ttf": staticBuildE18bbf611f2a2e43afc071aa2f4e1512Ttf,
 	"static/build/f4769f9bdb7466be65088239c12046d1.eot": staticBuildF4769f9bdb7466be65088239c12046d1Eot,
 	"static/build/fa2772327f55d8198301fdb8bcfc8158.woff": staticBuildFa2772327f55d8198301fdb8bcfc8158Woff,
@@ -616,9 +576,7 @@ var _bintree = &bintree{nil, map[string]*bintree{
 			"af7ae505a9eed503f8b8e6982036873e.woff2": &bintree{staticBuildAf7ae505a9eed503f8b8e6982036873eWoff2, map[string]*bintree{}},
 			"b06871f281fee6b241d60582ae9369b9.ttf": &bintree{staticBuildB06871f281fee6b241d60582ae9369b9Ttf, map[string]*bintree{}},
 			"bundle.css": &bintree{staticBuildBundleCss, map[string]*bintree{}},
-			"bundle.css.gz": &bintree{staticBuildBundleCssGz, map[string]*bintree{}},
 			"bundle.js": &bintree{staticBuildBundleJs, map[string]*bintree{}},
-			"bundle.js.gz": &bintree{staticBuildBundleJsGz, map[string]*bintree{}},
 			"e18bbf611f2a2e43afc071aa2f4e1512.ttf": &bintree{staticBuildE18bbf611f2a2e43afc071aa2f4e1512Ttf, map[string]*bintree{}},
 			"f4769f9bdb7466be65088239c12046d1.eot": &bintree{staticBuildF4769f9bdb7466be65088239c12046d1Eot, map[string]*bintree{}},
 			"fa2772327f55d8198301fdb8bcfc8158.woff": &bintree{staticBuildFa2772327f55d8198301fdb8bcfc8158Woff, map[string]*bintree{}},

@@ -92,6 +92,7 @@ class GameEngine {
                 'accuracy': accuracy,
                 'mistakes': JSON.stringify(state.mistakes),
                 'sessionId': state.room.id,
+                'playback': state.playback,
             };
 
             // Post the results to the server
