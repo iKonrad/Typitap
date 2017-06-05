@@ -16,7 +16,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/gojax/fetch"
-	"github.com/iKonrad/typitap/server/assets"
+	"io/ioutil"
 )
 
 // React struct is contains JS vms
@@ -197,7 +197,12 @@ func newJSVM(filePath string, proxy http.Handler) *JSVM {
 
 	vm.EventLoop.Start()
 	fetch.Enable(vm.EventLoop, proxy)
-	bundle := assets.MustAsset(filePath)
+
+	bundle, err := ioutil.ReadFile(filePath) // just pass the file name
+	if err != nil {
+		fmt.Print(err)
+		panic(err)
+	}
 
 	vm.EventLoop.RunOnLoop(func(_vm *goja.Runtime) {
 		var seed int64

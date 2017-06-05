@@ -21,6 +21,7 @@ import (
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 	"golang.org/x/crypto/acme/autocert"
+	configs "github.com/iKonrad/typitap/server/config"
 )
 
 // App struct.
@@ -91,8 +92,8 @@ func NewApp(opts ...AppOptions) *App {
 	}
 
 	middlewares.ReactJS = middlewares.NewReact(
-		conf.UString("duktape.path"),
-		conf.UBool("debug"),
+		configs.Config.UString("duktape.path"),
+		configs.Config.UBool("debug"),
 		engine,
 	)
 
@@ -218,7 +219,7 @@ func (app *App) Run() {
 	if os.Getenv("ENV") == "production" {
 		Must(app.Engine.StartAutoTLS(":" + "443"))
 	} else {
-		Must(app.Engine.Start(":" + app.Conf.UString("port")))
+		Must(app.Engine.Start(":" + configs.Config.UString("app_port")))
 	}
 
 }

@@ -21,5 +21,5 @@ title: Go Starter Kit
 api:
   prefix: /api
 duktape:
-  path: static/build/bundle.js
+  path: ./../static/build/bundle.js
 `
