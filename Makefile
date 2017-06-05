@@ -7,11 +7,11 @@ GO_FILES      = $(filter-out ./server/assets/bindata.go, $(shell find ./server  
 TEMPLATES     = $(wildcard server/data/templates/*.html)
 BINDATA       = server/assets/bindata.go
 BINDATA_FLAGS = -pkg=assets -prefix=server/data
-BUNDLE        = server/data/static/build/bundle.js
+BUNDLE        = static/build/bundle.js
 APP           = $(shell find client -type f)
 IMPORT_PATH   = $(shell pwd | sed "s|^$(GOPATH)/src/||g")
 APP_NAME      = $(shell pwd | sed 's:.*/::')
-TARGET        = $(BIN)/$(APP_NAME)
+TARGET        = $(APP_NAME)
 GIT_HASH      = $(shell git rev-parse HEAD)
 LDFLAGS       = -w -X main.commitHash=$(GIT_HASH)
 GLIDE         := $(shell command -v glide 2> /dev/null)
@@ -19,8 +19,8 @@ GLIDE         := $(shell command -v glide 2> /dev/null)
 build: $(ON) $(GO_BINDATA) clean $(TARGET)
 
 clean:
-	@rm -rf server/data/static/build/*
-	@rm -rf server/data/bundle.server.js
+	@rm -rf static/build/*
+	@rm -rf bundle.server.js
 	@rm -rf $(BINDATA)
 
 $(ON):

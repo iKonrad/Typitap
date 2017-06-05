@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/websocket"
 
 	"github.com/iKonrad/typitap/server/assets"
+	configs "github.com/iKonrad/typitap/server/config"
 	"github.com/iKonrad/typitap/server/cron"
 	middlewares "github.com/iKonrad/typitap/server/middleware"
 	"github.com/iKonrad/typitap/server/routes"
@@ -21,7 +22,6 @@ import (
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 	"golang.org/x/crypto/acme/autocert"
-	configs "github.com/iKonrad/typitap/server/config"
 )
 
 // App struct.
@@ -45,6 +45,12 @@ func NewApp(opts ...AppOptions) *App {
 
 	options.init()
 
+	env := "dev"
+	if os.Getenv("ENV") == "production" {
+		env = "prod"
+	}
+	configs.Config.Set("env", env)
+
 	// Parse config yaml string from ./conf.go
 	conf, err := config.ParseYaml(confString)
 	Must(err)
@@ -60,6 +66,7 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Make an engine
 	engine := echo.New()
+
 	engine.AutoTLSManager.Cache = autocert.DirCache("~/go/bin/.cache")
 
 	// Use precompiled embedded templates
@@ -68,9 +75,9 @@ func NewApp(opts ...AppOptions) *App {
 	// Set up echo debug level
 	engine.Debug = conf.UBool("debug")
 
-	engine.GET("/favicon.ico", func(c echo.Context) error {
-		return c.Redirect(http.StatusMovedPermanently, "/images/favicon.ico")
-	})
+	//engine.GET("/favicon.ico", func(c echo.Context) error {
+	//	return c.Redirect(http.StatusMovedPermanently, "/images/favicon.ico")
+	//})
 
 	// Register authentication middleware
 	engine.Use(middlewares.CheckAuthHandler)
@@ -80,6 +87,12 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Register Redux State generator middleware
 	engine.Use(middlewares.GenerateStateHandler)
+
+	engine.Static("/static", "static")
+
+	engine.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+		Level: 6,
+	}))
 
 	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
@@ -216,7 +229,7 @@ func NoJsRender(c echo.Context) error {
 
 // Run runs the app
 func (app *App) Run() {
-	if os.Getenv("ENV") == "production" {
+	if configs.Config.UString("env") == "prod" {
 		Must(app.Engine.StartAutoTLS(":" + "443"))
 	} else {
 		Must(app.Engine.Start(":" + configs.Config.UString("app_port")))

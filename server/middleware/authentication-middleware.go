@@ -17,7 +17,7 @@ func CheckAuthHandler(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
 		// Ignore static file requests
-		if strings.HasPrefix(c.Request().URL.Path, "/static") {
+		if strings.HasPrefix(c.Request().RequestURI, "/static") {
 			return next(c)
 		}
 
