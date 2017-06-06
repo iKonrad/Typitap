@@ -1,6 +1,6 @@
 import React from 'react';
 import * as GameUtils from 'utils/gameUtils';
-
+import ReactDOMServer from 'react-dom/server';
 let playTimeout;
 
 class ScorePopoverPlayback extends React.Component {
@@ -14,20 +14,29 @@ class ScorePopoverPlayback extends React.Component {
             startTime: 0,
             currentIndex: 0,
             playText: "",
+            time: 0,
         }
     }
 
     renderText() {
 
-        if (!this.state.playing) {
+        let index = this.props.text.length - this.state.playText.length;
+
+        if (!this.state.playing || index === 0) {
             let words = this.props.text;
             words = words.split(" ");
             words = GameUtils.renderText(this.props.mistakes, words);
             return words.join(" ");
         }
 
-        return this.state.playText;
 
+
+        let greyText = this.props.text.slice(index * -1);
+        console.log(this.state.playText, greyText, index * -1);
+
+        let finalText = (<p><span>{this.state.playText}</span><span className="game__text--guide">{ greyText }</span></p>);
+
+        return ReactDOMServer.renderToStaticMarkup(finalText);
 
     }
 
@@ -95,18 +104,11 @@ class ScorePopoverPlayback extends React.Component {
         state.startTime = +new Date();
         state.currentIndex = 0;
         state.playText = "";
+        state.time = 0;
         this.setState(state);
         let that = this;
         let previousTime = 0;
 
-        // 100 - start
-        // 120 - n - start = 20
-        // 140 - n - x
-        //
-
-
-
-        // console.log(this.state.playback);
         (function fn(i) {
 
             if (!that.state.playing) {
@@ -124,6 +126,9 @@ class ScorePopoverPlayback extends React.Component {
                     that.parsePlaybackItem(currentItem);
                     fn(++i);
                     previousTime = currentItem.t;
+                    let state = that.state;
+                    state.time = parseInt(currentItem.t / 1000);
+                    that.setState(state);
                 }, (currentItem.t - previousTime) / 2)
             };
         }(0));
@@ -164,6 +169,10 @@ class ScorePopoverPlayback extends React.Component {
         this.setState(state);
     }
 
+    renderTime() {
+        return <div className="game__text__playback__time">{ GameUtils.formatTime(this.state.time) }</div>;
+    }
+
 
 
     render() {
@@ -174,7 +183,7 @@ class ScorePopoverPlayback extends React.Component {
                     </p>
                 </div>
                 <div className="game__text__playback">
-                    { this.renderPlayButton() }
+                    { this.renderPlayButton() } { this.renderTime() }
                 </div>
             </div>
         );
