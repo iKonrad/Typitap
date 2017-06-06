@@ -86,13 +86,14 @@ class GameEngine {
             let virtualWords = Math.round(characters / 5);
             let speed = Math.round(virtualWords * (60 / seconds));
             let accuracy = 100 - ((Object.keys(state.mistakes).length / words) * 100).toFixed(1);
+            console.log(state.playback);
             let results = {
                 'time': seconds,
                 'wpm': speed,
                 'accuracy': accuracy,
                 'mistakes': JSON.stringify(state.mistakes),
                 'sessionId': state.room.id,
-                'playback': state.playback,
+                'playback': JSON.stringify(state.playback),
             };
 
             // Post the results to the server

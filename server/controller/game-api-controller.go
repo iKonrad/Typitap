@@ -72,10 +72,14 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 	accuracy, _ := strconv.ParseFloat(c.FormValue("accuracy"), 32)
 	gameTime, _ := strconv.Atoi(c.FormValue("time"))
 
-	// @TODO : Parse playback json and save it to database
+	var playback []map[string]interface{}
+	if c.FormValue("playback") != "" {
+		json.Unmarshal([]byte(c.FormValue("playback")), &playback)
+	}
 
 	// Save result to the database
 	newResult, err := game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, int(accuracy), gameTime, 0)
+	game.SavePlayback(newResult.Id, playback)
 
 	game.MarkSessionFinished(c.FormValue("sessionId"))
 
@@ -169,4 +173,18 @@ func (gc *GameAPIController) GetResultsData(c echo.Context) error {
 		"success": ok,
 		"data":    result,
 	})
+}
+
+func (gc *GameAPIController) GetPlaybackData(c echo.Context) error {
+
+	resultId := c.Param("id")
+
+	playback, ok := game.GetPlayback(resultId)
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": ok,
+		"data": playback,
+	});
+
+
 }

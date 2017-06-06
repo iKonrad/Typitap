@@ -1,8 +1,9 @@
 import React from 'react';
 import Popover from "react-popover"
 import Spinner from 'components/app/Spinner';
-import * as GameUtils from 'utils/gameUtils';
 import StatsBadge from 'components/user/UserStatsBadge';
+import * as GameUtils from 'utils/gameUtils';
+import ScorePopoverPlayback from './ScorePopoverPlayback';
 
 class ScorePopover extends React.Component {
 
@@ -34,11 +35,7 @@ class ScorePopover extends React.Component {
         }
     }
 
-    renderText() {
-        let words = this.state.data.Session.Text.Text.split(" ");
-        words = GameUtils.renderText(this.state.data.Mistakes, words);
-        return words.join(" ");
-    }
+
 
     renderResults() {
         return (
@@ -67,10 +64,7 @@ class ScorePopover extends React.Component {
                 <div>
                     <div className="row">
                         <div className="col col-xs-12">
-                            <div className="game__text">
-                                <p dangerouslySetInnerHTML={{__html: this.renderText()}}>
-                                </p>
-                            </div>
+                            <ScorePopoverPlayback resultId={ this.props.resultId } text={ this.state.data.Session.Text.Text } mistakes={ this.state.data.Mistakes } />
                         </div>
                     </div>
                     <div className="row">

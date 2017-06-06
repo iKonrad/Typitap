@@ -267,11 +267,26 @@ func GetResultData(id string) (entities.GameResult, bool) {
 
 }
 
-func SavePlayback(id string, playback map[string]interface{}) {
+func SavePlayback(id string, playback []map[string]interface{}) {
 
 	r.Table("game_playbacks").Insert(map[string]interface{}{
 		"id": id,
 		"playback": playback,
 	}).RunWrite(db.Session);
+
+}
+
+func GetPlayback(id string) (map[string]interface{}, bool) {
+
+	resp, err := r.Table("game_playbacks").Get(id).Run(db.Session);
+
+	if err != nil || resp.IsNil() {
+		return map[string]interface{}{}, false
+	}
+
+	var playback map[string]interface{}
+	err = resp.One(&playback)
+
+	return playback, true
 
 }

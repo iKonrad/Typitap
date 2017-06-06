@@ -15,7 +15,7 @@ func init() {
 
 func SendEmail(to string, templateName string, vars map[string]interface{}) bool {
 
-	if config.Config.UBool("debug", false) {
+	if config.Config.UBool("debug", true) {
 		return true
 	}
 

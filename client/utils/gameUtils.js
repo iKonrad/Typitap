@@ -18,3 +18,31 @@ export function formatTime(time) {
 
     return minutes + ':' + seconds;
 }
+
+
+export function insertCharacterAtIndex(word, index, character) {
+
+    if (index === 0) {
+        return word + character;
+    }
+
+    let first = word.slice(0, index * -1);
+    let last = word.slice(index * -1);
+
+    return first + character + last;
+
+}
+
+
+export function removeCharacterAtIndex(word, index) {
+
+    if (index === 0) {
+        return word.slice(0, -1);
+    }
+
+    let first = word.slice(0, (index - 1) * -1);
+    let last = word.slice(index * -1);
+
+    return first + last;
+
+}

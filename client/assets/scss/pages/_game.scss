@@ -13,15 +13,28 @@
     display: none;
   }
 
+
+
   &__text {
     background-color: $grey-050;
-    padding: 30px;
+    padding: 20px;
     font-size: 18px;
     width: 100%;
     text-align: left;
     border-radius: 6px;
     box-shadow: inset 0 1px 6px 0 hsla(0,0%,81%,.5);
 
+    &__playback {
+      margin: 7px 0px 10px 10px;
+      .fa {
+        font-size: 18px;
+        color: $grey-400;
+        &:hover {
+          cursor: pointer;
+          opacity: 0.95;
+        }
+      }
+    }
 
     @media screen and (min-width: $screen-sm-min) {
       min-width: 500px;

@@ -11,7 +11,7 @@ BUNDLE        = static/build/bundle.js
 APP           = $(shell find client -type f)
 IMPORT_PATH   = $(shell pwd | sed "s|^$(GOPATH)/src/||g")
 APP_NAME      = $(shell pwd | sed 's:.*/::')
-TARGET        = $(APP_NAME)
+TARGET        = ./$(APP_NAME)
 GIT_HASH      = $(shell git rev-parse HEAD)
 LDFLAGS       = -w -X main.commitHash=$(GIT_HASH)
 GLIDE         := $(shell command -v glide 2> /dev/null)
@@ -22,6 +22,7 @@ clean:
 	@rm -rf static/build/*
 	@rm -rf bundle.server.js
 	@rm -rf $(BINDATA)
+	@rm -rf $(TARGET)
 
 $(ON):
 	go install $(IMPORT_PATH)/vendor/github.com/olebedev/on
@@ -48,6 +49,7 @@ restart: LDFLAGS += -X main.debug=true
 restart: $(BINDATA) kill $(TARGET)
 	@echo restart the app...
 	@$(TARGET) run & echo $$! > $(PID)
+
 
 $(BINDATA):
 	$(GO_BINDATA) $(BINDATA_FLAGS) -o=server/assets/bindata.go server/data/...
