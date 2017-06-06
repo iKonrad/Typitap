@@ -183,8 +183,7 @@ func (gc *GameAPIController) GetPlaybackData(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": ok,
-		"data": playback,
-	});
-
+		"data":    playback,
+	})
 
 }

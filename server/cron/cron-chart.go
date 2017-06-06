@@ -7,7 +7,7 @@ import (
 func registerChartJobs() {
 
 	c.AddFunc("0 0 0 * * *", func() {
-		topchart.ResetChart("today");
+		topchart.ResetChart("today")
 	})
 
 	//c.AddFunc("0 0 0 * * 1", func() {
@@ -15,9 +15,7 @@ func registerChartJobs() {
 	//})
 
 	c.AddFunc("0 0 0 1 * *", func() {
-		topchart.ResetChart("month");
+		topchart.ResetChart("month")
 	})
 
 }
-
-

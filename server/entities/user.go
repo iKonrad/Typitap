@@ -9,11 +9,11 @@ type User struct {
 	Password string `gorethink:"password"`
 	Username string `gorethink:"username"`
 
-	Active bool `gorethink:"active"`
-	Role string `gorethink:"role"`
+	Active bool   `gorethink:"active"`
+	Role   string `gorethink:"role"`
 
 	Created time.Time `gorethink:"created"`
 
 	Level int `gorethink:"level"`
-	Exp int `gorethink:"exp"`
+	Exp   int `gorethink:"exp"`
 }

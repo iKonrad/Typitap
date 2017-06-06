@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/labstack/echo"
 	r "gopkg.in/gorethink/gorethink.v3"
-	"github.com/iKonrad/typitap/server/entities"
 )
 
 type AdminAPIController struct {
@@ -64,7 +64,6 @@ func (uc AdminAPIController) GetLevels(c echo.Context) error {
 	})
 }
 
-
 func (uc AdminAPIController) UpdateTableField(c echo.Context) error {
 
 	table := c.FormValue("table")
@@ -85,7 +84,6 @@ func (uc AdminAPIController) UpdateTableField(c echo.Context) error {
 	}
 
 }
-
 
 func (uc AdminAPIController) updateUserTable(c echo.Context) error {
 
@@ -126,9 +124,8 @@ func (uc AdminAPIController) updateLevelsTable(c echo.Context) error {
 
 }
 
-
 func (uc AdminAPIController) convertProperty(property string, stringValue string, propertyType string) map[string]interface{} {
-	updateValues :=  make(map[string]interface{})
+	updateValues := make(map[string]interface{})
 
 	switch propertyType {
 	case "":
@@ -142,9 +139,9 @@ func (uc AdminAPIController) convertProperty(property string, stringValue string
 		timeVal, _ := time.Parse(time.RFC3339, stringValue)
 		updateValues[property] = timeVal
 	case "bool":
-		boolVal := false;
+		boolVal := false
 		if stringValue == "1" || stringValue == "true" || stringValue == "yes" {
-			boolVal = true;
+			boolVal = true
 		}
 		updateValues[property] = boolVal
 	}

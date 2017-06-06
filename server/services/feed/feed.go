@@ -58,7 +58,6 @@ func SendActivityToUserAndFollowers(following string, details map[string]string)
 	return ok
 }
 
-
 func SendGlobalActivity(details map[string]string) bool {
 
 	activity, ok := addNewActivity(details)
@@ -201,7 +200,7 @@ func GetFeedForUser(userId string, offset int) (entities.UserFeed, bool) {
 
 // Returns global feed  (for /play page)
 func GetGlobalFeed(offset int) (entities.UserFeed, bool) {
-	return GetFeedForUser("global", offset);
+	return GetFeedForUser("global", offset)
 }
 
 // Follows a user: Adds records from following and followers arrays for given user IDs

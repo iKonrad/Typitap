@@ -34,6 +34,7 @@ func init() {
 	}
 
 }
+
 // Calculates how many points should a user get for the game result
 // (Words * PB) * wpmMultiplier * Accuracy
 func CalculatePoints(result *entities.GameResult, players int) int {
@@ -46,7 +47,6 @@ func CalculatePoints(result *entities.GameResult, players int) int {
 
 	// Multiply by a point base, to give ourselves a bit more flexiblity
 	points = float32(virtualWords) * POINT_BASE
-
 
 	// Get and apply multipliers
 	wpmMultiplier := getWpmMultiplier(result.WPM)
@@ -76,7 +76,7 @@ func ApplyPoints(user *entities.User, points int) (bool, bool) {
 	leveledUp := false
 
 	// Check if user should level up
-	if (user.Exp + points) > nextThreshold  {
+	if (user.Exp + points) > nextThreshold {
 		// User should level up
 		nextExp := (nextThreshold - (user.Exp + points)) * -1
 		user.Level++
@@ -163,9 +163,9 @@ func getPlaceMultiplier(place int, players int) float32 {
 func GetLevelName(level int) string {
 
 	if len(Levels) < level {
-		return Levels[len(Levels) - 1].Name
+		return Levels[len(Levels)-1].Name
 	}
 
-	return Levels[level - 1].Name
+	return Levels[level-1].Name
 
 }

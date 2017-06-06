@@ -20,16 +20,16 @@ func SendEmail(to string, templateName string, vars map[string]interface{}) bool
 	}
 
 	email := &mail.InfoSendMail{
-		FromEmail:          config.Config.UString("mail_from_address", "jarson@me.com"),
-		FromName:           "Typitap",
-		MjTemplateID:       templateName,
-		MjTemplateLanguage: "true",
+		FromEmail:                config.Config.UString("mail_from_address", "jarson@me.com"),
+		FromName:                 "Typitap",
+		MjTemplateID:             templateName,
+		MjTemplateLanguage:       "true",
 		MjTemplateErrorReporting: "jarson@me.com",
-		MjTemplateErrorDeliver: "deliver",
+		MjTemplateErrorDeliver:   "deliver",
 		Recipients: []mail.Recipient{
 			{
 				Email: to,
-				Vars: vars,
+				Vars:  vars,
 			},
 		},
 		Vars: vars,

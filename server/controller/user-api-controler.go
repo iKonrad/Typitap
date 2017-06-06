@@ -7,6 +7,7 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/iKonrad/typitap/server/services/feed"
 	"github.com/iKonrad/typitap/server/services/levels"
+	"github.com/iKonrad/typitap/server/services/mail"
 	"github.com/iKonrad/typitap/server/services/stats"
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/labstack/echo"
@@ -49,7 +50,7 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 	if !ok {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"success": false,
-			"error":   "Internal error occurred",
+			"message": "Internal error occurred",
 		})
 	}
 
@@ -79,7 +80,29 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 	case "Email":
 		isValid, err := us.ValidateEmail(value)
 		if isValid {
-			user.Email = value
+
+			us.RemoveTokensForUser(us.TOKEN_CHANGE_EMAIL, user.Id)
+			token, ok := us.GenerateUserToken(us.TOKEN_CHANGE_EMAIL, user, value)
+
+			if !ok {
+				return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+					"success": false,
+					"message": "Could not generate a token",
+				})
+			}
+
+			// Send an e-mail change link
+			link := "http://" + c.Request().Host + "/auth/email/" + token
+			mail.SendEmail(user.Email, mail.TEMPLATE_CHANGE_EMAIL, mail.TemplateButtonLink(
+				user.Name,
+				user.Username,
+				link,
+			))
+
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"success": true,
+				"message": "We've sent you a confirmation link on your new e-mail address.",
+			})
 		} else {
 			return c.JSON(http.StatusOK, map[string]interface{}{
 				"success": false,
@@ -208,6 +231,7 @@ func (gc UserAPIController) UnfollowUser(c echo.Context) error {
 	})
 }
 
+// Retrieves user's profile data
 func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 
 	username := c.Param("user")
@@ -251,6 +275,7 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 	})
 }
 
+// Retrieves user followers and following users
 func (gc UserAPIController) GetUserFollow(c echo.Context) error {
 
 	// Check if user is logged in
@@ -270,3 +295,41 @@ func (gc UserAPIController) GetUserFollow(c echo.Context) error {
 	})
 
 }
+
+// Crates an activate token and sends an e-mail with a link to confirm users account
+func (gc UserAPIController) ResendActivationLink(c echo.Context) error {
+
+	user := c.Get("User").(entities.User)
+
+	if user.Active {
+		return c.JSON(http.StatusPartialContent, map[string]interface{}{
+			"success": false,
+			"message": "Your account is already active. Try refreshing the page",
+		})
+	}
+
+	us.RemoveTokensForUser("activate", user.Id)
+	token, ok := us.GenerateUserToken("activate", user, "")
+
+	if !ok {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"success": false,
+			"message": "Could not generate a token",
+		})
+	}
+
+	// Send confirmation e-mail with an activation link
+	link := "http://" + c.Request().Host + "/auth/activate/" + token
+	mail.SendEmail(user.Email, mail.TEMPLATE_NEW_ACCOUNT, mail.TemplateButtonLink(
+		user.Name,
+		user.Username,
+		link,
+	))
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": true,
+		"message": "E-mail sent",
+	})
+
+}
+

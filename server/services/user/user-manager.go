@@ -1,11 +1,10 @@
 package user
 
 import (
+	"encoding/json"
 	"errors"
 	"log"
 	"time"
-
-	"encoding/json"
 
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
@@ -223,78 +222,6 @@ func UserExists(id string) bool {
 	res, err := r.Table("users").Get(id).Run(db.Session)
 	defer res.Close()
 	if err != nil || res.IsNil() {
-		return false
-	}
-
-	return true
-}
-
-func GenerateUserToken(tokenType string, user entities.User) (string, bool) {
-
-	// Generate activation token
-	tokenString, _ := uuid.NewV4()
-	expiresDate := time.Now()
-	expiresDate.AddDate(0, 1, 0)
-	token := entities.UserToken{
-		User:    user,
-		Token:   tokenString.String(),
-		Expires: expiresDate,
-		Used:    false,
-		Type:    tokenType,
-	}
-
-	res, err := r.Table("tokens").Insert(token).Run(db.Session)
-	defer res.Close()
-	if err != nil {
-		log.Println(err)
-		return "", false
-	}
-
-	return tokenString.String(), true
-
-}
-
-func GetUserToken(token string, tokenType string) (entities.UserToken, bool) {
-
-	res, err := r.Table("tokens").Filter(map[string]interface{}{
-		"token": token,
-		"type":  tokenType,
-		"used":  false, // @TODO: Add expires condition
-	}).Merge(func(p r.Term) interface{} {
-		return map[string]interface{}{
-			"userId": r.Table("users").Get(p.Field("userId")),
-		}
-	}).Run(db.Session)
-	defer res.Close()
-	if err != nil {
-		log.Println(err)
-		return entities.UserToken{}, false
-	}
-
-	var tokenObject entities.UserToken
-	err = res.One(&tokenObject)
-	if err != nil {
-		log.Println(err)
-		return entities.UserToken{}, false
-	}
-
-	return tokenObject, true
-
-}
-
-func UseUserToken(token string, tokenType string) bool {
-
-	res, err := r.Table("tokens").Filter(map[string]interface{}{
-		"token": token,
-		"type":  tokenType,
-		"used":  false,
-	}).Update(map[string]interface{}{
-		"used": true,
-	}).Run(db.Session)
-
-	defer res.Close()
-
-	if err != nil {
 		return false
 	}
 

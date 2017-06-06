@@ -1,14 +1,14 @@
 package user
 
 import (
-	"strings"
 	"github.com/badoux/checkmail"
+	"strings"
 )
 
 func ValidateUsername(username string) (bool, string) {
 
-	isValid := true;
-	var fieldError string;
+	isValid := true
+	var fieldError string
 
 	if username == "" {
 		fieldError = "This field cannot be empty"
@@ -32,14 +32,13 @@ func ValidateUsername(username string) (bool, string) {
 	return isValid, fieldError
 }
 
-
 func ValidateName(name string) (bool, string) {
 
-	isValid := true;
-	var fieldError string;
+	isValid := true
+	var fieldError string
 
 	// First name validation
-	if  name == "" {
+	if name == "" {
 		fieldError = "This field cannot be empty"
 		isValid = false
 	} else {
@@ -53,11 +52,10 @@ func ValidateName(name string) (bool, string) {
 
 }
 
-
 func ValidateEmail(email string) (bool, string) {
 
-	isValid := true;
-	var fieldError string;
+	isValid := true
+	var fieldError string
 
 	// Email validation
 	if email == "" {
@@ -80,7 +78,6 @@ func ValidateEmail(email string) (bool, string) {
 	return isValid, fieldError
 
 }
-
 
 func ValidatePassword(password string) (bool, string) {
 	var err string

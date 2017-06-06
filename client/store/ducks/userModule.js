@@ -3,6 +3,7 @@ const LOGOUT_USER_SUCCESS =  "LOGOUT_USER_SUCCESS";
 const ACTIVATE_USER_SUCCESS =  "ACTIVATE_USER_SUCCESS";
 const ACTIVATE_USER_FAILURE =  "ACTIVATE_USER_FAILURE";
 const SAVE_USER_DATA =  "SAVE_USER_DATA";
+const UPDATE_EMAIL_SUCCESS = "UPDATE_EMAIL_SUCCESS";
 const UPDATE_USER_FIELD = "UPDATE_USER_FIELD";
 const SET_USER_STATS = "SET_USER_STATS";
 const SET_FOLLOW_DATA = "SET_FOLLOW_DATA";
@@ -39,6 +40,14 @@ export default function reducer(state = initialState, action) {
                 data: {
                     ...state.data,
                     Active: true,
+                }
+            }
+        case UPDATE_EMAIL_SUCCESS:
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    Email: action.email,
                 }
             }
         case UPDATE_USER_FIELD:
@@ -147,4 +156,13 @@ export function fetchFollowData() {
             }
         });
     }
+}
+
+
+export function activateUser() {
+    return {type: ACTIVATE_USER_SUCCESS};
+}
+
+export function changeEmail(email) {
+    return {type: UPDATE_EMAIL_SUCCESS, email};
 }

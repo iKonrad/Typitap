@@ -4,17 +4,21 @@ import Navbar from 'components/navigation/Navbar';
 import NotificationsSystem from 'reapop';
 import theme from 'reapop-theme-wybo';
 import * as socketActions from 'store/ducks/socketModule';
+import AlertBar from './components/AlertBar';
 
 class Base extends Component {
 
 
     constructor(props) {
-        super(props)
+        super(props);
         this.onUnload = this.disconnectWebsocket.bind(this)
 
         this.state = {
             loaded: false,
         }
+
+
+
     }
 
     componentDidMount() {
@@ -61,6 +65,7 @@ class Base extends Component {
             <div className="app-wrapper">
                 { showEmptyBase ? "" : (<Navbar />) }
                 <div id="react-container" className="main-content">
+                    { showEmptyBase ? "" : (<AlertBar/>) }
                     { this.props.children }
                 </div>
                 { this.launchNotifications() }
@@ -74,6 +79,7 @@ class Base extends Component {
 const mapStatsToProps = (state) => {
     return {
         game: state.game,
+        user: state.user,
     };
 };
 

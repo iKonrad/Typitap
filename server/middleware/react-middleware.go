@@ -29,8 +29,7 @@ type React struct {
 	path  string
 }
 
-var ReactJS *React;
-
+var ReactJS *React
 
 // NewReact initialized React struct
 func NewReact(filePath string, debug bool, proxy http.Handler) *React {
@@ -73,10 +72,10 @@ func (r *React) Handle(c echo.Context) error {
 	fmt.Println(c.Get("Store"))
 
 	params := map[string]interface{}{
-		"url":     c.Request().URL.String(),
-		"headers": map[string][]string(c.Request().Header),
-		"uuid":    UUID.String(),
-		"state": c.Get("State"),
+		"url":      c.Request().URL.String(),
+		"headers":  map[string][]string(c.Request().Header),
+		"uuid":     UUID.String(),
+		"state":    c.Get("State"),
 		"response": c.Get("Response"),
 	}
 
@@ -214,7 +213,7 @@ func newJSVM(filePath string, proxy http.Handler) *JSVM {
 		_, err := _vm.RunScript("bundle.js", string(bundle))
 		if err != nil {
 			if exception, ok := err.(*goja.Exception); ok {
-				panic(exception.String());
+				panic(exception.String())
 			}
 		}
 

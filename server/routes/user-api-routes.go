@@ -21,4 +21,5 @@ func (api *UserAPIRoutes) Bind(group *echo.Group) {
 	group.POST("/unfollow/:followUser", controller.UserAPI.UnfollowUser)
 	group.GET("/profile/:user", controller.UserAPI.GetUserProfileData)
 	group.GET("/followers", controller.UserAPI.GetUserFollow)
+	group.POST("/account/resend", controller.UserAPI.ResendActivationLink)
 }

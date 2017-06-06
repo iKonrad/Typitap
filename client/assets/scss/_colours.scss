@@ -71,9 +71,9 @@ $yellow-300:     darken($yellow-200, 15%);
 $yellow-400:     darken($yellow-200, 30%);
 $yellow-500:     darken($yellow-200, 45%);
 
-
-$orange-200:        #e67e22;
-$orange-300: darken($orange-200, 10%);
+$orange-200:        #FFB718;
+$orange-100: lighten($orange-200, 5%);
+$orange-300: darken($orange-200, 5%);
 $orange-400:        #f39c12;
 $orange-500:       #d35400;
 

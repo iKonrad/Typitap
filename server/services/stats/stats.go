@@ -3,11 +3,10 @@ package stats
 import (
 	"log"
 
+	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	r "gopkg.in/gorethink/gorethink.v3"
-	"github.com/iKonrad/typitap/server/entities"
 )
-
 
 func NewStats(user entities.User) entities.UserStats {
 	return entities.UserStats{
@@ -17,7 +16,7 @@ func NewStats(user entities.User) entities.UserStats {
 		GoldenTrophies: 0,
 		SilverTrophies: 0,
 		BronzeTrophies: 0,
-		GamesPlayed:	0,
+		GamesPlayed:    0,
 	}
 }
 
@@ -37,7 +36,6 @@ func calculateStatsForUser(userId string) {
 
 	var results []map[string]interface{}
 	err = resp.All(&results)
-
 
 	// No returns, we can stop the function
 	if len(results) == 0 {
@@ -61,7 +59,6 @@ func calculateStatsForUser(userId string) {
 }
 
 func CalculateStats() {
-
 
 	resp, err := r.Table("users").Pluck("id").Run(db.Session)
 	defer resp.Close()
@@ -100,12 +97,9 @@ func IncrementTrophyStat(place int8, userId string) {
 	}
 }
 
-
 func IncrementGamesStat(userId string) {
 	IncrementStat("gamesPlayed", userId)
 }
-
-
 
 func GetStatsForUser(userId string) (map[string]interface{}, bool) {
 
@@ -117,8 +111,6 @@ func GetStatsForUser(userId string) (map[string]interface{}, bool) {
 
 	var userStats map[string]interface{}
 	err = resp.One(&userStats)
-
-
 
 	return userStats, true
 

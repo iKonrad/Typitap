@@ -2,7 +2,7 @@ package roles
 
 // Predefined roles with Level integer
 type Role struct {
-	Name string
+	Name  string
 	Level int
 }
 
@@ -12,4 +12,3 @@ type Route struct {
 	Role *Role
 	Path string
 }
-

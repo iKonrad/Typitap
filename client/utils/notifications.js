@@ -43,7 +43,7 @@ class Notifications {
      */
     static accountCreated() {
         return notify({
-            title: `Account created`,
+            title: `Activate your account`,
             message: 'We have sent you an e-mail with a confirmation link to activate your account',
             status: 'success',
             dismissAfter: 0,

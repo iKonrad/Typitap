@@ -6,11 +6,8 @@ import (
 
 func registerStatsJobs() {
 
-	c.AddFunc("0 * * * * *", func() {
+	c.AddFunc("0 0 0 * * *", func() {
 		stats.CalculateStats()
 	})
 
-
 }
-
-

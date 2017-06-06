@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"github.com/iKonrad/typitap/server/entities"
-	"github.com/labstack/echo"
 	"github.com/iKonrad/typitap/server/services/roles"
+	"github.com/labstack/echo"
 	"net/http"
 	"strings"
 )
@@ -27,7 +27,7 @@ func CheckRoleHandler(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		url := c.Request().RequestURI
-		canAccess := roles.CanRoleAccessURL(userRole, url);
+		canAccess := roles.CanRoleAccessURL(userRole, url)
 		if canAccess {
 			return next(c)
 		}
@@ -35,7 +35,7 @@ func CheckRoleHandler(next echo.HandlerFunc) echo.HandlerFunc {
 		if strings.HasPrefix(url, "/api") {
 			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
 				"success": false,
-			});
+			})
 		}
 		return c.Redirect(http.StatusTemporaryRedirect, "/404")
 	}

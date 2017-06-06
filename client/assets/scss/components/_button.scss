@@ -47,7 +47,9 @@
   }
 
   &.btn-link {
+    padding: 0 5px;
     color: $brand-primary;
+    min-height: 0;
   }
 
   &.btn-follow {

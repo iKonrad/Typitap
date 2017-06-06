@@ -4,6 +4,8 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import PasswordResetForm from './components/PasswordResetForm';
 import PasswordForgotForm from './components/PasswordForgotForm';
+
+
 import {Link} from 'react-router';
 
 class Auth extends Component {
@@ -25,12 +27,12 @@ class Auth extends Component {
                 <LoginForm />
             );
         } else if (this.props.route.path === '/auth/password/forgot') {
-            return (<PasswordForgotForm/>);
+            return (
+                <PasswordForgotForm/>
+            );
         } else {
-
             let response = this.props.app.response;
             let isValid = response.success && response.valid;
-
             return (
                 <PasswordResetForm token={ this.props.params.token } isValid={ isValid }/>
             );

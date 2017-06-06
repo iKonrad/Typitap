@@ -1,9 +1,8 @@
 package routes
 
-
 import (
-"github.com/iKonrad/typitap/server/controller"
-"github.com/labstack/echo"
+	"github.com/iKonrad/typitap/server/controller"
+	"github.com/labstack/echo"
 )
 
 // API is a defined as struct bundle
@@ -17,13 +16,8 @@ func (api *AuthenticationAPIRoutes) Bind(group *echo.Group) {
 	group.GET("/check", controller.AuthenticationAPI.TestHandler)
 	group.POST("/signup", controller.AuthenticationAPI.HandleSignup)
 	group.POST("/login", controller.AuthenticationAPI.HandleLogin)
-	group.POST("/logout", controller.AuthenticationAPI.HandleLogout);
-	group.POST("/password/forgot", controller.AuthenticationAPI.HandlePasswordForgot);
-	group.POST("/password/reset", controller.AuthenticationAPI.HandlePasswordReset);
-
-
-
+	group.POST("/logout", controller.AuthenticationAPI.HandleLogout)
+	group.POST("/password/forgot", controller.AuthenticationAPI.HandlePasswordForgot)
+	group.POST("/password/reset", controller.AuthenticationAPI.HandlePasswordReset)
 
 }
-
-

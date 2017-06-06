@@ -29,13 +29,8 @@ class ScorePopoverPlayback extends React.Component {
             return words.join(" ");
         }
 
-
-
         let greyText = this.props.text.slice(index * -1);
-        console.log(this.state.playText, greyText, index * -1);
-
         let finalText = (<p><span>{this.state.playText}</span><span className="game__text--guide">{ greyText }</span></p>);
-
         return ReactDOMServer.renderToStaticMarkup(finalText);
 
     }
@@ -120,9 +115,7 @@ class ScorePopoverPlayback extends React.Component {
 
                 let currentItem = that.state.playback[i];
 
-                // console.log("Delay", i, currentItem.t - previousTime)
                 playTimeout = setTimeout(function () {
-                    // console.log(currentItem);
                     that.parsePlaybackItem(currentItem);
                     fn(++i);
                     previousTime = currentItem.t;
@@ -132,6 +125,10 @@ class ScorePopoverPlayback extends React.Component {
                 }, (currentItem.t - previousTime) / 2)
             };
         }(0));
+    }
+
+    componentWillUnmount() {
+        this.stop();
     }
 
     stop() {
@@ -161,7 +158,6 @@ class ScorePopoverPlayback extends React.Component {
                 state.playText = state.playText + " ";
                 break;
             case "end":
-                console.log('stopping');
                 this.stop();
                 break;
         }

@@ -5,6 +5,7 @@ import Auth from "scenes/Auth";
 import Home from 'scenes/Home';
 import Logout from 'scenes/Auth/scenes/Logout';
 import Activate from 'scenes/Auth/scenes/Activate';
+import EmailChange from 'scenes/Auth/scenes/EmailChange';
 import Play from 'scenes/Play';
 import GameWindow from 'scenes/Game';
 import Account from 'scenes/Account';
@@ -63,6 +64,7 @@ export default ({store, first}) => {
             <Route path="/u/:user" component={Profile} onEnter={w(Profile.clientInit)}/>
 
             <Route path="/auth/activate/:token" emptyBase={true} component={Activate} onEnter={w(Activate.clientInit)} />
+            <Route path="/auth/email/:token" component={EmailChange} onEnter={w(EmailChange.clientInit)} />
             <Route path="auth/logout" component={Logout} onEnter={w(Logout.clientInit)} />
             <Route path="/auth/password/reset/:token" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)} />
             <Route path="/auth/password/forgot" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)} />

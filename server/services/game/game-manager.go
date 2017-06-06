@@ -251,7 +251,7 @@ func GetResultData(id string) (entities.GameResult, bool) {
 	}).Run(db.Session)
 
 	if err != nil {
-		log.Println("ERR", err);
+		log.Println("ERR", err)
 		return entities.GameResult{}, false
 	}
 
@@ -259,7 +259,7 @@ func GetResultData(id string) (entities.GameResult, bool) {
 	err = resp.One(&result)
 
 	if err != nil {
-		log.Println("ERR2", err);
+		log.Println("ERR2", err)
 		return entities.GameResult{}, false
 	}
 
@@ -270,15 +270,15 @@ func GetResultData(id string) (entities.GameResult, bool) {
 func SavePlayback(id string, playback []map[string]interface{}) {
 
 	r.Table("game_playbacks").Insert(map[string]interface{}{
-		"id": id,
+		"id":       id,
 		"playback": playback,
-	}).RunWrite(db.Session);
+	}).RunWrite(db.Session)
 
 }
 
 func GetPlayback(id string) (map[string]interface{}, bool) {
 
-	resp, err := r.Table("game_playbacks").Get(id).Run(db.Session);
+	resp, err := r.Table("game_playbacks").Get(id).Run(db.Session)
 
 	if err != nil || resp.IsNil() {
 		return map[string]interface{}{}, false

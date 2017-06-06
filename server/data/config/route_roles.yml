@@ -1,11 +1,11 @@
-admin:
-  path: /admin
-  role: ROLE_ADMIN
 
+# GAME STUFF
 session_post_result:
   path: /api/game/session/result
   role: ROLE_USER
 
+
+# USER STUFF
 user_get_results:
   path: /api/user/results
   role: ROLE_USER
@@ -18,17 +18,23 @@ user_get_feed:
   path: /api/user/feed
   role: ROLE_USER
 
-user_user_follow:
+api_user_follow:
   path: /api/user/follow
   role: ROLE_USER
 
-user_user_unfollow:
+api_user_unfollow:
   path: /api/user/unfollow
+  role: ROLE_USER
+
+api_user_account:
+  path: /api/user/account
   role: ROLE_USER
 
 user_account:
   path: /account
   role: ROLE_USER
+
+
 
 # ADMIN API
 admin_api:
@@ -38,3 +44,7 @@ admin_api:
 admin_api_roles:
   path: /api/admin/roles
   role: ROLE_SUPER_ADMIN
+
+admin:
+  path: /admin
+  role: ROLE_ADMIN

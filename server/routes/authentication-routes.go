@@ -12,9 +12,8 @@ type AuthenticationRoutes struct{}
 
 // Bind attaches api routes
 func (ar *AuthenticationRoutes) Bind(group *echo.Group) {
-	group.GET("/logout", controller.Authentication.HandleLogout);
-	group.GET("/activate/:token", controller.Authentication.HandleActivate);
+	group.GET("/logout", controller.Authentication.HandleLogout)
+	group.GET("/activate/:token", controller.Authentication.HandleActivate)
 	group.GET("/password/reset/:token", controller.Authentication.HandleValidatePasswordToken)
+	group.GET("/email/:token", controller.Authentication.HandleEmailChangeToken)
 }
-
-

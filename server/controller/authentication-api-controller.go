@@ -54,9 +54,7 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 
 	// Data is valid, so we can create a new user now
 	nu, err := us.CreateUser(details)
-	newUser := us.ConvertUserToMap(&nu);
-
-
+	newUser := us.ConvertUserToMap(&nu)
 	if err != nil {
 		log.Println(err)
 	}
@@ -65,7 +63,7 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 	newUser["LevelName"] = levels.GetLevelName(int(newUser["Level"].(float64)))
 
 	// Generate an activation token for the confirmation e-mail
-	token, ok := us.GenerateUserToken("activate", nu)
+	token, ok := us.GenerateUserToken("activate", nu, "")
 
 	if !ok {
 
@@ -233,7 +231,7 @@ func (ac AuthenticationAPIController) HandlePasswordForgot(c echo.Context) error
 	}
 
 	// Create a userToken for that user
-	userToken, ok := us.GenerateUserToken("password", user)
+	userToken, ok := us.GenerateUserToken("password", user, "")
 
 	if !ok {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -245,7 +243,7 @@ func (ac AuthenticationAPIController) HandlePasswordForgot(c echo.Context) error
 	}
 
 	// Send the token to the e-mail address
-	link := "http://" + c.Request().Host + "/auth/password/reset/" + userToken;
+	link := "http://" + c.Request().Host + "/auth/password/reset/" + userToken
 	mail.SendEmail(user.Email, mail.TEMPLATE_PASSWORD_RESET, mail.TemplateButtonLink(user.Name, user.Username, link))
 
 	return c.JSON(http.StatusOK, map[string]interface{}{

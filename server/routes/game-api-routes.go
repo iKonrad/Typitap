@@ -1,6 +1,5 @@
 package routes
 
-
 import (
 	"github.com/iKonrad/typitap/server/controller"
 	"github.com/labstack/echo"

@@ -17,6 +17,6 @@ func WordsCount(text string) int {
 		virtualWords++
 	}
 
-	return virtualWords;
+	return virtualWords
 
 }

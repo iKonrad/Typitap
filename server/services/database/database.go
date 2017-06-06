@@ -21,7 +21,6 @@ func init() {
 		Address:  databaseHost,
 		MaxOpen:  30,
 		Database: databaseName,
-
 	})
 
 	if err != nil {

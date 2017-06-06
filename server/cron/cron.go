@@ -4,11 +4,10 @@ import (
 	"github.com/robfig/cron"
 )
 
-var c *cron.Cron;
-
+var c *cron.Cron
 
 func RunJobs() {
-	c = cron.New();
+	c = cron.New()
 	registerChartJobs()
 	registerStatsJobs()
 	c.Start()

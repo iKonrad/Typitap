@@ -3,6 +3,7 @@ package mail
 const (
 	TEMPLATE_NEW_ACCOUNT    = "163036"
 	TEMPLATE_PASSWORD_RESET = "163083"
+	TEMPLATE_CHANGE_EMAIL   = "164463"
 )
 
 func TemplateButtonLink(name string, username string, link string) map[string]interface{} {
@@ -12,7 +13,6 @@ func TemplateButtonLink(name string, username string, link string) map[string]in
 		"Name":     name,
 		"Link":     link,
 		"Username": username,
-
 	}
 
 }

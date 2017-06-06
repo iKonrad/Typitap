@@ -15,7 +15,6 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 games: [
-                    ...state.games,
                     ...action.games,
                 ],
             }
@@ -28,7 +27,6 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 feed: [
-                    ...state.feed,
                     ...action.feed,
                 ]
             }
