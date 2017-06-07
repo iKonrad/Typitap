@@ -23,12 +23,11 @@ class Footer extends React.Component {
                                     <Link to="/play" className="white" style={{marginRight: "13px"}}>Play</Link>
                                     <Link to="/terms" className="white" style={{marginRight: "13px"}}>Terms</Link>
                                     <Link to="/privacy" className="white" style={{marginRight: "13px"}}>Privacy</Link>
-                                    <Link to="/contact" className="white" style={{marginRight: "13px"}}>Contact</Link>
+                                    <a href="mailto:konrad@jarosinski.uk" className="white" style={{marginRight: "13px"}}>Contact</a>
                                     <Link to="/blog" className="white">Blog</Link>
                                 </div>
                             </div>
                         </div>
-
                     </div>
             </footer>
         );

@@ -12,6 +12,10 @@ type User struct {
 	Active bool   `gorethink:"active"`
 	Role   string `gorethink:"role"`
 
+	Keyboard string `gorethink:"keyboard"`
+	KeyboardLayout int `gorethink:"keyboardLayout"`
+	Bio string `gorethink:"bio"`
+
 	Created time.Time `gorethink:"created"`
 
 	Level int `gorethink:"level"`

@@ -1,12 +1,14 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router';
 import {connect} from 'react-redux';
-
-
+import * as UserActions from 'store/ducks/userModule';
 
 class Activate extends Component {
 
     static clientInit({store, nextState, replaceState, callback}) {
+        if (nextState.app.response.success) {
+            store.dispatch(UserActions.activateUser());
+        }
         callback();
     }
 

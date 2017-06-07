@@ -124,6 +124,31 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 			"success": false,
 			"message": err,
 		})
+	case "Keyboard":
+		if value == "" {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"success": false,
+				"message": "This field cannot be empty",
+			})
+		}
+		user.Keyboard = value
+	case "KeyboardLayout":
+		if value == "" {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"success": false,
+				"message": "This field cannot be empty",
+			})
+		}
+		layoutId, _ := strconv.Atoi(value)
+		user.KeyboardLayout = layoutId
+	case "Bio":
+		if value == "" {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"success": false,
+				"message": "This field cannot be empty",
+			})
+		}
+		user.Bio = value
 	}
 
 	if ok := us.UpdateUser(&user); ok {
@@ -332,4 +357,3 @@ func (gc UserAPIController) ResendActivationLink(c echo.Context) error {
 	})
 
 }
-

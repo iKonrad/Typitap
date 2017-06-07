@@ -251,6 +251,9 @@ func UpdateUser(user *entities.User) bool {
 		"name":   user.Name,
 		"active": user.Active,
 		"email":  user.Email,
+		"keyboard": user.Keyboard,
+		"bio": user.Bio,
+		"keyboardLayout": user.KeyboardLayout,
 	}).Exec(db.Session)
 	return true
 }

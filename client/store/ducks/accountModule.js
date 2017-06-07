@@ -14,7 +14,13 @@ const initialState = {
         },
         Bio: {
             open: false
-        }
+        },
+        Keyboard: {
+            open: false
+        },
+        KeyboardLayout: {
+            open: false
+        },
     }
 };
 

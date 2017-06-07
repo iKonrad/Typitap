@@ -22,12 +22,10 @@ class AccountSimpleItem extends React.Component {
                 <div>
                     <form onSubmit={this.handleSubmit.bind(this)}>
                         <div className="input-group">
-                            <input type={ this.props.name === "Password" ? "password" : "text" }
-                                   ref={`field-${this.props.name}`} name={this.props.name}
-                                   defaultValue={ this.props.user.data[this.props.name] }
-                                   placeholder={`Enter new ${this.props.name}`} className="form-control control-small"/>
+                            { this.renderInput() }
                             <span className="input-group-btn">
-                            <button type="submit" className="btn btn-primary btn-sm">Save</button>
+                            <button type="submit"
+                                    className={`btn btn-primary btn-${this.props.type !== undefined && this.props.type === "textarea" ? "lg" : "sm"}`}>Save</button>
                         </span>
                         </div>
                     </form>
@@ -37,17 +35,72 @@ class AccountSimpleItem extends React.Component {
             let name = this.props.name;
             let value = "";
 
-            if (name !== "Password") {
-                if (this.props.user.data[name] !== undefined) {
-                    value = this.props.user.data[name];
+            if (this.props.type === "password") {
+                value = "*********"
+            } else if (this.props.user.data[name] !== undefined) {
+                if (this.props.type === "select") {
+                    value = this.getSelectedOption();
                 } else {
-                    return (<div>Invalid '{name}' key passed to the component</div>)
+                    value = this.props.user.data[name];
                 }
             } else {
-                value = "*********";
+                return (<div>Invalid '{name}' key passed to the component</div>)
             }
-
             return value;
+        }
+    }
+
+    getSelectedOption() {
+        let v = "";
+        this.props.options.forEach((option) => {
+            if (option.value === parseInt(this.props.user.data[this.props.name])) {
+                v = option.name;
+            }
+        })
+        return v;
+    }
+
+    renderInput() {
+
+
+        if (this.props.type === undefined || this.props.type === "text") {
+            return (
+                <input type="text"
+                       ref={`field-${this.props.name}`} name={this.props.name}
+                       defaultValue={ this.props.user.data[this.props.name] }
+                       placeholder={`Enter new ${this.props.name}`} className="form-control control-small"/>
+            );
+        } else if (this.props.type === "textarea") {
+            return (
+                <textarea type={ this.props.name === "Password" ? "password" : "text" }
+                          ref={`field-${this.props.name}`} name={this.props.name}
+                          defaultValue={ this.props.user.data[this.props.name] }
+                          placeholder={`Enter new ${this.props.name}`} className="form-control control-small"
+                          style={{height: "50px", resize: "none", width: "100%"}}></textarea>
+
+            );
+        } else if (this.props.type === "password") {
+            return (
+                <input type="password"
+                       ref={`field-${this.props.name}`} name={this.props.name}
+                       defaultValue={ this.props.user.data[this.props.name] }
+                       placeholder={`Enter new ${this.props.name}`} className="form-control control-small"/>
+            );
+        } else if (this.props.type === "select" && this.props.options !== undefined && this.props.options.length > 0) {
+
+            let renderOptions = (options) => {
+                return options.map((option) => {
+                    return <option key={option.value} value={option.value}>{option.name}</option>
+                });
+            };
+
+            return (
+                <select ref={`field-${this.props.name}`} defaultValue={ this.props.user.data[this.props.name] }
+                        name={this.props.name} placeholder={`Select your ${this.props.name}`}
+                        className="form-control control-small">
+                    { renderOptions(this.props.options) }
+                </select>
+            );
         }
     }
 
@@ -103,13 +156,13 @@ class AccountSimpleItem extends React.Component {
     }
 
     render() {
-        let name = this.props.name;
+        let label = this.props.label !== undefined ? this.props.label : this.props.name;
         let value = "";
         return (
             <div className="account__item">
                 <div className="row">
                     <div className="col col-xs-12 col-sm-5">
-                        <div className="account__item__label">{ name }</div>
+                        <div className="account__item__label">{ label }</div>
                         <div className="account__item__value">{ this.renderField() }</div>
                     </div>
                     <div className="col col-xs-12 col-sm-7 text-right" style={{paddingTop: "10px"}}>
