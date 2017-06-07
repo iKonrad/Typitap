@@ -173,7 +173,7 @@ class Homepage extends Component {
                                         </div>
                                         <div className="feature-title__text">
                                             <h2 className="white">Create account</h2>
-                                            <h5 className="white">Sign up and enjoy these features:</h5>
+                                            <h5 className="white">It's free, forever.</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -181,12 +181,13 @@ class Homepage extends Component {
                                 <div className="row">
                                     <div className="col col-xs-12">
                                         <ul className="feature-list feature-list--white">
+                                            <li>Stand out from the crowd and use custom username</li>
                                             <li>Save all your game results</li>
-                                            <li>Track your progress with stunning charts</li>
-                                            <li>Add friends and beat their records</li>
+                                            <li>View & <strong>playback</strong> all your past games</li>
+                                            <li>Follow your <strong>friends</strong> and keep an eye on their performance</li>
                                             <li>Track your performance on different keyboards</li>
-                                            <li>Climb the ladder to the TOP and achieve the <i>typitap master</i> title
-                                            </li>
+                                            <li>Climb to the TOP in <strong>charts</strong> and win prizes</li>
+                                            <li>Beautiful dashboard with <strong>stats</strong> and useful data</li>
                                         </ul>
                                     </div>
                                 </div>

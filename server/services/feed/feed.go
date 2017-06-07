@@ -168,7 +168,7 @@ func GetFeedForUser(userId string, offset int) (entities.UserFeed, bool) {
 				GetAll(r.Args(p.Field("items"))).
 				OrderBy(r.Desc("created")).
 				Skip(offset).
-				Limit(5).
+				Limit(10).
 				CoerceTo("array").
 				Merge(func(s r.Term) interface{} {
 					return map[string]interface{}{
