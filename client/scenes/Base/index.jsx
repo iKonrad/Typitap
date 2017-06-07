@@ -5,6 +5,7 @@ import NotificationsSystem from 'reapop';
 import theme from 'reapop-theme-wybo';
 import * as socketActions from 'store/ducks/socketModule';
 import AlertBar from './components/AlertBar';
+import Footer from 'components/navigation/Footer';
 
 class Base extends Component {
 
@@ -67,6 +68,7 @@ class Base extends Component {
                 <div id="react-container" className="main-content">
                     { showEmptyBase ? "" : (<AlertBar/>) }
                     { this.props.children }
+                    { showEmptyBase ? "" : (<Footer/>) }
                 </div>
                 { this.launchNotifications() }
 

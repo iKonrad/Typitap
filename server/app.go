@@ -90,9 +90,13 @@ func NewApp(opts ...AppOptions) *App {
 
 	engine.Static("/static", "static")
 
-	engine.Use(middleware.GzipWithConfig(middleware.GzipConfig{
-		Level: 6,
-	}))
+
+	if env == "prod" {
+		engine.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+			Level: 6,
+		}))
+	}
+
 
 	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",

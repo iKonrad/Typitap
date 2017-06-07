@@ -93,7 +93,7 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 
 			// Send an e-mail change link
 			link := "http://" + c.Request().Host + "/auth/email/" + token
-			mail.SendEmail(user.Email, mail.TEMPLATE_CHANGE_EMAIL, mail.TemplateButtonLink(
+			mail.SendEmail(value, mail.TEMPLATE_CHANGE_EMAIL, mail.TemplateButtonLink(
 				user.Name,
 				user.Username,
 				link,
