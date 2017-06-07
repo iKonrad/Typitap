@@ -60,6 +60,10 @@ class Homepage extends Component {
     }
 
     render() {
+
+        let date = new Date();
+        let month = date.toLocaleString("en-us", { month: "long" });
+
         return (
             <div id="homepage">
                 <div className="banner">
@@ -153,7 +157,7 @@ class Homepage extends Component {
                                     feed={ this.props.play.feed }/></Panel>
                             </div>
                             <div className="col col-xs-12 col-md-4">
-                                <TopChart name="today" title="Today's bests"/>
+                                <TopChart name="month" title={`Best in ${month}`}/>
                             </div>
                         </div>
                     </div>
