@@ -13,11 +13,7 @@ class Sidebar extends React.Component {
                 <ul className="sidebar-links">
                     <li><Link to="/account/details" activeClassName="active">Your details</Link></li>
                     <li><Link to="/account/avatar" activeClassName="active">Avatar</Link></li>
-                    <li><Link to="/account/keyboard" activeClassName="active">Your keyboard</Link></li>
                 </ul>
-
-
-
             </div>
         );
     }

@@ -102,6 +102,7 @@ func NewApp(opts ...AppOptions) *App {
 		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
 	}))
 
+
 	// Initialize the application
 	app := &App{
 		Conf:   conf,

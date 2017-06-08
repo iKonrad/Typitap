@@ -41,8 +41,8 @@ class Play extends Component {
                         </div>
                         <div className="col col-xs-12 col-md-4">
 
-                                    <button type="button" className="btn btn-secondary btn-block" onClick={ this.handleOnlineButton.bind(this) }>Play Online</button>
-                                    <button type="button" className="btn btn-default btn-block" onClick={ this.handleOfflineButton.bind(this) }>Play Offline</button>
+                                    <button type="button" className="btn btn-secondary btn-block" onClick={ this.handleOnlineButton.bind(this) }>Race online</button>
+                                    <button type="button" className="btn btn-default btn-block" onClick={ this.handleOfflineButton.bind(this) }>Practice</button>
 
 
                                     <TopChart name="today" title="Today's bests" />

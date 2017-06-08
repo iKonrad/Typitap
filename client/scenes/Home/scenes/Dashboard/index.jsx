@@ -4,6 +4,7 @@ import ProfileInfo from 'components/user/ProfileInfo';
 import UserStats from 'components/user/UserStats';
 import ActivityFeed from 'components/app/ActivityFeed';
 import RecentGames from 'components/user/RecentGames';
+import UserBio from 'components/user/UserBio';
 import * as DashboardActions from './ducks/dashboardModule';
 import Follow from 'components/user/UserFollow';
 import * as UserActions from 'store/ducks/userModule';
@@ -56,6 +57,13 @@ class Dashboard extends Component {
                         </div>
                     </div>
                     <div className="col col-xs-12 col-md-4">
+                        <div className="row">
+                            <div className="col col-xs-12">
+                                <Panel title="About" loaded={ this.props.user !== undefined && this.props.user.data !== undefined }>
+                                    <UserBio user={ this.props.user.data } />
+                                </Panel>
+                            </div>
+                        </div>
                         <div className="row">
                             <div className="col col-xs-12">
                                 <Follow title="Followers"

@@ -32,7 +32,6 @@ class RecentGames extends Component {
             if (this.props.onLoad !== undefined) {
                 this.props.onLoad()
             }
-
         }
     }
 

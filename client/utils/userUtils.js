@@ -37,3 +37,17 @@ export const keyboardLayouts = [
         name: "Maltron"
     },
 ];
+
+export function getKeyboardForId(id) {
+
+    let keyboard = {
+        name: "Default"
+    };
+    keyboardLayouts.forEach((obj) => {
+         if (obj.value === id) {
+             keyboard = obj;
+         }
+    });
+    return keyboard;
+
+}

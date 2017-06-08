@@ -7,6 +7,7 @@ import RecentGames from 'components/user/RecentGames';
 import Follow from 'components/user/UserFollow';
 import {push} from 'react-router-redux';
 import Panel from 'components/app/Panel';
+import UserBio from 'components/user/UserBio';
 
 class Profile extends Component {
 
@@ -57,6 +58,13 @@ class Profile extends Component {
 
                     </div>
                     <div className="col col-xs-12 col-md-4">
+                        <div className="row">
+                            <div className="col col-xs-12">
+                                <Panel title="About" loaded={ this.props.profile.user !== undefined }>
+                                    <UserBio user={ this.props.profile.user } />
+                                </Panel>
+                            </div>
+                        </div>
                         <div className="row">
                             <div className="col col-xs-12">
                                 <Follow title="Followers" items={ this.props.profile.follow.followers }/>
