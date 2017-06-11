@@ -119,7 +119,9 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success":  true,
 		"resultId": newResult.Id,
-		"points":   points,
+		"data": map[string]interface{}{
+			"points": points,
+		},
 	})
 
 }

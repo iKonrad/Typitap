@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as GameActions from 'store/ducks/gameModule';
+import * as SocketActions from 'store/ducks/socketModule';
+import * as GameEngine from 'utils/gameEngine';
 
 const FIELD_REF = "game__input-field";
 
@@ -33,13 +35,7 @@ class GameInput extends Component {
             if (inputValue === currentWord) {
                 if (this.props.game.currentIndex === (textWords.length - 1)) {
                     // Finish the game
-                    // Run the callback if exists
-                    if (this.props.onGameFinish && typeof this.props.onGameFinish === 'function') {
-                        this.props.onGameFinish();
-                    } else {
-                        this.props.dispatch(GameActions.finishGame());
-                    }
-
+                    GameEngine.finishGame();
                     return;
                 } else {
                     this.props.dispatch(GameActions.finishWord());

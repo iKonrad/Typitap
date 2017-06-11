@@ -1,7 +1,8 @@
 import * as socketActions from "store/ducks/socketModule";
 import * as gameActions from "store/ducks/gameModule";
-import GameEngine from "scenes/Game/utils/gameEngine";
 import Notifications from 'utils/notifications';
+import * as GameEngine from 'utils/gameEngine';
+
 import React from 'react';
 const CODE_RECONNECT = 5001;
 const CODE_DISCONNECT = 5000;
@@ -66,17 +67,16 @@ const socketMiddleware = (function(){
                 store.dispatch(gameActions.updatePlayersData(msg.data.players));
                 break;
             case "PLAYER_COMPLETED_GAME":
-                if (msg.data.identifier === store.getState().socket.identifier) {
-                    let mistakes = store.getState().game.mistakes !== undefined ? Object.keys(store.getState().game.mistakes).length : 0;
-                    store.dispatch(Notifications.gameCompleted(msg.data.time, msg.data.wpm, msg.data.accuracy, mistakes))
-                }
                 store.dispatch(gameActions.setPlayerCompleted(msg.data.identifier, msg.data.place));
                 break;
             case "START_GAME":
-                store.dispatch(gameActions.startingGame(true));
+                GameEngine.startGame(true);
                 break;
             case "FINISH_GAME":
-                store.dispatch(gameActions.finishGame());
+                let wpm = msg.data.wpm !== undefined ? msg.data.wpm : 0;
+                let accuracy = msg.data.accuracy !== undefined ? msg.data.accuracy : 0;
+                let points = msg.data.points !== undefined ? msg.data.points : 0;
+                store.dispatch(gameActions.finishGame(wpm, accuracy, points));
                 break;
 
         }
@@ -166,7 +166,7 @@ const socketMiddleware = (function(){
                     }
                 }
                 break;
-            case gameActions.FINISH_GAME:
+            case gameActions.COMPLETE_GAME:
                 if (store.getState().game.online) {
                     if (socket !== null) {
                         socket.send(JSON.stringify({

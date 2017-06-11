@@ -326,16 +326,6 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 
 		// Calculate WPM and accuracy
 		wpm, accuracy := game.CalculateScore(playerTime, len(mistakes), text.Val())
-		r.SendMessage(
-			TYPE_PLAYER_COMPLETED_GAME,
-			map[string]interface{}{
-				"identifier": identifier,
-				"place":      r.nextPlace,
-				"wpm":        wpm,
-				"accuracy":   accuracy,
-				"time":       playerTime,
-			},
-		)
 
 		logs.Success(
 			"Player completes game",
@@ -343,6 +333,8 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 			[]string{"websocket", "game", "players"},
 			"Game Session "+r.Id,
 		)
+
+		var points int
 
 		if user, ok := us.FindUserBy("username", identifier); ok {
 
@@ -379,7 +371,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 			}
 
 			// Calculate experience points for a game result
-			points := levels.CalculatePoints(&result, len(r.Players))
+			points = levels.CalculatePoints(&result, len(r.Players))
 
 			// Apply points to the user
 			if points > 0 {
@@ -390,6 +382,30 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 			stats.IncrementGamesStat(user.Id)
 
 		}
+
+		r.SendMessage(
+			TYPE_PLAYER_COMPLETED_GAME,
+			map[string]interface{}{
+				"identifier": identifier,
+				"place":      r.nextPlace,
+				"wpm":        wpm,
+				"accuracy":   accuracy,
+				"time":       playerTime,
+				"points":     points,
+			},
+		)
+
+		GetHub().SendMessageToClient(
+			identifier,
+			TYPE_FINISH_GAME,
+			map[string]interface{}{
+				"identifier": identifier,
+				"place":      r.nextPlace,
+				"wpm":        wpm,
+				"accuracy":   accuracy,
+				"time":       playerTime,
+				"points":     points,
+			})
 
 		// Increment next place
 		r.nextPlace++

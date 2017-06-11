@@ -11,7 +11,7 @@ class PlayerList extends Component {
         let that = this;
         let players = this.props.game.room.players;
         if (players !== undefined && Object.keys(players).length > 0) {
-            return Object.keys(players).map(function(obj, i) {
+            return Object.keys(players).map((obj) => {
 
                 if (obj === that.props.socket.identifier) {
                     return "";

@@ -9,6 +9,7 @@
     margin-bottom: 6px;
     .progress-bar {
       background-color: $teal;
+      transition-duration: 3s;
     }
 
     &.transparent {
@@ -31,6 +32,15 @@
     span {
       font-weight: 700;
     }
+  }
+
+  &__points {
+    color: $teal;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    font-size: 18px;
+    margin-left: 5px;
   }
 
 }

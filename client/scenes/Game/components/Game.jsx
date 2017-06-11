@@ -9,7 +9,7 @@ import {push} from 'react-router-redux';
 import GameInput from './GameInput'
 import GameText from './GameText';
 import GameBar from './GameBar';
-import GameEngine from './../utils/gameEngine';
+import * as GameEngine from 'utils/gameEngine';
 import GameControls from './GameControls';
 import GameCountdown from './GameCountdown';
 import GamePlayerList from './GamePlayerList';
@@ -17,19 +17,33 @@ import WaitPlayersModal from './WaitPlayersModal';
 import Notifications from 'utils/notifications';
 import * as GameActions from 'store/ducks/gameModule';
 import * as SocketActions from 'store/ducks/socketModule';
-
-
+import GameResultModal from 'components/game/GameResultModal';
 
 class Game extends Component {
 
     constructor(props) {
         super(props);
-        this.engine = new GameEngine();
         this.onUnload = this.resetGame.bind(this)
     }
 
     static clientInit({store, nextState, replaceState, callback}) {
         callback();
+    }
+
+    render() {
+        return (
+            <div id="game" className="game">
+                <GamePlayerList/>
+                <div className="panel panel-default">
+                    <div className="panel-body">
+                        <GameBar />
+                        { this.renderMain() }
+                    </div>
+                </div>
+                { this.renderResultModal() }
+
+            </div>
+        )
     }
 
     componentWillMount() {
@@ -65,7 +79,7 @@ class Game extends Component {
     }
 
     resetGame() {
-        this.engine.resetGame();
+        GameEngine.resetGame();
     }
 
     handleGameStart() {
@@ -74,7 +88,7 @@ class Game extends Component {
     }
 
     handleGameFinish() {
-        this.engine.finishGame();
+        GameEngine.finishGame();
     }
 
 
@@ -89,17 +103,14 @@ class Game extends Component {
         if ((!this.props.game.room.id || this.props.game.room.id === "") && newProps.game.room.id !== undefined && newProps.game.room.id !== "") {
             // We've got the room ID, we can now proceed to start the game
             if (!this.props.online) {
-                this.engine.startCountdown(() => {
-                    this.engine.startGame(this.props.online);
+                GameEngine.startCountdown(() => {
+                    GameEngine.startGame(this.props.online);
                 });
             } else {
                 this.props.dispatch(GameActions.startMatchmaking());
             }
         }
 
-        if ((this.props.game.starting === undefined || !this.props.game.starting) && newProps.game.starting) {
-            this.engine.startGame(this.props.online);
-        }
     }
 
     renderMain() {
@@ -145,20 +156,13 @@ class Game extends Component {
         }
     }
 
-
-    render() {
-        return (
-            <div id="game" className="game">
-                <GamePlayerList/>
-                <div className="panel panel-default">
-                    <div className="panel-body">
-                        <GameBar />
-                        { this.renderMain() }
-                    </div>
-                </div>
-            </div>
-        )
+    renderResultModal() {
+        if (this.props.game.finished) {
+            return <GameResultModal open={ true }/>
+        }
+        return "";
     }
+
 }
 
 

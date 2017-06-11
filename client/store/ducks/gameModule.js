@@ -1,6 +1,6 @@
 const START_GAME = "@@game/START_GAME";
-const STARTING_GAME = "@@game/STARTING_GAME";
-export const FINISH_GAME = "@@game/FINISH_GAME";
+const FINISH_GAME = "@@game/FINISH_GAME";
+export const COMPLETE_GAME = "@@game/COMPLETE_GAME";
 const UPDATE_INPUT = "@@game/UPDATE_INPUT";
 const FINISH_WORD = "@@game/FINISH_WORD";
 const MAKE_WORD_MISTAKE = "@@game/ERROR_WORD";
@@ -25,21 +25,65 @@ export const PLAYER_COMPLETED_GAME = "@@game/PLAYER_COMPLETED_GAME";
 
 
 const initialState = {
+    // Game text to be typed
     text: '',
+
+    // Bool - has the game started
     started: false,
-    starting: false,
-    currentIndex: 0,
+
+    // Bool - Has the game finished
     finished: false,
-    inputValue: '',
-    mistakes: {},
-    time: 0,
+
+    // Bool - Has the countdown started
     countdown: false,
+
+    // Current word index (what's the next letter)
+    currentIndex: 0,
+
+    // Value of the input field
+    inputValue: '',
+
+    // Object with mistakes {wordIndex: mistakeCount}
+    mistakes: {},
+
+    // Game time
+    time: 0,
+
+    // How many seconds in countdown is remaining
     countdownSeconds: 5,
+
+    // Online only - has the countdown for players started
     waitCountdown: false,
+
+    // Online only - countdown seconds for players
     waitCountdownSeconds: 10,
+
+    // Timestamp of the time when game started
     startedTimestamp: 0,
+
+    // Playback data
+    /*
+     Playback object:
+     t: time delta
+     a: action (n - new character, d - deleted character(
+     v: value (character added)
+     c: cursor offset from right side (0 - added on end, 1 - second from right etc)
+     */
     playback: [],
+
+    // Bool - is the game online
     online: false,
+
+    // How many points have been awarded for completing the game (only after the game is finished)
+    points: 0,
+
+    // Final wpm (only after the game is finished)
+    wpm: 0,
+
+    // Final accuracy (only after the game is finished)
+    accuracy: 0,
+
+    // Online only - room data
     room: {
         id: '',
         players: {},
@@ -74,26 +118,12 @@ export default function reducer(state = initialState, action) {
                     }
                 ]
             };
-        case STARTING_GAME:
-            return {
-                ...state,
-                starting: true,
-                online: action.online,
-            }
         case START_MATCHMAKING:
             return {
                 ...state,
                 online: true,
             }
         case UPDATE_INPUT:
-
-            /*
-                Playback object:
-                t: time delta
-                a: action (n - new character, d - deleted character(
-                v: value (character added)
-                c: cursor offset from right side (0 - added on end, 1 - second from right etc)
-             */
 
             let time = +new Date();
             let t = time - state.startedTimestamp;
@@ -221,6 +251,9 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 finished: true,
+                wpm: action.wpm,
+                accuracy: action.accuracy,
+                points: action.points,
                 inputValue: '',
                 playback: [
                     ...state.playback,
@@ -338,9 +371,12 @@ startGame(online) {
     };
 }
 
-export function finishGame() {
+export function finishGame(wpm, accuracy, points) {
     return {
-        type: FINISH_GAME
+        type: FINISH_GAME,
+        wpm,
+        accuracy,
+        points,
     }
 }
 
@@ -465,10 +501,6 @@ export function playerLeftRoom(identifier) {
     return {type: PLAYER_LEFT_ROOM, identifier}
 }
 
-export function startingGame(online) {
-    return {type: STARTING_GAME, online}
-}
-
 export function updatePlayersData(players) {
     return { type: UPDATE_PLAYERS_DATA,  players}
 }
@@ -479,4 +511,8 @@ export function updatePlayerData(score) {
 
 export function setPlayerCompleted(identifier, place) {
     return { type: PLAYER_COMPLETED_GAME, identifier, place};
+}
+
+export function completeGame() {
+    return { type: COMPLETE_GAME };
 }
