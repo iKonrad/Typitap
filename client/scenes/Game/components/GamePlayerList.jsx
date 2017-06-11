@@ -23,10 +23,10 @@ class PlayerList extends Component {
 
                 return (
                     <div className="" key={ 'progress-' + obj }>
-                        <div className="game__progress__name">{ obj }</div>
+                        <div className={`game__progress__name ${player.left ? "game__progress__name--left" : ""}`}>{ obj }</div>
                         <div className="progress">
                             <div
-                                className="progress-bar progress-bar-success"
+                                className={`progress-bar progress-bar-${player.left ? "default" : "success"}`}
                                 role="progressbar"
                                 aria-valuenow={ current }
                                 aria-valuemin="0"

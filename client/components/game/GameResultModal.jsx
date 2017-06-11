@@ -64,26 +64,17 @@ class GameResultModal extends Component {
             let players = this.props.game.room.players;
 
             let sortedPlayers = Object.keys(players).sort((a, b) => {
-
-                if (players[a].place === "0") {
-                    return true;
-                }
-
-                if (players[b].place === "0") {
-                    return false;
-                }
-
+                if (players[a].place === "0") { return true; }
+                if (players[b].place === "0") { return false; }
                 return players[a].place >= players[b].place;
             });
 
             let playersList =  sortedPlayers.map((playerId, i) => {
                 let player = players[playerId];
-                return <div className="game-result__players__player">
-
+                return <div className="game-result__players__player" key={`player-${playerId}`}>
                     { (i + 1) <= 3 ?  <i className={`fa fa-trophy place-${ i + 1 }`}></i> : <i className={`fa`}></i>}
                     <div>{i + 1}. </div>
-                    { player.place !== undefined && player.place > 0 ? player.identifier : (<i className="fa fa-spinner fa-spin"></i>)}
-
+                    { player.place !== undefined && player.place > 0 ? player.identifier : player.left ? (<span className='text-muted'>Player left</span>) : (<i className="fa fa-spinner fa-spin"></i>)}
                 </div>
             });
             return <div className="game-result__players">{ playersList }</div>;

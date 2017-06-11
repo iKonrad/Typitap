@@ -153,6 +153,15 @@
 
     &__name {
       color: $grey-400;
+      &--left {
+        @extend .text-muted;
+      }
+    }
+
+    .progress-bar {
+      &--default {
+        background-color: $grey-200;
+      }
     }
 
     .progress__result__wrapper {

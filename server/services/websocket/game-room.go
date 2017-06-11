@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
+	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/iKonrad/typitap/server/services/feed"
 	"github.com/iKonrad/typitap/server/services/game"
@@ -197,11 +198,8 @@ func (r *Room) startCountdown() {
 				r.countdownStarted = false
 				r.ticker.Stop()
 				// Double check if all players are in the session and start the game
-				if len(r.Players) > 1 {
-					r.startGame()
-				} else {
-					r.stopCountdown()
-				}
+
+				r.startGame()
 
 			}
 		}
@@ -335,11 +333,13 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 		)
 
 		var points int
+		var err error
+		var result entities.GameResult
 
 		if user, ok := us.FindUserBy("username", identifier); ok {
 
 			// Save result in database
-			result, err := game.SaveResult(&user, r.Id, mistakes, wpm, accuracy, int(r.time), int(r.nextPlace))
+			result, err = game.SaveResult(&user, r.Id, mistakes, wpm, accuracy, int(r.time), int(r.nextPlace))
 			if err != nil {
 				logs.Error("Error while saving a result", "An error occurred while saving results for user "+identifier, []string{"errors", "websocket", "game"}, "Game Session "+r.Id)
 			}
@@ -392,6 +392,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 				"accuracy":   accuracy,
 				"time":       playerTime,
 				"points":     points,
+				"resultId":   result.Id,
 			},
 		)
 

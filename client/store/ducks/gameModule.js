@@ -206,6 +206,7 @@ export default function reducer(state = initialState, action) {
             };
 
             action.player.completed = false;
+            action.player.left = false;
             players[action.player.identifier] = action.player;
 
             return {
@@ -215,6 +216,35 @@ export default function reducer(state = initialState, action) {
                     players
                 }
             };
+        case PLAYER_LEFT_ROOM:
+            /*
+                If game has started, we'll mark player as "left" instead of removing it
+                Otherwise, remove player from the list
+             */
+            if (state.started || state.countdown) {
+                players = state.room.players;
+                players[action.identifier].left = true;
+
+                return {
+                    ...state,
+                    room: {
+                        ...state.room,
+                        players: {
+                            ...state.players,
+                            ...players,
+                        }
+                    }
+                };
+            } else {
+                return {
+                    ...state,
+                    room: {
+                        ...state.room,
+                        players: Object.filter(state.room.players, player => player.identifier !== action.identifier)
+                    }
+                };
+            }
+
         case UPDATE_PLAYERS_DATA:
 
             let room = {
@@ -232,14 +262,6 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 room
             }
-        case PLAYER_LEFT_ROOM:
-            return {
-                ...state,
-                room: {
-                    ...state.room,
-                    players: Object.filter(state.room.players, player => player.identifier !== action.identifier)
-                }
-            };
         case LEFT_ROOM:
             return {
                 ...state,
