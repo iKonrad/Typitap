@@ -8,6 +8,7 @@ import (
 	"github.com/iKonrad/typitap/server/services/game"
 	"github.com/iKonrad/typitap/server/services/logs"
 	"github.com/pkg/errors"
+	"encoding/json"
 )
 
 type Engine struct {
@@ -112,7 +113,10 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 				mistakes[i] = int(v.(float64))
 			}
 
-			e.rooms[roomId].handlePlayerCompleted(identifier, mistakes)
+			var playback = []map[string]interface{}{}
+			json.Unmarshal([]byte(message["playback"].(string)), &playback)
+
+			e.rooms[roomId].handlePlayerCompleted(identifier, mistakes, playback)
 
 			// Check if all players completed game. If yes, then shut the timer and remove the room
 			if e.rooms[roomId].haveAllPlayersCompletedGame() {

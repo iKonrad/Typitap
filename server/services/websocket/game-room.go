@@ -313,7 +313,7 @@ func (r *Room) handlePlayerUpdate(identifier string, score float64) {
 }
 
 // Handles the player finishing the game: sets the finished flag, sends a message
-func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int) {
+func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int, playback []map[string]interface{}) {
 
 	if r.gameStarted {
 		db.Redis.HSet("rooms:"+r.Id+":players:"+identifier, "completed", true)
@@ -369,6 +369,9 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int)
 					feed.SendGlobalActivity(feed.Activities.GlobalGameFinished(user.Username, wpm, len(r.Players)))
 				}
 			}
+
+			// Save playback data
+			game.SavePlayback(result.Id, playback)
 
 			// Calculate experience points for a game result
 			points = levels.CalculatePoints(&result, len(r.Players))

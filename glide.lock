@@ -1,8 +1,20 @@
-hash: 589d3fd1ab15d306a78ae118c3e64c287e9f2bb3446e8a58b86ef29d796f8dfa
-updated: 2017-02-20T11:13:26.192169592+05:00
+hash: c32c4cc550a1f62862398428589046f8549ce5e681927717a2d59e827d3fa60f
+updated: 2017-06-11T03:24:34.449693186+01:00
 imports:
+- name: github.com/badoux/checkmail
+  version: d0a759655d62bcdc95c50a0676f3e9702ed59453
+- name: github.com/boj/rethinkstore
+  version: 614f6ea8ec6dee94ed97bbf52a670cffcc64c1ca
+- name: github.com/cenkalti/backoff
+  version: 5d150e7eec023ce7a124856b37c68e54b4050ac7
 - name: github.com/codegangsta/cli
   version: 347a9884a87374d000eec7e6445a34487c1f4a2b
+- name: github.com/dancannon/gorethink
+  version: 166dbe2477ffb44f53f584c5c24d8499e0c12303
+- name: github.com/DataDog/datadog-go
+  version: 4bf1c1105b95d4abdfec7f2added80203dce2482
+  subpackages:
+  - statsd
 - name: github.com/dgrijalva/jwt-go
   version: 2268707a8f0843315e2004ee4f1d021dc08baedf
 - name: github.com/dlclark/regexp2
@@ -27,6 +39,30 @@ imports:
   version: 9a6736ed45b44bf3835afeebb3034b57ed329f3e
 - name: github.com/fatih/structs
   version: a720dfa8df582c51dee1b36feabb906bde1588bd
+- name: github.com/fogleman/gg
+  version: 6166aa3c1afaee416f384645a81636267aee6d25
+- name: github.com/go-redis/redis
+  version: eb066030c08c254136a0dbfe9f7a3625a0871beb
+  subpackages:
+  - internal
+  - internal/consistenthash
+  - internal/hashtag
+  - internal/pool
+  - internal/proto
+- name: github.com/golang/protobuf
+  version: 5a0f697c9ed9d68fef0116532c6e05cfeae00e55
+  subpackages:
+  - proto
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/securecookie
+  version: e59506cc896acb7f7bf732d4fdf5e25f7ccd8983
+- name: github.com/gorilla/sessions
+  version: 8b6b4cd75f07f7ee036eb37b8127bd40ab1efc49
+- name: github.com/gorilla/websocket
+  version: a91eba7f97777409bc2c443f5534d41dd20c5720
+- name: github.com/hailocab/go-hostpool
+  version: e80d13ce29ede4452c43dea11e79b9bc8a15b478
 - name: github.com/itsjamie/go-bindata-templates
   version: 65d795d0c74021e19b2ebadf3c83c01a8290a405
 - name: github.com/jteeuwen/go-bindata
@@ -42,6 +78,11 @@ imports:
   - color
   - log
   - random
+- name: github.com/mailjet/mailjet-apiv3-go
+  version: 647f7c2ce68acf4b5ed07093bf0b4ea8f79b5d0c
+  subpackages:
+  - fixtures
+  - resources
 - name: github.com/mattn/go-colorable
   version: d228849504861217f796da67fae4f6e347643f15
 - name: github.com/mattn/go-isatty
@@ -59,6 +100,12 @@ imports:
   version: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
 - name: github.com/pkg/errors
   version: 248dadf4e9068a0b3e79f02ed0a610d935de5302
+- name: github.com/robfig/cron
+  version: 736158dc09e10f1911ca3a1e1b01f11b566ce5db
+- name: github.com/satori/go.uuid
+  version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
+- name: github.com/Sirupsen/logrus
+  version: 85b1699d505667d13f8ac4478c1debbf85d6c5de
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
@@ -68,6 +115,9 @@ imports:
   subpackages:
   - acme
   - acme/autocert
+  - bcrypt
+  - blowfish
+  - pbkdf2
 - name: golang.org/x/net
   version: 41bba8d80bbfab43231ffdf4c210037baae5f6a3
   subpackages:
@@ -88,6 +138,14 @@ imports:
   - language
   - transform
   - unicode/norm
+- name: gopkg.in/fatih/pool.v2
+  version: 6e328e67893eb46323ad06f0e92cb9536babbabc
+- name: gopkg.in/gorethink/gorethink.v3
+  version: 7ab832f7b65573104a555d84a27992ae9ea1f659
+  subpackages:
+  - encoding
+  - ql2
+  - types
 - name: gopkg.in/yaml.v2
   version: 4c78c975fe7c825c6d1466c42be594d1d6f3aba6
 testImports: []

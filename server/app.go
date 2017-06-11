@@ -22,6 +22,7 @@ import (
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 	"golang.org/x/crypto/acme/autocert"
+	"github.com/iKonrad/typitap/server/controller"
 )
 
 // App struct.
@@ -89,6 +90,8 @@ func NewApp(opts ...AppOptions) *App {
 	engine.Use(middlewares.GenerateStateHandler)
 
 	engine.Static("/static", "static")
+
+
 
 
 	if env == "prod" {
@@ -175,6 +178,8 @@ func NewApp(opts ...AppOptions) *App {
 	)
 
 	engine.GET("/ws", app.handleWebsocket)
+
+	engine.GET("/userboards/:id", controller.UserAPI.FetchUserBoard)
 
 	// Regular middlewares
 	engine.Use(middleware.Recover())

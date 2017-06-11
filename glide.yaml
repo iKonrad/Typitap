@@ -18,3 +18,5 @@ import:
   - fetch
 - package: github.com/olebedev/on
 - package: github.com/jteeuwen/go-bindata
+- package: github.com/fogleman/gg
+  version: ^1.0.0

@@ -7,16 +7,16 @@ import React from 'react';
 const CODE_RECONNECT = 5001;
 const CODE_DISCONNECT = 5000;
 
-const socketMiddleware = (function(){
+const socketMiddleware = (function () {
     let socket = null;
 
 
-    const onOpen = (ws,store,token) => evt => {
+    const onOpen = (ws, store, token) => evt => {
 
         store.dispatch(socketActions.connected());
     };
 
-    const onClose = (ws,store) => evt => {
+    const onClose = (ws, store) => evt => {
         //Tell the store we've disconnected
         store.dispatch(socketActions.disconnected());
         if (evt.code === CODE_RECONNECT) {
@@ -24,12 +24,12 @@ const socketMiddleware = (function(){
         }
     };
 
-    const onMessage = (ws,store) => evt => {
+    const onMessage = (ws, store) => evt => {
         //Parse the JSON message received on the websocket
         var msg = JSON.parse(evt.data);
         // console.log("[SocketMessage] ", msg);
 
-        switch(msg.type) {
+        switch (msg.type) {
             case "CONNECTED":
                 store.dispatch(socketActions.setIdentifier(msg.data.identifier));
                 break;
@@ -97,12 +97,12 @@ const socketMiddleware = (function(){
 
     return store => next => action => {
 
-        switch(action.type) {
+        switch (action.type) {
 
             //The user wants us to connect
             case socketActions.CONNECT:
                 //Start a new connection to the server
-                if(socket !== null) {
+                if (socket !== null) {
                     socket.close();
                 }
 
@@ -110,9 +110,9 @@ const socketMiddleware = (function(){
 
                 //Attempt to connect to the websocket server
                 socket = new WebSocket(action.url);
-                socket.onmessage = onMessage(socket,store);
-                socket.onclose = onClose(socket,store);
-                socket.onopen = onOpen(socket,store,action.token);
+                socket.onmessage = onMessage(socket, store);
+                socket.onclose = onClose(socket, store);
+                socket.onopen = onOpen(socket, store, action.token);
                 socket.onerror = onError(socket, store);
 
 
@@ -120,7 +120,7 @@ const socketMiddleware = (function(){
 
             //The user wants us to disconnect
             case socketActions.DISCONNECT:
-                if(socket !== null) {
+                if (socket !== null) {
                     socket.close();
                 }
                 socket = null;
@@ -132,7 +132,7 @@ const socketMiddleware = (function(){
 
             case socketActions.RECONNECT:
 
-                if(socket !== null) {
+                if (socket !== null) {
                     socket.close();
                 }
                 socket = null;
@@ -152,7 +152,7 @@ const socketMiddleware = (function(){
 
                 if (socket !== null) {
                     socket.send(JSON.stringify({
-                            type: "LEAVE_ROOM"
+                        type: "LEAVE_ROOM"
                     }));
                 }
                 break;
@@ -170,9 +170,11 @@ const socketMiddleware = (function(){
                 if (store.getState().game.online) {
                     if (socket !== null) {
                         socket.send(JSON.stringify({
-                                type: "COMPLETE_PLAYER_GAME",
-                                mistakes: store.getState().game.mistakes
-                        }));
+                            type: "COMPLETE_PLAYER_GAME",
+                            mistakes: store.getState().game.mistakes,
+                            playback: JSON.stringify(store.getState().game.playback),
+                    }))
+                        ;
                     }
                 }
 

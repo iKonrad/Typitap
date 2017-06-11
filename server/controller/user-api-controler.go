@@ -11,6 +11,8 @@ import (
 	"github.com/iKonrad/typitap/server/services/stats"
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/labstack/echo"
+	"github.com/iKonrad/typitap/server/services/userboard"
+	"log"
 )
 
 type UserAPIController struct {
@@ -355,5 +357,31 @@ func (gc UserAPIController) ResendActivationLink(c echo.Context) error {
 		"success": true,
 		"message": "E-mail sent",
 	})
+
+}
+
+
+func (gc UserAPIController) FetchUserBoard(c echo.Context) error {
+
+	id := c.Param("id");
+
+	userObject, ok := us.GetUser(id);
+
+	if !ok {
+		return c.File("static/images/userboards/" + id + ".png")
+	}
+
+
+	userStats, ok := stats.GetStatsForUser(userObject.Id)
+
+	if !ok {
+		return c.File("static/images/userboards/" + id + ".png")
+	}
+
+
+
+	userboard.GenerateUserboard(userObject.Username, userObject.Id, userStats)
+	log.Println("???");
+	return c.File("static/images/userboards/" + userObject.Id + ".png")
 
 }
