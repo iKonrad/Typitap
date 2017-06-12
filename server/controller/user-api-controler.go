@@ -12,7 +12,6 @@ import (
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/labstack/echo"
 	"github.com/iKonrad/typitap/server/services/userboard"
-	"log"
 )
 
 type UserAPIController struct {
@@ -371,8 +370,6 @@ func (gc UserAPIController) FetchUserBoard(c echo.Context) error {
 		return c.File("static/images/userboards/" + id + ".png")
 	}
 
-	log.Println("Got user object");
-
 
 	userStats, ok := stats.GetStatsForUser(userObject.Id)
 
@@ -380,12 +377,7 @@ func (gc UserAPIController) FetchUserBoard(c echo.Context) error {
 		return c.File("static/images/userboards/" + id + ".png")
 	}
 
-	log.Println("Got logs");
-
-
-
 	userboard.GenerateUserboard(userObject.Username, userObject.Id, userStats)
-	log.Println("Got image");
 	return c.File("static/images/userboards/" + userObject.Id + ".png")
 
 }

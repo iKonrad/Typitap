@@ -12,7 +12,7 @@ import (
 func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		if strings.HasPrefix(c.Request().RequestURI, "/api") || strings.HasPrefix(c.Request().RequestURI, "/static") {
+		if strings.HasPrefix(c.Request().RequestURI, "/api") || strings.HasPrefix(c.Request().RequestURI, "/static") || strings.HasPrefix(c.Request().RequestURI, "/userboards") {
 			return next(c)
 		}
 
