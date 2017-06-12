@@ -12,7 +12,8 @@ import (
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/labstack/echo"
 	"github.com/iKonrad/typitap/server/services/userboard"
-	"log"
+	"github.com/iKonrad/typitap/server/services/utils"
+	"time"
 )
 
 type UserAPIController struct {
@@ -364,28 +365,32 @@ func (gc UserAPIController) ResendActivationLink(c echo.Context) error {
 func (gc UserAPIController) FetchUserBoard(c echo.Context) error {
 
 	id := c.Param("id");
+	filePath := "static/images/userboards/" + id + ".png";
 
+	// Get file stats
+	_, creationTime, _, err := utils.StatTimes(filePath)
+	if err == nil {
+		// If file was generated within the last 24 hours, return the file to avoid unnecessary overload on the server. Otherwise, recalculate the stats
+		duration := time.Since(creationTime)
+		if duration.Hours() < 24 {
+			return c.File(filePath)
+		}
+
+	}
+
+	// Get user object so we can fetch the stats and username
 	userObject, ok := us.GetUser(id);
-
 	if !ok {
-		return c.File("static/images/userboards/" + id + ".png")
+		return c.File("static/images/identity/typitap-logo.png") // @TODO: Replace these with actual default image
 	}
 
-	log.Println("Got user object");
-
-
+	// Get user stats and pass it on to the userboard generator
 	userStats, ok := stats.GetStatsForUser(userObject.Id)
-
 	if !ok {
-		return c.File("static/images/userboards/" + id + ".png")
+		return c.File("static/images/identity/typitap-logo.png") // @TODO: Replace these with actual default image
 	}
-
-	log.Println("Got logs");
-
-
 
 	userboard.GenerateUserboard(userObject.Username, userObject.Id, userStats)
-	log.Println("Got image");
-	return c.File("static/images/userboards/" + userObject.Id + ".png")
+	return c.File(filePath)
 
 }

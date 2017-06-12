@@ -33,7 +33,7 @@ func drawUsername(dc *gg.Context, username string) {
 		panic(err)
 	}
 	dc.SetRGB255(255, 255, 255)
-	dc.DrawStringAnchored(username, 70, 55, 0.5, 0.5)
+	dc.DrawStringAnchored("#" + username, 70, 55, 0.5, 0.5)
 }
 
 func drawGamesPlayed(dc *gg.Context, games int) {
