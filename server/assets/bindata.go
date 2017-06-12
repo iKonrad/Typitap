@@ -3,7 +3,6 @@
 // server/data/.DS_Store
 // server/data/config/config.yml
 // server/data/config/route_roles.yml
-// server/data/images/userboard_template.png
 // server/data/templates/react.html
 // DO NOT EDIT!
 
@@ -71,24 +70,6 @@ func configConfigYml() (*asset, error) {
 func configRoute_rolesYml() (*asset, error) {
 	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/config/route_roles.yml"
 	name := "config/route_roles.yml"
-	bytes, err := bindataRead(path, name)
-	if err != nil {
-		return nil, err
-	}
-
-	fi, err := os.Stat(path)
-	if err != nil {
-		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
-	}
-
-	a := &asset{bytes: bytes, info: fi}
-	return a, err
-}
-
-// imagesUserboard_templatePng reads file data from disk. It returns an error on failure.
-func imagesUserboard_templatePng() (*asset, error) {
-	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/images/userboard_template.png"
-	name := "images/userboard_template.png"
 	bytes, err := bindataRead(path, name)
 	if err != nil {
 		return nil, err
@@ -176,7 +157,6 @@ var _bindata = map[string]func() (*asset, error){
 	".DS_Store": Ds_store,
 	"config/config.yml": configConfigYml,
 	"config/route_roles.yml": configRoute_rolesYml,
-	"images/userboard_template.png": imagesUserboard_templatePng,
 	"templates/react.html": templatesReactHtml,
 }
 
@@ -224,9 +204,6 @@ var _bintree = &bintree{nil, map[string]*bintree{
 	"config": &bintree{nil, map[string]*bintree{
 		"config.yml": &bintree{configConfigYml, map[string]*bintree{}},
 		"route_roles.yml": &bintree{configRoute_rolesYml, map[string]*bintree{}},
-	}},
-	"images": &bintree{nil, map[string]*bintree{
-		"userboard_template.png": &bintree{imagesUserboard_templatePng, map[string]*bintree{}},
 	}},
 	"templates": &bintree{nil, map[string]*bintree{
 		"react.html": &bintree{templatesReactHtml, map[string]*bintree{}},

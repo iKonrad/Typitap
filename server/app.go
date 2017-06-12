@@ -89,6 +89,7 @@ func NewApp(opts ...AppOptions) *App {
 	// Register Redux State generator middleware
 	engine.Use(middlewares.GenerateStateHandler)
 
+	engine.GET("/userboards/:id", controller.UserAPI.FetchUserBoard)
 	engine.Static("/static", "static")
 
 
@@ -178,8 +179,6 @@ func NewApp(opts ...AppOptions) *App {
 	)
 
 	engine.GET("/ws", app.handleWebsocket)
-
-	engine.GET("/userboards/:id", controller.UserAPI.FetchUserBoard)
 
 	// Regular middlewares
 	engine.Use(middleware.Recover())

@@ -17,6 +17,7 @@ func GenerateUserboard(username string, userId string, stats map[string]interfac
 		panic(err);
 	}
 
+
 	dc.DrawImage(im, 0, 0)
 
 	drawUsername(dc, username)
