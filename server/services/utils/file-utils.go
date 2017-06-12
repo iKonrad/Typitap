@@ -4,7 +4,7 @@ import (
 	"time"
 	"os"
 	"syscall"
-	"github.com/iKonrad/typitap/server/config"
+
 )
 
 func StatTimes(name string) (atime, mtime, ctime time.Time, err error) {
