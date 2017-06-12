@@ -1,4 +1,5 @@
 debug: false
+os: mac
 
 # App
 app_port: 5000
