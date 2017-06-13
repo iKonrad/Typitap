@@ -17,6 +17,7 @@ import (
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/gojax/fetch"
 	"io/ioutil"
+
 )
 
 // React struct is contains JS vms
@@ -56,6 +57,7 @@ func NewReact(filePath string, debug bool, proxy http.Handler) *React {
 // handler or other middlewares.
 func (r *React) Handle(c echo.Context) error {
 	UUID := c.Get("uuid").(*uuid.UUID)
+
 	defer func() {
 		if r := recover(); r != nil {
 			c.Render(http.StatusInternalServerError, "react.html", Resp{
@@ -85,6 +87,7 @@ func (r *React) Handle(c echo.Context) error {
 		// Return vm back to the pool
 		r.put(vm)
 
+
 		re.RenderTime = time.Since(start)
 
 		// Handle the Response
@@ -97,12 +100,14 @@ func (r *React) Handle(c echo.Context) error {
 			return c.Redirect(http.StatusMovedPermanently, re.Redirect)
 			// If internal error
 		} else if len(re.Error) != 0 {
-			c.Response().Header().Set("X-React-Render-Time", re.RenderTime.String())
+			c.Response().Header().Set ("X-React-Render-Time", re.RenderTime.String())
 			return c.Render(http.StatusInternalServerError, "react.html", re)
 		}
 	case <-time.After(2 * time.Second):
 		// release the context
+
 		r.drop(vm)
+
 		return c.Render(http.StatusInternalServerError, "react.html", Resp{
 			UUID:  UUID.String(),
 			Error: "timeout",

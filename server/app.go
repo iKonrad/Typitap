@@ -23,6 +23,7 @@ import (
 	"github.com/olebedev/config"
 	"golang.org/x/crypto/acme/autocert"
 	"github.com/iKonrad/typitap/server/controller"
+	"strings"
 )
 
 // App struct.
@@ -76,9 +77,9 @@ func NewApp(opts ...AppOptions) *App {
 	// Set up echo debug level
 	engine.Debug = conf.UBool("debug")
 
-	//engine.GET("/favicon.ico", func(c echo.Context) error {
-	//	return c.Redirect(http.StatusMovedPermanently, "/images/favicon.ico")
-	//})
+	engine.GET("/favicon.ico", func(c echo.Context) error {
+		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
+	})
 
 	// Register authentication middleware
 	engine.Use(middlewares.CheckAuthHandler)
@@ -94,10 +95,15 @@ func NewApp(opts ...AppOptions) *App {
 
 
 
-
 	if env == "prod" {
 		engine.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 			Level: 6,
+			Skipper: middleware.Skipper(func(c echo.Context) bool {
+				if strings.HasSuffix(c.Request().RequestURI, ".ico") {
+					return false
+				}
+				return false
+			}),
 		}))
 	}
 

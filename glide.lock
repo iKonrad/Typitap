@@ -1,5 +1,5 @@
 hash: c32c4cc550a1f62862398428589046f8549ce5e681927717a2d59e827d3fa60f
-updated: 2017-06-11T03:24:34.449693186+01:00
+updated: 2017-06-13T23:15:23.931989509+01:00
 imports:
 - name: github.com/badoux/checkmail
   version: d0a759655d62bcdc95c50a0676f3e9702ed59453
@@ -49,8 +49,13 @@ imports:
   - internal/hashtag
   - internal/pool
   - internal/proto
+- name: github.com/golang/freetype
+  version: e2365dfdc4a05e4b8299a783240d4a7d5a65d4e4
+  subpackages:
+  - raster
+  - truetype
 - name: github.com/golang/protobuf
-  version: 5a0f697c9ed9d68fef0116532c6e05cfeae00e55
+  version: 4f95b0d3eab845462f9b0ca5ad21dea8093be211
   subpackages:
   - proto
 - name: github.com/gorilla/context
@@ -118,6 +123,12 @@ imports:
   - bcrypt
   - blowfish
   - pbkdf2
+- name: golang.org/x/image
+  version: 426cfd8eeb6e08ab1932954e09e3c2cb2bc6e36d
+  subpackages:
+  - font
+  - font/basicfont
+  - math/fixed
 - name: golang.org/x/net
   version: 41bba8d80bbfab43231ffdf4c210037baae5f6a3
   subpackages:

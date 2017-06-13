@@ -19,11 +19,14 @@ class Panel extends React.Component {
 
     renderTitle() {
         if (this.props.title !== undefined) {
-            return <div className="panel-heading"><h3>{ this.props.title }</h3></div>
+            return (
+                <div className="panel-heading">
+                    <h3>{ this.props.title }</h3>
+                </div>
+            )
         }
         return "";
     }
-
 
 
     renderSpinner() {

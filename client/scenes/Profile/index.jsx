@@ -27,11 +27,14 @@ class Profile extends Component {
         return [
             store.dispatch(ProfileActions.fetchUserProfile(params.user)).then(() => {
                 if (store.getState().user.loggedIn && (store.getState().user.data.Username === params.user)) {
-                    this.props.dispatch(push("/"));
+                    store.dispatch(push("/"));
                 }
             })
         ];
     }
+
+
+
 
     componentWillUnmount() {
         this.props.dispatch(ProfileActions.resetUserProfile());
