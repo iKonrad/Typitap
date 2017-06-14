@@ -77,6 +77,8 @@ func NewApp(opts ...AppOptions) *App {
 	// Set up echo debug level
 	engine.Debug = conf.UBool("debug")
 
+
+
 	engine.GET("/favicon.ico", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
 	})
@@ -183,6 +185,7 @@ func NewApp(opts ...AppOptions) *App {
 			"/auth",
 		),
 	)
+
 
 	engine.GET("/ws", app.handleWebsocket)
 
