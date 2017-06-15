@@ -368,7 +368,7 @@ func (gc UserAPIController) FetchUserBoard(c echo.Context) error {
 	filePath := "static/images/userboards/" + id + ".png";
 
 	// Get file stats
-	_, creationTime, _, err := utils.StatTimes(filePath)
+	creationTime, err := utils.GetFileCreated(filePath)
 	if err == nil {
 		// If file was generated within the last 24 hours, return the file to avoid unnecessary overload on the server. Otherwise, recalculate the stats
 		duration := time.Since(creationTime)
