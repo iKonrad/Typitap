@@ -8,7 +8,8 @@ class ActivityFeed extends Component {
     parseMessage(text, data) {
         Object.keys(data).forEach((key, index) => {
             let value = data[key];
-            text = text.replace("{" + key + "}", value);
+            let regexp = new RegExp("{" + key + "}", "g");
+            text = text.replace(regexp, value);
         });
         return text;
     }

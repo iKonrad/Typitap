@@ -33,13 +33,9 @@ class Profile extends Component {
         ];
     }
 
-
-
-
     componentWillUnmount() {
         this.props.dispatch(ProfileActions.resetUserProfile());
     }
-
 
     render() {
         return (

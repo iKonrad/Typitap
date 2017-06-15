@@ -10,7 +10,7 @@ import Follow from 'components/user/UserFollow';
 import * as UserActions from 'store/ducks/userModule';
 import Panel from 'components/app/Panel';
 import { resolveAll } from 'utils/jsUtils';
-import UserboardCode from 'components/user/UserboardCode';
+import UserboardSnippet from 'components/user/UserboardSnippet';
 
 class Dashboard extends Component {
 
@@ -59,7 +59,7 @@ class Dashboard extends Component {
                         <div className="row">
                             <div className="col-xs-12">
                                 <Panel title="Your userboard" loaded={ this.props.user !== undefined && this.props.user.data !== undefined }>
-                                    <UserboardCode user={ this.props.user.data } />
+                                    <UserboardSnippet user={ this.props.user.data } />
                                 </Panel>
                             </div>
                         </div>

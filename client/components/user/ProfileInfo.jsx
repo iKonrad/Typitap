@@ -17,6 +17,7 @@ class ProfileInfo extends Component {
 
 
     render() {
+
         return (
             <div className="panel panel-default profile-page__info">
                 <div className="panel-body">
