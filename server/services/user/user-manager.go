@@ -298,3 +298,36 @@ func ConvertUserToMap(u *entities.User) map[string]interface{} {
 
 	return us
 }
+
+// Returns an array of usernames for a given search keyword
+func SearchForUsers(query string) []map[string]interface{} {
+
+	resp, err := r.Table("users").Filter(func(row r.Term) r.Term {
+		return r.Expr([]string{"username", "name"}).Contains(func(key r.Term) r.Term {
+			return row.Field(key).CoerceTo("string").Match("(?i)"+query)
+		})
+	}).Pluck("username", "email", "name").Run(db.Session)
+
+	defer resp.Close()
+
+	if err != nil {
+		log.Println("Error while searching for users:", err)
+		return []map[string]interface{}{}
+	}
+
+	// If nothing is found, return an empty array
+	if resp.IsNil() {
+		return []map[string]interface{}{}
+	}
+
+	var searchUsers []map[string]interface{}
+	err = resp.All(&searchUsers)
+
+	if err != nil {
+		log.Println("Error while pulling users:", err)
+		return []map[string]interface{}{}
+	}
+
+	return searchUsers
+
+}

@@ -12,6 +12,7 @@ import TopChart from 'components/app/TopChart';
 import Panel from 'components/app/Panel';
 import ActivityFeed from 'components/app/ActivityFeed';
 import { resolveAll } from 'utils/jsUtils';
+import UserSearch from 'components/app/UserSearch';
 
 class Play extends Component {
 
@@ -37,6 +38,7 @@ class Play extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col col-xs-12 col-md-8">
+                            <Panel loaded={true}><UserSearch/></Panel>
                             <Panel title="Recent news" bodyClass="" loaded={ this.props.play.feed !== undefined }><ActivityFeed feed={ this.props.play.feed } /></Panel>
                         </div>
                         <div className="col col-xs-12 col-md-4">

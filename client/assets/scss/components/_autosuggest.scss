@@ -1,0 +1,84 @@
+body {
+  font-family: Helvetica, sans-serif;
+}
+
+
+.react-autosuggest {
+  &__container {
+    position: relative;
+  }
+
+  &__input {
+    &--focused {
+      outline: none;
+    }
+    &--open {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  &__suggestions-container {
+    display: none;
+
+    &--open {
+      display: block;
+      position: absolute;
+      top: 51px;
+      width: 100%;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18), 0 10px 10px rgba(0, 0, 0, 0.04);
+      background-color: #fff;
+      font-family: Helvetica, sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      z-index: 2;
+    }
+  }
+
+  &__suggestions-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  &__suggestion {
+    cursor: pointer;
+    padding: 10px 20px;
+    @include transition();
+
+    .suggestion-icon {
+      width: 40px;
+      height: 40px;
+      display: inline-block;
+      margin-right: 15px;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      top: 5px;
+    }
+
+    .suggestion-user {
+      position: relative;
+      top: 0px;
+      display: inline-block;
+
+      &__name {
+        font-size: 16px;
+        display: block;
+      }
+
+      &__username {
+        font-size: 12px;
+        color: $grey-300;
+      }
+    }
+
+    &--highlighted {
+      background-color: $grey-050;
+    }
+  }
+}
+
+

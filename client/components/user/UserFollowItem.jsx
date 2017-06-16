@@ -13,7 +13,7 @@ class UserFollowItem extends React.Component {
                 <Link to={ `/u/` + this.props.username }>
                     <div className="follow-item">
                         <Gravatar email={ this.props.email } size={30} className="img-circle" />
-                        <div className="follow-item__username">{ this.props.username }</div>
+                        <div className="follow-item__username">#{ this.props.username }</div>
                     </div>
                 </Link>
 

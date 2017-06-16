@@ -361,7 +361,6 @@ func (gc UserAPIController) ResendActivationLink(c echo.Context) error {
 
 }
 
-
 func (gc UserAPIController) FetchUserBoard(c echo.Context) error {
 
 	id := c.Param("id");
@@ -392,5 +391,27 @@ func (gc UserAPIController) FetchUserBoard(c echo.Context) error {
 
 	userboard.GenerateUserboard(userObject.Username, userObject.Id, userStats)
 	return c.File(filePath)
+
+}
+
+func (gc UserAPIController) HandleUserSearch(c echo.Context) error {
+
+	query := c.Param("query")
+
+	if query == "" {
+		return c.JSON(200, map[string]interface{}{
+			"success": true,
+			"data":    []map[string]interface{}{},
+		});
+	}
+
+	users := us.SearchForUsers(query)
+
+	return c.JSON(200, map[string]interface{}{
+			"success": true,
+			"data": users,
+	});
+
+
 
 }
