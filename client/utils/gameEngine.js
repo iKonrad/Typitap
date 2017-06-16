@@ -60,7 +60,6 @@ export function finishGame() {
     this.stopTimer();
 
     // Mark the game as finished
-
     if (getStore().getState().game.online) {
         getStore().dispatch(GameActions.completeGame());
         return;
@@ -68,40 +67,20 @@ export function finishGame() {
 
     let state = getStore().getState().game;
 
-    // Calculate the WPM and accuracy
-    let seconds = state.time;
-    let words = state.text.split(" ").length;
-
-    // Divide the words into 5 character chunks to make WPM more reliable
-    let characters = 0;
-    state.text.split(" ").forEach((obj, index) => {
-        characters += obj.length;
-    });
-
-    let virtualWords = Math.round(characters / 5);
-    let speed = Math.round(virtualWords * (60 / seconds));
-    let accuracy = 100 - ((Object.keys(state.mistakes).length / words) * 100).toFixed(1);
-
     let results = {
-        'time': seconds,
-        'wpm': speed,
-        'accuracy': accuracy,
+        'time': state.time,
         'mistakes': JSON.stringify(state.mistakes),
         'sessionId': state.room.id,
         'playback': JSON.stringify(state.playback),
     };
 
-
     // Post the results to the server
     this.postGameResultData(results).then((response) => {
         if (response.success) {
-            console.log(response);
-            getStore().dispatch(GameActions.finishGame(speed, accuracy, response.data.points));
+            console.log("RES", response);
+            getStore().dispatch(GameActions.finishGame(response.data.wpm, response.data.accuracy, response.data.points));
         }
     });
-
-    let mistakesCount = state.mistakes === undefined ? '0' : Object.keys(state.mistakes).length;
-
 
 }
 

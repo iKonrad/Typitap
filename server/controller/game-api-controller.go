@@ -68,9 +68,19 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 		json.Unmarshal([]byte(c.FormValue("mistakes")), &mistakes)
 	}
 
-	wpm, _ := strconv.Atoi(c.FormValue("wpm"))
-	accuracy, _ := strconv.ParseFloat(c.FormValue("accuracy"), 32)
+	// Get session to calculate game score
+	session, err := game.GetSession(c.FormValue("sessionId"))
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"success": false,
+			"error":   "Could not save the session data",
+		})
+	}
+
 	gameTime, _ := strconv.Atoi(c.FormValue("time"))
+
+	wpm, accuracy := game.CalculateScore(gameTime, len(mistakes), session.Text.Text)
 
 	var playback []map[string]interface{}
 	if c.FormValue("playback") != "" {
@@ -99,8 +109,6 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 	// Calculate experience points for a game result
 	points := levels.CalculatePoints(&newResult, 0)
 
-	log.Println("Points", points)
-
 	// Apply points to user
 	if points > 0 {
 		levels.ApplyPoints(&user, points)
@@ -108,7 +116,6 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 
 	// Submit the result for the top chart
 	if err != nil {
-
 		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"success": false,
@@ -121,6 +128,8 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 		"resultId": newResult.Id,
 		"data": map[string]interface{}{
 			"points": points,
+			"wpm": wpm,
+			"accuracy": accuracy,
 		},
 	})
 
