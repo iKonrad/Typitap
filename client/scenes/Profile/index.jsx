@@ -8,6 +8,7 @@ import Follow from 'components/user/UserFollow';
 import {push} from 'react-router-redux';
 import Panel from 'components/app/Panel';
 import UserBio from 'components/user/UserBio';
+import Comments from 'components/app/Comments';
 
 class Profile extends Component {
 
@@ -33,8 +34,8 @@ class Profile extends Component {
         ];
     }
 
-    componentWillUnmount() {
-        this.props.dispatch(ProfileActions.resetUserProfile());
+    turnCommentsPage(page) {
+        this.props.dispatch(ProfileActions.turnCommentsPage(page))
     }
 
     render() {
@@ -54,7 +55,18 @@ class Profile extends Component {
                                     stats={ this.props.profile.stats }/></Panel>
                             </div>
                         </div>
-
+                        <div className="row">
+                            <div className="col col-xs-12">
+                                <Panel title={ `Comments (${ this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0 })` } loaded={ true }>
+                                    <Comments
+                                        comments={ this.props.profile.comments }
+                                        id={ this.props.profile.user.Id }
+                                        page={ this.props.profile.commentsPage }
+                                        onPageChange={ this.turnCommentsPage.bind(this) }
+                                    />
+                                </Panel>
+                            </div>
+                        </div>
                     </div>
                     <div className="col col-xs-12 col-md-4">
                         <div className="row">
@@ -74,19 +86,16 @@ class Profile extends Component {
                                 <Follow title="Following" items={ this.props.profile.follow.following }/>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col col-xs-12 col-md-8">
                         <div className="row">
-                            <div className="col-xs-12">
-                                Comments section
+                            <div className="col col-xs-12">
+                                <Panel title="Recent games" loaded={ this.props.profile.games !== undefined }>
+                                    <RecentGames
+                                        games={ this.props.profile.games }
+                                        hideButton={true}
+                                    />
+                                </Panel>
                             </div>
                         </div>
-                    </div>
-                    <div className="col col-xs-12 col-md-4">
-                        <Panel title="Recent games" loaded={ this.props.profile.games !== undefined }><RecentGames
-                            games={ this.props.profile.games } hideButton={true}/></Panel>
                     </div>
                 </div>
             </div>

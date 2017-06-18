@@ -194,9 +194,11 @@
 .btn-secondary.btn-outline {
   color: $brand-secondary;
   border: 1px solid $brand-secondary;
+  background-color: transparent;
   &:hover, &:active, &:focus {
     color: white;
     border: 1px solid $brand-secondary;
+    background-color: $brand-secondary;
   }
 }
 

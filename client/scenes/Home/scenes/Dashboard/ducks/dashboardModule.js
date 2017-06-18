@@ -1,5 +1,3 @@
-const SET_RECENT_GAMES_DATA = "SET_RECENT_GAMES_DATA";
-const RESET_RECENT_GAMES_DATA = "RESET_RECENT_GAMES_DATA";
 const SET_ACTIVITY_FEED = "SET_ACTIVITY_FEED";
 const RESET_ACTIVITY_FEED = "RESET_ACTIVITY_FEED";
 
@@ -11,18 +9,6 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
-        case SET_RECENT_GAMES_DATA:
-            return {
-                ...state,
-                games: [
-                    ...action.games,
-                ],
-            }
-        case RESET_RECENT_GAMES_DATA:
-            return {
-                ...state,
-                games: [],
-            }
         case SET_ACTIVITY_FEED:
             return {
                 ...state,

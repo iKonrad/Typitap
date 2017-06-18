@@ -14,8 +14,6 @@ class LoginForm extends Component {
 
 
     handleSubmitForm(values) {
-
-
         // Attach identifier to the form so we can reconnect the websocket on login
         if (this.props.socket.connected) {
             values.identifier = this.props.socket.identifier;

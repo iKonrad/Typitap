@@ -14,6 +14,7 @@ import (
 	"github.com/iKonrad/typitap/server/services/userboard"
 	"github.com/iKonrad/typitap/server/services/utils"
 	"time"
+	"github.com/iKonrad/typitap/server/services/comments"
 )
 
 type UserAPIController struct {
@@ -277,6 +278,9 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 
 	delete(user, user["Password"].(string))
 	user["LevelName"] = levels.GetLevelName(int(user["Level"].(float64)))
+	user["NextExp"] = levels.CalculateThresholdForLevel(int(user["Level"].(float64)) + 1)
+
+	userComments, ok := comments.GetComments(user["Id"].(string))
 
 	// Get stats for user
 	userStats, ok := stats.GetStatsForUser(user["Id"].(string))
@@ -299,6 +303,7 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 			"stats":  userStats,
 			"games":  recentGames,
 			"follow": follow,
+			"comments": userComments.Items,
 		},
 	})
 }

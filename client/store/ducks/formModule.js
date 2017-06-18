@@ -115,5 +115,27 @@ export function submitPasswordReset(data) {
 }
 
 
+export function submitComment(data) {
+
+    const formData = new FormData();
+    for (var i in data) {
+        formData.append(i, data[i]);
+    }
+
+    return fetch(`/api/comments/`, {
+        method: "POST",
+        body: formData,
+        credentials: "same-origin",
+    }).then((response) => {
+        return response.json();
+    }).then((response) => {
+        if (!response.success) {
+            throw new SubmissionError({text: response.message});
+        }
+        return response;
+    });
+
+}
+
 
 

@@ -292,8 +292,10 @@ func (r *Room) finishGame() {
 	if r.gameStarted || r.waitCountdownStarted || r.countdownStarted {
 		r.ticker.Stop()
 
-		for identifier := range r.Players {
-			r.RemovePlayer(identifier)
+		if len(r.Players) > 0 {
+			for identifier := range r.Players {
+				r.RemovePlayer(identifier)
+			}
 		}
 	}
 }

@@ -27,8 +27,6 @@ const socketMiddleware = (function () {
     const onMessage = (ws, store) => evt => {
         //Parse the JSON message received on the websocket
         var msg = JSON.parse(evt.data);
-        // console.log("[SocketMessage] ", msg);
-
         switch (msg.type) {
             case "CONNECTED":
                 store.dispatch(socketActions.setIdentifier(msg.data.identifier));

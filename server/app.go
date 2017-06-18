@@ -186,6 +186,12 @@ func NewApp(opts ...AppOptions) *App {
 		),
 	)
 
+	commentRoutes := routes.CommentsAPIRoutes{}
+	commentRoutes.Bind(
+		app.Engine.Group(
+			"/api/comments",
+		),
+	)
 
 	engine.GET("/ws", app.handleWebsocket)
 
