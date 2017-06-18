@@ -1,5 +1,12 @@
 .comments {
 
+  &__empty {
+    font-size: 14px;
+    color: $grey-300;
+    padding: 15px 0;
+    text-align: center;
+  }
+
   .comment {
 
     padding: 15px 0;

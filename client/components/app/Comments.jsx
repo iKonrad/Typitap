@@ -5,7 +5,7 @@ import Input from 'components/form/fields/Input';
 import * as FormActions from 'store/ducks/formModule';
 import * as ProfileActions from 'store/ducks/profileModule';
 import { connect } from 'react-redux';
-
+import Notifications from 'utils/notifications';
 const COMMENTS_PER_PAGE = 10;
 
 class Comments extends React.Component {
@@ -20,6 +20,7 @@ class Comments extends React.Component {
         FormActions.submitComment(values).then((response) => {
             if (response.success) {
                 that.props.dispatch(ProfileActions.addComment(that.props.user.data.Username, that.props.user.data.Email, values['text']))
+                that.props.dispatch(Notifications.success("Comment added!"));
                 that.props.reset();
             }
         });
@@ -29,6 +30,7 @@ class Comments extends React.Component {
         if (this.props.comments !== undefined && this.props.comments.length > 0) {
             let offset = (this.props.page !== undefined ? (this.props.page - 1) : 0) * COMMENTS_PER_PAGE;
             let commentArray = [];
+
             for (let i = offset; i < (offset + COMMENTS_PER_PAGE); i++) {
                 let comment = this.props.comments[i];
                 if (comment !== undefined) {
@@ -38,7 +40,7 @@ class Comments extends React.Component {
             return commentArray;
         }
 
-        return "Noone left a comment here yet. Be the first one.";
+        return <div className="comments__empty">No comments yet. Be the first one.</div>;
     }
 
     renderPageButtons() {
@@ -73,7 +75,7 @@ class Comments extends React.Component {
         if (this.props.user.loggedIn) {
             return (
                 <form onSubmit={ this.props.handleSubmit(this.handleSubmitComment.bind(this)) }>
-                    <Field name="text" component={ Input } type="text" label="Add comment"  />
+                    <Field name="text" component={ Input } type="text" label="Add comment" placeholder=""  />
                     <button type="submit" disabled={pristine || submitting} className="btn btn-secondary btn-outline btn-block">Add comment</button>
                 </form>
             );

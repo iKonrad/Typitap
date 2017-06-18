@@ -71,20 +71,24 @@ export default function reducer(state = initialState, action) {
 
             }
         case ADD_COMMENT:
+
+            let comments = [
+                ...state.comments
+            ];
+
+            comments.unshift({
+                Id: "?????",
+                Text: action.text,
+                Created: new Date().toLocaleString(),
+                User: {
+                    Email: action.email,
+                    Username: action.username,
+                }
+            });
+
             return {
                 ...state,
-                comments: [
-                    {
-                        Id: "?????",
-                        Text: action.text,
-                        Created: new Date().toLocaleString(),
-                        User: {
-                            Email: action.email,
-                            Username: action.username,
-                        }
-                    },
-                    ...state.comments,
-                ]
+                comments,
             }
         case TURN_COMMENTS_PAGE:
             return {
@@ -128,9 +132,9 @@ export function unfollowUser(id) {
 
 export function addComment(username, email, text) {
 
-    return { type: ADD_COMMENT, username, email, text }
+    return {type: ADD_COMMENT, username, email, text}
 }
 
 export function turnCommentsPage(page) {
-    return { type: TURN_COMMENTS_PAGE, page }
+    return {type: TURN_COMMENTS_PAGE, page}
 }
