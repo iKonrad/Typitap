@@ -24,6 +24,7 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 	"github.com/iKonrad/typitap/server/controller"
 	"strings"
+	"log"
 )
 
 // App struct.
@@ -213,8 +214,10 @@ func NewApp(opts ...AppOptions) *App {
 		return func(c echo.Context) error {
 			// execute echo handlers chain
 			err := next(c)
+
 			// if page(handler) for url/method not found
 			if err != nil {
+				log.Println("ERR", err)
 				httpErr, ok := err.(*echo.HTTPError)
 				if ok && httpErr.Code == http.StatusNotFound {
 					// check if file exists

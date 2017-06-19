@@ -16,7 +16,9 @@ import Permissions from 'utils/permissions';
 import AdminBase from 'scenes/Admin';
 import AdminUsers from 'scenes/Admin/scenes/AdminUsers';
 import AdminLevels from 'scenes/Admin/scenes/AdminLevels';
-
+import About from 'scenes/About';
+import Terms from 'scenes/Terms';
+import PrivacyPolicy from 'scenes/PrivacyPolicy';
 
 /**
  * Returns configured routes for different
@@ -53,6 +55,10 @@ export default ({store, first}) => {
 
             <Route path="/play" component={Play} onEnter={w(Play.clientInit)} />
             <Route path="/play/:type" component={GameWindow} onEnter={w(GameWindow.clientInit)} />
+
+            <Route path="/about" component={About} />
+            <Route path="/terms" component={ Terms } />
+            <Route path="/privacy" component={ PrivacyPolicy } />
 
             <Route emptyBase={true} path="/admin" component={AdminBase}>
                 <IndexRoute component={Permissions.OnlyAdmins(AdminUsers)} onEnter={w(AdminUsers.clientInit)} />
