@@ -22,10 +22,6 @@ func init() {
 	AuthenticationAPI = AuthenticationAPIController{}
 }
 
-func (ac *AuthenticationAPIController) TestHandler(c echo.Context) error {
-	return c.JSON(200, "{'error': 'Nice, it worked'}")
-}
-
 func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 
 	// Check if user is logged in first
@@ -33,12 +29,17 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 		return c.JSON(200, map[string]interface{}{"success": false, "error": "You are logged in"})
 	}
 
+	// Get country code
+	country, ok := us.GetCountryCodeByIP(c.RealIP())
+
+
 	// Get form data
 	details := map[string]interface{}{
 		"name":     c.FormValue("name"),
 		"email":    c.FormValue("email"),
 		"password": c.FormValue("password"),
 		"username": c.FormValue("username"),
+		"country": country,
 	}
 
 	// Validate user details
@@ -125,6 +126,8 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
 
+	var err error
+
 	// Validate the form first
 	if isValid, errors := ac.validateLoginForm(username, password); !isValid {
 		return c.JSON(200, map[string]interface{}{
@@ -144,7 +147,7 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 	}
 
 	// Compare passwords
-	err := bcrypt.CompareHashAndPassword([]byte(user["Password"].(string)), []byte(password))
+	err = bcrypt.CompareHashAndPassword([]byte(user["Password"].(string)), []byte(password))
 
 	if err != nil {
 		return c.JSON(200, map[string]interface{}{"success": false, "error": "Invalid credentials"})

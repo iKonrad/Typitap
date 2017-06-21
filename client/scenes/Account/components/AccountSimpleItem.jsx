@@ -53,7 +53,7 @@ class AccountSimpleItem extends React.Component {
     getSelectedOption() {
         let v = "";
         this.props.options.forEach((option) => {
-            if (option.value === parseInt(this.props.user.data[this.props.name])) {
+            if (option.value === this.props.user.data[this.props.name]) {
                 v = option.name;
             }
         })

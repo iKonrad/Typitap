@@ -1,5 +1,5 @@
-hash: c32c4cc550a1f62862398428589046f8549ce5e681927717a2d59e827d3fa60f
-updated: 2017-06-13T23:15:23.931989509+01:00
+hash: f7797a36cdbfb71d80635b032f07f281b232f2dcf475245a0277861f645f9af3
+updated: 2017-06-20T22:25:30.593604271+01:00
 imports:
 - name: github.com/badoux/checkmail
   version: d0a759655d62bcdc95c50a0676f3e9702ed59453
@@ -12,7 +12,7 @@ imports:
 - name: github.com/dancannon/gorethink
   version: 166dbe2477ffb44f53f584c5c24d8499e0c12303
 - name: github.com/DataDog/datadog-go
-  version: 4bf1c1105b95d4abdfec7f2added80203dce2482
+  version: fb3be1a38fdd8038de6b45aee442d9930fd584d0
   subpackages:
   - statsd
 - name: github.com/dgrijalva/jwt-go
@@ -42,7 +42,7 @@ imports:
 - name: github.com/fogleman/gg
   version: 6166aa3c1afaee416f384645a81636267aee6d25
 - name: github.com/go-redis/redis
-  version: eb066030c08c254136a0dbfe9f7a3625a0871beb
+  version: e14976b254c5bc5f399dd0ae9314b1d02a176897
   subpackages:
   - internal
   - internal/consistenthash
@@ -55,7 +55,7 @@ imports:
   - raster
   - truetype
 - name: github.com/golang/protobuf
-  version: 4f95b0d3eab845462f9b0ca5ad21dea8093be211
+  version: e325f446bebc2998605911c0a2650d9920361d4a
   subpackages:
   - proto
 - name: github.com/gorilla/context
@@ -65,7 +65,7 @@ imports:
 - name: github.com/gorilla/sessions
   version: 8b6b4cd75f07f7ee036eb37b8127bd40ab1efc49
 - name: github.com/gorilla/websocket
-  version: a91eba7f97777409bc2c443f5534d41dd20c5720
+  version: ea4d1f681babbce9545c9c5f3d5194a789c89f5b
 - name: github.com/hailocab/go-hostpool
   version: e80d13ce29ede4452c43dea11e79b9bc8a15b478
 - name: github.com/itsjamie/go-bindata-templates
@@ -103,6 +103,12 @@ imports:
   - fetch/internal/data
 - name: github.com/olebedev/on
   version: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
+- name: github.com/oschwald/geoip2-golang
+  version: 5b1dc16861f81d05d9836bb21c2d0d65282fc0b8
+- name: github.com/oschwald/maxminddb-golang
+  version: d19f6d453e836d12ee8fe895d0494421e93ef8c1
+- name: github.com/pariz/gountries
+  version: 01a8f4c7c6e404b6529ada4b5e25f00672670f6d
 - name: github.com/pkg/errors
   version: 248dadf4e9068a0b3e79f02ed0a610d935de5302
 - name: github.com/robfig/cron
@@ -110,11 +116,15 @@ imports:
 - name: github.com/satori/go.uuid
   version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
 - name: github.com/Sirupsen/logrus
-  version: 85b1699d505667d13f8ac4478c1debbf85d6c5de
+  version: 3d4380f53a34dcdc95f0c1db702615992b38d9a4
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
   version: d090d65668a286d9a180d43a19dfdc5dcad8fe88
+- name: go4.org
+  version: 034d17a462f7b2dcd1a4a73553ec5357ff6e6c6e
+  subpackages:
+  - syncutil
 - name: golang.org/x/crypto
   version: bed12803fa9663d7aa2c2346b0c634ad2dcd43b7
   subpackages:
@@ -138,6 +148,7 @@ imports:
   version: 7a6e5648d140666db5d920909e082ca00a87ba2c
   subpackages:
   - unix
+  - windows
 - name: golang.org/x/text
   version: 44f4f658a783b0cee41fe0a23b8fc91d9c120558
   subpackages:

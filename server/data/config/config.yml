@@ -4,6 +4,8 @@ os: mac
 # App
 app_port: 5000
 
+countries: server/data/countries/geoip.mmdb
+
 # Database
 database_host: 127.0.0.1
 database_port: 28015

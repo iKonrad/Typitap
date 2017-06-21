@@ -20,4 +20,6 @@ type User struct {
 
 	Level int `gorethink:"level"`
 	Exp   int `gorethink:"exp"`
+
+	Country string `gorethink:"country"`
 }

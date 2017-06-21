@@ -153,6 +153,25 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 			})
 		}
 		user.Bio = value
+
+	case "Country":
+		if value == "" {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"success": false,
+				"message": "This field cannot be empty",
+			})
+		}
+
+		code, ok := us.ValidateCountryCode(value)
+
+		if !ok {
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"success": false,
+				"message": "Invalid country code",
+			})
+		}
+
+		user.Country = code
 	}
 
 	if ok := us.UpdateUser(&user); ok {
@@ -299,10 +318,10 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
 		"data": map[string]interface{}{
-			"user":   user,
-			"stats":  userStats,
-			"games":  recentGames,
-			"follow": follow,
+			"user":     user,
+			"stats":    userStats,
+			"games":    recentGames,
+			"follow":   follow,
 			"comments": userComments.Items,
 		},
 	})
@@ -413,10 +432,7 @@ func (gc UserAPIController) HandleUserSearch(c echo.Context) error {
 	users := us.SearchForUsers(query)
 
 	return c.JSON(200, map[string]interface{}{
-			"success": true,
-			"data": users,
+		"success": true,
+		"data":    users,
 	});
-
-
-
 }

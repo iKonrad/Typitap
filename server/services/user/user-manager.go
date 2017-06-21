@@ -13,6 +13,10 @@ import (
 	errorGen "github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 	r "gopkg.in/gorethink/gorethink.v3"
+	"github.com/oschwald/geoip2-golang"
+	"net"
+	"github.com/pariz/gountries"
+	"github.com/iKonrad/typitap/server/config"
 )
 
 func CreateUser(details map[string]interface{}) (entities.User, error) {
@@ -248,12 +252,13 @@ func UpdateUserPassword(password string, user entities.User) bool {
 func UpdateUser(user *entities.User) bool {
 
 	r.Table("users").Get(user.Id).Update(map[string]interface{}{
-		"name":   user.Name,
-		"active": user.Active,
-		"email":  user.Email,
-		"keyboard": user.Keyboard,
-		"bio": user.Bio,
+		"name":           user.Name,
+		"active":         user.Active,
+		"email":          user.Email,
+		"keyboard":       user.Keyboard,
+		"bio":            user.Bio,
 		"keyboardLayout": user.KeyboardLayout,
+		"country": user.Country,
 	}).Exec(db.Session)
 	return true
 }
@@ -304,7 +309,7 @@ func SearchForUsers(query string) []map[string]interface{} {
 
 	resp, err := r.Table("users").Filter(func(row r.Term) r.Term {
 		return r.Expr([]string{"username", "name"}).Contains(func(key r.Term) r.Term {
-			return row.Field(key).CoerceTo("string").Match("(?i)"+query)
+			return row.Field(key).CoerceTo("string").Match("(?i)" + query)
 		})
 	}).Pluck("username", "email", "name").Run(db.Session)
 
@@ -329,5 +334,38 @@ func SearchForUsers(query string) []map[string]interface{} {
 	}
 
 	return searchUsers
+
+}
+
+func GetCountryCodeByIP(ipAddress string) (string, bool) {
+
+	countryDb, err := geoip2.Open(config.Config.UString("countries"))
+
+	ip := net.ParseIP(ipAddress)
+	city, err := countryDb.City(ip);
+	cityName := city.Country.Names["en"]
+
+	query := gountries.New()
+	country, err := query.FindCountryByName(cityName)
+
+	return country.Alpha2, err != nil
+
+}
+
+func GetCountryCodeByName(name string) (string, bool) {
+
+	query := gountries.New()
+	country, err := query.FindCountryByName(name)
+
+	return country.Alpha2, err != nil
+
+}
+
+func ValidateCountryCode(code string) (string, bool) {
+
+	query := gountries.New()
+	country, err := query.FindCountryByAlpha(code)
+
+	return country.Alpha2, err == nil
 
 }

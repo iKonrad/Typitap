@@ -21,6 +21,9 @@ const initialState = {
         KeyboardLayout: {
             open: false
         },
+        Country: {
+            open: false
+        }
     }
 };
 

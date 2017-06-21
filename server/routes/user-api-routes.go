@@ -23,4 +23,5 @@ func (api *UserAPIRoutes) Bind(group *echo.Group) {
 	group.GET("/followers", controller.UserAPI.GetUserFollow)
 	group.POST("/account/resend", controller.UserAPI.ResendActivationLink)
 	group.GET("/search/:query", controller.UserAPI.HandleUserSearch)
+
 }

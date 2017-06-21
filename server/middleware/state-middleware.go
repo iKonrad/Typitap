@@ -36,6 +36,7 @@ func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
 					"Level":     user.Level,
 					"Exp":       user.Exp,
 					"Bio": user.Bio,
+					"Country": user.Country,
 					"Keyboard": user.Keyboard,
 					"KeyboardLayout": user.KeyboardLayout,
 					"NextExp":   levels.CalculateThresholdForLevel(user.Level + 1),

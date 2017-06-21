@@ -20,6 +20,7 @@ class Details extends React.Component {
                         <SimpleItem name="Keyboard" />
                         <SimpleItem name="KeyboardLayout" label="Keyboard layout" type="select" options={ UserUtils.keyboardLayouts } />
                         <SimpleItem name="Bio" type="textarea" />
+                        <SimpleItem name="Country" label="Country" type="select" options={ UserUtils.countryList } />
                     </div>
                 </div>
             </div>
