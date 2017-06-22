@@ -16,3 +16,5 @@ dump.rdb
 rethinkdb_dump_*
 *.out
 /server/data/config/config.yml
+typitap
+/Typitap
