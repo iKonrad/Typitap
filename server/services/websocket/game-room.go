@@ -411,6 +411,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int,
 				"accuracy":   accuracy,
 				"time":       playerTime,
 				"points":     points,
+				"resultId": result.Id,
 			})
 
 		// Increment next place

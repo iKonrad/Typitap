@@ -124,6 +124,48 @@
   //  }
   //}
 
+
+  /* SOCIAL BUTTONS */
+  &-facebook {
+    background-color: $facebook;
+    border-color: $facebook;
+    color: white;
+    @include transition();
+    margin: 5px;
+
+    &:before {
+      content: "\f09a";
+      color: white;
+      font-family: "FontAwesome";
+      margin-right: 15px;
+    }
+
+    &:hover {
+      border-color: darken($facebook, 5%);
+      background-color: darken($facebook, 5%);
+    }
+  }
+
+  &-twitter {
+    background-color: $twitter;
+    border-color: $twitter;
+    color: white;
+    @include transition();
+    margin: 5px;
+
+    &:before {
+      content: "\f099";
+      color: white;
+      font-family: "FontAwesome";
+      margin-right: 15px;
+    }
+
+    &:hover {
+      border-color: darken($twitter, 5%);
+      background-color: darken($twitter, 5%);
+    }
+  }
+
   &.btn-circle {
     text-align: center;
     padding: 11px 0;

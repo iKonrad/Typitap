@@ -113,6 +113,7 @@ export default function (options, cbk) {
                         );
 
                         const {title, meta} = Helmet.rewind();
+                        console.log("METAAAAAA", JSON.stringify(meta));
                         result.title = title.toString();
                         result.meta = meta.toString();
                         result.initial = JSON.stringify(store.getState());return cbk(result);

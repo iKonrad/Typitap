@@ -88,6 +88,8 @@ const initialState = {
         id: '',
         players: {},
     },
+
+    resultId: "",
 };
 
 
@@ -283,7 +285,8 @@ export default function reducer(state = initialState, action) {
                         a: "end",
                         t
                     }
-                ]
+                ],
+                resultId: action.resultId,
             };
         case PLAYER_COMPLETED_GAME:
 
@@ -393,12 +396,13 @@ startGame(online) {
     };
 }
 
-export function finishGame(wpm, accuracy, points) {
+export function finishGame(wpm, accuracy, points, resultId) {
     return {
         type: FINISH_GAME,
         wpm,
         accuracy,
         points,
+        resultId
     }
 }
 

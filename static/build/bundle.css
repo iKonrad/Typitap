@@ -7929,7 +7929,8 @@ body {
   border: none;
   transition: all 0.3s ease-in-out;
   font-family: 'Dosis', sans-serif;
-  font-weight: normal; }
+  font-weight: normal;
+  /* SOCIAL BUTTONS */ }
   .btn:hover {
     border: none; }
   .btn.btn-round {
@@ -7990,6 +7991,34 @@ body {
         color: white; }
         .btn.btn-follow--following:hover i.fa {
           color: white; }
+  .btn-facebook {
+    background-color: #3b5998;
+    border-color: #3b5998;
+    color: white;
+    transition: all 0.2s ease-in-out;
+    margin: 5px; }
+    .btn-facebook:before {
+      content: "\F09A";
+      color: white;
+      font-family: "FontAwesome";
+      margin-right: 15px; }
+    .btn-facebook:hover {
+      border-color: #344e86;
+      background-color: #344e86; }
+  .btn-twitter {
+    background-color: #00aced;
+    border-color: #00aced;
+    color: white;
+    transition: all 0.2s ease-in-out;
+    margin: 5px; }
+    .btn-twitter:before {
+      content: "\F099";
+      color: white;
+      font-family: "FontAwesome";
+      margin-right: 15px; }
+    .btn-twitter:hover {
+      border-color: #0099d4;
+      background-color: #0099d4; }
   .btn.btn-circle {
     text-align: center;
     padding: 11px 0;
@@ -8278,6 +8307,10 @@ body {
   height: 80px;
   background-image: linear-gradient(-180deg, #3d3d3d 0%, #1E1E1E 100%);
   color: white; }
+
+.game-result__share {
+  text-align: center;
+  margin: 15px 0 0 0; }
 
 .game-result__players {
   margin: 10px 0; }

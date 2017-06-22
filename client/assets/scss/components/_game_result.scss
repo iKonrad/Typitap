@@ -1,6 +1,11 @@
 .game-result {
 
 
+  &__share {
+    text-align: center;
+    margin: 15px 0 0 0;
+  }
+
   &__players {
     margin: 10px 0;
     &__player {

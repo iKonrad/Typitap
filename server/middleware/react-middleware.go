@@ -79,6 +79,9 @@ func (r *React) Handle(c echo.Context) error {
 		"uuid":     UUID.String(),
 		"state":    c.Get("State"),
 		"response": c.Get("Response"),
+		"meta": map[string]interface{}{
+			"lol": "test",
+		},
 	}
 
 	select {

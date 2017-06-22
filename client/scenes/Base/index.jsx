@@ -6,6 +6,7 @@ import theme from 'reapop-theme-wybo';
 import * as socketActions from 'store/ducks/socketModule';
 import AlertBar from './components/AlertBar';
 import Footer from 'components/navigation/Footer';
+import Helmet from 'react-helmet';
 
 class Base extends Component {
 
@@ -64,6 +65,7 @@ class Base extends Component {
 
         return (
             <div className="app-wrapper">
+                <Helmet title="typitap.com - ultimate online typing game" meta={[{property: 'og:title', content: 'typitap.com - ultimate online typing game'}]} />
                 { showEmptyBase ? "" : (<Navbar />) }
                 <div id="react-container" className="main-content">
                     { showEmptyBase ? "" : (<AlertBar/>) }

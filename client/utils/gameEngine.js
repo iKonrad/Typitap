@@ -77,7 +77,7 @@ export function finishGame() {
     // Post the results to the server
     this.postGameResultData(results).then((response) => {
         if (response.success) {
-            getStore().dispatch(GameActions.finishGame(response.data.wpm, response.data.accuracy, response.data.points));
+            getStore().dispatch(GameActions.finishGame(response.data.wpm, response.data.accuracy, response.data.points, response.resultId));
         }
     });
 

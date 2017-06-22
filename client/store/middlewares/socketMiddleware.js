@@ -74,7 +74,8 @@ const socketMiddleware = (function () {
                 let wpm = msg.data.wpm !== undefined ? msg.data.wpm : 0;
                 let accuracy = msg.data.accuracy !== undefined ? msg.data.accuracy : 0;
                 let points = msg.data.points !== undefined ? msg.data.points : 0;
-                store.dispatch(gameActions.finishGame(wpm, accuracy, points));
+                let resultId = msg.data.resultId;
+                store.dispatch(gameActions.finishGame(wpm, accuracy, points, resultId));
                 break;
 
         }

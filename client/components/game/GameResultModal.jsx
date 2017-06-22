@@ -8,6 +8,10 @@ import * as GameEngine from 'utils/gameEngine';
 import * as SocketActions from 'store/ducks/socketModule';
 import { push } from 'react-router-redux';
 import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import * as jsUtil from 'utils/jsUtils';
+
+import {ShareButtons, ShareCounts, generateShareIcon } from 'react-share';
 
 class GameResultModal extends Component {
 
@@ -22,6 +26,18 @@ class GameResultModal extends Component {
     render() {
         return (
             <Modal show={this.state.open} className="game-result">
+
+
+                <Helmet
+                    meta={[
+                        {property: 'og:title', content: "Finished game!"},
+                        {property: 'og:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId },
+                        {property: 'twitter:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId },
+                        {property: 'og:image:secure_url', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId }
+                        ]
+                    }
+                />
+
                 <Modal.Header>
                     <Modal.Title>
                         Game completed!
@@ -34,6 +50,9 @@ class GameResultModal extends Component {
                         </div>
                         <div className="col col-xs-12">
                             { this.renderUserLevel() }
+                        </div>
+                        <div className="col col-xs-12">
+                            { this.renderShareButtons() }
                         </div>
                         <div className="col col-xs-12">
                             { this.renderStats() }
@@ -56,6 +75,30 @@ class GameResultModal extends Component {
         let state = this.state;
         state.open = false;
         this.setState(state);
+    }
+
+
+    renderShareButtons() {
+        const {
+            FacebookShareButton,
+            TwitterShareButton,
+            VKShareButton,
+        } = ShareButtons;
+
+        let title = `I finished ${ this.props.game.online ? "an online" : "a practice" } race with ${ this.props.game.wpm } words per minute!`;
+        let description = `Beat my score on typitap.com`;
+        // let url = jsUtil.getBaseUrl() + "u/" + this.props.user.data.Username;
+        let url = "https://typitap.com/u/" + this.props.user.data.Username;
+        // let image = jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId;
+        let image = "https://typitap.com/resultboards/15309c4f-5e13-4168-85b0-8ab17721c5aa";
+
+        return (
+            <div className="game-result__share">
+                <FacebookShareButton className="btn btn-sm btn-facebook" title={ title } description={ description } picture={ image } url={ url } children="Share on Facebook" />
+                <TwitterShareButton className="btn btn-sm btn-twitter" title={ title } via="https://typitap.com" url={ url } children="Share on Twitter" />
+            </div>
+        );
+
     }
 
 
