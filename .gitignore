@@ -18,3 +18,7 @@ rethinkdb_dump_*
 /server/data/config/config.yml
 typitap
 /Typitap
+/static/build/
+/static/build/
+/static/images/resultboards/
+/static/images/userboards/
