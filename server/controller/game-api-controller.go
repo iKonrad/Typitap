@@ -13,6 +13,8 @@ import (
 	"github.com/iKonrad/typitap/server/services/stats"
 	"github.com/iKonrad/typitap/server/services/topchart"
 	"github.com/labstack/echo"
+	"github.com/iKonrad/typitap/server/services/utils"
+	"github.com/iKonrad/typitap/server/services/graphics"
 )
 
 type GameAPIController struct {
@@ -197,4 +199,28 @@ func (gc *GameAPIController) GetPlaybackData(c echo.Context) error {
 		"data":    playback,
 	})
 
+}
+
+
+func (gc *GameAPIController) FetchResultboard(c echo.Context) error {
+
+	resultId := c.Param("id")
+
+	filePath := "static/images/resultboards/" + resultId + ".png";
+
+	// Get file stats
+	_, err := utils.GetFileCreated(filePath)
+	if err == nil {
+		return c.File(filePath)
+	}
+
+	result, ok := game.GetResultData(resultId)
+
+	if !ok {
+		return c.File("static/images/identity/typitap-logo.png") // @TODO: Replace these with actual default image
+	}
+
+	graphics.GenerateResultboard(result)
+
+	return c.File(filePath)
 }

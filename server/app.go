@@ -93,7 +93,8 @@ func NewApp(opts ...AppOptions) *App {
 	// Register Redux State generator middleware
 	engine.Use(middlewares.GenerateStateHandler)
 
-	engine.GET("/userboards/:id", controller.UserAPI.FetchUserBoard)
+	engine.GET("/userboards/:id", controller.UserAPI.FetchUserboard)
+	engine.GET("/resultboards/:id", controller.GameAPI.FetchResultboard)
 	engine.Static("/static", "static")
 
 

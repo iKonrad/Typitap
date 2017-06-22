@@ -1,32 +1,9 @@
-package userboard;
+package graphics
 
 import (
 	"github.com/fogleman/gg"
 	"strconv"
 )
-
-func init() {
-
-}
-
-func GenerateUserboard(username string, userId string, stats map[string]interface{}) {
-	dc := gg.NewContext(600, 100)
-	im, err := gg.LoadPNG("static/images/userboard_template.png")
-
-	if err != nil {
-		panic(err);
-	}
-
-
-	dc.DrawImage(im, 0, 0)
-
-	drawUsername(dc, username)
-	drawGamesPlayed(dc, int(stats["gamesPlayed"].(float64)))
-	drawStats(dc, stats)
-
-	dc.SavePNG("static/images/userboards/" + userId + ".png")
-}
-
 
 func drawUsername(dc *gg.Context, username string) {
 	if err := dc.LoadFontFace("client/assets/fonts/Dosis/Dosis-Medium.ttf", 14); err != nil {

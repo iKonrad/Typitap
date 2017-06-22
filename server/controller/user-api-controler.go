@@ -11,7 +11,7 @@ import (
 	"github.com/iKonrad/typitap/server/services/stats"
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/labstack/echo"
-	"github.com/iKonrad/typitap/server/services/userboard"
+	"github.com/iKonrad/typitap/server/services/graphics"
 	"github.com/iKonrad/typitap/server/services/utils"
 	"time"
 	"github.com/iKonrad/typitap/server/services/comments"
@@ -385,7 +385,7 @@ func (gc UserAPIController) ResendActivationLink(c echo.Context) error {
 
 }
 
-func (gc UserAPIController) FetchUserBoard(c echo.Context) error {
+func (gc UserAPIController) FetchUserboard(c echo.Context) error {
 
 	id := c.Param("id");
 	filePath := "static/images/userboards/" + id + ".png";
@@ -413,7 +413,7 @@ func (gc UserAPIController) FetchUserBoard(c echo.Context) error {
 		return c.File("static/images/identity/typitap-logo.png") // @TODO: Replace these with actual default image
 	}
 
-	userboard.GenerateUserboard(userObject.Username, userObject.Id, userStats)
+	graphics.GenerateUserboard(userObject.Username, userObject.Id, userStats)
 	return c.File(filePath)
 
 }
