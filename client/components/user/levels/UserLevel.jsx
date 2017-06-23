@@ -15,42 +15,12 @@ class UserLevel extends React.Component {
 
     }
 
-    componentWillReceiveProps(newProps) {
-
-        if (this.state.level !== newProps.level) {
-
-            this.setState({
-                exp: newProps.exp,
-                next: newProps.next,
-                level: newProps.level,
-                levelName: newProps.levelName,
-            });
-
-        }
-
-    }
-
 
     getIconAddress() {
         if (this.state.level > 15) {
             return "/static/images/levels/level_15.svg";
         } else {
             return `/static/images/levels/level_${this.state.level}.svg`;
-        }
-    }
-
-    componentDidMount() {
-
-        if (this.state.points !== undefined && this.state.points > 0) {
-            let state = this.state;
-            let nextExp = state.exp + state.points;
-
-            if (nextExp > state.next) {
-                state.exp = state.next
-            } else {
-                state.exp = nextExp;
-            }
-            this.setState(state);
         }
     }
 
@@ -76,6 +46,7 @@ class UserLevel extends React.Component {
     }
 
     renderPoints() {
+        debugger;
         if (this.state.points > 0) {
             let string = "+" + this.state.points;
             if ((this.state.exp + this.state.points) > this.state.next) {
