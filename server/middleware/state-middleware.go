@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo"
 	"strings"
 	"time"
+	"strconv"
 )
 
 func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
@@ -38,7 +39,7 @@ func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
 					"Bio": user.Bio,
 					"Country": user.Country,
 					"Keyboard": user.Keyboard,
-					"KeyboardLayout": user.KeyboardLayout,
+					"KeyboardLayout": strconv.Itoa(user.KeyboardLayout),
 					"NextExp":   levels.CalculateThresholdForLevel(user.Level + 1),
 					"LevelName": levels.GetLevelName(user.Level),
 				},

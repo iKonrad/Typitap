@@ -63,7 +63,6 @@ func (ac *GameAPIController) GetSession(c echo.Context) error {
 
 func (ac *GameAPIController) SaveResult(c echo.Context) error {
 
-	user := c.Get("User").(entities.User)
 
 	var mistakes map[string]int
 	if c.FormValue("mistakes") != "" {
@@ -84,10 +83,24 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 
 	wpm, accuracy := game.CalculateScore(gameTime, len(mistakes), session.Text.Text)
 
+	if !c.Get("IsLoggedIn").(bool) {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"success": true,
+			"resultId": "",
+			"data": map[string]interface{}{
+				"points": 0,
+				"wpm": wpm,
+				"accuracy": accuracy,
+			},
+		})
+	}
+
 	var playback []map[string]interface{}
 	if c.FormValue("playback") != "" {
 		json.Unmarshal([]byte(c.FormValue("playback")), &playback)
 	}
+
+	user := c.Get("User").(entities.User)
 
 	// Save result to the database
 	newResult, err := game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, int(accuracy), gameTime, 0)

@@ -15,10 +15,59 @@ class Base extends Component {
         super(props);
         this.onUnload = this.disconnectWebsocket.bind(this)
 
+        let title = "typitap.com - ultimate online typing game.";
+        let socialTitle = title;
+        let socialDescription = "Track and improve your typing speed!";
+
         this.state = {
             loaded: false,
-        }
+            metaTags: {
+                title,
+                meta: [
+                    {
+                        property: 'og:title',
+                        content: socialTitle
+                    },
+                    {
+                        name: 'viewport',
+                        content: 'initial-scale=1.0, user-scalable=no'
+                    },
+                    {
+                        property: 'og:description',
+                        content: socialDescription
+                    },
+                    {
+                        property: 'og:type',
+                        content: "website"
+                    },
+                    {
+                        property: 'og:image',
+                        content: "http://typitap.com/static/images/seo/og_image.png"
+                    },
+                    {
+                        property: 'og:image:secure_url',
+                        content: "https://typitap.com/static/images/seo/og_image.png"
+                    },
+                    {
+                        property: 'og:url',
+                        content: "https://typitap.com"
+                    },
+                    {
+                        property: 'fb:app_id',
+                        content: '1776657649242212'
+                    },
+                    {
+                        property: "og:site_name",
+                        content: "typitap"
+                    },
+                    {
+                        property: "twitter:site",
+                        content: "typitap"
+                    },
 
+                ]
+            }
+        }
 
 
     }
@@ -49,10 +98,9 @@ class Base extends Component {
 
     launchNotifications() {
         if (this.state.loaded) {
-            return <NotificationsSystem theme={theme} />
+            return <NotificationsSystem theme={theme}/>
         }
     }
-
 
     render() {
 
@@ -65,7 +113,7 @@ class Base extends Component {
 
         return (
             <div className="app-wrapper">
-                <Helmet title="typitap.com - ultimate online typing game" meta={[{property: 'og:title', content: 'typitap.com - ultimate online typing game'}]} />
+                <Helmet { ...this.state.metaTags } />
                 { showEmptyBase ? "" : (<Navbar />) }
                 <div id="react-container" className="main-content">
                     { showEmptyBase ? "" : (<AlertBar/>) }

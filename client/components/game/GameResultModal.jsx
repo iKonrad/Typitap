@@ -24,20 +24,20 @@ class GameResultModal extends Component {
     }
 
     render() {
+        let metaTags = [];
+
+        if (this.props.user.loggedIn) {
+            metaTags = [
+                {property: 'og:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId },
+                {property: 'twitter:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId },
+                {property: 'og:image:secure_url', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId }
+            ];
+        }
+
+
         return (
             <Modal show={this.state.open} className="game-result">
-
-
-                <Helmet
-                    meta={[
-                        {property: 'og:title', content: "Finished game!"},
-                        {property: 'og:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId },
-                        {property: 'twitter:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId },
-                        {property: 'og:image:secure_url', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId }
-                        ]
-                    }
-                />
-
+                <Helmet { ...metaTags } />
                 <Modal.Header>
                     <Modal.Title>
                         Game completed!
@@ -87,7 +87,12 @@ class GameResultModal extends Component {
 
         let title = `I finished ${ this.props.game.online ? "an online" : "a practice" } race with ${ this.props.game.wpm } words per minute!`;
         let description = `Beat my score on typitap.com`;
-        let url = jsUtil.getBaseUrl() + "u/" + this.props.user.data.Username;
+
+        let url = "https://typitap.com/u/" + this.props.user.data.Username;
+        if (!this.props.user.loggedIn) {
+            url = "https://typitap.com/";
+        }
+
         // let url = "https://typitap.com/u/" + this.props.user.data.Username;
         let image = jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId;
         // let image = "https://typitap.com/resultboards/15309c4f-5e13-4168-85b0-8ab17721c5aa";
