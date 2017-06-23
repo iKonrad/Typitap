@@ -30340,8 +30340,49 @@
 
 	        _this.onUnload = _this.disconnectWebsocket.bind(_this);
 
+	        var title = "typitap.com - ultimate online typing game.";
+	        var socialTitle = title;
+	        var socialDescription = "Track and improve your typing speed!";
+
 	        _this.state = {
-	            loaded: false
+	            loaded: false,
+	            metaTags: {
+	                title: title,
+	                meta: [{
+	                    property: 'og:title',
+	                    content: socialTitle
+	                }, {
+	                    name: 'viewport',
+	                    content: 'initial-scale=1.0, user-scalable=no'
+	                }, {
+	                    property: 'og:description',
+	                    content: socialDescription
+	                }, {
+	                    property: 'og:type',
+	                    content: "website"
+	                }, {
+	                    property: 'og:image',
+	                    content: "https://typitap.com/static/images/seo/og_image.png"
+	                }, {
+	                    property: 'og:image:secure_url',
+	                    content: "https://typitap.com/static/images/seo/og_image.png"
+	                }, {
+	                    property: 'og:url',
+	                    content: "https://typitap.com"
+	                }, {
+	                    property: 'fb:app_id',
+	                    content: '1776657649242212'
+	                }, {
+	                    property: "og:site_name",
+	                    content: "typitap"
+	                }, {
+	                    property: "og:image:width",
+	                    content: "600"
+	                }, {
+	                    property: "og:image:height",
+	                    content: "315"
+	                }]
+	            }
 	        };
 
 	        return _this;
@@ -30395,7 +30436,7 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'app-wrapper' },
-	                _react2.default.createElement(_reactHelmet2.default, { title: 'typitap.com - ultimate online typing game', meta: [{ property: 'og:title', content: 'typitap.com - ultimate online typing game' }] }),
+	                _react2.default.createElement(_reactHelmet2.default, this.state.metaTags),
 	                showEmptyBase ? "" : _react2.default.createElement(_Navbar2.default, null),
 	                _react2.default.createElement(
 	                    'div',
@@ -65422,12 +65463,16 @@
 	    _createClass(GameResultModal, [{
 	        key: 'render',
 	        value: function render() {
+	            var metaTags = [];
+
+	            if (this.props.user.loggedIn) {
+	                metaTags = [{ property: 'og:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId }, { property: 'twitter:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId }, { property: 'og:image:secure_url', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId }];
+	            }
+
 	            return _react2.default.createElement(
 	                _Modal2.default,
 	                { show: this.state.open, className: 'game-result' },
-	                _react2.default.createElement(_reactHelmet2.default, {
-	                    meta: [{ property: 'og:title', content: "Finished game!" }, { property: 'og:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId }, { property: 'twitter:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId }, { property: 'og:image:secure_url', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId }]
-	                }),
+	                _react2.default.createElement(_reactHelmet2.default, metaTags),
 	                _react2.default.createElement(
 	                    _Modal2.default.Header,
 	                    null,
@@ -65495,10 +65540,15 @@
 
 	            var title = 'I finished ' + (this.props.game.online ? "an online" : "a practice") + ' race with ' + this.props.game.wpm + ' words per minute!';
 	            var description = 'Beat my score on typitap.com';
-	            // let url = jsUtil.getBaseUrl() + "u/" + this.props.user.data.Username;
+
 	            var url = "https://typitap.com/u/" + this.props.user.data.Username;
-	            // let image = jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId;
-	            var image = "https://typitap.com/resultboards/15309c4f-5e13-4168-85b0-8ab17721c5aa";
+	            if (!this.props.user.loggedIn) {
+	                url = "https://typitap.com/";
+	            }
+
+	            // let url = "https://typitap.com/u/" + this.props.user.data.Username;
+	            var image = jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId;
+	            // let image = "https://typitap.com/resultboards/15309c4f-5e13-4168-85b0-8ab17721c5aa";
 
 	            return _react2.default.createElement(
 	                'div',
