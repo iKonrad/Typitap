@@ -54,7 +54,15 @@ class Profile extends Component {
                             {
                                 property: "og:image:secure_url",
                                 content: jsUtils.getBaseUrl() + "resultboards/" + this.props.router.params.resultId,
-                            }
+                            },
+                            {
+                                property: "og:url",
+                                content: jsUtils.getBaseUrl() + "u/" + this.props.router.params.user + "/" + this.props.router.params.resultId,
+                            },
+                            {
+                                property: "twitter:image",
+                                content: jsUtils.getBaseUrl() + "resultboards/" + this.props.router.params.resultId,
+                            },
                         ]
                     }
                 />
