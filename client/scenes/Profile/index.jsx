@@ -9,6 +9,8 @@ import {push} from 'react-router-redux';
 import Panel from 'components/app/Panel';
 import UserBio from 'components/user/UserBio';
 import Comments from 'components/app/Comments';
+import Helmet from 'react-helmet';
+import * as jsUtils from 'utils/jsUtils';
 
 class Profile extends Component {
 
@@ -38,9 +40,33 @@ class Profile extends Component {
         this.props.dispatch(ProfileActions.turnCommentsPage(page))
     }
 
+    renderMetaTags() {
+        if (this.props.router.params.resultId !== undefined) {
+            return (
+                <Helmet
+                    title={ this.props.user.data.Username }
+                    meta={
+                        [
+                            {
+                                property: "og:image",
+                                content: jsUtils.getBaseUrl(true) + "resultboards/" + this.props.router.params.resultId,
+                            },
+                            {
+                                property: "og:image:secure_url",
+                                content: jsUtils.getBaseUrl() + "resultboards/" + this.props.router.params.resultId,
+                            }
+                        ]
+                    }
+                />
+            )
+        }
+        console.log("META", JSON.stringify(this.props.router));
+    }
+
     render() {
         return (
             <div className="container profile-page">
+                { this.renderMetaTags() }
                 <div className="row">
                     <div className="col col-xs-12 col-md-8">
                         <div className="row">

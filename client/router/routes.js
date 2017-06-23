@@ -68,6 +68,7 @@ export default ({store, first}) => {
 
 
             <Route path="/u/:user" component={Profile} onEnter={w(Profile.clientInit)}/>
+            <Route path="/u/:user/:resultId" component={Profile} onEnter={w(Profile.clientInit)}/>
 
             <Route path="/auth/activate/:token" emptyBase={true} component={Activate} onEnter={w(Activate.clientInit)} />
             <Route path="/auth/email/:token" component={EmailChange} onEnter={w(EmailChange.clientInit)} />

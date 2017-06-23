@@ -102,9 +102,9 @@ class GameResultModal extends Component {
         let title = `I finished ${ this.props.game.online ? "an online" : "a practice" } race with ${ this.props.game.wpm } words per minute!`;
         let description = `Beat my score on typitap.com`;
 
-        let url = "https://typitap.com/u/" + this.props.user.data.Username;
+        let url = jsUtil.getBaseUrl(true) + "u/" + this.props.user.data.Username + "/" + this.props.game.resultId;
         if (!this.props.user.loggedIn) {
-            url = "https://typitap.com/";
+            url = "https://typitap.com";
         }
 
         // let url = "https://typitap.com/u/" + this.props.user.data.Username;
