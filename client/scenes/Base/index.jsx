@@ -61,9 +61,13 @@ class Base extends Component {
                         content: "typitap"
                     },
                     {
-                        property: "twitter:site",
-                        content: "typitap"
+                        property: "og:image:width",
+                        content: "600"
                     },
+                    {
+                        property: "og:image:height",
+                        content: "315"
+                    }
 
                 ]
             }
