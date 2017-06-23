@@ -42,7 +42,7 @@ class Base extends Component {
                     },
                     {
                         property: 'og:image',
-                        content: "https://typitap.com/static/images/seo/og_image.png"
+                        content: "http://typitap.com/static/images/seo/og_image.png"
                     },
                     {
                         property: 'og:image:secure_url',

@@ -28,7 +28,7 @@ class GameResultModal extends Component {
 
         if (this.props.user.loggedIn) {
             metaTags = [
-                {property: 'og:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId },
+                {property: 'og:image', content: jsUtil.getBaseUrl(true) + "resultboards/" + this.props.game.resultId },
                 {property: 'twitter:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId },
                 {property: 'og:image:secure_url', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId }
             ];

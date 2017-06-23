@@ -14,9 +14,9 @@ export function resolveAll(promises, callback) {
 }
 
 
-export function getBaseUrl() {
+export function getBaseUrl($nonsecure = false) {
 
-    return process.env.NODE_ENV !== undefined && process.env.NODE_ENV === "production" ? "https://typitap.com/" : "http://localhost:5000/";
+    return process.env.NODE_ENV !== undefined && process.env.NODE_ENV === "production" ? ($nonsecure ? "http://" : "https://") + "typitap.com/" : "http://localhost:5000/";
 
 }
 
