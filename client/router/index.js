@@ -7,6 +7,7 @@ import {Promise} from 'when';
 import createRoutes from './routes';
 import {createStore, setAsCurrentStore} from 'store/store';
 import { syncHistoryWithStore } from 'react-router-redux'
+import {Helmet} from 'react-helmet';
 
 
 export function run() {
@@ -39,6 +40,7 @@ export function run() {
 // Export it to render on the Golang sever, keep the name sync with -
 // https://github.com/olebedev/go-starter-kit/blob/master/src/app/server/react.go#L65
 export const renderToString = toString;
+
 
 require('assets/scss/main.scss');
 require('react-table/react-table.css');

@@ -117,6 +117,7 @@ export default function (options, cbk) {
                         result.title = title.toString();
                         result.meta = meta.toString();
                         result.initial = JSON.stringify(store.getState());return cbk(result);
+
                     }
 
 

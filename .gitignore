@@ -19,7 +19,5 @@ rethinkdb_dump_*
 typitap
 /Typitap
 /static/build/
-/static/build/
 /static/images/resultboards/
 /static/images/userboards/
-/static/build/bundle.js

@@ -15,62 +15,12 @@ class Base extends Component {
         super(props);
         this.onUnload = this.disconnectWebsocket.bind(this)
 
-        let title = "typitap.com - ultimate online typing game.";
+        let title = "typitap.com - ultimate online typing game";
         let socialTitle = title;
         let socialDescription = "Track and improve your typing speed!";
 
         this.state = {
             loaded: false,
-            metaTags: {
-                title,
-                meta: [
-                    {
-                        property: 'og:title',
-                        content: socialTitle
-                    },
-                    {
-                        name: 'viewport',
-                        content: 'initial-scale=1.0, user-scalable=no'
-                    },
-                    {
-                        property: 'og:description',
-                        content: socialDescription
-                    },
-                    {
-                        property: 'og:type',
-                        content: "website"
-                    },
-                    {
-                        property: 'og:image',
-                        content: "http://typitap.com/static/images/seo/og_image.png"
-                    },
-                    {
-                        property: 'og:image:secure_url',
-                        content: "https://typitap.com/static/images/seo/og_image.png"
-                    },
-                    {
-                        property: 'og:url',
-                        content: "https://typitap.com"
-                    },
-                    {
-                        property: 'fb:app_id',
-                        content: '1776657649242212'
-                    },
-                    {
-                        property: "og:site_name",
-                        content: "typitap"
-                    },
-                    {
-                        property: "og:image:width",
-                        content: "600"
-                    },
-                    {
-                        property: "og:image:height",
-                        content: "315"
-                    }
-
-                ]
-            }
         }
 
 
@@ -117,8 +67,31 @@ class Base extends Component {
 
         return (
             <div className="app-wrapper">
-                <Helmet { ...this.state.metaTags } />
+
+                <Helmet encodeSpecialCharacters={true} titleTemplate="%s | typitap.com - ultimate online typing game"
+                        defaultTitle="typitap.com - ultimate online typing game">
+                    <meta charset="UTF-8" />
+                    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+                    <meta property="fb:app_id" content="1776657649242212" />
+                    <meta property="og:site_name" content="typitap" />
+                    <meta property="twitter:site" content="typitap" />
+                    <meta property="og:title" content="typitap.com - online type racing" />
+                    <meta property="twitter:title" content="typitap.com - online type racing" />
+                    <meta property="og:description"
+                          content="Track and improve your typing speed!" />
+                    <meta property="twitter:description"
+                          content="Track and improve your typing speed!" />
+                    <meta property="og:type" content="website" />
+                    <meta property="og:url" content="https://typitap.com" />
+                    <meta property="og:image" content="http://typitap.com/static/images/seo/og_image.png" />
+                    <meta property="twitter:image"
+                          content="https://typitap.com/static/images/seo/og_image.png" />
+                    <meta property="og:image:secure_url"
+                          content="https://typitap.com/static/images/seo/og_image.png" />
+                </Helmet>
+
                 { showEmptyBase ? "" : (<Navbar />) }
+
                 <div id="react-container" className="main-content">
                     { showEmptyBase ? "" : (<AlertBar/>) }
                     { this.props.children }

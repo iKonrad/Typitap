@@ -6,12 +6,12 @@ import StatsBadge from 'components/user/UserStatsBadge';
 import * as GameUtils from 'utils/gameUtils';
 import * as GameEngine from 'utils/gameEngine';
 import * as SocketActions from 'store/ducks/socketModule';
-import { push } from 'react-router-redux';
-import { Link } from 'react-router';
+import {push} from 'react-router-redux';
+import {Link} from 'react-router';
 import Helmet from 'react-helmet';
 import * as jsUtil from 'utils/jsUtils';
 
-import {ShareButtons, ShareCounts, generateShareIcon } from 'react-share';
+import {ShareButtons, ShareCounts, generateShareIcon} from 'react-share';
 
 class GameResultModal extends Component {
 
@@ -27,13 +27,27 @@ class GameResultModal extends Component {
         let metaTags = [];
 
         if (this.props.user.loggedIn) {
-            metaTags = [
-                {property: 'og:image', content: jsUtil.getBaseUrl(true) + "resultboards/" + this.props.game.resultId },
-                {property: 'twitter:image', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId },
-                {property: 'og:image:secure_url', content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId }
-            ];
+            metaTags = {
+                meta: [
+                    {property: "og:title", content: "Game finished"},
+                    {
+                        property: 'og:image',
+                        override: true,
+                        content: jsUtil.getBaseUrl(true) + "resultboards/" + this.props.game.resultId
+                    },
+                    {
+                        property: 'twitter:image',
+                        override: true,
+                        content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId
+                    },
+                    {
+                        property: 'og:image:secure_url',
+                        override: true,
+                        content: jsUtil.getBaseUrl() + "resultboards/" + this.props.game.resultId
+                    }
+                ]
+            };
         }
-
 
         return (
             <Modal show={this.state.open} className="game-result">
@@ -99,8 +113,10 @@ class GameResultModal extends Component {
 
         return (
             <div className="game-result__share">
-                <FacebookShareButton className="btn btn-sm btn-facebook" title={ title } description={ description } picture={ image } url={ url } children="Share on Facebook" />
-                <TwitterShareButton className="btn btn-sm btn-twitter" title={ title } via="https://typitap.com" url={ url } children="Share on Twitter" />
+                <FacebookShareButton className="btn btn-sm btn-facebook" title={ title } description={ description }
+                                     picture={ image } url={ url } children="Share on Facebook"/>
+                <TwitterShareButton className="btn btn-sm btn-twitter" title={ title } via="https://typitap.com"
+                                    url={ url } children="Share on Twitter"/>
             </div>
         );
 
@@ -112,17 +128,22 @@ class GameResultModal extends Component {
             let players = this.props.game.room.players;
 
             let sortedPlayers = Object.keys(players).sort((a, b) => {
-                if (players[a].place === "0") { return true; }
-                if (players[b].place === "0") { return false; }
+                if (players[a].place === "0") {
+                    return true;
+                }
+                if (players[b].place === "0") {
+                    return false;
+                }
                 return players[a].place >= players[b].place;
             });
 
-            let playersList =  sortedPlayers.map((playerId, i) => {
+            let playersList = sortedPlayers.map((playerId, i) => {
                 let player = players[playerId];
                 return <div className="game-result__players__player" key={`player-${playerId}`}>
-                    { (i + 1) <= 3 ?  <i className={`fa fa-trophy place-${ i + 1 }`}></i> : <i className={`fa`}></i>}
-                    <div>{i + 1}. </div>
-                    { player.place !== undefined && player.place > 0 ? player.identifier : player.left ? (<span className='text-muted'>Player left</span>) : (<i className="fa fa-spinner fa-spin"></i>)}
+                    { (i + 1) <= 3 ? <i className={`fa fa-trophy place-${ i + 1 }`}></i> : <i className={`fa`}></i>}
+                    <div>{i + 1}.</div>
+                    { player.place !== undefined && player.place > 0 ? player.identifier : player.left ? (
+                        <span className='text-muted'>Player left</span>) : (<i className="fa fa-spinner fa-spin"></i>)}
                 </div>
             });
             return <div className="game-result__players">{ playersList }</div>;
@@ -133,9 +154,12 @@ class GameResultModal extends Component {
 
     renderUserLevel() {
         if (this.props.user.loggedIn) {
-            return <UserLevel level={ this.props.user.data.Level } exp={ this.props.user.data.Exp } next={ this.props.user.data.NextExp } levelName={ this.props.user.data.LevelName } points={ this.props.game.points } />
+            return <UserLevel level={ this.props.user.data.Level } exp={ this.props.user.data.Exp }
+                              next={ this.props.user.data.NextExp } levelName={ this.props.user.data.LevelName }
+                              points={ this.props.game.points }/>
         } else {
-            return <div className="text-muted margin-top-2 margin-bottom-2 text-center"><Link to="/login">Log in</Link> or <Link to="/signup">sign up</Link> to start recording your game results</div>
+            return <div className="text-muted margin-top-2 margin-bottom-2 text-center"><Link to="/login">Log in</Link>
+                or <Link to="/signup">sign up</Link> to start recording your game results</div>
         }
 
     }
@@ -162,16 +186,22 @@ class GameResultModal extends Component {
             <div>
                 <div className="row">
                     <div className="col col-xs-12 col-sm-4 col-sm-offset-2">
-                        <button onClick={ this.handleRestart.bind(this) } className="btn btn-secondary btn-round btn-block">Start again</button>
+                        <button onClick={ this.handleRestart.bind(this) }
+                                className="btn btn-secondary btn-round btn-block">Start again
+                        </button>
                     </div>
                     <div className="col col-xs-12 col-sm-4">
-                        <button className="btn btn-default btn-round btn-block" onClick={ () => { this.props.dispatch(push("/play")) } }>Back to lobby</button>
+                        <button className="btn btn-default btn-round btn-block" onClick={ () => {
+                            this.props.dispatch(push("/play"))
+                        } }>Back to lobby
+                        </button>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col col-xs-12">
                         <div className="text-center margin-top-2">
-                            <button onClick={ this.handleCloseModal.bind(this) } className="btn btn-link">Close window</button>
+                            <button onClick={ this.handleCloseModal.bind(this) } className="btn btn-link">Close window
+                            </button>
                         </div>
                     </div>
                 </div>
