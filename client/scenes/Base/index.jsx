@@ -70,26 +70,25 @@ class Base extends Component {
 
                 <Helmet encodeSpecialCharacters={true} titleTemplate="%s | typitap.com - ultimate online typing game"
                         defaultTitle="typitap.com - ultimate online typing game">
-                    <meta charset="UTF-8" />
-                    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-                    <meta property="fb:app_id" content="1776657649242212" />
-                    <meta property="og:site_name" content="typitap" />
-                    <meta property="twitter:site" content="typitap" />
-                    <meta property="og:title" content="typitap.com - online type racing" />
-                    <meta property="twitter:title" content="typitap.com - online type racing" />
+                    <meta charset="UTF-8"/>
+                    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+                    <meta property="fb:app_id" content="1776657649242212"/>
+                    <meta property="og:site_name" content="typitap"/>
+                    <meta property="twitter:site" content="typitap"/>
+                    <meta property="og:title" content="typitap.com - online type racing"/>
                     <meta property="og:description"
-                          content="Track and improve your typing speed!" />
+                          content="Track and improve your typing speed!"/>
                     <meta property="twitter:description"
-                          content="Track and improve your typing speed!" />
-                    <meta property="og:type" content="website" />
-                    <meta property="og:url" content="https://typitap.com" />
-                    <meta property="og:image" content="http://typitap.com/static/images/seo/og_image.png" />
-                    <meta property="twitter:image"
-                          content="https://typitap.com/static/images/seo/og_image.png" />
-                    <meta name="twitter:card" content="summary_large_image">
-                        <meta name="twitter:site" content="@typitap">
-                    <meta property="og:image:secure_url"
-                          content="https://typitap.com/static/images/seo/og_image.png" />
+                          content="Track and improve your typing speed!"/>
+                    <meta property="og:type" content="website"/>
+                    <meta property="og:url" content="https://typitap.com"/>
+                    <meta property="og:image" content="http://typitap.com/static/images/seo/og_image.png"/>
+                    <meta name="twitter:title" content="typitap.com - online type racing"/>
+                    <meta name="twitter:image"
+                          content="https://typitap.com/static/images/seo/og_image.png"/>
+                    <meta name="twitter:card" content="summary_large_image"/>
+                    <meta name="twitter:site" content="@typitap"/>
+                    <meta property="og:image:secure_url" content="https://typitap.com/static/images/seo/og_image.png"/>
                 </Helmet>
 
                 { showEmptyBase ? "" : (<Navbar />) }
