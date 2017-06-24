@@ -86,6 +86,8 @@ class Base extends Component {
                     <meta property="og:image" content="http://typitap.com/static/images/seo/og_image.png" />
                     <meta property="twitter:image"
                           content="https://typitap.com/static/images/seo/og_image.png" />
+                    <meta name="twitter:card" content="summary_large_image">
+                        <meta name="twitter:site" content="@typitap">
                     <meta property="og:image:secure_url"
                           content="https://typitap.com/static/images/seo/og_image.png" />
                 </Helmet>

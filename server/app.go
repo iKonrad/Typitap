@@ -81,7 +81,7 @@ func NewApp(opts ...AppOptions) *App {
 
 
 	engine.GET("/favicon.ico", func(c echo.Context) error {
-		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
+		return c.Redirect(http.StatusMovedPermanently, "/static/images/identity/favicon@0.5x.png")
 	})
 
 	// Register authentication middleware
