@@ -8318,6 +8318,11 @@ body {
     font-size: 20px;
     padding: 10px 0;
     border-top: 1px solid #ecf0f1; }
+    .game-result__players__player__wpm {
+      font-weight: 100;
+      font-family: "Source Sans Pro", sans-serif;
+      color: #95a5a6;
+      font-size: 16px; }
     .game-result__players__player:first-of-type {
       border-top: none; }
     .game-result__players__player div {

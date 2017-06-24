@@ -89,6 +89,7 @@ class Base extends Component {
                     <meta name="twitter:card" content="summary_large_image"/>
                     <meta name="twitter:site" content="@typitap"/>
                     <meta property="og:image:secure_url" content="https://typitap.com/static/images/seo/og_image.png"/>
+                    <meta name="google-site-verification" content="EccaHwv8owB_y6gXjiAHn_3GwbEzLabBiTORkhd17TY" />
                 </Helmet>
 
                 { showEmptyBase ? "" : (<Navbar />) }
