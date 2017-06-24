@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 	"bytes"
+	"log"
 )
 
 //ipRange - a structure that holds the start and end of a range of ip addresses
@@ -68,10 +69,13 @@ func isPrivateSubnet(ipAddress net.IP) bool {
 func GetIPAdress(r *http.Request) string {
 	for _, h := range []string{"X-Forwarded-For", "X-Real-Ip"} {
 		addresses := strings.Split(r.Header.Get(h), ",")
+		addresses = append(addresses, r.RemoteAddr)
+
 		// march from right to left until we get a public address
 		// that will be the address right before our proxy.
 		for i := len(addresses) -1 ; i >= 0; i-- {
 			ip := strings.TrimSpace(addresses[i])
+			log.Println("Checking IP: ", ip)
 			// header can contain spaces too, strip those out.
 			realIP := net.ParseIP(ip)
 			if !realIP.IsGlobalUnicast() || isPrivateSubnet(realIP) {
