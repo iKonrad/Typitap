@@ -48,7 +48,6 @@ func (h *SocketHub) Run() {
 	for {
 		select {
 		case c := <-h.registerChannel:
-			log.Println("New client")
 			logs.Log("Client connected", "Client "+c.identifier+" connected to the websocket", []string{"websocket"}, "Websocket")
 			h.clients[c.identifier] = c
 			log.Println("CLIENTS", float64(len(h.clients)))
@@ -56,7 +55,6 @@ func (h *SocketHub) Run() {
 			break
 
 		case c := <-h.unregisterChannel:
-			log.Println("Client disconnected")
 			logs.Log("Client disconnected", "Client "+c.identifier+" disconnected to the websocket", []string{"websocket"}, "Websocket")
 			_, ok := h.clients[c.identifier]
 			logs.Gauge("clients", float64(len(h.clients)), []string{"websocket"})

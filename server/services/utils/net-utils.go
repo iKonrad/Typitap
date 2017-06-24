@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 	"bytes"
-	"log"
+
 )
 
 //ipRange - a structure that holds the start and end of a range of ip addresses
@@ -77,7 +77,6 @@ func GetIPAdress(r *http.Request) string {
 			ip := strings.TrimSpace(addresses[i])
 
 			ip = trimPort(ip)
-			log.Println("Checking IP: ", ip)
 			// header can contain spaces too, strip those out.
 			realIP := net.ParseIP(ip)
 			if !realIP.IsGlobalUnicast() || isPrivateSubnet(realIP) {
@@ -85,7 +84,6 @@ func GetIPAdress(r *http.Request) string {
 				continue
 			}
 
-			log.Println("Using this IP")
 			return ip
 		}
 	}
