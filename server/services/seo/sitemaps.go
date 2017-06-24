@@ -12,8 +12,8 @@ func GenerateSitemap(notify bool) {
 	log.Println("Generating sitemap")
 	sm := stm.NewSitemap()
 	sm.SetDefaultHost("https://typitap.com")
-	sm.SetPublicPath("static")
-	sm.SetSitemapsPath("sitemaps")
+	sm.SetPublicPath("")
+	sm.SetSitemapsPath("")
 	sm.SetFilename("sitemap")
 	// Create method must be that calls first this method in that before
 	// call to Add method on this struct.

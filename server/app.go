@@ -81,9 +81,6 @@ func NewApp(opts ...AppOptions) *App {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/identity/favicon@0.5x.png")
 	})
 
-	engine.GET("/sitemap.xml.gz", func(c echo.Context) error {
-		return c.Redirect(http.StatusMovedPermanently, "/static/sitemaps/sitemap1.xml.gz")
-	})
 
 	// Register authentication middleware
 	engine.Use(middlewares.CheckAuthHandler)
