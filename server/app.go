@@ -82,9 +82,9 @@ func NewApp(opts ...AppOptions) *App {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/identity/favicon@0.5x.png")
 	})
 
-	engine.GET("/sitemap.xml.gz", func(c echo.Context) error {
+	engine.GET("/sitemap.xml", func(c echo.Context) error {
 		log.Println("????");
-		return c.File("static/sitemaps/sitemap1.xml.gz")
+		return c.File("static/sitemaps/sitemap1.xml")
 	})
 
 

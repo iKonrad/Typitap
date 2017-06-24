@@ -15,6 +15,7 @@ func GenerateSitemap(notify bool) {
 	sm.SetPublicPath("static")
 	sm.SetSitemapsPath("sitemaps")
 	sm.SetFilename("sitemap")
+	sm.SetCompress(false)
 	// Create method must be that calls first this method in that before
 	// call to Add method on this struct.
 	sm.Create()
