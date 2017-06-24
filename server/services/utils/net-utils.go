@@ -75,6 +75,8 @@ func GetIPAdress(r *http.Request) string {
 		// that will be the address right before our proxy.
 		for i := len(addresses) -1 ; i >= 0; i-- {
 			ip := strings.TrimSpace(addresses[i])
+
+			ip = trimPort(ip)
 			log.Println("Checking IP: ", ip)
 			// header can contain spaces too, strip those out.
 			realIP := net.ParseIP(ip)
@@ -82,8 +84,30 @@ func GetIPAdress(r *http.Request) string {
 				// bad address, go to next
 				continue
 			}
+
+			log.Println("Using this IP")
 			return ip
 		}
 	}
 	return ""
+}
+
+func trimPort(ip string) string {
+
+	index := strings.Index(ip, ":")
+
+	if index > -1 {
+
+		host, _, err := net.SplitHostPort(ip)
+
+		if err != nil {
+			return ip
+		}
+
+		return host;
+
+	}
+
+	return ip;
+
 }

@@ -30414,7 +30414,6 @@
 	                    _react2.default.createElement('meta', { property: 'og:site_name', content: 'typitap' }),
 	                    _react2.default.createElement('meta', { property: 'twitter:site', content: 'typitap' }),
 	                    _react2.default.createElement('meta', { property: 'og:title', content: 'typitap.com - online type racing' }),
-	                    _react2.default.createElement('meta', { property: 'twitter:title', content: 'typitap.com - online type racing' }),
 	                    _react2.default.createElement('meta', { property: 'og:description',
 	                        content: 'Track and improve your typing speed!' }),
 	                    _react2.default.createElement('meta', { property: 'twitter:description',
@@ -30422,10 +30421,12 @@
 	                    _react2.default.createElement('meta', { property: 'og:type', content: 'website' }),
 	                    _react2.default.createElement('meta', { property: 'og:url', content: 'https://typitap.com' }),
 	                    _react2.default.createElement('meta', { property: 'og:image', content: 'http://typitap.com/static/images/seo/og_image.png' }),
-	                    _react2.default.createElement('meta', { property: 'twitter:image',
+	                    _react2.default.createElement('meta', { name: 'twitter:title', content: 'typitap.com - online type racing' }),
+	                    _react2.default.createElement('meta', { name: 'twitter:image',
 	                        content: 'https://typitap.com/static/images/seo/og_image.png' }),
-	                    _react2.default.createElement('meta', { property: 'og:image:secure_url',
-	                        content: 'https://typitap.com/static/images/seo/og_image.png' })
+	                    _react2.default.createElement('meta', { name: 'twitter:card', content: 'summary_large_image' }),
+	                    _react2.default.createElement('meta', { name: 'twitter:site', content: '@typitap' }),
+	                    _react2.default.createElement('meta', { property: 'og:image:secure_url', content: 'https://typitap.com/static/images/seo/og_image.png' })
 	                ),
 	                showEmptyBase ? "" : _react2.default.createElement(_Navbar2.default, null),
 	                _react2.default.createElement(
@@ -49184,6 +49185,7 @@
 	    }
 
 	    var state = (0, _store.getStore)().getState().game;
+	    var userState = (0, _store.getStore)().getState().user;
 
 	    var results = {
 	        'time': state.time,
@@ -49191,6 +49193,10 @@
 	        'sessionId': state.room.id,
 	        'playback': JSON.stringify(state.playback)
 	    };
+
+	    if (!userState.loggedIn) {
+	        results['user'] = (0, _store.getStore)().getState().socket.identifier;
+	    }
 
 	    // Post the results to the server
 	    this.postGameResultData(results).then(function (response) {
@@ -65518,9 +65524,9 @@
 	            var title = 'I finished ' + (this.props.game.online ? "an online" : "a practice") + ' race with ' + this.props.game.wpm + ' words per minute!';
 	            var description = 'Beat my score on typitap.com';
 
-	            var url = "https://typitap.com/u/" + this.props.user.data.Username;
+	            var url = jsUtil.getBaseUrl() + "u/" + this.props.user.data.Username + "/" + this.props.game.resultId;
 	            if (!this.props.user.loggedIn) {
-	                url = "https://typitap.com/";
+	                url = "https://typitap.com";
 	            }
 
 	            // let url = "https://typitap.com/u/" + this.props.user.data.Username;
@@ -70049,6 +70055,8 @@
 	    value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(3);
@@ -70127,18 +70135,22 @@
 	        key: 'renderMetaTags',
 	        value: function renderMetaTags() {
 	            if (this.props.router.params.resultId !== undefined) {
-	                return _react2.default.createElement(_reactHelmet2.default, {
-	                    title: this.props.user.data.Username,
-	                    meta: [{
-	                        property: "og:image",
-	                        content: jsUtils.getBaseUrl(true) + "resultboards/" + this.props.router.params.resultId
-	                    }, {
-	                        property: "og:image:secure_url",
-	                        content: jsUtils.getBaseUrl() + "resultboards/" + this.props.router.params.resultId
-	                    }]
-	                });
+	                return [{
+	                    property: "og:image",
+	                    content: jsUtils.getBaseUrl(true) + "resultboards/" + this.props.router.params.resultId
+	                }, {
+	                    property: "og:image:secure_url",
+	                    content: jsUtils.getBaseUrl() + "resultboards/" + this.props.router.params.resultId
+	                }, {
+	                    property: "og:url",
+	                    content: jsUtils.getBaseUrl() + "u/" + this.props.router.params.user + "/" + this.props.router.params.resultId
+	                }, {
+	                    property: "twitter:image",
+	                    content: jsUtils.getBaseUrl() + "resultboards/" + this.props.router.params.resultId
+	                }];
 	            }
-	            console.log("META", JSON.stringify(this.props.router));
+
+	            return [];
 	        }
 	    }, {
 	        key: 'render',
@@ -70146,7 +70158,7 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'container profile-page' },
-	                this.renderMetaTags(),
+	                _react2.default.createElement(_reactHelmet2.default, _extends({ title: this.props.user.data.Username }, this.renderMetaTags())),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
@@ -70159,7 +70171,8 @@
 	                            _react2.default.createElement(
 	                                'div',
 	                                { className: 'col col-xs-12' },
-	                                _react2.default.createElement(_ProfileInfo2.default, { loggedIn: this.props.user.loggedIn, user: this.props.profile.user,
+	                                _react2.default.createElement(_ProfileInfo2.default, { loggedIn: this.props.user.loggedIn,
+	                                    user: this.props.profile.user,
 	                                    stats: this.props.profile.stats })
 	                            )
 	                        ),
@@ -70185,7 +70198,9 @@
 	                                { className: 'col col-xs-12' },
 	                                _react2.default.createElement(
 	                                    _Panel2.default,
-	                                    { title: 'Comments (' + (this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0) + ')', loaded: true },
+	                                    {
+	                                        title: 'Comments (' + (this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0) + ')',
+	                                        loaded: true },
 	                                    _react2.default.createElement(_Comments2.default, {
 	                                        comments: this.props.profile.comments,
 	                                        id: this.props.profile.user.Id,
