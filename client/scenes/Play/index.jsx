@@ -14,6 +14,7 @@ import ActivityFeed from 'components/app/ActivityFeed';
 import {resolveAll} from 'utils/jsUtils';
 import UserSearch from 'components/app/UserSearch';
 import TutorialModal from 'components/game/TutorialModal';
+import * as gaUtils from 'utils/gaUtils';
 
 class Play extends Component {
 
@@ -42,6 +43,7 @@ class Play extends Component {
     }
 
     openTutorial() {
+        gaUtils.logEvent("Play", "View tutorial");
         let state = this.state;
         state.showTutorial = true;
         this.setState(state);

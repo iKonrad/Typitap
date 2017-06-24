@@ -1,5 +1,5 @@
-const OPEN_EDIT_FIELD = "OPEN_EDIT_FIELD";
-const CLOSE_EDIT_FIELD = "CLOSE_EDIT_FIELD";
+const OPEN_EDIT_FIELD = "@@account/OPEN_EDIT_FIELD";
+const CLOSE_EDIT_FIELD = "@@account/CLOSE_EDIT_FIELD";
 
 const initialState = {
     details: {

@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import ScorePopover from 'components/game/ScorePopover';
+import * as gaUtils from 'utils/gaUtils';
 
 class ScoreBadge extends Component {
 
     constructor(props, context) {
         super(props, context);
 
+        let that = this;
         this.handleClick = e => {
+            gaUtils.logEvent("User", "View game result", this.props.resultId);
             this.setState({ target: e.target, show: !this.state.show });
         };
 

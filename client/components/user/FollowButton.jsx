@@ -39,6 +39,7 @@ class FollowButton extends React.Component {
                         state.following = true;
                         state.blocked = true;
                         FollowUtils.followProfile();
+
                     } else {
                         state.following = false;
                         FollowUtils.unfollowProfile();

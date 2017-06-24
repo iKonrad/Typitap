@@ -1,6 +1,8 @@
 import React from 'react';
 import * as GameUtils from 'utils/gameUtils';
 import ReactDOMServer from 'react-dom/server';
+import * as gaUtils from 'utils/gaUtils';
+
 let playTimeout;
 
 class ScorePopoverPlayback extends React.Component {
@@ -46,6 +48,8 @@ class ScorePopoverPlayback extends React.Component {
 
     togglePlayback() {
 
+
+
         if (this.state.playback.length === 0 && !this.state.loading) {
             let state = this.state;
             state.loading = true;
@@ -58,6 +62,7 @@ class ScorePopoverPlayback extends React.Component {
             if (this.state.playing) {
                 this.stop();
             } else {
+                gaUtils.logEvent("User", "Watching playback for game result", this.props.resultId);
                 this.start();
             }
         }
