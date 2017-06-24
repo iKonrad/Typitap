@@ -30,7 +30,7 @@ class Navbar extends Component {
                 <ul className="dropdown-menu">
                     { obj.items.map((item, index) => {
                         return <NavLink className='dropdown-item' to={item.url}
-                                        key={'menu-dropdown-item-' + index}>{ item.label }</NavLink>;
+                                        key={'menu-dropdown-item-' + index} >{ item.label }</NavLink>;
                     }) }
                 </ul>
             </li>
@@ -61,16 +61,16 @@ class Navbar extends Component {
                             <img src="/static/images/identity/typitap-logo-white@1.25x.png" alt=""/>
                         </Link>
                     </div>
-                    <div className="collapse navbar-collapse" id="menu-collapse">
+                    <div className="collapse navbar-collapse" id="menu-collapse" ref="menu-collapse">
                         <ul className="nav navbar-nav navbar-right">
                             { this.state.menu.map((obj, index) => {
                                 if (this.props.user && ((!obj.authenticated && this.props.user.loggedIn === undefined) || obj.authenticated === this.props.user.loggedIn)) {
                                     let parsedObj = obj;
                                     parsedObj.label = that.parseValue(obj.label);
                                     if (obj.type === 'link') {
-                                        return <NavLink to={obj.url} key={'menu-item-' + index}>{ parsedObj.label }</NavLink>;
+                                        return <NavLink to={obj.url} key={'menu-item-' + index} >{ parsedObj.label }</NavLink>;
                                     } else if (parsedObj.type === 'button') {
-                                        return <NavLink to={parsedObj.url} key={'menu-item-' + index} type="button">{ parsedObj.label }</NavLink>;
+                                        return <NavLink to={parsedObj.url} key={'menu-item-' + index} type="button" >{ parsedObj.label }</NavLink>;
                                     } else if (parsedObj.type === 'dropdown') {
                                         return that.renderDropdown(index, parsedObj);
                                     } else if (parsedObj.type === "logout") {
@@ -80,7 +80,7 @@ class Navbar extends Component {
                             })}
 
                             { (this.props.user.data !== undefined && ["ROLE_ADMIN", "ROLE_SUPER_ADMIN"].indexOf(this.props.user.data.Role) > -1 ) ?
-                                (<NavLink to="/admin/users" key={'menu-item-admin'}>ACP</NavLink>) :
+                                (<NavLink to="/admin/users" key={'menu-item-admin'} onClick={ this.handleClick }>ACP</NavLink>) :
                                 ("")
                             }
                         </ul>

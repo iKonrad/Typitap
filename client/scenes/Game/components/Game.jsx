@@ -70,7 +70,6 @@ class Game extends Component {
     }
 
     componentWillUnmount() {
-
         if (typeof window !== "undefined") {
             window.removeEventListener('beforeunload', this.onUnload);
         }
@@ -162,6 +161,8 @@ class Game extends Component {
         }
         return "";
     }
+
+    
 
 }
 
