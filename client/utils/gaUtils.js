@@ -2,10 +2,10 @@ var GA = require('react-ga');
 
 if (typeof window !== "undefined") {
     GA.initialize('UA-79863706-2');
-
+    logPageView(window.location.pathname)
 }
 export function logPageView(path) {
-    GA.set({ page: path });
+    GA.set({page: path});
     GA.pageview(path);
 }
 
