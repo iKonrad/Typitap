@@ -34,7 +34,6 @@ class Dashboard extends Component {
     }
 
     turnCommentsPage(page) {
-        console.log("?? clicked page, ", page);
         this.props.dispatch(ProfileActions.turnCommentsPage(page))
     }
 

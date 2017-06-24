@@ -46,6 +46,7 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 		Password: hashedPassword,
 		Exp:      0,
 		Level:    1,
+		Country: details["country"].(string),
 	}
 
 	cursor, err := r.Table("users").Insert(newUser).Run(db.Session)
@@ -347,6 +348,10 @@ func GetCountryCodeByIP(ipAddress string) (string, bool) {
 
 	query := gountries.New()
 	country, err := query.FindCountryByName(cityName)
+
+	if err != nil {
+		return "", false
+	}
 
 	return country.Alpha2, err != nil
 

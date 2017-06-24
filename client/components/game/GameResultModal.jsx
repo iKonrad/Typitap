@@ -140,12 +140,19 @@ class GameResultModal extends Component {
             let playersList = sortedPlayers.map((playerId, i) => {
                 let player = players[playerId];
                 return <div className="game-result__players__player" key={`player-${playerId}`}>
+
                     { (i + 1) <= 3 ? <i className={`fa fa-trophy place-${ i + 1 }`}></i> : <i className={`fa`}></i>}
+
                     <div>{i + 1}.</div>
+
                     { player.place !== undefined && player.place > 0 ? player.identifier : player.left ? (
-                        <span className='text-muted'>Player left</span>) : (<i className="fa fa-spinner fa-spin"></i>)}
+                        <span className='text-muted'>Player left</span>) : (<i className="fa fa-spinner fa-spin"></i>
+                    )}
+
+                    { player.place !== undefined && player.place > 0 ? <span className="game-result__players__player__wpm"> ({ player.wpm } wpm)</span> : "" }
                 </div>
             });
+
             return <div className="game-result__players">{ playersList }</div>;
         }
 

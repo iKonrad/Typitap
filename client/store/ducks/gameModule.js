@@ -297,7 +297,8 @@ export default function reducer(state = initialState, action) {
             players[action.identifier] = {
                 ...state.room.players[action.identifier],
                 completed: true,
-                place: action.place
+                place: action.place,
+                wpm: action.wpm,
             };
 
             return {
@@ -535,8 +536,8 @@ export function updatePlayerData(score) {
     return { type: UPDATE_PLAYER_DATA,  score}
 }
 
-export function setPlayerCompleted(identifier, place) {
-    return { type: PLAYER_COMPLETED_GAME, identifier, place};
+export function setPlayerCompleted(identifier, place, wpm) {
+    return { type: PLAYER_COMPLETED_GAME, identifier, place, wpm};
 }
 
 export function completeGame() {

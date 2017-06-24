@@ -196,7 +196,7 @@ func (o *enginePool) drop(ot *JSVM) {
 
 // newJSVM loads bundle.js into context.
 func newJSVM(filePath string, proxy http.Handler) *JSVM {
-	fmt.Println("init JSVM", filePath)
+
 	vm := &JSVM{
 		EventLoop: eventloop.NewEventLoop(),
 		ch:        make(chan Resp, 1),

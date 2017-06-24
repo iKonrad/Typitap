@@ -5,12 +5,13 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/gorilla/websocket"
-
 	"github.com/iKonrad/typitap/server/assets"
 	configs "github.com/iKonrad/typitap/server/config"
+	"github.com/iKonrad/typitap/server/controller"
 	"github.com/iKonrad/typitap/server/cron"
 	middlewares "github.com/iKonrad/typitap/server/middleware"
 	"github.com/iKonrad/typitap/server/routes"
@@ -22,9 +23,6 @@ import (
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 	"golang.org/x/crypto/acme/autocert"
-	"github.com/iKonrad/typitap/server/controller"
-	"strings"
-	"log"
 )
 
 // App struct.
@@ -78,8 +76,6 @@ func NewApp(opts ...AppOptions) *App {
 	// Set up echo debug level
 	engine.Debug = conf.UBool("debug")
 
-
-
 	engine.GET("/favicon.ico", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/identity/favicon@0.5x.png")
 	})
@@ -97,8 +93,6 @@ func NewApp(opts ...AppOptions) *App {
 	engine.GET("/resultboards/:id", controller.GameAPI.FetchResultboard)
 	engine.Static("/static", "static")
 
-
-
 	if env == "prod" {
 		engine.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 			Level: 6,
@@ -111,11 +105,9 @@ func NewApp(opts ...AppOptions) *App {
 		}))
 	}
 
-
 	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
 	}))
-
 
 	// Initialize the application
 	app := &App{
@@ -218,7 +210,6 @@ func NewApp(opts ...AppOptions) *App {
 
 			// if page(handler) for url/method not found
 			if err != nil {
-				log.Println("ERR", err)
 				httpErr, ok := err.(*echo.HTTPError)
 				if ok && httpErr.Code == http.StatusNotFound {
 					// check if file exists

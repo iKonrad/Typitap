@@ -53,7 +53,6 @@ class Comments extends React.Component {
             let pageButtons = [];
             if (pageCount > 1) {
                 for(let i = 1; i <= pageCount; i++) {
-                    console.log("PAGE", this.props.page)
                     pageButtons.push(<div className={`comments__page ${this.props.page === i ? "comments__page--selected" : ""}`} key={ `page-${i}`}><button onClick={ this.handlePageClick.bind(this, i) } className="btn btn-link btn-sm">{ i }</button></div>)
                 }
 

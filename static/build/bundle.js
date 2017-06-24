@@ -29869,7 +29869,6 @@
 	                            title = _Helmet$rewind.title,
 	                            meta = _Helmet$rewind.meta;
 
-	                        console.log("METAAAAAA", JSON.stringify(meta));
 	                        result.title = title.toString();
 	                        result.meta = meta.toString();
 	                        result.initial = JSON.stringify(store.getState());return cbk(result);
@@ -46382,7 +46381,6 @@
 	    }, {
 	        key: 'turnCommentsPage',
 	        value: function turnCommentsPage(page) {
-	            console.log("?? clicked page, ", page);
 	            this.props.dispatch(ProfileActions.turnCommentsPage(page));
 	        }
 	    }, {
@@ -48203,7 +48201,8 @@
 
 	            players[action.identifier] = _extends({}, state.room.players[action.identifier], {
 	                completed: true,
-	                place: action.place
+	                place: action.place,
+	                wpm: action.wpm
 	            });
 
 	            return _extends({}, state, {
@@ -48415,8 +48414,8 @@
 	    return { type: UPDATE_PLAYER_DATA, score: score };
 	}
 
-	function setPlayerCompleted(identifier, place) {
-	    return { type: PLAYER_COMPLETED_GAME, identifier: identifier, place: place };
+	function setPlayerCompleted(identifier, place, wpm) {
+	    return { type: PLAYER_COMPLETED_GAME, identifier: identifier, place: place, wpm: wpm };
 	}
 
 	function completeGame() {
@@ -48962,7 +48961,7 @@
 	                    store.dispatch(gameActions.updatePlayersData(msg.data.players));
 	                    break;
 	                case "PLAYER_COMPLETED_GAME":
-	                    store.dispatch(gameActions.setPlayerCompleted(msg.data.identifier, msg.data.place));
+	                    store.dispatch(gameActions.setPlayerCompleted(msg.data.identifier, msg.data.place, msg.data.wpm));
 	                    break;
 	                case "START_GAME":
 	                    GameEngine.startGame(true);
@@ -53905,7 +53904,6 @@
 	                var pageButtons = [];
 	                if (pageCount > 1) {
 	                    for (var i = 1; i <= pageCount; i++) {
-	                        console.log("PAGE", this.props.page);
 	                        pageButtons.push(_react2.default.createElement(
 	                            'div',
 	                            { className: 'comments__page ' + (this.props.page === i ? "comments__page--selected" : ""), key: 'page-' + i },
@@ -65574,9 +65572,17 @@
 	                            'span',
 	                            { className: 'text-muted' },
 	                            'Player left'
-	                        ) : _react2.default.createElement('i', { className: 'fa fa-spinner fa-spin' })
+	                        ) : _react2.default.createElement('i', { className: 'fa fa-spinner fa-spin' }),
+	                        player.place !== undefined && player.place > 0 ? _react2.default.createElement(
+	                            'span',
+	                            { className: 'game-result__players__player__wpm' },
+	                            ' (',
+	                            player.wpm,
+	                            ' wpm)'
+	                        ) : ""
 	                    );
 	                });
+
 	                return _react2.default.createElement(
 	                    'div',
 	                    { className: 'game-result__players' },
@@ -76865,7 +76871,7 @@
 /* 871 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;var require;/* WEBPACK VAR INJECTION */(function(process) {/** @license MIT License (c) copyright 2010-2014 original author or authors */
+	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process) {/** @license MIT License (c) copyright 2010-2014 original author or authors */
 	/** @author Brian Cavalier */
 	/** @author John Hann */
 

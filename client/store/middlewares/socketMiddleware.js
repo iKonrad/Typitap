@@ -65,7 +65,7 @@ const socketMiddleware = (function () {
                 store.dispatch(gameActions.updatePlayersData(msg.data.players));
                 break;
             case "PLAYER_COMPLETED_GAME":
-                store.dispatch(gameActions.setPlayerCompleted(msg.data.identifier, msg.data.place));
+                store.dispatch(gameActions.setPlayerCompleted(msg.data.identifier, msg.data.place, msg.data.wpm));
                 break;
             case "START_GAME":
                 GameEngine.startGame(true);

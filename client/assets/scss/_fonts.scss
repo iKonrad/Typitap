@@ -10,3 +10,12 @@ h1, h2, h3, h4, h5 {
 p, a, ul {
   font-family: "Source Sans Pro", sans-serif;
 }
+
+
+@mixin FontDosis() {
+  font-family: Dosis, 'sans-serif';
+}
+
+@mixin FontSourceSans() {
+  font-family: "Source Sans Pro", sans-serif;
+}

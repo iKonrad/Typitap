@@ -13,6 +13,13 @@
       padding: 10px 0;
       border-top: 1px solid $grey-100;
 
+      &__wpm {
+        font-weight: 100;
+        @include FontSourceSans();
+        color: $grey-300;
+        font-size: 16px;
+      }
+
       &:first-of-type {
         border-top: none;
       }
