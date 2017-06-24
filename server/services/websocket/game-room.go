@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
-	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/iKonrad/typitap/server/services/feed"
 	"github.com/iKonrad/typitap/server/services/game"
@@ -315,7 +314,7 @@ func (r *Room) handlePlayerUpdate(identifier string, score float64) {
 }
 
 // Handles the player finishing the game: sets the finished flag, sends a message
-func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int, playback []map[string]interface{}) {
+func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int, playback []map[string]interface{}, ip string, country string) {
 
 	if r.gameStarted {
 		db.Redis.HSet("rooms:"+r.Id+":players:"+identifier, "completed", true)
@@ -335,13 +334,14 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int,
 		)
 
 		var points int
-		var err error
-		var result entities.GameResult
+		var resultId string
 
 		if user, ok := us.FindUserBy("username", identifier); ok {
 
 			// Save result in database
-			result, err = game.SaveResult(&user, r.Id, mistakes, wpm, accuracy, int(r.time), int(r.nextPlace))
+			result, err := game.SaveResult(&user, r.Id, mistakes, wpm, accuracy, int(r.time), int(r.nextPlace), ip)
+			resultId = result.Id
+
 			if err != nil {
 				logs.Error("Error while saving a result", "An error occurred while saving results for user "+identifier, []string{"errors", "websocket", "game"}, "Game Session "+r.Id)
 			}
@@ -386,6 +386,9 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int,
 			// Increment game stats for user profile
 			stats.IncrementGamesStat(user.Id)
 
+		} else {
+			result, _ := game.SaveGuestResult(identifier, r.Id, mistakes, wpm, accuracy, playerTime, int(r.nextPlace), ip, country)
+			resultId = result["id"].(string)
 		}
 
 		r.SendMessage(
@@ -397,7 +400,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int,
 				"accuracy":   accuracy,
 				"time":       playerTime,
 				"points":     points,
-				"resultId":   result.Id,
+				"resultId":   resultId,
 			},
 		)
 
@@ -411,7 +414,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int,
 				"accuracy":   accuracy,
 				"time":       playerTime,
 				"points":     points,
-				"resultId": result.Id,
+				"resultId": resultId,
 			})
 
 		// Increment next place

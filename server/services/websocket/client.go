@@ -11,6 +11,8 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/iKonrad/typitap/server/services/logs"
+	"github.com/iKonrad/typitap/server/services/user"
+	"github.com/iKonrad/typitap/server/services/utils"
 	"github.com/labstack/echo"
 )
 
@@ -26,6 +28,8 @@ type Client struct {
 	identifier string
 	ws         *websocket.Conn
 	send       chan []byte
+	ip         string
+	country    string
 }
 
 var upgrader websocket.Upgrader
@@ -56,20 +60,25 @@ func ServeWs(context echo.Context) {
 	// Check if user exists. If exists, use username as a identifier. Otherwise, create an anonymous ID
 
 	var identifier string
-	var user entities.User
+	var newUser entities.User
 	if context.Get("IsLoggedIn").(bool) {
-		user := context.Get("User").(entities.User)
-		identifier = user.Username
+		newUser := context.Get("User").(entities.User)
+		identifier = newUser.Username
 	} else {
 		randomNumber := rand.Int()
 		identifier = "guest-" + strconv.Itoa(randomNumber)
 	}
 
+	ip := utils.GetIPAdress(context.Request())
+	country, _ := user.GetCountryCodeByIP(ip)
+
 	c := &Client{
-		user:       &user,
+		user:       &newUser,
 		identifier: identifier,
 		send:       make(chan []byte, MAX_MESSAGE_SIZE),
 		ws:         ws,
+		ip:         ip,
+		country:    country,
 	}
 
 	hub.registerChannel <- c
@@ -102,17 +111,16 @@ func (c *Client) readPump() {
 		if err != nil {
 			break
 		}
+
 		var decodedMessage map[string]interface{}
 		json.Unmarshal(message, &decodedMessage)
+
 		c.parseMessage(c.identifier, decodedMessage)
 	}
 }
 
 func (c *Client) parseMessage(identifier string, message map[string]interface{}) {
-
-	log.Println("Message received: ", message)
-
-	GetEngine().parseMessage(identifier, message)
+	GetEngine().parseMessage(c, message)
 }
 
 func (c *Client) writePump() {

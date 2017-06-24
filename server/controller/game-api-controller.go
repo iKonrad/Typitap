@@ -9,12 +9,13 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/iKonrad/typitap/server/services/feed"
 	"github.com/iKonrad/typitap/server/services/game"
+	"github.com/iKonrad/typitap/server/services/graphics"
 	"github.com/iKonrad/typitap/server/services/levels"
 	"github.com/iKonrad/typitap/server/services/stats"
 	"github.com/iKonrad/typitap/server/services/topchart"
-	"github.com/labstack/echo"
+	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/iKonrad/typitap/server/services/utils"
-	"github.com/iKonrad/typitap/server/services/graphics"
+	"github.com/labstack/echo"
 )
 
 type GameAPIController struct {
@@ -63,7 +64,6 @@ func (ac *GameAPIController) GetSession(c echo.Context) error {
 
 func (ac *GameAPIController) SaveResult(c echo.Context) error {
 
-
 	var mistakes map[string]int
 	if c.FormValue("mistakes") != "" {
 		json.Unmarshal([]byte(c.FormValue("mistakes")), &mistakes)
@@ -83,51 +83,71 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 
 	wpm, accuracy := game.CalculateScore(gameTime, len(mistakes), session.Text.Text)
 
+	var resultId string
+	points := 0
+
+	/*
+		If game is completed by a guest, submit the result to a seaprate table.
+		Otherwise, submit the result and calculate points, check trophies etc.
+	*/
 	if !c.Get("IsLoggedIn").(bool) {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"success": true,
-			"resultId": "",
-			"data": map[string]interface{}{
-				"points": 0,
-				"wpm": wpm,
-				"accuracy": accuracy,
-			},
-		})
+
+		country, _ := us.GetCountryCodeByIP(utils.GetIPAdress(c.Request()))
+		newResult, ok := game.SaveGuestResult(c.FormValue("user"), session.Id, mistakes, wpm, accuracy, gameTime, 0, utils.GetIPAdress(c.Request()), country)
+		if ok {
+			resultId = newResult["id"].(string)
+		} else {
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+				"success": false,
+				"error":   "Could not save the session data",
+			})
+		}
+
+	} else {
+
+		user := c.Get("User").(entities.User)
+
+		newResult, err := game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, int(accuracy), gameTime, 0, utils.GetIPAdress(c.Request()))
+
+		if err != nil {
+			log.Println(err)
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+				"success": false,
+				"error":   "Could not save the session data",
+			})
+		}
+
+		var playback []map[string]interface{}
+		if c.FormValue("playback") != "" {
+			json.Unmarshal([]byte(c.FormValue("playback")), &playback)
+		}
+
+		// Save result to the database
+		game.SavePlayback(newResult.Id, playback)
+
+		// Check if user made it to the top chart
+		madeToChart := topchart.CheckTopChart(&newResult)
+
+		if madeToChart {
+			feed.SendActivityToUserAndFollowers(user.Id, feed.Activities.PlayerMakesToTopChart(user.Username, wpm))
+			feed.SendGlobalActivity(feed.Activities.PlayerMakesToTopChart(user.Username, wpm))
+		} else {
+			feed.SendActivityToUserAndFollowers(user.Id, feed.Activities.PlayerCompletedOfflineGameActivity(user.Username, wpm))
+			feed.SendGlobalActivity(feed.Activities.PlayerCompletedOfflineGameActivity(user.Username, wpm))
+		}
+
+		// Calculate experience points for a game result
+		points = levels.CalculatePoints(&newResult, 0)
+
+		// Apply points to user
+		if points > 0 {
+			levels.ApplyPoints(&user, points)
+		}
+
+		stats.IncrementGamesStat(user.Id)
 	}
-
-	var playback []map[string]interface{}
-	if c.FormValue("playback") != "" {
-		json.Unmarshal([]byte(c.FormValue("playback")), &playback)
-	}
-
-	user := c.Get("User").(entities.User)
-
-	// Save result to the database
-	newResult, err := game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, int(accuracy), gameTime, 0)
-	game.SavePlayback(newResult.Id, playback)
 
 	game.MarkSessionFinished(c.FormValue("sessionId"))
-
-	// Check if user made it to the top chart
-	madeToChart := topchart.CheckTopChart(&newResult)
-
-	if madeToChart {
-		feed.SendActivityToUserAndFollowers(user.Id, feed.Activities.PlayerMakesToTopChart(user.Username, wpm))
-		feed.SendGlobalActivity(feed.Activities.PlayerMakesToTopChart(user.Username, wpm))
-	} else {
-		feed.SendActivityToUserAndFollowers(user.Id, feed.Activities.PlayerCompletedOfflineGameActivity(user.Username, wpm))
-		feed.SendGlobalActivity(feed.Activities.PlayerCompletedOfflineGameActivity(user.Username, wpm))
-	}
-
-	stats.IncrementGamesStat(user.Id)
-
-	// Calculate experience points for a game result
-	points := levels.CalculatePoints(&newResult, 0)
-
-	// Apply points to user
-	if points > 0 {
-		levels.ApplyPoints(&user, points)
-	}
 
 	// Submit the result for the top chart
 	if err != nil {
@@ -140,10 +160,10 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success":  true,
-		"resultId": newResult.Id,
+		"resultId": resultId,
 		"data": map[string]interface{}{
-			"points": points,
-			"wpm": wpm,
+			"points":   points,
+			"wpm":      wpm,
 			"accuracy": accuracy,
 		},
 	})
@@ -214,12 +234,11 @@ func (gc *GameAPIController) GetPlaybackData(c echo.Context) error {
 
 }
 
-
 func (gc *GameAPIController) FetchResultboard(c echo.Context) error {
 
 	resultId := c.Param("id")
 
-	filePath := "static/images/resultboards/" + resultId + ".png";
+	filePath := "static/images/resultboards/" + resultId + ".png"
 
 	// Get file stats
 	_, err := utils.GetFileCreated(filePath)

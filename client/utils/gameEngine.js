@@ -66,6 +66,7 @@ export function finishGame() {
     }
 
     let state = getStore().getState().game;
+    let userState = getStore().getState().user;
 
     let results = {
         'time': state.time,
@@ -73,6 +74,10 @@ export function finishGame() {
         'sessionId': state.room.id,
         'playback': JSON.stringify(state.playback),
     };
+
+    if (!userState.loggedIn) {
+        results['user'] = getStore().getState().socket.identifier;
+    }
 
     // Post the results to the server
     this.postGameResultData(results).then((response) => {

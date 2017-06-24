@@ -11,6 +11,7 @@ import (
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/labstack/echo"
 	"golang.org/x/crypto/bcrypt"
+	"github.com/iKonrad/typitap/server/services/utils"
 )
 
 type AuthenticationAPIController struct {
@@ -30,7 +31,7 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 	}
 
 	// Get country code
-	country, ok := us.GetCountryCodeByIP(c.RealIP())
+	country, ok := us.GetCountryCodeByIP(utils.GetIPAdress(c.Request()))
 
 
 	// Get form data

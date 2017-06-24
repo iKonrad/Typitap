@@ -153,7 +153,39 @@ func getGameText(textId int) (entities.GameText, error) {
 
 }
 
-func SaveResult(user *entities.User, sessionId string, mistakes map[string]int, wpm int, accuracy int, gameTime int, place int) (entities.GameResult, error) {
+// Saves guest game results to the database. It'll be only used for internal purposes, such as stats
+func SaveGuestResult(identifier string, sessionId string, mistakes map[string]int, wpm int, accuracy int, gameTime int, place int, ip string, country string) (map[string]interface{}, bool) {
+
+	// Get Session by ID
+	_, err := GetSession(sessionId)
+	if err != nil {
+		return map[string]interface{}{}, false
+	}
+
+	newId := uuid.NewV4()
+
+	data := map[string]interface{}{
+		"id":         newId.String(),
+		"identifier": identifier,
+		"created":    time.Now(),
+		"wpm":        wpm,
+		"accuracy":   accuracy,
+		"time":       gameTime,
+		"mistakes":   mistakes,
+		"session":    sessionId,
+		"place":      place,
+		"ip":         ip,
+		"country":    country,
+	}
+
+	// Save the result in the database
+	r.Table("game_guest_results").Insert(data).Exec(db.Session)
+
+	return data, true
+
+}
+
+func SaveResult(user *entities.User, sessionId string, mistakes map[string]int, wpm int, accuracy int, gameTime int, place int, ip string) (entities.GameResult, error) {
 
 	// Get Session by ID
 	session, err := GetSession(sessionId)
@@ -174,6 +206,7 @@ func SaveResult(user *entities.User, sessionId string, mistakes map[string]int, 
 		Mistakes: mistakes,
 		Session:  session,
 		Place:    place,
+		IP:       ip,
 	}
 
 	// Save the result in the database

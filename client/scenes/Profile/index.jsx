@@ -42,44 +42,39 @@ class Profile extends Component {
 
     renderMetaTags() {
         if (this.props.router.params.resultId !== undefined) {
-            return (
-                <Helmet
-                    title={ this.props.user.data.Username }
-                    meta={
-                        [
-                            {
-                                property: "og:image",
-                                content: jsUtils.getBaseUrl(true) + "resultboards/" + this.props.router.params.resultId,
-                            },
-                            {
-                                property: "og:image:secure_url",
-                                content: jsUtils.getBaseUrl() + "resultboards/" + this.props.router.params.resultId,
-                            },
-                            {
-                                property: "og:url",
-                                content: jsUtils.getBaseUrl() + "u/" + this.props.router.params.user + "/" + this.props.router.params.resultId,
-                            },
-                            {
-                                property: "twitter:image",
-                                content: jsUtils.getBaseUrl() + "resultboards/" + this.props.router.params.resultId,
-                            },
-                        ]
-                    }
-                />
-            )
+            return [
+                {
+                    property: "og:image",
+                    content: jsUtils.getBaseUrl(true) + "resultboards/" + this.props.router.params.resultId,
+                },
+                {
+                    property: "og:image:secure_url",
+                    content: jsUtils.getBaseUrl() + "resultboards/" + this.props.router.params.resultId,
+                },
+                {
+                    property: "og:url",
+                    content: jsUtils.getBaseUrl() + "u/" + this.props.router.params.user + "/" + this.props.router.params.resultId,
+                },
+                {
+                    property: "twitter:image",
+                    content: jsUtils.getBaseUrl() + "resultboards/" + this.props.router.params.resultId,
+                },
+            ];
         }
-        console.log("META", JSON.stringify(this.props.router));
+
+        return [];
     }
 
     render() {
         return (
             <div className="container profile-page">
-                { this.renderMetaTags() }
+                <Helmet title={ this.props.user.data.Username } { ...this.renderMetaTags() } />
                 <div className="row">
                     <div className="col col-xs-12 col-md-8">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <ProfileInfo loggedIn={ this.props.user.loggedIn } user={  this.props.profile.user  }
+                                <ProfileInfo loggedIn={ this.props.user.loggedIn }
+                                             user={  this.props.profile.user  }
                                              stats={ this.props.profile.stats }/>
                             </div>
                         </div>
@@ -91,7 +86,9 @@ class Profile extends Component {
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Panel title={ `Comments (${ this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0 })` } loaded={ true }>
+                                <Panel
+                                    title={ `Comments (${ this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0 })` }
+                                    loaded={ true }>
                                     <Comments
                                         comments={ this.props.profile.comments }
                                         id={ this.props.profile.user.Id }
@@ -106,7 +103,7 @@ class Profile extends Component {
                         <div className="row">
                             <div className="col col-xs-12">
                                 <Panel title="About" loaded={ this.props.profile.user !== undefined }>
-                                    <UserBio user={ this.props.profile.user } />
+                                    <UserBio user={ this.props.profile.user }/>
                                 </Panel>
                             </div>
                         </div>
@@ -137,13 +134,22 @@ class Profile extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        app: state.app,
-        routing: state.routing,
-        user: state.user,
-        profile: state.profile,
+const
+    mapStateToProps = (state) => {
+        return {
+            app: state.app,
+            routing: state.routing,
+            user: state.user,
+            profile: state.profile,
+        };
     };
-};
 
-export default connect(mapStateToProps)(Profile);
+export
+default
+
+connect(mapStateToProps)
+
+(
+    Profile
+)
+;

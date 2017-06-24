@@ -12,6 +12,7 @@ type GameResult struct {
 	Mistakes map[string]int `gorethink:"mistakes"`
 	Session  GameSession    `gorethink:"sessionId,reference" gorethink_ref:"id"`
 	Place    int            `gorethink:"place"`
+	IP       string 		`gorethink:"ip"`
 }
 
 type SortResultsByScore []GameResult

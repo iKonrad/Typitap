@@ -67,9 +67,10 @@ func (e *Engine) Run() {
 }
 
 // Picks up the received message and checks if game module needs to respond to it
-func (e *Engine) parseMessage(identifier string, message map[string]interface{}) {
+func (e *Engine) parseMessage(client *Client, message map[string]interface{}) {
 
 	switch message["type"] {
+
 	case "JOIN_ROOM":
 		online, ok := message["online"]
 		if !ok {
@@ -77,15 +78,16 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 		}
 
 		var roomId string
-		if roomId, ok = GetEngine().handleJoinRoom(identifier, online.(bool)); ok {
-			logs.Log("Player joined room", "Player "+identifier+" joined room "+roomId, []string{"websocket", "game", "players"}, "Game Session "+roomId)
+		if roomId, ok = GetEngine().handleJoinRoom(client.identifier, online.(bool)); ok {
+			logs.Log("Player joined room", "Player "+client.identifier+" joined room "+roomId, []string{"websocket", "game", "players"}, "Game Session "+roomId)
 		}
+
 	case "LEAVE_ROOM":
-		err := e.handleLeaveRoom(identifier)
+		err := e.handleLeaveRoom(client.identifier)
 		if err != nil {
 			log.Println("Leave room issue", err)
 			GetHub().SendMessageToClient(
-				identifier,
+				client.identifier,
 				TYPE_ERROR,
 				map[string]interface{}{
 					"error": "Could not leave room",
@@ -93,19 +95,21 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 			)
 		} else {
 			GetHub().SendMessageToClient(
-				identifier,
+				client.identifier,
 				TYPE_LEFT_ROOM,
 				map[string]interface{}{},
 			)
 		}
+
 	case "UPDATE_PLAYER_DATA":
 		if score, ok := message["score"]; ok {
-			if roomId, ok := e.getRoomForClientId(identifier); ok {
-				e.rooms[roomId].handlePlayerUpdate(identifier, score.(float64))
+			if roomId, ok := e.getRoomForClientId(client.identifier); ok {
+				e.rooms[roomId].handlePlayerUpdate(client.identifier, score.(float64))
 			}
 		}
+
 	case "COMPLETE_PLAYER_GAME":
-		if roomId, ok := e.getRoomForClientId(identifier); ok {
+		if roomId, ok := e.getRoomForClientId(client.identifier); ok {
 
 			var mistakes = make(map[string]int)
 			m := message["mistakes"]
@@ -116,7 +120,7 @@ func (e *Engine) parseMessage(identifier string, message map[string]interface{})
 			var playback = []map[string]interface{}{}
 			json.Unmarshal([]byte(message["playback"].(string)), &playback)
 
-			e.rooms[roomId].handlePlayerCompleted(identifier, mistakes, playback)
+			e.rooms[roomId].handlePlayerCompleted(client.identifier, mistakes, playback, client.ip, client.country)
 
 			// Check if all players completed game. If yes, then shut the timer and remove the room
 			if e.rooms[roomId].haveAllPlayersCompletedGame() {
