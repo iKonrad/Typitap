@@ -24,6 +24,7 @@ import (
 	"github.com/olebedev/config"
 	"golang.org/x/crypto/acme/autocert"
 	"github.com/iKonrad/typitap/server/services/seo"
+	"log"
 )
 
 // App struct.
@@ -82,7 +83,8 @@ func NewApp(opts ...AppOptions) *App {
 	})
 
 	engine.GET("/sitemap.xml.gz", func(c echo.Context) error {
-		return c.File("/static/sitemaps/sitemap1.xml.gz")
+		log.Println("????");
+		return c.File("static/sitemaps/sitemap1.xml.gz")
 	})
 
 
