@@ -1,8 +1,10 @@
-hash: f7797a36cdbfb71d80635b032f07f281b232f2dcf475245a0277861f645f9af3
-updated: 2017-06-20T22:25:30.593604271+01:00
+hash: c0ecf3a5be74198cf953a60f2969c62273b4dacc452a1eebee3d03756e47eb30
+updated: 2017-06-24T23:01:56.226580303+01:00
 imports:
 - name: github.com/badoux/checkmail
   version: d0a759655d62bcdc95c50a0676f3e9702ed59453
+- name: github.com/beevik/etree
+  version: abae5fc32af8862e420d52e686a7e6ec14111685
 - name: github.com/boj/rethinkstore
   version: 614f6ea8ec6dee94ed97bbf52a670cffcc64c1ca
 - name: github.com/cenkalti/backoff
@@ -55,7 +57,7 @@ imports:
   - raster
   - truetype
 - name: github.com/golang/protobuf
-  version: e325f446bebc2998605911c0a2650d9920361d4a
+  version: 6a1fa9404c0aebf36c879bc50152edcc953910d2
   subpackages:
   - proto
 - name: github.com/gorilla/context
@@ -68,6 +70,12 @@ imports:
   version: ea4d1f681babbce9545c9c5f3d5194a789c89f5b
 - name: github.com/hailocab/go-hostpool
   version: e80d13ce29ede4452c43dea11e79b9bc8a15b478
+- name: github.com/ikeikeikeike/go-sitemap-generator
+  version: e3c3d374db77838e92e5981ba81f26d1ecea4aa8
+  subpackages:
+  - stm
+- name: github.com/imdario/mergo
+  version: e3000cb3d28c72b837601cac94debd91032d19fe
 - name: github.com/itsjamie/go-bindata-templates
   version: 65d795d0c74021e19b2ebadf3c83c01a8290a405
 - name: github.com/jteeuwen/go-bindata
@@ -84,7 +92,7 @@ imports:
   - log
   - random
 - name: github.com/mailjet/mailjet-apiv3-go
-  version: 647f7c2ce68acf4b5ed07093bf0b4ea8f79b5d0c
+  version: 4597cb4aae1236575fcd3f7c09544191e1e0aa35
   subpackages:
   - fixtures
   - resources

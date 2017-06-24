@@ -23,6 +23,7 @@ import (
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 	"golang.org/x/crypto/acme/autocert"
+	"github.com/iKonrad/typitap/server/services/seo"
 )
 
 // App struct.
@@ -78,6 +79,10 @@ func NewApp(opts ...AppOptions) *App {
 
 	engine.GET("/favicon.ico", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/identity/favicon@0.5x.png")
+	})
+
+	engine.GET("/sitemap.xml.gz", func(c echo.Context) error {
+		return c.Redirect(http.StatusMovedPermanently, "/static/sitemaps/sitemap1.xml.gz")
 	})
 
 	// Register authentication middleware
@@ -141,8 +146,6 @@ func NewApp(opts ...AppOptions) *App {
 
 	go ws.GetHub().Run()
 	go ws.GetEngine().Run()
-
-	//app.Engine.Use(authentication.Middleware.Handle);
 
 	// Bind api hadling for URL api.prefix
 	api := routes.AuthenticationAPIRoutes{}
@@ -230,8 +233,13 @@ func NewApp(opts ...AppOptions) *App {
 		}
 	})
 
-	logs.Log("App Started", "Typitap App has started", []string{"server"}, "Server")
 	cron.RunJobs()
+
+	// Regenerate XML sitemaps
+	seo.GenerateSitemap(false)
+
+	logs.Log("App Started", "Typitap App has started", []string{"server"}, "Server")
+
 	return app
 }
 

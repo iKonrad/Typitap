@@ -10,5 +10,6 @@ func RunJobs() {
 	c = cron.New()
 	registerChartJobs()
 	registerStatsJobs()
+	registerSitemapJobs()
 	c.Start()
 }

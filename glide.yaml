@@ -26,3 +26,8 @@ import:
 - package: github.com/oschwald/geoip2-golang
   version: ^1.1.0
 - package: github.com/pariz/gountries
+- package: github.com/ikeikeikeike/go-sitemap-generator
+  subpackages:
+  - stm
+- package: github.com/beevik/etree
+  version: ^0.0.0
