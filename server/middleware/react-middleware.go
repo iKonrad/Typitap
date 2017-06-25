@@ -97,6 +97,7 @@ func (r *React) Handle(c echo.Context) error {
 		if len(re.Redirect) == 0 && len(re.Error) == 0 {
 			// If no redirection and no errors
 			c.Response().Header().Set("X-React-Render-Time", re.RenderTime.String())
+
 			return c.Render(http.StatusOK, "react.html", re)
 			// If redirect
 		} else if len(re.Redirect) != 0 {

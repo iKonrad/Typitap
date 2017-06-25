@@ -24,7 +24,6 @@ import (
 	"github.com/olebedev/config"
 	"golang.org/x/crypto/acme/autocert"
 	"github.com/iKonrad/typitap/server/services/seo"
-	"log"
 )
 
 // App struct.
@@ -83,7 +82,6 @@ func NewApp(opts ...AppOptions) *App {
 	})
 
 	engine.GET("/sitemap.xml", func(c echo.Context) error {
-		log.Println("????");
 		return c.File("static/sitemaps/sitemap1.xml")
 	})
 
@@ -260,7 +258,7 @@ func NoJsRender(c echo.Context) error {
 // Run runs the app
 func (app *App) Run() {
 	if configs.Config.UString("env") == "prod" {
-		Must(app.Engine.StartAutoTLS(":" + "443"))
+		Must(app.Engine.StartTLS(":443", configs.Config.UString("ssl.cert"), configs.Config.UString("ssl.key")))
 	} else {
 		Must(app.Engine.Start(":" + configs.Config.UString("app_port")))
 	}
