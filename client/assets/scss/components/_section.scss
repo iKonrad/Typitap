@@ -1,13 +1,17 @@
 .section {
   padding: 70px 0;
 
+  &--white {
+    background-color: white;
+  }
+
   &--dark {
-    background-color: #323232;
+    background-color: #3C3C3C;
     color: white;
   }
 
   &--light {
-    background-color: $grey-100;
+    background-color: $grey-050;
   }
 
   &--gradient {

@@ -72,11 +72,11 @@
     }
 
     &--selected {
-      background-color: $grey-200;
+      background-color: $grey-100;
       border-radius: 5px;
 
       & * {
-        color: white!important;
+        color: $grey-500;
       }
     }
   }

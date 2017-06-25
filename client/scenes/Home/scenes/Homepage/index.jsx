@@ -7,7 +7,7 @@ import {resolveAll} from 'utils/jsUtils';
 import * as PlayActions from 'scenes/Play/ducks/playModule';
 import Panel from 'components/app/Panel';
 import ActivityFeed from 'components/app/ActivityFeed';
-import Typist from 'react-typist';
+
 
 class Homepage extends Component {
 
@@ -39,26 +39,6 @@ class Homepage extends Component {
         }
     }
 
-    renderTyping() {
-        if (this.state.loaded) {
-            return (<Typist show={false} avgTypingDelay={60} stdTypingDelay={40}
-                            delayGenerator={ function (mean, std, {line, lineIdx, character, charIdx, defDelayGenerator}) {
-                                if (character === "." || character === "?" || character === "!") {
-                                    return 1200;
-                                } else {
-                                    return 60;
-                                }
-                            } }>
-                <span className="game__paragraph">Typitap is the most advanced online typing game made for people who love to type on their <span
-                    className="word-error">keyboadrs</span>.</span>
-                <span className="game__paragraph">Do you have what it <span className="word-error">tkaes</span> to make it to the top?</span>
-                <span className="game__paragraph"><strong>Sign up</strong> or jump straight into the race track!</span>
-            </Typist>)
-        } else {
-            return "";
-        }
-    }
-
     render() {
 
         let date = new Date();
@@ -70,22 +50,13 @@ class Homepage extends Component {
                     <div className="container">
                         <div className="row">
                             <div className="col col-xs-12 text-center">
-                                <div className="banner__titles">
-                                    <h1 className="white"><img src="/static/images/identity/typitap-logo-white@2x.png" alt=""/>
-                                    </h1>
-                                    <h3 className="white">Ultimate online typing game</h3>
-                                </div>
                                 <div className="row">
-                                    <div className="col col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-                                        <div className="game">
-                                            <div className="game__text">
-                                                { this.renderTyping() }
-                                            </div>
+
+                                    <div className="col col-xs-12 text-center banner__content">
+                                        <div className="banner__title">
+                                            <img src="/static/images/identity/typitap-logo-white@1.5x.png" alt="Typitap.com logo" />
+                                            <h4>Ultimate online typing game</h4>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col col-xs-12 text-center">
                                         <div className="banner__buttons">
                                             <Link to="/play" className="btn btn-round btn-secondary">Play</Link>
                                             <Link to="/signup" className="btn btn-round btn-outline btn-white">Sign
@@ -145,18 +116,60 @@ class Homepage extends Component {
                         </div>
                     </div>
                 </div>
+                <div className="section section--white">
+                    <div className="container">
+                        <div className="row margin-top-5">
+                            <div className="col col-xs-12 col-md-4">
+                                <div className="margin-top-7 margin-bottom-5">
+                                    <h2>Compete with real people</h2>
+                                    <p>Play with people from around the world and put your typing skills to the test.</p>
+                                    <p>You can choose to play in <strong>online mode</strong> with people from around the world, or <strong>practice</strong> to prepare your skills for the race.</p>
+                                </div>
+                            </div>
+                            <div className="col col-xs-12 col-md-7 col-md-offset-1">
+                                <img src="/static/images/pages/homepage/feature_1.jpg" width="100%" alt="Game screen" />
+                            </div>
+                        </div>
+                        <div className="row margin-top-8">
+                            <div className="col col-xs-12 col-md-4">
+                                <div className="margin-top-7 margin-bottom-5">
+                                    <h2>View and replay your games</h2>
+                                    <p>You can browse through all your past games and replay them in real-time to see how you performed. <strong>Just click on the result badge.</strong></p>
+                                    <p>Compare your speed with the best in typitap and find out how to improve your typing skills</p>
+                                </div>
+                            </div>
+                            <div className="col col-xs-12 col-md-7 col-md-offset-1">
+                                <img src="/static/images/pages/homepage/feature_2.jpg" width="100%" alt="Game screen" />
+                            </div>
+                        </div>
+                        <div className="row margin-top-8">
+                            <div className="col col-xs-12 col-md-4">
+                                <div className="margin-top-2 margin-bottom-5">
+                                    <h2>Shiny dashboard</h2>
+                                    <p>On your dashboard, you can check your <strong>stats</strong>, chat with others and browse through past games.</p>
+                                    <p>Moreover, with our advanced <strong>leveling system</strong>, getting yourself motivated has never been easier.</p>
+                                    <p>You can also <strong>follow your friends</strong> and stay up to date with their most recent results.</p>
+                                </div>
+                            </div>
+                            <div className="col col-xs-12 col-md-7 col-md-offset-1">
+                                <img src="/static/images/pages/homepage/feature_3.jpg" width="100%" alt="Game screen" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className="section section--light">
                     <div className="container">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <h3>Straight from the race tracks</h3>
+                                <h2>Straight from the race tracks</h2>
                             </div>
-                            <div className="col col-xs-12 col-md-8">
+                            <div className="col col-xs-12 col-md-7 col-lg-8 margin-top-5">
                                 <Panel title="Recent news" bodyClass=""
                                        loaded={ this.props.play.feed !== undefined }><ActivityFeed
                                     feed={ this.props.play.feed }/></Panel>
                             </div>
-                            <div className="col col-xs-12 col-md-4">
+                            <div className="col col-xs-12 col-md-5 col-lg-4 margin-top-5">
+                                <img style={{position: "absolute", right: "10px", zIndex: 2, top: "-40px"}} className="no-select no-drag" src="/static/images/pages/homepage/hint_arrow.png" />
                                 <TopChart name="month" title={`Best in ${month}`}/>
                             </div>
                         </div>

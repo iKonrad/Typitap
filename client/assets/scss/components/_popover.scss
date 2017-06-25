@@ -1,4 +1,6 @@
-
+.Popover {
+  z-index: 50000;
+}
 .Popover-body {
   display: inline-flex;
   flex-direction: column;
