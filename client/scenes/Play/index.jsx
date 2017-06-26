@@ -81,8 +81,6 @@ class Play extends Component {
 
                             <TutorialModal open={ this.state.showTutorial } closeModal={ this.closeTutorial.bind(this) } />
 
-
-                            <TopChart name="today" title="Today's bests"/>
                             <TopChart name="month" title="Best of the month"/>
 
                         </div>
