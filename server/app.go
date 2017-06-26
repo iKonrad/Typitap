@@ -23,6 +23,7 @@ import (
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 	"github.com/iKonrad/typitap/server/services/seo"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 // App struct.
@@ -71,6 +72,8 @@ func NewApp(opts ...AppOptions) *App {
 	// Use precompiled embedded templates
 	engine.Renderer = NewTemplate()
 
+	engine.AutoTLSManager.Cache = autocert.DirCache("~/go/bin/.cache")
+
 	// Set up echo debug level
 	engine.Debug = conf.UBool("debug")
 
@@ -81,6 +84,10 @@ func NewApp(opts ...AppOptions) *App {
 	engine.GET("/sitemap.xml", func(c echo.Context) error {
 		return c.File("static/sitemaps/sitemap1.xml")
 	})
+
+	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
+	}))
 
 	// Register authentication middleware
 	engine.Use(middlewares.CheckAuthHandler)
@@ -242,10 +249,6 @@ func NewApp(opts ...AppOptions) *App {
 			return err
 		}
 	})
-
-	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
-	}))
 
 	cron.RunJobs()
 
