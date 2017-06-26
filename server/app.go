@@ -22,7 +22,6 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
-	"golang.org/x/crypto/acme/autocert"
 	"github.com/iKonrad/typitap/server/services/seo"
 )
 
@@ -68,8 +67,6 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Make an engine
 	engine := echo.New()
-
-	engine.AutoTLSManager.Cache = autocert.DirCache("~/go/bin/.cache")
 
 	// Use precompiled embedded templates
 	engine.Renderer = NewTemplate()
@@ -125,9 +122,7 @@ func NewApp(opts ...AppOptions) *App {
 		}))
 	}
 
-	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
-	}))
+
 
 	// Initialize the application
 	app := &App{
@@ -247,6 +242,10 @@ func NewApp(opts ...AppOptions) *App {
 			return err
 		}
 	})
+
+	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
+	}))
 
 	cron.RunJobs()
 
