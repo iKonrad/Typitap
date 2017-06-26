@@ -1,5 +1,5 @@
-hash: c0ecf3a5be74198cf953a60f2969c62273b4dacc452a1eebee3d03756e47eb30
-updated: 2017-06-24T23:01:56.226580303+01:00
+hash: 27413471f222e2ba21b0e1999889795ae3ce6979671a2a54c97010e9dd18d30b
+updated: 2017-06-26T22:42:29.958906466+01:00
 imports:
 - name: github.com/badoux/checkmail
   version: d0a759655d62bcdc95c50a0676f3e9702ed59453
@@ -81,7 +81,7 @@ imports:
 - name: github.com/jteeuwen/go-bindata
   version: a0ff2567cfb70903282db057e799fd826784d41d
 - name: github.com/labstack/echo
-  version: a8b6864be328fcb5c2d96d32c75b750f84e0e4be
+  version: 935a60782cbbc55110e7bd4b33120e4567cbee43
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
