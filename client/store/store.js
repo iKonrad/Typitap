@@ -27,7 +27,7 @@ export function createStore(state, history) {
     middlewares.push(gaMiddleware);
 
     // Add state logger
-    if (typeof window !== 'undefined') {
+    if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
         middlewares.push(createLogger({
             duration: true,
             diff: true,
@@ -40,7 +40,7 @@ export function createStore(state, history) {
         state,
         compose(
             applyMiddleware.apply(null, middlewares),
-            typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+            process.env.NODE_ENV !== 'production' && typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
         )
     );
 }
