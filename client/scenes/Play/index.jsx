@@ -62,7 +62,7 @@ class Play extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col col-xs-12 col-md-8">
-                            <Panel loaded={true}><UserSearch/></Panel>
+                            <Panel title="Search" loaded={true}><UserSearch/></Panel>
                             <Panel title="Recent news" bodyClass=""
                                    loaded={ this.props.play.feed !== undefined }><ActivityFeed
                                 feed={ this.props.play.feed }/></Panel>
