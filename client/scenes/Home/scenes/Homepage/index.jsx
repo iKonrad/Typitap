@@ -46,22 +46,30 @@ class Homepage extends Component {
 
         return (
             <div id="homepage">
-                <div className="banner">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col col-xs-12 text-center">
-                                <div className="row">
+                <div className="banner-wrapper">
+                    <div className="banner">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col col-xs-12 text-center">
+                                    <div className="row">
 
-                                    <div className="col col-xs-12 text-center banner__content">
-                                        <div className="banner__title">
-                                            <img src="/static/images/identity/typitap-logo-white@1.5x.png"
-                                                 alt="Typitap.com logo"/>
-                                            <h4>Ultimate online typing game</h4>
-                                        </div>
-                                        <div className="banner__buttons">
-                                            <Link to="/play" className="btn btn-round btn-secondary">Play</Link>
-                                            <Link to="/signup" className="btn btn-round btn-outline btn-white">Sign
-                                                up</Link>
+                                        <div className="col col-xs-12 text-center banner__content">
+                                            <div className="banner__title">
+                                                <img src="/static/images/identity/typitap-logo-white@1.5x.png"
+                                                     alt="Typitap.com logo"/>
+                                                <h3>Ultimate online typing game</h3>
+                                            </div>
+                                            <div className="banner__buttons">
+                                                <div className="row">
+                                                    <div className="col col-xs-12">
+                                                        <Link to="/play" className="btn btn-round btn-xxl btn-secondary">Enter the game</Link>
+                                                    </div>
+                                                </div>
+
+                                                <div className="margin-top-4 margin-bottom-4 white">- or -</div>
+
+                                                <Link to="/signup" className="btn btn-round btn-outline btn-white">Create account</Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -119,8 +127,9 @@ class Homepage extends Component {
                 </div>
                 <div className="section section--white">
                     <div className="container">
-                        <div className="row margin-bottom-5 text-center">
-                            <h2>What makes typitap special?</h2>
+                        <div className="row margin-bottom-8 text-center">
+                            <h2>What is typitap?</h2>
+                            <p>Typitap is an online typing game where players from the entire world compete with each other by re-typing text from the screen. If you enjoy typing on a keyboard, and wish to <strong>improve</strong> and <strong>monitor</strong> your typing skills, typitap is for you</p>
                         </div>
                         <div className="row margin-top-2">
                             <div className="col col-xs-12 col-md-4">
@@ -184,7 +193,7 @@ class Homepage extends Component {
                     <div className="container">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <h2>Straight from the race tracks</h2>
+                                <h2>What's new?</h2>
                             </div>
                             <div className="col col-xs-12 col-md-7 col-lg-8 margin-top-5">
                                 <Panel title="Recent news" bodyClass=""

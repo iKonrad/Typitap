@@ -27,6 +27,22 @@
     font-size: 12px;
   }
 
+  &.btn-xxl {
+
+    min-height: 50px;
+    padding: 12px 25px;
+    font-size: 16px;
+    border: 1px solid $grey-200;
+
+    @media screen and (min-width: $screen-sm-min) {
+      height: auto;
+      font-size: 30px;
+      padding: 25px 40px;
+      border-radius: 50px;
+    }
+
+  }
+
   &-primary {
     background: $brand-primary;
     border: 1px solid $brand-primary;
@@ -62,6 +78,10 @@
     color: $brand-primary;
     min-height: 0;
     border: 1px solid transparent;
+
+    &.btn-white {
+      color: white;
+    }
   }
 
   &.btn-follow {

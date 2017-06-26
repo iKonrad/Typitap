@@ -1,16 +1,26 @@
 #homepage {
-  .banner {
-    width: 100%;
-    /* Rectangle: */
-    background: url("/static/images/pages/homepage/home_banner.jpg");
-    background-repeat: no-repeat;
-    background-position: calc(50% + 25px) 50%;;
 
-    height: 800px;
+  .banner-wrapper {
+    position: relative;
+    height: 600px;
+  }
+  .banner {
+
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url("/static/images/pages/homepage/endless_background.jpg");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: auto 100%;
+    /*adjust s value for speed*/
+    animation: animatedBackground 500s linear infinite;
+
+    height: 100%;
 
     &__content {
-      position: relative;
-      top: 170px;
+      padding: 120px 0;
     }
 
     &__title {
@@ -48,5 +58,15 @@
       left: 20px;
       display: inline-block;
     }
+  }
+}
+
+@keyframes animatedBackground {
+  from {
+    background-position: 0 0;
+  }
+  /*use negative width if you want it to flow right to left else and positive for left to right*/
+  to {
+    background-position: -10000px 0;
   }
 }
