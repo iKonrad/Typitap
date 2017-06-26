@@ -101,21 +101,7 @@ func NewApp(opts ...AppOptions) *App {
 	engine.GET("/userboards/:id", controller.UserAPI.FetchUserboard)
 	engine.GET("/resultboards/:id", controller.GameAPI.FetchResultboard)
 
-	engine.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-
-		// Root directory from where the static content is served.
-		// Required.
-		Root: "static",
-
-		// Enable HTML5 mode by forwarding all not-found requests to root so that
-		// SPA (single-page application) can handle the routing.
-		// Optional. Default value false.
-		HTML5: true,
-
-		// Enable directory browsing.
-		// Optional. Default value false.
-		Browse: false,
-	}))
+	engine.Static("/static", "static")
 
 	if env == "prod" {
 		engine.Use(middleware.GzipWithConfig(middleware.GzipConfig{
