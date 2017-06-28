@@ -19,6 +19,7 @@ import AdminLevels from 'scenes/Admin/scenes/AdminLevels';
 import About from 'scenes/About';
 import Terms from 'scenes/Terms';
 import PrivacyPolicy from 'scenes/PrivacyPolicy';
+import AdminTexts from 'scenes/Admin/scenes/AdminTexts';
 
 /**
  * Returns configured routes for different
@@ -64,6 +65,7 @@ export default ({store, first}) => {
                 <IndexRoute component={Permissions.OnlyAdmins(AdminUsers)} onEnter={w(AdminUsers.clientInit)} />
                 <Route emptyBase={true} path="users" component={Permissions.OnlyAdmins(AdminUsers)} onEnter={w(AdminUsers.clientInit)} />
                 <Route emptyBase={true} path="levels" component={Permissions.OnlyAdmins(AdminLevels)} onEnter={w(AdminLevels.clientInit)} />
+                <Route emptyBase={true} path="texts" component={Permissions.OnlyAdmins(AdminTexts)} onEnter={w(AdminTexts.clientInit)} />
             </Route>
 
 

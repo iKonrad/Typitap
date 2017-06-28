@@ -45,7 +45,7 @@ func (uc AdminAPIController) GetLevels(c echo.Context) error {
 
 	resp, err := r.Table("levels").Run(db.Session)
 	if err != nil {
-		log.Println("Error while fetching users, ", err.Error())
+		log.Println("Error while fetching levels, ", err.Error())
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"success": false,
 		})
@@ -64,6 +64,30 @@ func (uc AdminAPIController) GetLevels(c echo.Context) error {
 	})
 }
 
+func (uc AdminAPIController) GetTexts(c echo.Context) error {
+
+	resp, err := r.Table("game_texts").Run(db.Session)
+	if err != nil {
+		log.Println("Error while fetching texts, ", err.Error())
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"success": false,
+		})
+	}
+
+	var texts []entities.GameText
+	err = resp.All(&texts)
+
+	if texts == nil {
+		texts = []entities.GameText{}
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": true,
+		"data":    texts,
+	})
+
+}
+
 func (uc AdminAPIController) UpdateTableField(c echo.Context) error {
 
 	table := c.FormValue("table")
@@ -77,10 +101,13 @@ func (uc AdminAPIController) UpdateTableField(c echo.Context) error {
 		})
 	}
 
-	if table == "users" {
+	switch table {
+	case "users":
 		return uc.updateUserTable(c)
-	} else {
+	case "levels":
 		return uc.updateLevelsTable(c)
+	default:
+		return uc.updateTextsTable(c)
 	}
 
 }
@@ -110,6 +137,25 @@ func (uc AdminAPIController) updateLevelsTable(c echo.Context) error {
 
 	table := c.FormValue("table")
 	id, _ := strconv.Atoi(c.FormValue("id"))
+	property := c.FormValue("property")
+	stringValue := c.FormValue("value")
+	propertyType := c.FormValue("type")
+
+	updateValues := uc.convertProperty(property, stringValue, propertyType)
+
+	r.Table(table).Get(id).Update(updateValues).RunWrite(db.Session)
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": true,
+	})
+
+}
+
+
+func (uc AdminAPIController) updateTextsTable(c echo.Context) error {
+
+	table := c.FormValue("table")
+	id := c.FormValue("id")
 	property := c.FormValue("property")
 	stringValue := c.FormValue("value")
 	propertyType := c.FormValue("type")

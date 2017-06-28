@@ -21,7 +21,7 @@ class AdminBase extends Component {
                         <div className="col col-xs-12">
                             <div className="text-center margin-top-3">
                                 <img src="/static/images/identity/typitap-logo@1.25x.png" alt=""/>
-                                <h3>Administration Panel</h3>
+                                <h3>Admin Control Panel</h3>
                             </div>
                         </div>
                     </div>

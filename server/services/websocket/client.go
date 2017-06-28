@@ -57,8 +57,7 @@ func ServeWs(context echo.Context) {
 		return
 	}
 
-	// Check if user exists. If exists, use username as a identifier. Otherwise, create an anonymous ID
-
+	// Check if user exists. If exists, use username as a identifier. Otherwise, create a guest ID
 	var identifier string
 	var newUser entities.User
 	if context.Get("IsLoggedIn").(bool) {

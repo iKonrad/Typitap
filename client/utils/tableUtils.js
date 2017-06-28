@@ -6,7 +6,19 @@ export function renderAdminEditableField(table, cellInfo) {
     return (
         <div style={{backgroundColor: '#fafafa'}} contentEditable suppressContentEditableWarning onBlur={(e) => {
 
-            let id = this.state.data[cellInfo.index]["id"] !== undefined ? this.state.data[cellInfo.index]["id"] : this.state.data[cellInfo.index]["Level"];
+            let id = "";
+            if (this.state.data[cellInfo.index]["id"] !== undefined) {
+                id = this.state.data[cellInfo.index]["id"];
+            }
+
+            if (this.state.data[cellInfo.index]["Id"] !== undefined) {
+                id = this.state.data[cellInfo.index]["Id"];
+            }
+
+            if (id === "" && this.state.data[cellInfo.index]["Level"] !== undefined) {
+                id = this.state.data[cellInfo.index]["Level"];
+            }
+
             let property = cellInfo.column.id.toLowerCase();
             let value = e.target.textContent;
 

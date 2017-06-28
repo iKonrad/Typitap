@@ -113,7 +113,7 @@ func OpenGameSession(sessionId string) {
 
 func getRandomGameText() (entities.GameText, error) {
 
-	resp, err := r.Table("game_texts").Sample(1).Run(db.Session)
+	resp, err := r.Table("game_texts").Filter(map[string]interface{}{"disabled": false}).Sample(1).Run(db.Session)
 	defer resp.Close()
 	if err != nil {
 		log.Println("No text found" + err.Error())

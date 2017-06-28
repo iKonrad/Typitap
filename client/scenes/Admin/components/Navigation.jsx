@@ -10,6 +10,7 @@ class Navigation extends Component {
                     <li>
                         <Link to="/admin/users" activeClassName="active">Users</Link>
                         <Link to="/admin/levels" activeClassName="active">Levels</Link>
+                        <Link to="/admin/texts" activeClassName="active">Texts</Link>
                     </li>
                 </ul>
             </div>
