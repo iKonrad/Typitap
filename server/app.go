@@ -264,11 +264,6 @@ func NoJsRender(c echo.Context) error {
 func (app *App) Run() {
 	if configs.Config.UString("env") == "prod" {
 
-		go func(){
-			app.Engine.Pre(middleware.HTTPSNonWWWRedirect())
-			Must(app.Engine.Start(":80"))
-		}()
-
 		Must(app.Engine.StartTLS(":443", configs.Config.UString("ssl.cert"), configs.Config.UString("ssl.key")))
 	} else {
 		Must(app.Engine.Start(":" + configs.Config.UString("app_port")))
