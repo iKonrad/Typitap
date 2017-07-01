@@ -36,7 +36,7 @@ class PrivacyPolicy extends React.Component {
                             </div>
                             <br />
                             <div className='grayText'><strong>When do we collect information?</strong></div>
-                            <br />
+                            <br />`
                             <div className='innerText'>We collect information from you when you register on our site or
                                 enter information on our site.
                             </div>
