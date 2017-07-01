@@ -24,6 +24,7 @@ import (
 	"github.com/olebedev/config"
 	"github.com/iKonrad/typitap/server/services/seo"
 	"golang.org/x/crypto/acme/autocert"
+	"runtime"
 )
 
 // App struct.
@@ -44,6 +45,8 @@ func NewApp(opts ...AppOptions) *App {
 		options = i
 		break
 	}
+
+	runtime.GOMAXPROCS(2)
 
 	options.init()
 
