@@ -28,6 +28,7 @@ import (
 	"github.com/stackimpact/stackimpact-go"
 	"golang.org/x/crypto/acme/autocert"
 	_ "net/http/pprof"
+	"fmt"
 )
 
 // App struct.
@@ -115,7 +116,22 @@ func NewApp(opts ...AppOptions) *App {
 	engine.GET("/userboards/:id", controller.UserAPI.FetchUserboard)
 	engine.GET("/resultboards/:id", controller.GameAPI.FetchResultboard)
 
-	engine.Static("/static", "static")
+
+	engine.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		// Skipper defines a function to skip middleware.
+		Skipper: func(c echo.Context) bool {
+			if strings.HasSuffix(c.Request().RequestURI, ".js") || strings.HasSuffix(c.Request().RequestURI, ".css") {
+				return true
+			}
+			return false
+		},
+
+		// Root directory from where the static content is served.
+		// Required.
+		Root: "",
+
+		Browse: false,
+	}))
 
 	if env == "prod" {
 		engine.Use(middleware.GzipWithConfig(middleware.GzipConfig{
