@@ -28,7 +28,6 @@ import (
 	"github.com/stackimpact/stackimpact-go"
 	"golang.org/x/crypto/acme/autocert"
 	_ "net/http/pprof"
-	"fmt"
 )
 
 // App struct.
