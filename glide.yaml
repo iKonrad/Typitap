@@ -1,8 +1,6 @@
 package: github.com/olebedev/go-starter-kit
 import:
 - package: github.com/codegangsta/cli
-- package: github.com/dop251/goja
-- package: github.com/dop251/goja_nodejs
   subpackages:
   - eventloop
 - package: github.com/elazarl/go-bindata-assetfs
@@ -30,3 +28,6 @@ import:
   version: ^0.0.0
 - package: github.com/labstack/echo
   version: ^3.2.1
+- package: github.com/stackimpact/stackimpact-go
+  version: ^2.0.1
+- package: github.com/dop251/goja

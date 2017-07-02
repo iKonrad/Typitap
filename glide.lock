@@ -1,5 +1,5 @@
-hash: 27413471f222e2ba21b0e1999889795ae3ce6979671a2a54c97010e9dd18d30b
-updated: 2017-06-26T22:42:29.958906466+01:00
+hash: a90c4b998f478f5098481b76f19a8cd2fa4849c78e2c1c998989f3e2b0eabcdc
+updated: 2017-07-02T00:27:39.251819949+01:00
 imports:
 - name: github.com/badoux/checkmail
   version: d0a759655d62bcdc95c50a0676f3e9702ed59453
@@ -11,10 +11,12 @@ imports:
   version: 5d150e7eec023ce7a124856b37c68e54b4050ac7
 - name: github.com/codegangsta/cli
   version: 347a9884a87374d000eec7e6445a34487c1f4a2b
+  subpackages:
+  - eventloop
 - name: github.com/dancannon/gorethink
   version: 166dbe2477ffb44f53f584c5c24d8499e0c12303
 - name: github.com/DataDog/datadog-go
-  version: fb3be1a38fdd8038de6b45aee442d9930fd584d0
+  version: 65671c440e8fa4ccbbc5a5c6c499a3c9a039f84f
   subpackages:
   - statsd
 - name: github.com/dgrijalva/jwt-go
@@ -44,7 +46,7 @@ imports:
 - name: github.com/fogleman/gg
   version: 6166aa3c1afaee416f384645a81636267aee6d25
 - name: github.com/go-redis/redis
-  version: e14976b254c5bc5f399dd0ae9314b1d02a176897
+  version: 564772f045d89bd55843d7dc8042e0a599401e09
   subpackages:
   - internal
   - internal/consistenthash
@@ -124,7 +126,12 @@ imports:
 - name: github.com/satori/go.uuid
   version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
 - name: github.com/Sirupsen/logrus
-  version: 3d4380f53a34dcdc95f0c1db702615992b38d9a4
+  version: 7dd06bf38e1e13df288d471a57d5adbac106be9e
+- name: github.com/stackimpact/stackimpact-go
+  version: bc60d3d44da3e6258b74de63ef914357dc9b07cf
+  subpackages:
+  - internal
+  - internal/pprof/profile
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
