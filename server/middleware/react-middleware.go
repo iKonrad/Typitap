@@ -16,8 +16,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/gojax/fetch"
-	"io/ioutil"
-
+	"github.com/iKonrad/typitap/server/assets"
 )
 
 // React struct is contains JS vms
@@ -206,11 +205,7 @@ func newJSVM(filePath string, proxy http.Handler) *JSVM {
 	vm.EventLoop.Start()
 	fetch.Enable(vm.EventLoop, proxy)
 
-	bundle, err := ioutil.ReadFile(filePath) // just pass the file name
-	if err != nil {
-		fmt.Print(err)
-		panic(err)
-	}
+	bundle := assets.MustAsset(filePath)
 
 	vm.EventLoop.RunOnLoop(func(_vm *goja.Runtime) {
 		var seed int64
@@ -220,6 +215,9 @@ func newJSVM(filePath string, proxy http.Handler) *JSVM {
 		_vm.SetRandSource(goja.RandSource(rand.New(rand.NewSource(seed)).Float64))
 
 		_, err := _vm.RunScript("bundle.js", string(bundle))
+
+
+
 		if err != nil {
 			if exception, ok := err.(*goja.Exception); ok {
 				panic(exception.String())
@@ -230,6 +228,7 @@ func newJSVM(filePath string, proxy http.Handler) *JSVM {
 			vm.fn = fn
 		} else {
 			fmt.Println("fn assert failed")
+			return;
 		}
 
 		_vm.Set("__goServerCallback__", func(call goja.FunctionCall) goja.Value {

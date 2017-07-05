@@ -10,9 +10,12 @@ const gaMiddleware = (function () {
         switch (action.type) {
             //The user wants us to connect
             case "@@router/LOCATION_CHANGE":
-                if (action.payload.pathname !== store.getState().routing.locationBeforeTransitions.pathname) {
-                    gaUtils.logPageView(action.payload.pathname);
+                if (action.payload !== undefined && action.payload !== null && store.getState().routing.locationBeforeTransitions !== null) {
+                    if (action.payload.pathname !== store.getState().routing.locationBeforeTransitions.pathname) {
+                        gaUtils.logPageView(action.payload.pathname);
+                    }
                 }
+
                 return next(action);
 
             case "@@user/UPDATE_USER_FIELD":
