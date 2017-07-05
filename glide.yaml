@@ -1,18 +1,11 @@
-package: github.com/olebedev/go-starter-kit
+package: github.com/iKonrad/Typitap
 import:
 - package: github.com/codegangsta/cli
-- package: github.com/dop251/goja
-- package: github.com/dop251/goja_nodejs
-  subpackages:
-  - eventloop
 - package: github.com/elazarl/go-bindata-assetfs
 - package: github.com/fatih/structs
 - package: github.com/itsjamie/go-bindata-templates
 - package: github.com/nu7hatch/gouuid
 - package: github.com/olebedev/config
-- package: github.com/olebedev/gojax
-  subpackages:
-  - fetch
 - package: github.com/olebedev/on
 - package: github.com/jteeuwen/go-bindata
 - package: github.com/fogleman/gg
@@ -30,3 +23,7 @@ import:
   version: ^0.0.0
 - package: github.com/labstack/echo
   version: ^3.2.1
+- package: github.com/olebedev/gojax
+  subpackages:
+  - fetch
+- package: github.com/dop251/goja
