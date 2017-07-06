@@ -7,8 +7,6 @@ import (
 	"os"
 	"strings"
 
-	"runtime"
-
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/gorilla/websocket"
 	"github.com/iKonrad/typitap/server/assets"
@@ -18,15 +16,15 @@ import (
 	middlewares "github.com/iKonrad/typitap/server/middleware"
 	"github.com/iKonrad/typitap/server/routes"
 	"github.com/iKonrad/typitap/server/services/logs"
-	"github.com/iKonrad/typitap/server/services/seo"
 	ws "github.com/iKonrad/typitap/server/services/websocket"
 	"github.com/itsjamie/go-bindata-templates"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
-	"github.com/stackimpact/stackimpact-go"
+	"github.com/iKonrad/typitap/server/services/seo"
 	"golang.org/x/crypto/acme/autocert"
+	"runtime"
 	_ "net/http/pprof"
 )
 
@@ -50,14 +48,6 @@ func NewApp(opts ...AppOptions) *App {
 	}
 
 	runtime.GOMAXPROCS(2)
-
-	agent := stackimpact.Start(stackimpact.Options{
-		AgentKey: "c1be03efb00c6987cdea8a0ca57c6e75917ee1f8",
-		AppName:  "Typitap",
-	})
-
-	segment := agent.MeasureSegment("App")
-	defer segment.Stop()
 
 	options.init()
 
@@ -115,22 +105,7 @@ func NewApp(opts ...AppOptions) *App {
 	engine.GET("/userboards/:id", controller.UserAPI.FetchUserboard)
 	engine.GET("/resultboards/:id", controller.GameAPI.FetchResultboard)
 
-
-	engine.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		// Skipper defines a function to skip middleware.
-		Skipper: func(c echo.Context) bool {
-			if strings.HasSuffix(c.Request().RequestURI, ".js") || strings.HasSuffix(c.Request().RequestURI, ".css") {
-				return true
-			}
-			return false
-		},
-
-		// Root directory from where the static content is served.
-		// Required.
-		Root: "",
-
-		Browse: false,
-	}))
+	engine.Static("/static", "static")
 
 	if env == "prod" {
 		engine.Use(middleware.GzipWithConfig(middleware.GzipConfig{
@@ -143,6 +118,8 @@ func NewApp(opts ...AppOptions) *App {
 			}),
 		}))
 	}
+
+
 
 	// Initialize the application
 	app := &App{
@@ -238,8 +215,6 @@ func NewApp(opts ...AppOptions) *App {
 	// in case when static file was not found
 	app.Engine.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			segment := agent.MeasureSegment("Request")
-			defer segment.Stop()
 			// execute echo handlers chain
 			err := next(c)
 
@@ -289,6 +264,7 @@ func NoJsRender(c echo.Context) error {
 // Run runs the app
 func (app *App) Run() {
 	if configs.Config.UString("env") == "prod" {
+
 		Must(app.Engine.StartTLS(":443", configs.Config.UString("ssl.cert"), configs.Config.UString("ssl.key")))
 	} else {
 		go http.ListenAndServe(":8008", http.DefaultServeMux)
@@ -298,7 +274,6 @@ func (app *App) Run() {
 }
 
 func (app *App) handleWebsocket(c echo.Context) error {
-
 	ws.ServeWs(c)
 	return nil
 }
