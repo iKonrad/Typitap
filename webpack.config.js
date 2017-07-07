@@ -73,7 +73,7 @@ var config = {
         bundle: path.join(__dirname, 'client/index.js')
     },
     output: {
-        path: path.join(__dirname, 'server/data/static/build'),
+        path: path.join(__dirname, 'static/build'),
         publicPath: "/static/build/",
         filename: '[name].js'
     },

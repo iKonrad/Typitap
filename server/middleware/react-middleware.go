@@ -16,7 +16,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/gojax/fetch"
-	"github.com/iKonrad/typitap/server/assets"
+	"io/ioutil"
 )
 
 // React struct is contains JS vms
@@ -38,6 +38,7 @@ func NewReact(filePath string, debug bool, proxy http.Handler) *React {
 		path:  filePath,
 	}
 	if !debug {
+		fmt.Println("CPU", runtime.NumCPU())
 		r.pool = newEnginePool(filePath, runtime.NumCPU(), proxy)
 	} else {
 		// Use onDemandPool to load full react
@@ -55,6 +56,7 @@ func NewReact(filePath string, debug bool, proxy http.Handler) *React {
 // have not been caught via static file
 // handler or other middlewares.
 func (r *React) Handle(c echo.Context) error {
+
 	UUID := c.Get("uuid").(*uuid.UUID)
 
 	defer func() {
@@ -65,6 +67,7 @@ func (r *React) Handle(c echo.Context) error {
 			})
 		}
 	}()
+
 
 	vm := r.get()
 
@@ -159,6 +162,8 @@ type pool interface {
 
 // newEnginePool return pool of JS vms.
 func newEnginePool(filePath string, size int, proxy http.Handler) *enginePool {
+
+	fmt.Println("CREATING ENGINE POOL");
 	pool := &enginePool{
 		path:  filePath,
 		ch:    make(chan *JSVM, size),
@@ -167,6 +172,7 @@ func newEnginePool(filePath string, size int, proxy http.Handler) *enginePool {
 
 	go func() {
 		for i := 0; i < size; i++ {
+			fmt.Println("ENGINE POOL");
 			pool.ch <- newJSVM(filePath, proxy)
 		}
 	}()
@@ -181,14 +187,17 @@ type enginePool struct {
 }
 
 func (o *enginePool) get() *JSVM {
+	fmt.Println("GET")
 	return <-o.ch
 }
 
 func (o *enginePool) put(ot *JSVM) {
+	fmt.Println("PUT")
 	o.ch <- ot
 }
 
 func (o *enginePool) drop(ot *JSVM) {
+	println("DROP");
 	ot.Stop()
 	ot = nil
 	o.ch <- newJSVM(o.path, o.proxy)
@@ -197,6 +206,7 @@ func (o *enginePool) drop(ot *JSVM) {
 // newJSVM loads bundle.js into context.
 func newJSVM(filePath string, proxy http.Handler) *JSVM {
 
+	fmt.Println("INIT JSVM")
 	vm := &JSVM{
 		EventLoop: eventloop.NewEventLoop(),
 		ch:        make(chan Resp, 1),
@@ -205,9 +215,14 @@ func newJSVM(filePath string, proxy http.Handler) *JSVM {
 	vm.EventLoop.Start()
 	fetch.Enable(vm.EventLoop, proxy)
 
-	bundle := assets.MustAsset(filePath)
+	bundle, err := ioutil.ReadFile(filePath) // just pass the file name
+	if err != nil {
+		fmt.Print(err)
+		panic(err)
+	}
 
 	vm.EventLoop.RunOnLoop(func(_vm *goja.Runtime) {
+		fmt.Println("Running loop");
 		var seed int64
 		if err := binary.Read(crand.Reader, binary.LittleEndian, &seed); err != nil {
 			panic(fmt.Errorf("Could not read random bytes: %v", err))
@@ -257,7 +272,9 @@ type JSVM struct {
 // Handle handles http requests
 func (r *JSVM) Handle(req map[string]interface{}) <-chan Resp {
 	r.EventLoop.RunOnLoop(func(vm *goja.Runtime) {
+		fmt.Println("RUN IN HANDLE")
 		v := vm.ToValue(req)
+		fmt.Println("REQ", req);
 		r.fn(nil, v, vm.ToValue("__goServerCallback__"))
 	})
 	return r.ch
@@ -269,6 +286,7 @@ type onDemandPool struct {
 }
 
 func (f *onDemandPool) get() *JSVM {
+	fmt.Println("GET JSVM");
 	return newJSVM(f.path, f.proxy)
 }
 
