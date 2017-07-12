@@ -1,5 +1,5 @@
 hash: 8df80d547de25d23cfb4055b96434cbcde08db584699a1490b88c6d8fc6b1cd2
-updated: 2017-07-05T00:36:54.207451663+01:00
+updated: 2017-07-10T19:07:45.780873318+01:00
 imports:
 - name: github.com/badoux/checkmail
   version: d0a759655d62bcdc95c50a0676f3e9702ed59453
@@ -8,9 +8,9 @@ imports:
 - name: github.com/boj/rethinkstore
   version: 614f6ea8ec6dee94ed97bbf52a670cffcc64c1ca
 - name: github.com/cenkalti/backoff
-  version: 5d150e7eec023ce7a124856b37c68e54b4050ac7
+  version: 8736fff6b3da06665ea0864328866d6e7b401525
 - name: github.com/codegangsta/cli
-  version: b892ba3809cd07fcf2b064e166b0c2e16e0147bd
+  version: 4b90d79a682b4bf685762c7452db20f2a676ecb2
 - name: github.com/dancannon/gorethink
   version: 166dbe2477ffb44f53f584c5c24d8499e0c12303
 - name: github.com/DataDog/datadog-go
@@ -24,7 +24,7 @@ imports:
   subpackages:
   - syntax
 - name: github.com/dop251/goja
-  version: 8f3380f012a7a699e478fcff1d0e46a6f2e1abc5
+  version: 613f33eefdee5996ef938043efe8f1a9955fb8cc
   subpackages:
   - ast
   - file
@@ -67,7 +67,7 @@ imports:
 - name: github.com/gorilla/sessions
   version: 8b6b4cd75f07f7ee036eb37b8127bd40ab1efc49
 - name: github.com/gorilla/websocket
-  version: ea4d1f681babbce9545c9c5f3d5194a789c89f5b
+  version: 462d5c5828f6203e4047c47be2920315937be380
 - name: github.com/hailocab/go-hostpool
   version: e80d13ce29ede4452c43dea11e79b9bc8a15b478
 - name: github.com/ikeikeikeike/go-sitemap-generator
@@ -85,7 +85,7 @@ imports:
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
-  version: 1121fd3e243c202482226a7afe4dcd07ffc4139a
+  version: bf40841f7287bd5503a5ba2806e8dbf654716e59
   subpackages:
   - bytes
   - color
@@ -97,7 +97,7 @@ imports:
   - fixtures
   - resources
 - name: github.com/mattn/go-colorable
-  version: 941b50ebc6efddf4c41c8e4537a5f68a4e686b24
+  version: 165c32261890df3bfb1fb678e8096729abdad5d2
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/nu7hatch/gouuid
@@ -124,7 +124,7 @@ imports:
 - name: github.com/satori/go.uuid
   version: 5bf94b69c6b68ee1b541973bb8e1144db23a194b
 - name: github.com/Sirupsen/logrus
-  version: 7dd06bf38e1e13df288d471a57d5adbac106be9e
+  version: 75b918d052511de954ba192f756526621f6205b3
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
@@ -134,7 +134,7 @@ imports:
   subpackages:
   - syncutil
 - name: golang.org/x/crypto
-  version: 51714a8c4ac1764f07ab4127d7f739351ced4759
+  version: 3627ff35f31987174dbee61d9d1dcc1c643e7174
   subpackages:
   - acme
   - acme/autocert
@@ -144,22 +144,20 @@ imports:
 - name: golang.org/x/image
   version: 426cfd8eeb6e08ab1932954e09e3c2cb2bc6e36d
   subpackages:
-  - draw
   - font
   - font/basicfont
-  - math/f64
   - math/fixed
 - name: golang.org/x/net
-  version: 570fa1c91359c1869590e9cedf3b53162a51a167
+  version: 054b33e6527139ad5b1ec2f6232c3b175bd9a30c
   subpackages:
   - context
 - name: golang.org/x/sys
-  version: 94b76065f2d2081d0fef24a6e67c571f51a6408a
+  version: abf9c25f54453410d0c6668e519582a9e1115027
   subpackages:
   - unix
   - windows
 - name: golang.org/x/text
-  version: 2bf8f2a19ec09c670e931282edfe6567f6be21c9
+  version: cfdf022e86b4ecfb646e1efbd7db175dd623a8fa
   subpackages:
   - cases
   - collate

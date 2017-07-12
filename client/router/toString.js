@@ -1,11 +1,10 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {renderToString} from 'react-dom/server';
-import {createMemoryHistory, match, RouterContext} from 'react-router'
+import {match, RouterContext} from 'react-router'
 import Helmet from 'react-helmet';
 import createRoutes from './routes';
 import {createStore, setAsCurrentStore} from 'store/store';
-import {syncHistoryWithStore} from 'react-router-redux'
 import * as AppActions from 'store/ducks/appModule';
 
 
@@ -40,8 +39,8 @@ export default function (options, cbk) {
         currentState = options.state;
     }
 
-    const memoryHistory = createMemoryHistory(options.url)
-    const store = createStore(currentState, memoryHistory);
+    // const memoryHistory = createMemoryHistory(options.url)
+    const store = createStore(currentState);
     setAsCurrentStore(store);
 
 
@@ -105,7 +104,7 @@ export default function (options, cbk) {
 
 
                     function renderComponent() {
-                        renderProps["history"] = syncHistoryWithStore(memoryHistory, store);
+                        // renderProps["history"] = syncHistoryWithStore(memoryHistory, store);
                         result.app = renderToString(
                             <Provider store={store}>
                                 <RouterContext {...renderProps} />
