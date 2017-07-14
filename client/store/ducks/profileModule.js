@@ -6,11 +6,11 @@ const UNFOLLOW_USER = "@@profile/UNFOLLOW_USER";
 const ADD_COMMENT = "@@profile/ADD_COMMENT";
 const TURN_COMMENTS_PAGE = "@@profile/TURN_COMMENTS_PAGE";
 
-const initialState = {
 
+const initialState = {
     user: {
-        Email: "test@test.com",
-        Created: "0000-00-00 00:00:00",
+        Email: "",
+        Created: "",
     },
     fetching: false,
     follow: {
@@ -19,33 +19,32 @@ const initialState = {
     },
     comments: [],
     commentsPage: 1,
-
-}
+};
 
 export default function reducer(state = initialState, action) {
+
     switch (action.type) {
         case FETCH_USER_PROFILE_DATA:
             return {
-
                 ...state,
                 fetching: true,
                 commentsPage: 1,
             }
+
         case SET_USER_PROFILE_DATA:
             return {
-
                 ...state,
                 ...action.profile,
                 fetching: false,
                 commentsPage: 1,
 
             }
+
         case RESET_USER_PROFILE_DATA:
             return initialState;
 
         case FOLLOW_USER:
             return {
-
                 ...state,
                 follow: {
                     ...state.follow,
@@ -58,18 +57,17 @@ export default function reducer(state = initialState, action) {
                         }
                     ]
                 }
-            }
+            };
 
         case UNFOLLOW_USER:
             return {
-
                 ...state,
                 follow: {
                     ...state.follow,
                     followers: state.follow.followers.filter(obj => obj.id !== action.id),
                 }
+            };
 
-            }
         case ADD_COMMENT:
 
             let comments = [
@@ -77,7 +75,7 @@ export default function reducer(state = initialState, action) {
             ];
 
             comments.unshift({
-                Id: "?????",
+                Id: "",
                 Text: action.text,
                 Created: new Date().toLocaleString(),
                 User: {
@@ -89,7 +87,8 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 comments,
-            }
+            };
+
         case TURN_COMMENTS_PAGE:
             return {
                 ...state,
@@ -99,7 +98,12 @@ export default function reducer(state = initialState, action) {
     return state;
 }
 
-
+/**
+ * Fetches the profile data
+ *
+ * @param username
+ * @returns {function(*)}
+ */
 export function fetchUserProfile(username) {
     return (dispatch) => {
         return fetch("/api/user/profile/" + username, {
@@ -118,23 +122,59 @@ export function fetchUserProfile(username) {
     }
 }
 
+/**
+ * Resets profile to default values
+ *
+ * @returns {{type: string}}
+ */
 export function resetUserProfile() {
     return {type: RESET_USER_PROFILE_DATA};
 }
 
+
+/**
+ * Adds a user to the following list
+ *
+ * @param id
+ * @param username
+ * @param email
+ * @returns {{type: string, id: *, username: *, email: *}}
+ */
 export function followUser(id, username, email) {
     return {type: FOLLOW_USER, id, username, email};
 }
 
+
+/**
+ * Removes a user from the following list
+ *
+ * @param id
+ * @returns {{type: string, id: *}}
+ */
 export function unfollowUser(id) {
     return {type: UNFOLLOW_USER, id};
 }
 
-export function addComment(username, email, text) {
 
+/**
+ * Adds a comment to the profile
+ *
+ * @param username
+ * @param email
+ * @param text
+ * @returns {{type: string, username: *, email: *, text: *}}
+ */
+export function addComment(username, email, text) {
     return {type: ADD_COMMENT, username, email, text}
 }
 
+
+/**
+ * Sets the comments page index
+ *
+ * @param page
+ * @returns {{type: string, page: *}}
+ */
 export function turnCommentsPage(page) {
     return {type: TURN_COMMENTS_PAGE, page}
 }

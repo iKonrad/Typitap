@@ -10,11 +10,14 @@ class TopChart extends Component {
 
 
         if (this.props.app.charts !== undefined && Object.keys(this.props.app.charts[name]).length > 0) {
+
             let chart = this.props.app.charts[name];
+
             let items = chart.Items.map((item, index) => {
                 let userNameLink = <Link to={"/u/" + item.User.Username}>#{item.User.Username}</Link>;
                 return <ResultRow perfect={ item.Accuracy === 100 } key={ 'activity-item-' + index } date={ new Date(item.Created)} name={ userNameLink } score={ item.WPM } place={ index + 1 } resultId={ item.Id } />
             });
+
             return items;
         }
 

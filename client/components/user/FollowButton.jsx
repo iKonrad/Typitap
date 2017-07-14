@@ -30,7 +30,6 @@ class FollowButton extends React.Component {
     // Call the follow action
     handleFollow() {
 
-
         if (!this.state.blocked) {
             FollowUtils.toggleFollow(this.props.id, !this.state.following).then((response) => {
                 if (response.success) {
@@ -56,12 +55,18 @@ class FollowButton extends React.Component {
         if (id !== undefined && id !== "") {
             return (
                 <div>
-                    <button onClick={ this.handleFollow.bind(this) } className={`btn btn-follow btn-xs ${ this.state.following ? "btn-follow--following" : "" }`}><i className="fa fa-thumbs-o-up"></i> { this.state.following ? 'following' : 'follow' }</button>
+                    <button
+                        onClick={ this.handleFollow.bind(this) }
+                        className={`btn btn-follow btn-xs ${ this.state.following ? "btn-follow--following" : "" }`}
+                    >
+                        <i className="fa fa-thumbs-o-up"></i>
+                        { this.state.following ? 'following' : 'follow' }
+                    </button>
                 </div>
             );
         }
-        return null;
 
+        return null;
 
     }
 }

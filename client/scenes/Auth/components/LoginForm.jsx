@@ -14,17 +14,22 @@ class LoginForm extends Component {
 
 
     handleSubmitForm(values) {
+
         // Attach identifier to the form so we can reconnect the websocket on login
         if (this.props.socket.connected) {
             values.identifier = this.props.socket.identifier;
         }
 
         return FormActions.submitLogin(values).then((details) => {
+
             this.props.dispatch(UserActions.loginUser(details.user));
             this.props.dispatch(Notifications.welcomeBack(details.user.Name));
+
         }).then(() => {
+
             this.props.dispatch(socketActions.reconnect());
             this.props.dispatch(push("/"));
+
         });
     };
 
@@ -73,7 +78,7 @@ function mapStateToProps(state) {
 }
 
 LoginForm = reduxForm({
-    form: 'login', // a unique name for this form
+    form: 'login',
 })(LoginForm);
 
 export default LoginForm = connect(mapStateToProps)(LoginForm);
