@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 import ResultRow from 'components/app/ResultRow';
 
-class RecentGames extends Component {
+class RecentGames extends PureComponent {
 
     renderItems() {
 

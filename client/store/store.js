@@ -9,11 +9,9 @@ import { createLogger } from 'redux-logger'
 const middlewares = [];
 
 
-
-
 export function createStore(state, history) {
 
-    if (history !== undefined) {
+    if (history !== undefined && history !== null) {
         middlewares.push(routerMiddleware(history));
     }
 
@@ -27,8 +25,8 @@ export function createStore(state, history) {
     middlewares.push(gaMiddleware);
 
     // Add state logger
-    // if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
-    if (typeof window !== 'undefined') {
+    if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
+    // if (typeof window !== 'undefined') {
         middlewares.push(createLogger({
             duration: true,
             diff: true,
@@ -41,8 +39,8 @@ export function createStore(state, history) {
         state,
         compose(
             applyMiddleware.apply(null, middlewares),
-            // process.env.NODE_ENV !== 'production' && typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
-            typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+            process.env.NODE_ENV !== 'production' && typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+            // typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
         )
     );
 }

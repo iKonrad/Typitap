@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from 'react-dom';
+import ReactDOM, {render} from 'react-dom';
 import {Router, browserHistory} from 'react-router';
 import {Provider} from 'react-redux';
 import toString from './toString';
@@ -7,8 +7,7 @@ import {Promise} from 'when';
 import createRoutes from './routes';
 import {createStore, setAsCurrentStore} from 'store/store';
 import { syncHistoryWithStore } from 'react-router-redux'
-import {Helmet} from 'react-helmet';
-
+// import ReactWastageMonitor from 'react-wastage-monitor';
 
 export function run() {
 
@@ -25,6 +24,10 @@ export function run() {
 
     const store = createStore(window['--app-initial'], browserHistory);
     setAsCurrentStore(store);
+
+    // if (process.env.NODE_ENV !== 'production') {
+    //     ReactWastageMonitor(React, ReactDOM)
+    // }
 
     let history = syncHistoryWithStore(browserHistory, store);
 

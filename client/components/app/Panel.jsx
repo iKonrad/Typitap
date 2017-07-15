@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Spinner from 'components/app/Spinner';
 
-class Panel extends React.Component {
+class Panel extends Component {
     constructor(props) {
         super(props);
 

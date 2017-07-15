@@ -35,12 +35,12 @@ export default function (options, cbk) {
     }
 
     var currentState = {};
-    if (options.state !== undefined) {
+    if (options.state !== undefined && options.state !== null) {
         currentState = options.state;
     }
 
     // const memoryHistory = createMemoryHistory(options.url)
-    const store = createStore(currentState);
+    const store = createStore(currentState, null);
     setAsCurrentStore(store);
 
 

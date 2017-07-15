@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Link, Router} from 'react-router'
 import {connect} from 'react-redux';
 import NavLink from './NavLink';
 import Icon from 'react-fontawesome';
 import * as Constants from 'utils/constants';
 
-class Navbar extends Component {
+class Navbar extends PureComponent {
 
     constructor(props) {
         super(props);

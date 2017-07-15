@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import TimeAgo from 'components/app/TimeAgo';
 import ScoreBadge from 'components/game/ScoreBadge';
 
-class ResultRow extends Component {
+class ResultRow extends PureComponent {
 
 
     renderPlace(place) {

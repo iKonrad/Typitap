@@ -129,7 +129,7 @@ func NewApp(opts ...AppOptions) *App {
 
 	middlewares.ReactJS = middlewares.NewReact(
 		configs.Config.UString("duktape.path"),
-		configs.Config.UBool("debug"),
+		configs.Config.UString("env", "dev") != "prod",
 		engine,
 	)
 

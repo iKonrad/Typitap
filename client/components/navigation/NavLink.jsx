@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {Link} from 'react-router';
 import PropTypes from 'prop-types';
 
-export default class NavLink extends Component {
+export default class NavLink extends PureComponent {
 
     constructor(props, context) {
         super(props);
