@@ -20,6 +20,7 @@ import About from 'scenes/About';
 import Terms from 'scenes/Terms';
 import PrivacyPolicy from 'scenes/PrivacyPolicy';
 import AdminTexts from 'scenes/Admin/scenes/AdminTexts';
+import NotFound from 'scenes/Errors/NotFound';
 
 /**
  * Returns configured routes for different
@@ -79,7 +80,7 @@ export default ({store, first}) => {
             <Route path="/auth/password/forgot" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)} />
 
             {/* Replace with 404 */}
-            <Route path="*" component={Home} />
+            <Route path="*" component={NotFound} />
         </Route>
     );
 };
