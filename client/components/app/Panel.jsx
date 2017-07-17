@@ -46,7 +46,7 @@ class Panel extends Component {
         );
 
         return (
-            <div className="panel panel-default">
+            <div className={`panel panel-default ${this.props.className !== undefined ? this.props.className : ""}`}>
                 { this.renderTitle() }
                 <div className={ this.props.bodyClass !== undefined ? this.props.bodyClass : "panel-body" }>
                     { this.renderSpinner() }

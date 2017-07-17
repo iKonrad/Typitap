@@ -44,8 +44,11 @@ class Dashboard extends Component {
                     <div className="col col-xs-12 col-md-8">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <ProfileInfo user={ this.props.profile.user } stats={ this.props.profile.stats }
-                                             isDashboard={true}/>
+                                <Panel className="profile-page__info" loaded={ this.props.profile.user !== undefined && this.props.profile.stats }>
+                                    <ProfileInfo user={ this.props.profile.user } stats={ this.props.profile.stats }
+                                                 isDashboard={true}/>
+                                </Panel>
+
                             </div>
                         </div>
                         <div className="row">

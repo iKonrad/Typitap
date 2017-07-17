@@ -15,6 +15,21 @@ class UserLevel extends React.Component {
 
     }
 
+    componentWillReceiveProps(newProps) {
+
+        let newState = {
+            exp: newProps.exp,
+            next: newProps.next,
+            level: newProps.level,
+            levelName: newProps.levelName,
+        };
+
+        newState['points'] = newProps.points !== undefined ? newProps.points : 0;
+
+        this.setState(newState);
+
+    }
+
 
     getIconAddress() {
         if (this.state.level > 15) {

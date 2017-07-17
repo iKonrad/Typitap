@@ -339,6 +339,7 @@
   color: white;
   background-color: $grey-300;
   &:hover, &:focus, &:active {
+    border-color: darken($grey-200, 5%);
     background-color: darken($grey-200, 5%);
   }
 

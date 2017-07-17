@@ -73,9 +73,12 @@ class Profile extends Component {
                     <div className="col col-xs-12 col-md-8">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <ProfileInfo loggedIn={ this.props.user.loggedIn }
-                                             user={  this.props.profile.user  }
-                                             stats={ this.props.profile.stats }/>
+                                <Panel className="profile-page__info" loaded={ this.props.profile.user !== undefined }>
+                                    <ProfileInfo loggedIn={ this.props.user.loggedIn }
+                                                 user={  this.props.profile.user  }
+                                                 stats={ this.props.profile.stats }/>
+                                </Panel>
+
                             </div>
                         </div>
                         <div className="row">

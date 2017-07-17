@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import Time from 'react-timeago';
 
-class TimeAgo extends PureComponent {
+class TimeAgo extends React.Component {
     constructor(props) {
         super(props);
 
