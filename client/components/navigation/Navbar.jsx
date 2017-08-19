@@ -13,6 +13,14 @@ class Navbar extends PureComponent {
         };
     }
 
+    componentDidMount() {
+        var widgetConfig = {
+            selector: "#updates-badge", // CSS selector where to inject the badge
+            account:  "7XXeb7"
+        }
+        Headway.init(widgetConfig);
+    }
+
     renderDropdown(index, obj) {
         return (
             <li className="dropdown" key={'dropdown-' + index}>
@@ -47,6 +55,7 @@ class Navbar extends PureComponent {
 
     render() {
         let that = this;
+
 
         return (
             <nav className="navbar">
