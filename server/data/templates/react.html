@@ -44,5 +44,12 @@
     <script onload="this.parentElement.removeChild(this)">window['--app-initial'] = JSON.parse("{{if .Initial}}{{ .Initial }}{{else}}{}{{end}}");</script>
     <script async defer src="/static/build/bundle.js" onload="this.parentElement.removeChild(this)"></script>
 
+    <script>
+        var HW_config = {
+            selector: "#updates-badge", // CSS selector where to inject the badge
+            account:  "7XXeb7"
+        }
+    </script>
+    <script async src="//cdn.headwayapp.co/widget.js"></script>
   </body>
 </html>

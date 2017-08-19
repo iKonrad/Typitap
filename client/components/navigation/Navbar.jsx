@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import {Link, Router} from 'react-router'
 import {connect} from 'react-redux';
 import NavLink from './NavLink';
-import Icon from 'react-fontawesome';
 import * as Constants from 'utils/constants';
 
 class Navbar extends PureComponent {
@@ -55,7 +54,7 @@ class Navbar extends PureComponent {
                     <div className="navbar-header">
                         <button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
                                 data-target="#menu-collapse" aria-expanded="false">
-                            <Icon name="bars" />
+                            <i className="fa fa-bars"></i>
                         </button>
                         <Link className="navbar-brand" to="/">
                             <img src="/static/images/identity/typitap-logo-white@1.25x.png" alt=""/>
@@ -63,6 +62,9 @@ class Navbar extends PureComponent {
                     </div>
                     <div className="collapse navbar-collapse" id="menu-collapse" ref="menu-collapse">
                         <ul className="nav navbar-nav navbar-right">
+                            <li id="updates-badge">
+                            </li>
+
                             { this.state.menu.map((obj, index) => {
                                 if (this.props.user && ((!obj.authenticated && this.props.user.loggedIn === undefined) || obj.authenticated === this.props.user.loggedIn)) {
                                     let parsedObj = obj;
