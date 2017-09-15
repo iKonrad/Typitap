@@ -151,7 +151,6 @@ func (uc AdminAPIController) updateLevelsTable(c echo.Context) error {
 
 }
 
-
 func (uc AdminAPIController) updateTextsTable(c echo.Context) error {
 
 	table := c.FormValue("table")
@@ -193,5 +192,16 @@ func (uc AdminAPIController) convertProperty(property string, stringValue string
 	}
 
 	return updateValues
+
+}
+
+func (uc AdminAPIController) createGameText(c echo.Context) error {
+
+	table := c.FormValue("table")
+	id := c.FormValue("id")
+	property := c.FormValue("property")
+	stringValue := c.FormValue("value")
+	propertyType := c.FormValue("type")
+
 
 }

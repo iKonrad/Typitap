@@ -276,10 +276,10 @@ func GetResultData(id string) (entities.GameResult, bool) {
 		return map[string]interface{}{
 			"sessionId": r.Table("game_sessions").Get(p.Field("sessionId")).
 				Merge(func(s r.Term) interface{} {
-					return map[string]interface{}{
-						"textId": r.Table("game_texts").Get(s.Field("textId")),
-					}
-				}),
+				return map[string]interface{}{
+					"textId": r.Table("game_texts").Get(s.Field("textId")),
+				}
+			}),
 		}
 	}).Run(db.Session)
 
@@ -322,4 +322,18 @@ func GetPlayback(id string) (map[string]interface{}, bool) {
 
 	return playback, true
 
+}
+
+func CreateGameText(text string, createdById string, textType string, title string, url string) {
+	newId := uuid.NewV4();
+	r.Table("game_texts").Insert(map[string]interface{}{
+		"id": newId,
+		"disabled": false,
+		"created": time.Now(),
+		"text": text,
+		"createdById": createdById,
+		"type": textType,
+		"title": title,
+		"url": url,
+	}).RunWrite(db.Session)
 }
