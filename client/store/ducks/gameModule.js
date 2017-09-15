@@ -1,5 +1,6 @@
 const START_GAME = "@@game/START_GAME";
 const FINISH_GAME = "@@game/FINISH_GAME";
+const FINISH_INPUT = '@@game/FINISH_INPUT';
 export const COMPLETE_GAME = "@@game/COMPLETE_GAME";
 const UPDATE_INPUT = "@@game/UPDATE_INPUT";
 const FINISH_WORD = "@@game/FINISH_WORD";
@@ -31,7 +32,10 @@ const initialState = {
     // Bool - has the game started
     started: false,
 
-    // Bool - Has the game finished
+    // Bool - Has user finished the game (before submitting to the server)
+    finishedInput: false,
+
+    // Bool - Has user finished the game (after submitting to the server)
     finished: false,
 
     // Bool - Has the countdown started
@@ -269,6 +273,12 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 room: {}
             };
+        case FINISH_INPUT:
+            return {
+                ...state,
+                finishedInput: true,
+            };
+            break;
         case FINISH_GAME:
             time = +new Date();
             t = time - state.startedTimestamp;
@@ -395,6 +405,12 @@ startGame(online) {
         type: START_GAME,
         online,
     };
+}
+
+export function finishInput() {
+    return {
+        type: FINISH_INPUT,
+    }
 }
 
 export function finishGame(wpm, accuracy, points, resultId) {

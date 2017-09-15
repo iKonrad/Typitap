@@ -42,7 +42,7 @@ class ProfileInfo extends Component {
                         marginTop: "-10px"
                     }}>{this.props.loggedIn || this.props.isDashboard ? this.renderButton() : this.renderAnonMessage()}</div>
                     <p>Joined <TimeAgo date={this.props.user.Created}/></p>
-                    <p>Played <strong>{this.props.stats !== undefined ? this.props.stats.gamesPlayed : "-"}</strong>
+                    <p>Played <strong>{this.props.stats !== undefined ? this.props.stats.gamesPlayed : "-"} </strong>
                         games</p>
                 </div>
 

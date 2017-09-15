@@ -165,8 +165,8 @@ class GameResultModal extends Component {
                               next={ this.props.user.data.NextExp } levelName={ this.props.user.data.LevelName }
                               points={ this.props.game.points }/>
         } else {
-            return <div className="text-muted margin-top-2 margin-bottom-2 text-center"><Link to="/login">Log in</Link>
-                or <Link to="/signup">sign up</Link> to start recording your game results</div>
+            return <div className="text-muted margin-top-2 margin-bottom-2 text-center"><Link to="/login">Log in </Link>
+                 or <Link to="/signup">sign up</Link> to start recording your game results</div>
         }
 
     }

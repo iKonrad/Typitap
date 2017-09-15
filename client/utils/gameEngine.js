@@ -75,6 +75,8 @@ export function finishGame() {
         'playback': JSON.stringify(state.playback),
     };
 
+    getStore().dispatch(GameActions.finishInput());
+
     if (!userState.loggedIn) {
         results['user'] = getStore().getState().socket.identifier;
     }

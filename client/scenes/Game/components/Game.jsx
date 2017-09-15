@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 
 import {push} from 'react-router-redux';
 import GameInput from './GameInput'
+import Spinner from 'components/app/Spinner';
 import GameText from './GameText';
 import GameBar from './GameBar';
 import * as GameEngine from 'utils/gameEngine';
@@ -144,7 +145,11 @@ class Game extends Component {
 
     renderBottomRow() {
         if (this.props.game.started && !this.props.game.finished) {
-            return <GameInput onGameFinish={ this.handleGameFinish.bind(this) }/>;
+            if (this.props.game.finishedInput) {
+                return <Spinner />
+            } else {
+                return <GameInput onGameFinish={ this.handleGameFinish.bind(this) }/>;
+            }
         } else {
             if (this.props.game.countdown) {
                 return <GameCountdown />
