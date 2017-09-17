@@ -43,15 +43,22 @@ export default function (options, cbk) {
     const store = createStore(currentState, null);
     setAsCurrentStore(store);
 
+    let responseData = [];
+
+    console.log(JSON.stringify(options));
+
+    if (options.response !== undefined) {
+        store.dispatch(AppActions.setResponse(options.response));
+    }
 
     try {
+        let routes = createRoutes({store, first: {time: false}});
+        console.log("URL", options.url, "ROUTES", JSON.stringify(routes));
         match({
-            routes: createRoutes({store, first: {time: false}}),
+            routes: routes,
             location: options.url
         }, (error, redirectLocation, renderProps) => {
             try {
-
-
                 if (error) {
                     result.error = error;
 
@@ -59,18 +66,10 @@ export default function (options, cbk) {
                     result.redirect = redirectLocation.pathname + redirectLocation.search;
 
                 } else {
-
-
                     let {query, params} = renderProps;
                     let comp = renderProps.components[renderProps.components.length - 1].WrappedComponent;
                     let promise;
 
-                    let responseData = [];
-                    if (options.response !== undefined) {
-                        responseData = options.response;
-                    }
-
-                    store.dispatch(AppActions.setResponse(responseData));
                     // Check if checkAuth function is present as well
                     if (comp !== undefined && typeof comp.serverInit !== "undefined") {
 
@@ -93,15 +92,10 @@ export default function (options, cbk) {
                                     });
                                 }
                                 break;
-
                         }
                     } else {
                         renderComponent();
                     }
-
-
-                    // Check if
-
 
                     function renderComponent() {
                         // renderProps["history"] = syncHistoryWithStore(memoryHistory, store);
@@ -114,17 +108,14 @@ export default function (options, cbk) {
                         const {title, meta} = Helmet.rewind();
                         result.title = title.toString();
                         result.meta = meta.toString();
-                        result.initial = JSON.stringify(store.getState());return cbk(result);
-
+                        result.initial = JSON.stringify(store.getState());
+                        return cbk(result);
                     }
-
-
                 }
 
             } catch (e) {
                 result.error = e;
             }
-
         });
     } catch (e) {
         result.error = e;

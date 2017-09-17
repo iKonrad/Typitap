@@ -6,7 +6,7 @@ import * as UserActions from 'store/ducks/userModule';
 class Activate extends Component {
 
     static clientInit({store, nextState, replaceState, callback}) {
-        if (nextState.app.response.success) {
+        if (store.getState().app.response.success) {
             store.dispatch(UserActions.activateUser());
         }
         callback();
@@ -35,7 +35,13 @@ class Activate extends Component {
                         <div className="panel panel-default card-login">
                             <div className="panel-heading"><h2>Account activation</h2></div>
                             <div className="panel-body">
-                                { response.success ? this.renderSuccessMessage() : this.renderErrorMessage() }
+                                <div className="">
+                                    { response.success ? this.renderSuccessMessage() : this.renderErrorMessage() }
+                                </div>
+                                <div className="margin-top-3">
+                                    <Link to="/" className={`btn btn-link`}>Back to home</Link>
+                                </div>
+
                             </div>
                         </div>
                     </div>
