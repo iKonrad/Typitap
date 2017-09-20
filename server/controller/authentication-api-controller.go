@@ -4,23 +4,31 @@ import (
 	"log"
 	"net/http"
 
+	flarum "github.com/iKonrad/go-flarum"
+	"github.com/iKonrad/typitap/server/config"
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/iKonrad/typitap/server/services/levels"
 	"github.com/iKonrad/typitap/server/services/mail"
 	"github.com/iKonrad/typitap/server/services/sessions"
 	us "github.com/iKonrad/typitap/server/services/user"
+	"github.com/iKonrad/typitap/server/services/utils"
 	"github.com/labstack/echo"
 	"golang.org/x/crypto/bcrypt"
-	"github.com/iKonrad/typitap/server/services/utils"
 )
 
 type AuthenticationAPIController struct {
 }
 
 var AuthenticationAPI AuthenticationAPIController
+var flarumClient *flarum.FlarumClient
 
 func init() {
 	AuthenticationAPI = AuthenticationAPIController{}
+	flarumClient = flarum.NewClient(
+		config.Config.UString("forum.url"),
+		config.Config.UString("forum.token"),
+		config.Config.UInt("cookie.expires"),
+	)
 }
 
 func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
@@ -33,14 +41,13 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 	// Get country code
 	country, ok := us.GetCountryCodeByIP(utils.GetIPAdress(c.Request()))
 
-
 	// Get form data
 	details := map[string]interface{}{
 		"name":     c.FormValue("name"),
 		"email":    c.FormValue("email"),
 		"password": c.FormValue("password"),
 		"username": c.FormValue("username"),
-		"country": country,
+		"country":  country,
 	}
 
 	// Validate user details
@@ -68,12 +75,13 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 	token, ok := us.GenerateUserToken("activate", nu, "")
 
 	if !ok {
-
 		return c.JSON(500, map[string]interface{}{
 			"success": false,
 			"error":   "Your account has been created, but there was a problem with your activation token. Please get in touch with us for more information",
 		})
 	}
+
+	flarumClient.SignUp(nu.Username, nu.Email, details["password"].(string))
 
 	// Send confirmation e-mail with an activation link
 	link := "http://" + c.Request().Host + "/auth/activate/" + token
@@ -99,13 +107,30 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 	// Create user data for the session
 	sessionCookie := entities.SessionCookie{
 		UserId: newUser["Id"].(string),
-		Role:   "ADMIN", // @TODO: Replace this when roles are implemented
+		Role:   "ROLE_USER", // @TODO: Replace this when roles are implemented
 	}
 
 	session.Values["SessionCookie"] = sessionCookie
 
 	session.Options.MaxAge = 60 * 60 * 24 * 14
 	err = session.Save(c.Request(), c.Response().Writer)
+
+	forumToken, userId, forumErr := flarumClient.LogIn(details["username"].(string), details["password"].(string))
+
+	if forumErr == nil {
+		log.Println("USRID", userId)
+		eee :=flarumClient.DeactivateUser(userId)
+		log.Println("EEEEE", eee)
+		forumCookie := http.Cookie{
+			Name:   flarum.COOKIE_REMEMBER_ME,
+			Value:  forumToken,
+			MaxAge: config.Config.UInt("cookies.expires") * flarum.DAYS_MULTIPLIER,
+			HttpOnly: false,
+			Path: "/",
+			Domain: config.Config.UString("forum.url"),
+		}
+		c.SetCookie(&forumCookie)
+	}
 
 	if err != nil {
 		log.Println("Error while saving a session", err)
@@ -172,12 +197,26 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 		Role:   "ADMIN", // @TODO: Replace this when roles are implemented
 	}
 
-	session.Options.MaxAge = 60 * 60 * 24 * 14
+	session.Options.MaxAge = 60 * 60 * 24 * config.Config.UInt("cookie.expires", 14)
 
 	user["Password"] = ""
 	user["LevelName"] = levels.GetLevelName(int(user["Level"].(float64)))
 
 	session.Save(c.Request(), c.Response().Writer)
+
+	forumToken, _, forumErr := flarumClient.LogIn(username, password)
+
+	if forumErr == nil {
+		forumCookie := http.Cookie{
+			Name:   flarum.COOKIE_REMEMBER_ME,
+			Value:  forumToken,
+			MaxAge: config.Config.UInt("cookies.expires") * flarum.DAYS_MULTIPLIER,
+			HttpOnly: false,
+			Path: "/",
+			Domain: config.Config.UString("forum.url"),
+		}
+		c.SetCookie(&forumCookie)
+	}
 
 	return c.JSON(200, map[string]interface{}{
 		"success": true,
@@ -202,6 +241,28 @@ func (ac AuthenticationAPIController) HandleLogout(c echo.Context) error {
 
 	session.Options.MaxAge = -1
 	session.Save(c.Request(), c.Response().Writer)
+
+	// Reset forum cookie
+	forumCookie := http.Cookie{
+		Name:   flarum.COOKIE_REMEMBER_ME,
+		Value:  "",
+		MaxAge: -1,
+		HttpOnly: false,
+		Path: "/",
+		Domain: config.Config.UString("forum.url"),
+	}
+	c.SetCookie(&forumCookie)
+
+	// Reset forum cookie
+	forumCookie = http.Cookie{
+		Name:   flarum.COOKIE_SESSION,
+		Value:  "",
+		MaxAge: -1,
+		HttpOnly: false,
+		Path: "/",
+		Domain: config.Config.UString("forum.url"),
+	}
+	c.SetCookie(&forumCookie)
 
 	return c.JSON(200, map[string]interface{}{"success": true})
 
@@ -316,13 +377,24 @@ func (ac AuthenticationAPIController) HandlePasswordReset(c echo.Context) error 
 		})
 	}
 
+	// Update password in forum as well
+	forumUser, forumError := flarumClient.GetUserByUsername(userToken.User.Username)
+	forumUserData, ok := forumUser["data"].([]interface {})
+	if forumError == nil && ok && len(forumUserData) > 0 {
+		if forumUserId, ok := forumUserData[0].(map[string]interface{})["id"]; ok {
+			flarumClient.UpdateUserAttribute(forumUserId.(string), "password", password)
+		}
+	} else {
+		// There's no user in flarum. Let's create one.
+		// We'll use password reset as a fallback to create forum users
+		flarumClient.SignUp(userToken.User.Username, userToken.User.Email, password)
+	}
+
 	// Now we can mark the token as used
 	us.UseUserToken(userToken.Token, "password")
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
 	})
-
 }
 
 func (ac AuthenticationAPIController) validateLoginForm(username string, password string) (bool, map[string]string) {

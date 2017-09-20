@@ -6,17 +6,18 @@ import (
 	"log"
 	"time"
 
+	"net"
+
+	"github.com/iKonrad/typitap/server/config"
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/iKonrad/typitap/server/services/stats"
 	"github.com/nu7hatch/gouuid"
+	"github.com/oschwald/geoip2-golang"
+	"github.com/pariz/gountries"
 	errorGen "github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 	r "gopkg.in/gorethink/gorethink.v3"
-	"github.com/oschwald/geoip2-golang"
-	"net"
-	"github.com/pariz/gountries"
-	"github.com/iKonrad/typitap/server/config"
 )
 
 func CreateUser(details map[string]interface{}) (entities.User, error) {
@@ -46,7 +47,7 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 		Password: hashedPassword,
 		Exp:      0,
 		Level:    1,
-		Country: details["country"].(string),
+		Country:  details["country"].(string),
 	}
 
 	cursor, err := r.Table("users").Insert(newUser).Run(db.Session)
@@ -83,6 +84,8 @@ func CreateUser(details map[string]interface{}) (entities.User, error) {
 			log.Println(err)
 		}
 		defer followCursor.Close()
+
+		// Create user account
 
 	}
 
@@ -123,7 +126,6 @@ func ValidateUser(details map[string]interface{}) (bool, map[string]string) {
 	}
 
 	return isValid, fieldErrors
-
 }
 
 func generatePassword(password string) string {
@@ -133,7 +135,6 @@ func generatePassword(password string) string {
 
 // Checks if there's already an account with provided e-mail address
 func IsEmailAvailable(email string) bool {
-
 	// Check if e-mail exists in the database
 	res, _ := r.Table("users").Filter(map[string]interface{}{
 		"email": email,
@@ -151,12 +152,10 @@ func IsEmailAvailable(email string) bool {
 		}
 		return false
 	}
-
 }
 
 // Checks if account with provided username already exists
 func IsUsernameAvailable(username string) bool {
-
 	// Check if e-mail exists in the database
 	res, _ := r.Table("users").Filter(map[string]interface{}{
 		"username": username,
@@ -174,12 +173,10 @@ func IsUsernameAvailable(username string) bool {
 		}
 		return false
 	}
-
 }
 
 // Fetches the user from the database by the provided key. First return value is a user itself. Second return value is OK/found
 func FindUserBy(key string, value string) (entities.User, bool) {
-
 	res, err := r.Table("users").Filter(map[string]interface{}{
 		key: value,
 	}).Run(db.Session)
@@ -202,7 +199,6 @@ func FindUserBy(key string, value string) (entities.User, bool) {
 }
 
 func GetUser(id string) (entities.User, bool) {
-
 	res, err := r.Table("users").Get(id).Run(db.Session)
 
 	defer res.Close()
@@ -219,11 +215,9 @@ func GetUser(id string) (entities.User, bool) {
 	}
 
 	return returnedUser, true
-
 }
 
 func UserExists(id string) bool {
-
 	res, err := r.Table("users").Get(id).Run(db.Session)
 	defer res.Close()
 	if err != nil || res.IsNil() {
@@ -234,7 +228,6 @@ func UserExists(id string) bool {
 }
 
 func ActivateUser(userId string) bool {
-
 	err := r.Table("users").Get(userId).Update(map[string]interface{}{
 		"active": true,
 	}).Exec(db.Session)
@@ -242,7 +235,6 @@ func ActivateUser(userId string) bool {
 }
 
 func UpdateUserPassword(password string, user entities.User) bool {
-
 	hashedPassword := generatePassword(password)
 	r.Table("users").Get(user.Id).Update(map[string]interface{}{
 		"password": hashedPassword,
@@ -251,7 +243,6 @@ func UpdateUserPassword(password string, user entities.User) bool {
 }
 
 func UpdateUser(user *entities.User) bool {
-
 	r.Table("users").Get(user.Id).Update(map[string]interface{}{
 		"name":           user.Name,
 		"active":         user.Active,
@@ -259,7 +250,7 @@ func UpdateUser(user *entities.User) bool {
 		"keyboard":       user.Keyboard,
 		"bio":            user.Bio,
 		"keyboardLayout": user.KeyboardLayout,
-		"country": user.Country,
+		"country":        user.Country,
 	}).Exec(db.Session)
 	return true
 }
@@ -343,7 +334,7 @@ func GetCountryCodeByIP(ipAddress string) (string, bool) {
 	countryDb, err := geoip2.Open(config.Config.UString("countries"))
 
 	ip := net.ParseIP(ipAddress)
-	city, err := countryDb.City(ip);
+	city, err := countryDb.City(ip)
 	cityName := city.Country.Names["en"]
 
 	query := gountries.New()
@@ -374,4 +365,3 @@ func ValidateCountryCode(code string) (string, bool) {
 	return country.Alpha2, err == nil
 
 }
-

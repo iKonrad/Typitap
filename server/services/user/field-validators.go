@@ -87,8 +87,8 @@ func ValidatePassword(password string) (bool, string) {
 		err = "Password cannot be empty"
 		isValid = false
 	} else {
-		if len(password) < 6 {
-			err = "Password needs to be at least 6 characters long"
+		if len(password) < 8 {
+			err = "Password needs to be at least 8 characters long"
 			isValid = false
 		}
 	}

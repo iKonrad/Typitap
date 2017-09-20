@@ -4,17 +4,18 @@ import (
 	"net/http"
 	"strconv"
 
+	"time"
+
 	"github.com/iKonrad/typitap/server/entities"
+	"github.com/iKonrad/typitap/server/services/comments"
 	"github.com/iKonrad/typitap/server/services/feed"
+	"github.com/iKonrad/typitap/server/services/graphics"
 	"github.com/iKonrad/typitap/server/services/levels"
 	"github.com/iKonrad/typitap/server/services/mail"
 	"github.com/iKonrad/typitap/server/services/stats"
 	us "github.com/iKonrad/typitap/server/services/user"
-	"github.com/labstack/echo"
-	"github.com/iKonrad/typitap/server/services/graphics"
 	"github.com/iKonrad/typitap/server/services/utils"
-	"time"
-	"github.com/iKonrad/typitap/server/services/comments"
+	"github.com/labstack/echo"
 )
 
 type UserAPIController struct {
@@ -119,6 +120,9 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 		isValid, err := us.ValidatePassword(value)
 		if isValid {
 			us.UpdateUserPassword(value, user)
+
+			gc.updateForumUserAttribute(user.Username, "password", value)
+
 			return c.JSON(http.StatusOK, map[string]interface{}{
 				"success": true,
 				"message": "Password updated",
@@ -154,6 +158,8 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 		}
 		user.Bio = value
 
+		gc.updateForumUserAttribute(user.Username, "bio", value)
+
 	case "Country":
 		if value == "" {
 			return c.JSON(http.StatusOK, map[string]interface{}{
@@ -186,6 +192,16 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 		})
 	}
 
+}
+
+func (gc UserAPIController) updateForumUserAttribute(username string, attribute string, value string) {
+	forumUser, forumError := flarumClient.GetUserByUsername(username)
+	forumUserData, ok := forumUser["data"].([]interface {})
+	if forumError == nil && ok && len(forumUserData) > 0 {
+		if forumUserId, ok := forumUserData[0].(map[string]interface{})["id"]; ok {
+			flarumClient.UpdateUserAttribute(forumUserId.(string), attribute, value)
+		}
+	}
 }
 
 func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
@@ -387,8 +403,8 @@ func (gc UserAPIController) ResendActivationLink(c echo.Context) error {
 
 func (gc UserAPIController) FetchUserboard(c echo.Context) error {
 
-	id := c.Param("id");
-	filePath := "static/images/userboards/" + id + ".png";
+	id := c.Param("id")
+	filePath := "static/images/userboards/" + id + ".png"
 
 	// Get file stats
 	creationTime, err := utils.GetFileCreated(filePath)
@@ -402,7 +418,7 @@ func (gc UserAPIController) FetchUserboard(c echo.Context) error {
 	}
 
 	// Get user object so we can fetch the stats and username
-	userObject, ok := us.GetUser(id);
+	userObject, ok := us.GetUser(id)
 	if !ok {
 		return c.File("static/images/identity/typitap-logo.png") // @TODO: Replace these with actual default image
 	}
@@ -426,7 +442,7 @@ func (gc UserAPIController) HandleUserSearch(c echo.Context) error {
 		return c.JSON(200, map[string]interface{}{
 			"success": true,
 			"data":    []map[string]interface{}{},
-		});
+		})
 	}
 
 	users := us.SearchForUsers(query)
@@ -434,5 +450,5 @@ func (gc UserAPIController) HandleUserSearch(c echo.Context) error {
 	return c.JSON(200, map[string]interface{}{
 		"success": true,
 		"data":    users,
-	});
+	})
 }

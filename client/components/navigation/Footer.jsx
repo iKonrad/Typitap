@@ -24,7 +24,7 @@ class Footer extends React.PureComponent {
                                     <Link to="/terms" className="white" style={{marginRight: "13px"}}>Terms</Link>
                                     <Link to="/privacy" className="white" style={{marginRight: "13px"}}>Privacy</Link>
                                     <a href="mailto:konrad@jarosinski.uk" className="white" style={{marginRight: "13px"}}>Contact</a>
-                                    <Link to="/blog" className="white">Blog</Link>
+                                    <a href="http://community.typitap.com" className="white">Community</a>
                                 </div>
                             </div>
                         </div>

@@ -14,11 +14,13 @@ class Navbar extends PureComponent {
     }
 
     componentDidMount() {
-        var widgetConfig = {
-            selector: "#updates-badge", // CSS selector where to inject the badge
-            account:  "7XXeb7"
-        }
-        Headway.init(widgetConfig);
+        setTimeout(() => {
+            var widgetConfig = {
+                selector: "#updates-badge", // CSS selector where to inject the badge
+                account:  "7XXeb7"
+            }
+            Headway.init(widgetConfig);
+        }, 1500)
     }
 
     renderDropdown(index, obj) {
@@ -78,12 +80,18 @@ class Navbar extends PureComponent {
                                 if (this.props.user && ((!obj.authenticated && this.props.user.loggedIn === undefined) || obj.authenticated === this.props.user.loggedIn)) {
                                     let parsedObj = obj;
                                     parsedObj.label = that.parseValue(obj.label);
-                                    if (obj.type === 'link') {
-                                        return <NavLink to={obj.url} key={'menu-item-' + index} >{ parsedObj.label }</NavLink>;
-                                    } else if (parsedObj.type === 'button') {
-                                        return <NavLink to={parsedObj.url} key={'menu-item-' + index} type="button" >{ parsedObj.label }</NavLink>;
+                                    if (obj.type === 'link' || obj.type === 'button') {
+                                        return <NavLink to={obj.url} key={'menu-item-' + index} type={ parsedObj.type }>{ parsedObj.label }</NavLink>;
                                     } else if (parsedObj.type === 'dropdown') {
                                         return that.renderDropdown(index, parsedObj);
+                                    } else if (parsedObj.type === 'href') {
+                                        return (
+                                            <li key={`menu-item-${index}`}>
+                                                <a href={ parsedObj.url } >
+                                                    { parsedObj.label }
+                                                </a>
+                                            </li>
+                                        )
                                     } else if (parsedObj.type === "logout") {
                                         return (<a href="/auth/logout" key={ 'menu-item' + index }>Log out</a>);
                                     }

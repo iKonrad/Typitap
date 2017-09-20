@@ -35,6 +35,10 @@ func (ac AuthenticationController) HandleActivate(c echo.Context) error {
 
 	// Mark the token as used
 	us.UseUserToken(userToken.Token, us.TOKEN_ACTIVATE)
+
+	// Make forum user active as well
+	ac.activateForumUser(userToken.User.Username)
+
 	c.Set("Response", map[string]interface{}{
 		"success": activated,
 		"error":   "Token not found or has already been used",
@@ -76,7 +80,6 @@ func (ac AuthenticationController) HandleValidatePasswordToken(c echo.Context) e
 	return middleware.ReactJS.Handle(c)
 }
 
-
 func (ac AuthenticationController) HandleEmailChangeToken(c echo.Context) error {
 	tokenString := c.Param("token")
 	token, ok := us.GetUserToken(tokenString, us.TOKEN_CHANGE_EMAIL)
@@ -84,6 +87,7 @@ func (ac AuthenticationController) HandleEmailChangeToken(c echo.Context) error 
 	if ok && token.Value != "" {
 		token.User.Email = token.Value
 		updated = us.UpdateUser(&token.User)
+		ac.updateForumUserAttribute(token.User.Username, "email", token.Value)
 	}
 
 	c.Set("Response", map[string]interface{}{
@@ -91,4 +95,24 @@ func (ac AuthenticationController) HandleEmailChangeToken(c echo.Context) error 
 		"valid":   ok,
 	})
 	return middleware.ReactJS.Handle(c)
+}
+
+func (ac AuthenticationController) updateForumUserAttribute(username string, attribute string, value string) {
+	forumUser, forumError := flarumClient.GetUserByUsername(username)
+	forumUserData, ok := forumUser["data"].([]interface{})
+	if forumError == nil && ok && len(forumUserData) > 0 {
+		if forumUserId, ok := forumUserData[0].(map[string]interface{})["id"]; ok {
+			flarumClient.UpdateUserAttribute(forumUserId.(string), attribute, value)
+		}
+	}
+}
+
+func (ac AuthenticationController) activateForumUser(username string) {
+	forumUser, forumError := flarumClient.GetUserByUsername(username)
+	forumUserData, ok := forumUser["data"].([]interface{})
+	if forumError == nil && ok && len(forumUserData) > 0 {
+		if forumUserId, ok := forumUserData[0].(map[string]interface{})["id"]; ok {
+			flarumClient.ActivateUser(forumUserId.(string))
+		}
+	}
 }

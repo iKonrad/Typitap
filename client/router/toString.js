@@ -45,15 +45,12 @@ export default function (options, cbk) {
 
     let responseData = [];
 
-    console.log(JSON.stringify(options));
-
     if (options.response !== undefined) {
         store.dispatch(AppActions.setResponse(options.response));
     }
 
     try {
         let routes = createRoutes({store, first: {time: false}});
-        console.log("URL", options.url, "ROUTES", JSON.stringify(routes));
         match({
             routes: routes,
             location: options.url
