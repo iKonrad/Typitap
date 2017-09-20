@@ -260,7 +260,7 @@ func (ac AuthenticationAPIController) HandleLogout(c echo.Context) error {
 		MaxAge: -1,
 		HttpOnly: false,
 		Path: "/",
-		Domain: "typitap.com",
+		Domain: ".typitap.com",
 	}
 	c.SetCookie(&forumCookie)
 
