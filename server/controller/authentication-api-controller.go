@@ -187,6 +187,7 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 			Name:   "SESSION_ID",
 			Value:  "",
 			MaxAge: -1,
+			Domain: ".typitap.com",
 		}
 		c.SetCookie(&cookie)
 		return c.JSON(200, map[string]interface{}{"success": false, "error": "An error occurred while logging in. Please try again"})
@@ -213,7 +214,7 @@ func (ac AuthenticationAPIController) HandleLogin(c echo.Context) error {
 			MaxAge: config.Config.UInt("cookies.expires") * flarum.DAYS_MULTIPLIER,
 			HttpOnly: false,
 			Path: "/",
-			Domain: config.Config.UString("forum.url"),
+			Domain: ".typitap.com",
 		}
 		c.SetCookie(&forumCookie)
 	}
