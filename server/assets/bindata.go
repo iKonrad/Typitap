@@ -8,8 +8,6 @@
 // server/data/countries/.DS_Store
 // server/data/countries/geoip.csv
 // server/data/countries/geoip.mmdb
-// server/data/static/build/bundle.css
-// server/data/static/build/bundle.js
 // server/data/templates/react.html
 // DO NOT EDIT!
 
@@ -181,42 +179,6 @@ func countriesGeoipMmdb() (*asset, error) {
 	return a, err
 }
 
-// staticBuildBundleCss reads file data from disk. It returns an error on failure.
-func staticBuildBundleCss() (*asset, error) {
-	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/bundle.css"
-	name := "static/build/bundle.css"
-	bytes, err := bindataRead(path, name)
-	if err != nil {
-		return nil, err
-	}
-
-	fi, err := os.Stat(path)
-	if err != nil {
-		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
-	}
-
-	a := &asset{bytes: bytes, info: fi}
-	return a, err
-}
-
-// staticBuildBundleJs reads file data from disk. It returns an error on failure.
-func staticBuildBundleJs() (*asset, error) {
-	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/static/build/bundle.js"
-	name := "static/build/bundle.js"
-	bytes, err := bindataRead(path, name)
-	if err != nil {
-		return nil, err
-	}
-
-	fi, err := os.Stat(path)
-	if err != nil {
-		err = fmt.Errorf("Error reading asset info %s at %s: %v", name, path, err)
-	}
-
-	a := &asset{bytes: bytes, info: fi}
-	return a, err
-}
-
 // templatesReactHtml reads file data from disk. It returns an error on failure.
 func templatesReactHtml() (*asset, error) {
 	path := "/Users/konrad/Projects/Go/src/github.com/iKonrad/typitap/server/data/templates/react.html"
@@ -295,8 +257,6 @@ var _bindata = map[string]func() (*asset, error){
 	"countries/.DS_Store": countriesDs_store,
 	"countries/geoip.csv": countriesGeoipCsv,
 	"countries/geoip.mmdb": countriesGeoipMmdb,
-	"static/build/bundle.css": staticBuildBundleCss,
-	"static/build/bundle.js": staticBuildBundleJs,
 	"templates/react.html": templatesReactHtml,
 }
 
@@ -353,12 +313,6 @@ var _bintree = &bintree{nil, map[string]*bintree{
 		".DS_Store": &bintree{countriesDs_store, map[string]*bintree{}},
 		"geoip.csv": &bintree{countriesGeoipCsv, map[string]*bintree{}},
 		"geoip.mmdb": &bintree{countriesGeoipMmdb, map[string]*bintree{}},
-	}},
-	"static": &bintree{nil, map[string]*bintree{
-		"build": &bintree{nil, map[string]*bintree{
-			"bundle.css": &bintree{staticBuildBundleCss, map[string]*bintree{}},
-			"bundle.js": &bintree{staticBuildBundleJs, map[string]*bintree{}},
-		}},
 	}},
 	"templates": &bintree{nil, map[string]*bintree{
 		"react.html": &bintree{templatesReactHtml, map[string]*bintree{}},

@@ -12,30 +12,28 @@ import * as socketActions from "store/ducks/socketModule";
 
 class LoginForm extends Component {
 
-
     handleSubmitForm(values) {
-
         // Attach identifier to the form so we can reconnect the websocket on login
         if (this.props.socket.connected) {
             values.identifier = this.props.socket.identifier;
         }
 
         return FormActions.submitLogin(values).then((details) => {
-
             this.props.dispatch(UserActions.loginUser(details.user));
             this.props.dispatch(Notifications.welcomeBack(details.user.Name));
-
         }).then(() => {
-
             this.props.dispatch(socketActions.reconnect());
-            this.props.dispatch(push("/"));
-
+            // Check if there's a redirect URL provided
+            if (this.props.redirect !== null && this.props.redirect.length > 0) {
+                    window.location.href = this.props.redirect;
+            } else {
+                this.props.dispatch(push("/"));
+            }
         });
     };
 
-
-
     render() {
+
         const { handleSubmit, pristine, reset, submitting } = this.props;
         return (
             <div>

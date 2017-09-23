@@ -3,6 +3,7 @@ import {SubmissionError} from 'redux-form';
 
 export function submitLogin(data) {
     const formData = new FormData();
+
     for (var i in data) {
         formData.append(i, data[i]);
     }

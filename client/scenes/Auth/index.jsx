@@ -23,8 +23,9 @@ class Auth extends Component {
                 <SignupForm />
             );
         } else if (this.props.route.path === '/login') {
+            console.log(this.props.location.query.redirect);
             return (
-                <LoginForm />
+                <LoginForm redirect={ this.props.location.query.redirect !== undefined ? this.props.location.query.redirect : null } />
             );
         } else if (this.props.route.path === '/auth/password/forgot') {
             return (

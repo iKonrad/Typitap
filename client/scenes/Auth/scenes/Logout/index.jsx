@@ -17,12 +17,26 @@ class Logout extends Component {
             this.props.dispatch(Notifications.success('You have been logged out'));
 
             this.props.dispatch(socketActions.reconnect());
-            this.props.dispatch(push("/"));
+            if (this.props.location.query.redirect !== undefined && this.props.location.query.redirect.length > 0) {
+                window.location.href = this.props.location.query.redirect;
+            } else {
+                this.props.dispatch(push("/"));
+            }
         });
     }
 
     render() {
-        return (<div>Logging out...</div>);
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <div className="text-center mt-3">
+                            <h4>Logging out...</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
 

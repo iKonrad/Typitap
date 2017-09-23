@@ -83,10 +83,11 @@ export default function reducer(state = initialState, action) {
 
 
 export function loginUser(user) {
-    return (dispatch) => {
-        dispatch({type: LOGIN_USER_SUCCESS, user});
+    return {
+        type: LOGIN_USER_SUCCESS,
+        user,
     }
-};
+}
 
 export function logoutUser() {
 

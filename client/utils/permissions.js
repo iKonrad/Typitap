@@ -10,7 +10,6 @@ const Permissions = {
         failureRedirectPath: '/',
         wrapperDisplayName: 'OnlyAnonymous',
         predicate: user => !user.loggedIn,
-        allowRedirectBack: false,
     }),
     OnlyUsers: UserAuthWrapper({
         authSelector: state => state.user,

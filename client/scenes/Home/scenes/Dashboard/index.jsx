@@ -17,6 +17,7 @@ import Comments from 'components/app/Comments';
 class Dashboard extends Component {
 
     static clientInit({store, nextState, replaceState, callback}) {
+        console.log("???");
         resolveAll([
             store.dispatch(DashboardActions.fetchActivityFeed(0)),
             store.dispatch(ProfileActions.fetchUserProfile(store.getState().user.data.Username)),
