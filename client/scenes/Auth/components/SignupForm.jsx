@@ -23,10 +23,14 @@ class SignupForm extends Component {
             return details;
         }).then((details) => {
             if (details && details.user && details.user.Id) {
-
                 this.props.dispatch(Notifications.accountCreated());
                 this.props.dispatch(socketActions.reconnect());
-                this.props.dispatch(push("/"));
+                // Check if there's a redirect URL provided
+                if (this.props.redirect !== null && this.props.redirect.length > 0) {
+                    window.location.href = this.props.redirect;
+                } else {
+                    this.props.dispatch(push("/"));
+                }
             }
         });
     }

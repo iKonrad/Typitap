@@ -18,14 +18,16 @@ class Auth extends Component {
 
     renderForm() {
 
+        let redirectLink = this.props.location.query.redirect !== undefined ? this.props.location.query.redirect : null;
+
         if (this.props.route.path === '/signup') {
             return (
-                <SignupForm />
+                <SignupForm redirect={redirectLink} />
             );
         } else if (this.props.route.path === '/login') {
             console.log(this.props.location.query.redirect);
             return (
-                <LoginForm redirect={ this.props.location.query.redirect !== undefined ? this.props.location.query.redirect : null } />
+                <LoginForm redirect={ redirectLink } />
             );
         } else if (this.props.route.path === '/auth/password/forgot') {
             return (
