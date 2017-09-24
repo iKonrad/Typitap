@@ -237,6 +237,9 @@ func (r *Room) startGame() {
 		[]string{"websocket", "game"},
 		"Game Session "+r.Id,
 	)
+
+	logs.Push("Online game started", "Online game with started with " + strconv.Itoa(len(r.Players)) + " players")
+
 	go func() {
 		for range r.ticker.C {
 			r.time++

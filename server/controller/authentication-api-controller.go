@@ -14,6 +14,7 @@ import (
 	"github.com/iKonrad/typitap/server/services/utils"
 	"github.com/labstack/echo"
 	"golang.org/x/crypto/bcrypt"
+	"github.com/iKonrad/typitap/server/services/logs"
 )
 
 type AuthenticationAPIController struct {
@@ -90,6 +91,9 @@ func (ac *AuthenticationAPIController) HandleSignup(c echo.Context) error {
 		newUser["Username"].(string),
 		link,
 	))
+
+	// Send push notification
+	logs.PushUrl("New user", "New user '"+ newUser["Username"].(string) +"' registered.", "https://typitap.com/u/" + newUser["Username"].(string))
 
 	// Now, that we have a user, we can log in automatically
 	session, err := sessions.Session.Get(c.Request(), "SESSION_ID")

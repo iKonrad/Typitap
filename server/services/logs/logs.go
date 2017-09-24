@@ -5,9 +5,12 @@ import (
 
 	"github.com/DataDog/datadog-go/statsd"
 	"github.com/iKonrad/typitap/server/config"
+	"github.com/gregdel/pushover"
 )
 
 var client *statsd.Client
+var pushoverClient *pushover.Pushover
+var pushoverRecipient *pushover.Recipient
 
 var once sync.Once
 
@@ -15,6 +18,9 @@ func c() *statsd.Client {
 	once.Do(func() {
 		var err error
 		client, err = statsd.New("127.0.0.1:8125")
+
+		pushoverClient = pushover.New(config.Config.UString("pushover.key", ""))
+		pushoverRecipient = pushover.NewRecipient(config.Config.UString("pushover.recipient", ""))
 
 		if err != nil {
 			panic(err)
@@ -71,6 +77,7 @@ func Error(title string, text string, tags []string, agg string) {
 	event.AlertType = statsd.Error
 	event.Tags = tags
 	c().Event(event)
+	Push(title, text)
 }
 
 func Gauge(name string, value float64, tags []string) {
@@ -96,4 +103,28 @@ func Decr(name string, tags []string) {
 	if err != nil {
 		Error("Decr error", err.Error(), []string{"errors"}, "Log errors")
 	}
+}
+
+
+func Push(title string, text string) {
+	// Create the message to send
+	message := pushover.NewMessageWithTitle(title, text)
+
+	// Send the message to the recipient
+	pushoverClient.SendMessage(message, pushoverRecipient)
+}
+
+func PushUrl(title string, text string, url string) {
+	// Create the message to send
+	message := &pushover.Message{
+		Message:     text,
+		Title:       title,
+		URL:         url,
+		URLTitle:    "See details",
+	}
+
+
+
+	// Send the message to the recipient
+	pushoverClient.SendMessage(message, pushoverRecipient)
 }
