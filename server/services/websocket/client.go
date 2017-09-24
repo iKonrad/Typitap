@@ -14,7 +14,6 @@ import (
 	"github.com/iKonrad/typitap/server/services/user"
 	"github.com/iKonrad/typitap/server/services/utils"
 	"github.com/labstack/echo"
-	"sync"
 )
 
 const (
