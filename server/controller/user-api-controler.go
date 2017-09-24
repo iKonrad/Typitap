@@ -411,10 +411,9 @@ func (gc UserAPIController) FetchUserboard(c echo.Context) error {
 	if err == nil {
 		// If file was generated within the last 24 hours, return the file to avoid unnecessary overload on the server. Otherwise, recalculate the stats
 		duration := time.Since(creationTime)
-		if duration.Hours() < 24 {
+		if duration.Hours() < 1 {
 			return c.File(filePath)
 		}
-
 	}
 
 	// Get user object so we can fetch the stats and username
