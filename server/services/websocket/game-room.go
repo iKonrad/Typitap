@@ -26,7 +26,7 @@ type Room struct {
 	waitCountdownStarted bool
 	gameStarted          bool
 	nextPlace            int8
-	time                 int8
+	time                 int
 }
 
 func NewRoom(id string, text string) *Room {

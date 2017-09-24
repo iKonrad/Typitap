@@ -14,6 +14,7 @@ import (
 	"github.com/iKonrad/typitap/server/services/user"
 	"github.com/iKonrad/typitap/server/services/utils"
 	"github.com/labstack/echo"
+	"sync"
 )
 
 const (
@@ -170,5 +171,5 @@ func (c *Client) SendMessage(messageType string, message interface{}) {
 	}
 
 	logs.Incr("socketMessages", []string{"websocket"})
-	c.write(websocket.TextMessage, encoded)
+	c.send <- encoded
 }
