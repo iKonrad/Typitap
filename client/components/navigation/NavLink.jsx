@@ -15,7 +15,6 @@ export default class NavLink extends PureComponent {
     render() {
         let className = this.state.active ? 'active' : '';
 
-        console.log(this.props.children, this.props.type);
         if (this.props.type === 'button') {
             return (
                 <li className={className}>

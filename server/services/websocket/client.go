@@ -14,6 +14,7 @@ import (
 	"github.com/iKonrad/typitap/server/services/user"
 	"github.com/iKonrad/typitap/server/services/utils"
 	"github.com/labstack/echo"
+	"sync"
 )
 
 const (
@@ -27,6 +28,7 @@ type Client struct {
 	user       *entities.User
 	identifier string
 	ws         *websocket.Conn
+	wsmu	   sync.Mutex
 	send       chan []byte
 	ip         string
 	country    string
@@ -170,5 +172,5 @@ func (c *Client) SendMessage(messageType string, message interface{}) {
 	}
 
 	logs.Incr("socketMessages", []string{"websocket"})
-	c.write(websocket.TextMessage, encoded)
+	c.send <- encoded
 }

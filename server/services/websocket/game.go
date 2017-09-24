@@ -36,8 +36,8 @@ const (
 	TYPE_FINISH_GAME         = "FINISH_GAME"
 	TYPE_UPDATE_PLAYERS_DATA = "UPDATE_PLAYERS_DATA"
 
-	WAIT_SECONDS        = 3   // How many seconds should the room count down for other players
-	FINISH_GAME_SECONDS = 120 // How many seconds must pass before the game automatically closes
+	WAIT_SECONDS        = 10   // How many seconds should the room count down for other players
+	FINISH_GAME_SECONDS = 4 * 60 // How many seconds must pass before the game automatically closes
 )
 
 var engine *Engine
