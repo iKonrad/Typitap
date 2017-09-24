@@ -3,6 +3,8 @@ package stats
 import (
 	"log"
 
+	"time"
+
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	r "gopkg.in/gorethink/gorethink.v3"
@@ -58,8 +60,7 @@ func calculateStatsForUser(userId string) {
 	}).Exec(db.Session)
 }
 
-func CalculateStats() {
-
+func CalculateAllStats() {
 	resp, err := r.Table("users").Pluck("id").Run(db.Session)
 	defer resp.Close()
 	if err != nil {
@@ -71,6 +72,45 @@ func CalculateStats() {
 	err = resp.All(&userIds)
 	for _, u := range userIds {
 		calculateStatsForUser(u["id"])
+	}
+}
+
+func CalculateStats() {
+	// Get all users that have played the game within the last hour
+	nowDate := time.Now()
+	hourAgoDate := time.Now().Add(time.Duration(-1 * time.Hour))
+
+	resp, err := r.Table("game_results").Pluck("userId", "created").Filter(func(row r.Term) r.Term {
+		hourAgoRDate := r.Time(hourAgoDate.Year(), hourAgoDate.Month(), hourAgoDate.Day(), hourAgoDate.Hour(), hourAgoDate.Minute(), hourAgoDate.Second(), "+01:00")
+		nowRDate := r.Time(nowDate.Year(), nowDate.Month(), nowDate.Day(), nowDate.Hour(), nowDate.Minute(), nowDate.Second(), "+01:00")
+		return row.Field("created").During(hourAgoRDate, nowRDate)
+	}).Run(db.Session)
+
+	defer resp.Close()
+	if err != nil || resp.IsNil() {
+		return
+	}
+
+	var gameResults []map[string]interface{}
+	err = resp.All(&gameResults)
+
+	usersCalculated := []string{}
+
+	// Go through all game results and run stats calculation for users
+	for _, u := range gameResults {
+		userFound := false
+		// Don't recalculate users several times if they have multiple results
+		for _, res := range usersCalculated {
+			if res == u["userId"].(string) {
+				userFound = true
+				break
+			}
+		}
+
+		if !userFound {
+			calculateStatsForUser(u["userId"].(string))
+			usersCalculated = append(usersCalculated, u["userId"].(string))
+		}
 	}
 }
 
