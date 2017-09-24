@@ -28,7 +28,6 @@ type Client struct {
 	user       *entities.User
 	identifier string
 	ws         *websocket.Conn
-	wsmu	   sync.Mutex
 	send       chan []byte
 	ip         string
 	country    string
