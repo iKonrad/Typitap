@@ -80,6 +80,7 @@ func (e *Engine) parseMessage(client *Client, message map[string]interface{}) {
 		var roomId string
 		if roomId, ok = GetEngine().handleJoinRoom(client.identifier, online.(bool)); ok {
 			logs.Log("Player joined room", "Player "+client.identifier+" joined room "+roomId, []string{"websocket", "game", "players"}, "Game Session "+roomId)
+			logs.PushUrl("New online player", "A player "+ client.identifier +" joins an online room", "https://typitap.com/play/online")
 		}
 
 	case "LEAVE_ROOM":
