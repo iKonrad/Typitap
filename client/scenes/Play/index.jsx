@@ -15,6 +15,8 @@ import {resolveAll} from 'utils/jsUtils';
 import UserSearch from 'components/app/UserSearch';
 import TutorialModal from 'components/game/TutorialModal';
 import * as gaUtils from 'utils/gaUtils';
+import { Timeline } from 'react-twitter-widgets'
+import FacebookProvider, { Page } from 'react-facebook';
 
 class Play extends Component {
 
@@ -68,7 +70,6 @@ class Play extends Component {
                                 feed={ this.props.play.feed }/></Panel>
                         </div>
                         <div className="col col-xs-12 col-md-4">
-
                             <button type="button" className="btn btn-secondary btn-block"
                                     onClick={ this.handleOnlineButton.bind(this) }>Race online
                             </button>
@@ -80,9 +81,27 @@ class Play extends Component {
                             </div>
 
                             <TutorialModal open={ this.state.showTutorial } closeModal={ this.closeTutorial.bind(this) } />
+                            <TopChart name="today" title="Best today"/>
+
+                            <Panel title="Facebook" loaded={true}>
+                                <FacebookProvider appId="1776657649242212">
+                                    <Page href="https://www.facebook.com/typitap" tabs="timeline" />
+                                </FacebookProvider>
+                            </Panel>
+
+                            <Timeline
+                                dataSource={{
+                                    sourceType: 'profile',
+                                    screenName: 'typitap'
+                                }}
+                                options={{
+                                    username: 'Typitap',
+                                    height: '600'
+                                }}
+                                onLoad={() => console.log('Timeline is loaded!')}
+                            />
 
                             <TopChart name="month" title="Best of the month"/>
-
                         </div>
                     </div>
                 </div>
