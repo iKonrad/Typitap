@@ -1,7 +1,13 @@
 .follow-item {
   &__username {
     display: inline-block;
+    font-size: 14px;
     margin-left: 5px;
+    white-space: nowrap;
+    max-width: 40px;
+    position: relative;
+    top: 1px;
+
   }
   margin: 15px 0;
 }

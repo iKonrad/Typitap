@@ -60,15 +60,14 @@ class Homepage extends Component {
                                                 <h3>Ultimate online typing game</h3>
                                             </div>
                                             <div className="banner__buttons">
-                                                <div className="row">
-                                                    <div className="col col-xs-12">
-                                                        <Link to="/play" className="btn btn-round btn-xxl btn-secondary">Enter the game</Link>
-                                                    </div>
-                                                </div>
+
+                                                <Link to="/play" className="btn btn-round btn-xxl btn-secondary">Enter
+                                                    the game</Link>
 
                                                 <div className="margin-top-4 margin-bottom-4 white">- or -</div>
 
-                                                <Link to="/signup" className="btn btn-round btn-outline btn-white">Create account</Link>
+                                                <Link to="/signup" className="btn btn-round btn-outline btn-white">Create
+                                                    account</Link>
                                             </div>
                                         </div>
                                     </div>
@@ -129,7 +128,10 @@ class Homepage extends Component {
                     <div className="container">
                         <div className="row margin-bottom-8 text-center">
                             <h2>What is typitap?</h2>
-                            <p>Typitap is an online typing game where players from the entire world compete with each other by re-typing text from the screen. If you enjoy typing on a keyboard, and wish to <strong>improve</strong> and <strong>monitor</strong> your typing skills, typitap is for you</p>
+                            <p>Typitap is an online typing game where players from the entire world compete with each
+                                other by re-typing text from the screen. If you enjoy typing on a keyboard, and wish
+                                to <strong>improve</strong> and <strong>monitor</strong> your typing skills, typitap is
+                                for you</p>
                         </div>
                         <div className="row margin-top-2">
                             <div className="col col-xs-12 col-md-4">
@@ -142,7 +144,8 @@ class Homepage extends Component {
                                 </div>
                             </div>
                             <div className="col col-xs-12 col-md-7 col-md-offset-1">
-                                <img src="/static/images/pages/homepage/feature_1.jpg" className="img-mobile-stretch" alt="Game screen"/>
+                                <img src="/static/images/pages/homepage/feature_1.jpg" className="img-mobile-stretch"
+                                     alt="Game screen"/>
                             </div>
                         </div>
                     </div>
@@ -160,7 +163,8 @@ class Homepage extends Component {
                                 </div>
                             </div>
                             <div className="col col-xs-12 col-md-7 col-md-offset-1">
-                                <img src="/static/images/pages/homepage/feature_2.jpg" className="img-mobile-stretch" alt="Game screen"/>
+                                <img src="/static/images/pages/homepage/feature_2.jpg" className="img-mobile-stretch"
+                                     alt="Game screen"/>
                             </div>
                         </div>
                     </div>
@@ -182,7 +186,8 @@ class Homepage extends Component {
                                 </div>
                             </div>
                             <div className="col col-xs-12 col-md-7 col-md-offset-1">
-                                <img src="/static/images/pages/homepage/feature_3.jpg" className="img-mobile-stretch" alt="Game screen"/>
+                                <img src="/static/images/pages/homepage/feature_3.jpg" className="img-mobile-stretch"
+                                     alt="Game screen"/>
                             </div>
                         </div>
                     </div>
@@ -197,8 +202,8 @@ class Homepage extends Component {
                             </div>
                             <div className="col col-xs-12 col-md-7 col-lg-8 margin-top-5">
                                 <Panel title="Recent news" bodyClass=""
-                                       loaded={ this.props.play.feed !== undefined }><ActivityFeed
-                                    feed={ this.props.play.feed }/></Panel>
+                                       loaded={this.props.play.feed !== undefined}><ActivityFeed
+                                    feed={this.props.play.feed}/></Panel>
                             </div>
                             <div className="col col-xs-12 col-md-5 col-lg-4 margin-top-5">
                                 <img style={{position: "absolute", right: "10px", zIndex: 2, top: "-40px"}}

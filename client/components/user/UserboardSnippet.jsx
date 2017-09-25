@@ -5,7 +5,7 @@ class UserboardSnippet extends React.Component {
 
 
 
-    generateCode() {
+    generateCode(forWeb) {
         return `<a href="${ JsUtils.getBaseUrl() }u/${this.props.user.Username}"><img src="${ JsUtils.getBaseUrl() }userboards/${ this.props.user.Id }" alt="Typitap.com userboard for ${ this.props.user.Name }" /></a>`;
     }
 
@@ -19,7 +19,11 @@ class UserboardSnippet extends React.Component {
 
                 <div className="text-muted text-small margin-bottom-2">It will display an image like below with a link to your profile:</div>
 
-                <div dangerouslySetInnerHTML={{ __html: this.generateCode() }}></div>
+                <div>
+                    <a href={`${ JsUtils.getBaseUrl() }u/${this.props.user.Username}`}>
+                        <img className="img-responsive" src={`${ JsUtils.getBaseUrl() }userboards/${ this.props.user.Id }`} alt={`Typitap.com userboard for ${ this.props.user.Name }`} />
+                    </a>
+                </div>
             </div>
         );
     }

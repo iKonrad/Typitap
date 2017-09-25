@@ -9,10 +9,10 @@ class UserFollowItem extends React.Component {
 
     render() {
         return (
-            <div className="col col-xs-4">
+            <div className="col col-xs-4 col-md-6 col-lg-4">
                 <Link to={ `/u/` + this.props.username }>
                     <div className="follow-item">
-                        <Gravatar email={ this.props.email } size={30} className="img-circle" />
+                        <Gravatar email={ this.props.email } size={20} className="img-circle" />
                         <div className="follow-item__username">#{ this.props.username }</div>
                     </div>
                 </Link>

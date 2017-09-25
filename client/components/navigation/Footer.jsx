@@ -18,7 +18,7 @@ class Footer extends React.PureComponent {
                                     <div style={{maxWidth: "190px", "display": "inline-block", "marginLeft": "10px", "top": "3px", "position": "relative"}}>
                                         <Follow username="typitap"></Follow>
                                     </div>
-                                    <div style={{maxWidth: "270px", "display": "inline-block", "marginLeft": "10px", "top": "3px", "position": "relative"}}>
+                                    <div style={{maxWidth: "270px", "overflow": "hidden", "display": "inline-block", "marginLeft": "10px", "top": "3px", "position": "relative"}}>
                                         <FacebookProvider appId="1776657649242212">
                                             <Like href="http://www.facebook.com/typitap" colorScheme="dark" showFaces share />
                                         </FacebookProvider>
