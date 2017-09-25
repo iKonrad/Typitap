@@ -68,7 +68,7 @@ class Navbar extends PureComponent {
                             <i className="fa fa-bars"></i>
                         </button>
                         <Link className="navbar-brand" to="/">
-                            <img src="/static/images/identity/typitap-logo-white@1.25x.png" alt=""/>
+                            <img src="/static/images/identity/typitap-logo-white-beta@1.25x.png" alt=""/>
                         </Link>
                     </div>
                     <div className="collapse navbar-collapse" id="menu-collapse" ref="menu-collapse">
