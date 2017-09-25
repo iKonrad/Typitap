@@ -84,8 +84,8 @@ func CalculateStats() {
 	hourAgoDate := time.Now().Add(time.Duration(-1 * time.Hour))
 
 	resp, err := r.Table("game_results").Pluck("userId", "created").Filter(func(row r.Term) r.Term {
-		hourAgoRDate := r.Time(hourAgoDate.Year(), hourAgoDate.Month(), hourAgoDate.Day(), hourAgoDate.Hour(), hourAgoDate.Minute(), hourAgoDate.Second(), "+01:00")
-		nowRDate := r.Time(nowDate.Year(), nowDate.Month(), nowDate.Day(), nowDate.Hour(), nowDate.Minute(), nowDate.Second(), "+01:00")
+		hourAgoRDate := r.Time(hourAgoDate.Year(), hourAgoDate.Month(), hourAgoDate.Day(), hourAgoDate.Hour(), hourAgoDate.Minute(), hourAgoDate.Second(), "Z")
+		nowRDate := r.Time(nowDate.Year(), nowDate.Month(), nowDate.Day(), nowDate.Hour(), nowDate.Minute(), nowDate.Second(), "Z")
 		return row.Field("created").During(hourAgoRDate, nowRDate)
 	}).Run(db.Session)
 
