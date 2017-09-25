@@ -54,6 +54,8 @@ func calculateStatsForUser(userId string) {
 	averageWpm := int(float32(sumWpm) / float32(len(results)))
 	averageAccuracy := int(float32(sumAccuracy) / float32(len(results)))
 
+	log.Println("Calculated for ", userId, ", ", averageAccuracy, averageWpm)
+
 	r.Table("user_stats").Get(userId).Update(map[string]interface{}{
 		"wpm":      averageWpm,
 		"accuracy": averageAccuracy,
@@ -67,11 +69,12 @@ func CalculateAllStats() {
 		return
 	}
 
-	var userIds []map[string]string
+	var userIds []map[string]interface{}
 
 	err = resp.All(&userIds)
+	log.Println("Found users: ", len(userIds))
 	for _, u := range userIds {
-		calculateStatsForUser(u["id"])
+		calculateStatsForUser(u["id"].(string))
 	}
 }
 
