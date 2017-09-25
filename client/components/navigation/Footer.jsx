@@ -13,6 +13,20 @@ class Footer extends React.PureComponent {
             <footer id="footer" className="footer">
                     <div className="container">
                         <div className="row">
+                            <div className="col col-xs-12 text-center">
+                                <div className="footer__social">
+                                    <div style={{maxWidth: "190px", "display": "inline-block", "marginLeft": "10px", "top": "3px", "position": "relative"}}>
+                                        <Follow username="typitap"></Follow>
+                                    </div>
+                                    <div style={{maxWidth: "270px", "display": "inline-block", "marginLeft": "10px", "top": "3px", "position": "relative"}}>
+                                        <FacebookProvider appId="1776657649242212">
+                                            <Like href="http://www.facebook.com/typitap" colorScheme="dark" showFaces share />
+                                        </FacebookProvider>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
                             <div className="col col-xs-12 col-sm-4">
                                 <div className="margin-top-4 text-center">
                                     <div className="white">made by <a href="http://jarosinski.uk" className="white" target="_blank">Konrad Jarosinski</a></div>
@@ -26,20 +40,6 @@ class Footer extends React.PureComponent {
                                     <Link to="/terms" className="white" style={{marginRight: "13px"}}>Terms</Link>
                                     <Link to="/privacy" className="white" style={{marginRight: "13px"}}>Privacy</Link>
                                     <a href="http://community.typitap.com" className="white">Community</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col col-xs-12 text-center">
-                                <div className="footer__social">
-                                    <div style={{maxWidth: "190px", "display": "inline-block", "marginLeft": "10px", "top": "3px", "position": "relative"}}>
-                                        <Follow username="typitap"></Follow>
-                                    </div>
-                                    <div style={{maxWidth: "270px", "display": "inline-block", "marginLeft": "10px", "top": "3px", "position": "relative"}}>
-                                        <FacebookProvider appId="1776657649242212">
-                                            <Like href="http://www.facebook.com/typitap" colorScheme="dark" showFaces share />
-                                        </FacebookProvider>
-                                    </div>
                                 </div>
                             </div>
                         </div>
