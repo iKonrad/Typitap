@@ -25,7 +25,6 @@ class Auth extends Component {
                 <SignupForm redirect={redirectLink} />
             );
         } else if (this.props.route.path === '/login') {
-            console.log(this.props.location.query.redirect);
             return (
                 <LoginForm redirect={ redirectLink } />
             );

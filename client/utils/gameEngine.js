@@ -1,8 +1,8 @@
-import {getStore} from 'store/store';
 import * as GameActions from 'store/ducks/gameModule';
 import * as SocketActions from 'store/ducks/socketModule';
 
 import React from 'react';
+import {getStore} from "#app/store/store";
 
 
 export function startTimer() {
@@ -59,6 +59,8 @@ export function finishGame() {
     // Stop the game timer
     this.stopTimer();
 
+    getStore().dispatch(GameActions.finishInput());
+
     // Mark the game as finished
     if (getStore().getState().game.online) {
         getStore().dispatch(GameActions.completeGame());
@@ -74,8 +76,6 @@ export function finishGame() {
         'sessionId': state.room.id,
         'playback': JSON.stringify(state.playback),
     };
-
-    getStore().dispatch(GameActions.finishInput());
 
     if (!userState.loggedIn) {
         results['user'] = getStore().getState().socket.identifier;
