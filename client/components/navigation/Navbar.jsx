@@ -14,13 +14,20 @@ class Navbar extends PureComponent {
     }
 
     componentDidMount() {
-        setTimeout(() => {
+        let headWayInterval = setInterval(() => {
+
             var widgetConfig = {
                 selector: "#updates-badge", // CSS selector where to inject the badge
-                account:  "7XXeb7"
+                account: "7XXeb7",
             }
-            Headway.init(widgetConfig);
-        }, 1500)
+
+            if (Headway !== undefined && Headway.init !== undefined && typeof Headway.init === 'function') {
+                clearInterval(headWayInterval);
+                Headway.init(widgetConfig);
+            }
+
+
+        }, 200)
     }
 
     renderDropdown(index, obj) {
@@ -33,14 +40,14 @@ class Navbar extends PureComponent {
                     role="button"
                     aria-haspopup="true"
                     aria-expanded="false">
-                    { obj.label }
+                    {obj.label}
                     <span className="caret" style={{marginLeft: '5px'}}></span>
                 </a>
                 <ul className="dropdown-menu">
-                    { obj.items.map((item, index) => {
+                    {obj.items.map((item, index) => {
                         return <NavLink className='dropdown-item' to={item.url}
-                                        key={'menu-dropdown-item-' + index} >{ item.label }</NavLink>;
-                    }) }
+                                        key={'menu-dropdown-item-' + index}>{item.label}</NavLink>;
+                    })}
                 </ul>
             </li>
         );
@@ -76,30 +83,32 @@ class Navbar extends PureComponent {
                             <li id="updates-badge">
                             </li>
 
-                            { this.state.menu.map((obj, index) => {
+                            {this.state.menu.map((obj, index) => {
                                 if (this.props.user && ((!obj.authenticated && this.props.user.loggedIn === undefined) || obj.authenticated === this.props.user.loggedIn)) {
                                     let parsedObj = obj;
                                     parsedObj.label = that.parseValue(obj.label);
                                     if (obj.type === 'link' || obj.type === 'button') {
-                                        return <NavLink to={obj.url} key={'menu-item-' + index} type={ parsedObj.type }>{ parsedObj.label }</NavLink>;
+                                        return <NavLink to={obj.url} key={'menu-item-' + index}
+                                                        type={parsedObj.type}>{parsedObj.label}</NavLink>;
                                     } else if (parsedObj.type === 'dropdown') {
                                         return that.renderDropdown(index, parsedObj);
                                     } else if (parsedObj.type === 'href') {
                                         return (
                                             <li key={`menu-item-${index}`}>
-                                                <a href={ parsedObj.url } >
-                                                    { parsedObj.label }
+                                                <a href={parsedObj.url}>
+                                                    {parsedObj.label}
                                                 </a>
                                             </li>
                                         )
                                     } else if (parsedObj.type === "logout") {
-                                        return (<a href="/auth/logout" key={ 'menu-item' + index }>Log out</a>);
+                                        return (<a href="/auth/logout" key={'menu-item' + index}>Log out</a>);
                                     }
                                 }
                             })}
 
-                            { (this.props.user.data !== undefined && ["ROLE_ADMIN", "ROLE_SUPER_ADMIN"].indexOf(this.props.user.data.Role) > -1 ) ?
-                                (<NavLink to="/admin/users" key={'menu-item-admin'} onClick={ this.handleClick }>ACP</NavLink>) :
+                            {(this.props.user.data !== undefined && ["ROLE_ADMIN", "ROLE_SUPER_ADMIN"].indexOf(this.props.user.data.Role) > -1) ?
+                                (<NavLink to="/admin/users" key={'menu-item-admin'}
+                                          onClick={this.handleClick}>ACP</NavLink>) :
                                 ("")
                             }
                         </ul>
