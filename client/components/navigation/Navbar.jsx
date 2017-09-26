@@ -13,23 +13,6 @@ class Navbar extends PureComponent {
         };
     }
 
-    componentDidMount() {
-        let headWayInterval = setInterval(() => {
-
-            var widgetConfig = {
-                selector: "#updates-badge", // CSS selector where to inject the badge
-                account: "7XXeb7",
-            }
-
-            if (Headway !== undefined && Headway.init !== undefined && typeof Headway.init === 'function') {
-                clearInterval(headWayInterval);
-                Headway.init(widgetConfig);
-            }
-
-
-        }, 200)
-    }
-
     renderDropdown(index, obj) {
         return (
             <li className="dropdown" key={'dropdown-' + index}>
