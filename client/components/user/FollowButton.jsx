@@ -4,17 +4,11 @@ import * as FollowUtils from 'utils/followUtils';
 class FollowButton extends React.Component {
     constructor(props) {
         super(props);
-
         let following = FollowUtils.isUserFollowing(props.id);
-        if (props.id !== undefined && props.id !== "") {
-
-        }
-
         this.state = {
             following: following,
             blocked: false,
         }
-
     }
 
     // Udpate the following state
@@ -29,7 +23,6 @@ class FollowButton extends React.Component {
 
     // Call the follow action
     handleFollow() {
-
         if (!this.state.blocked) {
             FollowUtils.toggleFollow(this.props.id, !this.state.following).then((response) => {
                 if (response.success) {
@@ -37,11 +30,11 @@ class FollowButton extends React.Component {
                     if (!this.state.following) {
                         state.following = true;
                         state.blocked = true;
-                        FollowUtils.followProfile();
+                        FollowUtils.followUser();
 
                     } else {
                         state.following = false;
-                        FollowUtils.unfollowProfile();
+                        FollowUtils.unfollowUser();
                     }
                     this.setState(state);
                 }
@@ -50,7 +43,6 @@ class FollowButton extends React.Component {
     }
 
     render() {
-
         let {id} = this.props;
         if (id !== undefined && id !== "") {
             return (
@@ -65,9 +57,7 @@ class FollowButton extends React.Component {
                 </div>
             );
         }
-
         return null;
-
     }
 }
 

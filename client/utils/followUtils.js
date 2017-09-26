@@ -1,5 +1,6 @@
-import {getStore} from 'store/store';
 import * as ProfileActions from 'store/ducks/profileModule';
+import * as UserActions from 'store/ducks/userModule';
+import {getStore} from "#app/store/store";
 
 export function toggleFollow(userId, follow = true) {
 
@@ -38,12 +39,14 @@ export function isUserFollowing(userId) {
     return following;
 }
 
-export function followProfile() {
+export function followUser() {
     let state = getStore().getState();
     getStore().dispatch(ProfileActions.followUser(state.user.data.Id, state.user.data.Username, state.user.data.Email));
+    getStore().dispatch(UserActions.followUser(state.profile.user.Id, state.profile.user.Username, state.profile.user.Email));
 }
 
-export function unfollowProfile() {
+export function unfollowUser() {
     let state = getStore().getState();
     getStore().dispatch(ProfileActions.unfollowUser(state.user.data.Id));
+    getStore().dispatch(UserActions.unfollowUser(state.profile.user.Id));
 }

@@ -68,35 +68,35 @@ class Profile extends Component {
     render() {
         return (
             <div className="container profile-page">
-                <Helmet title={ this.props.user.data.Username } { ...this.renderMetaTags() } />
+                <Helmet title={this.props.user.data.Username} {...this.renderMetaTags()} />
                 <div className="row">
                     <div className="col col-xs-12 col-md-8">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Panel className="profile-page__info" loaded={ this.props.profile.user !== undefined }>
-                                    <ProfileInfo loggedIn={ this.props.user.loggedIn }
-                                                 user={  this.props.profile.user  }
-                                                 stats={ this.props.profile.stats }/>
+                                <Panel className="profile-page__info" loaded={this.props.profile.user !== undefined}>
+                                    <ProfileInfo loggedIn={this.props.user.loggedIn}
+                                                 user={this.props.profile.user}
+                                                 stats={this.props.profile.stats}/>
                                 </Panel>
 
                             </div>
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Panel loaded={ this.props.profile.stats !== undefined }><UserStats
-                                    stats={ this.props.profile.stats }/></Panel>
+                                <Panel loaded={this.props.profile.stats !== undefined}><UserStats
+                                    stats={this.props.profile.stats}/></Panel>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
                                 <Panel
-                                    title={ `Comments (${ this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0 })` }
-                                    loaded={ true }>
+                                    title={`Comments (${ this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0 })`}
+                                    loaded={true}>
                                     <Comments
-                                        comments={ this.props.profile.comments }
-                                        id={ this.props.profile.user.Id }
-                                        page={ this.props.profile.commentsPage }
-                                        onPageChange={ this.turnCommentsPage.bind(this) }
+                                        comments={this.props.profile.comments}
+                                        id={this.props.profile.user.Id}
+                                        page={this.props.profile.commentsPage}
+                                        onPageChange={this.turnCommentsPage.bind(this)}
                                     />
                                 </Panel>
                             </div>
@@ -105,26 +105,26 @@ class Profile extends Component {
                     <div className="col col-xs-12 col-md-4">
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Panel title="About" loaded={ this.props.profile.user !== undefined }>
-                                    <UserBio user={ this.props.profile.user }/>
+                                <Panel title="About" loaded={this.props.profile.user !== undefined}>
+                                    <UserBio user={this.props.profile.user}/>
                                 </Panel>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Follow title="Followers" items={ this.props.profile.follow.followers }/>
+                                <Follow title="Followers" items={this.props.profile.follow.followers}/>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Follow title="Following" items={ this.props.profile.follow.following }/>
+                                <Follow title="Following" items={this.props.profile.follow.following}/>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col col-xs-12">
-                                <Panel title="Recent games" loaded={ this.props.profile.games !== undefined }>
+                                <Panel title="Recent games" loaded={this.props.profile.games !== undefined}>
                                     <RecentGames
-                                        games={ this.props.profile.games }
+                                        games={this.props.profile.games}
                                         hideButton={true}
                                     />
                                 </Panel>
@@ -137,22 +137,13 @@ class Profile extends Component {
     }
 }
 
-const
-    mapStateToProps = (state) => {
-        return {
-            app: state.app,
-            routing: state.routing,
-            user: state.user,
-            profile: state.profile,
-        };
+const mapStateToProps = (state) => {
+    return {
+        app: state.app,
+        routing: state.routing,
+        user: state.user,
+        profile: state.profile,
     };
+};
 
-export
-default
-
-connect(mapStateToProps)
-
-(
-    Profile
-)
-;
+export default connect(mapStateToProps)(Profile);

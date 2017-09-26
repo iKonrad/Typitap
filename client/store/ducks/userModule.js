@@ -7,6 +7,8 @@ const UPDATE_EMAIL_SUCCESS = "@@user/UPDATE_EMAIL_SUCCESS";
 const UPDATE_USER_FIELD = "@@user/UPDATE_USER_FIELD";
 const SET_USER_STATS = "@@user/SET_USER_STATS";
 const SET_FOLLOW_DATA = "@@user/SET_FOLLOW_DATA";
+const FOLLOW_USER = "@@user/FOLLOW_USER";
+const UNFOLLOW_USER = "@@user/UNFOLLOW_USER";
 
 const initialState = {
     loggedIn: false,
@@ -24,7 +26,7 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 loggedIn: true,
-                data:  {
+                data: {
                     ...action.user
                 }
             };
@@ -75,7 +77,30 @@ export default function reducer(state = initialState, action) {
                 follow: {
                     ...action.follow
                 }
-            }
+            };
+        case FOLLOW_USER:
+            return {
+                ...state,
+                follow: {
+                    ...state.follow,
+                    following: [
+                        ...state.follow.following,
+                        {
+                            id: action.id,
+                            username: action.username,
+                            email: action.email,
+                        }
+                    ]
+                }
+            };
+        case UNFOLLOW_USER:
+            return {
+                ...state,
+                follow: {
+                    ...state.follow,
+                    following: state.follow.followers.filter(obj => obj.id !== action.id),
+                }
+            };
     }
 
     return state;
@@ -166,4 +191,12 @@ export function activateUser() {
 
 export function changeEmail(email) {
     return {type: UPDATE_EMAIL_SUCCESS, email};
+}
+
+export function followUser(id, username, email) {
+    return {type: FOLLOW_USER, id, username, email};
+}
+
+export function unfollowUser(id) {
+    return {type: UNFOLLOW_USER, id};
 }
