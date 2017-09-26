@@ -70,7 +70,7 @@ class Play extends Component {
                                 feed={ this.props.play.feed }/></Panel>
                         </div>
                         <div className="col col-xs-12 col-md-4">
-                            <button type="button" className="btn btn-secondary btn-block"
+                            <button type="button" className="btn btn-success btn-block"
                                     onClick={ this.handleOnlineButton.bind(this) }>Race online
                             </button>
                             <button type="button" className="btn btn-default btn-block"
