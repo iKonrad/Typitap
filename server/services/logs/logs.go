@@ -107,6 +107,11 @@ func Decr(name string, tags []string) {
 
 
 func Push(title string, text string) {
+
+	if config.Config.UBool("debug", true) {
+		return;
+	}
+
 	// Create the message to send
 	message := pushover.NewMessageWithTitle(title, text)
 
@@ -115,6 +120,11 @@ func Push(title string, text string) {
 }
 
 func PushUrl(title string, text string, url string) {
+
+	if config.Config.UBool("debug", true) {
+		return;
+	}
+
 	// Create the message to send
 	message := &pushover.Message{
 		Message:     text,
@@ -122,8 +132,6 @@ func PushUrl(title string, text string, url string) {
 		URL:         url,
 		URLTitle:    "See details",
 	}
-
-
 
 	// Send the message to the recipient
 	pushoverClient.SendMessage(message, pushoverRecipient)
