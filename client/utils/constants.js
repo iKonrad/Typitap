@@ -12,7 +12,7 @@ export const MENU_TREE = [
         authenticated: false
     },
     {
-        label: 'Dashboard',
+        label: 'My dashboard',
         type: 'link',
         url: '/',
         authenticated: true,
@@ -36,7 +36,7 @@ export const MENU_TREE = [
         authenticated: true,
         items: [
             {
-                label: 'Account',
+                label: 'Settings',
                 type: 'link',
                 url: '/account/details',
                 authenticated: true
