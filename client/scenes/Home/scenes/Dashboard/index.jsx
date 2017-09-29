@@ -13,11 +13,12 @@ import Panel from 'components/app/Panel';
 import { resolveAll } from 'utils/jsUtils';
 import UserboardSnippet from 'components/user/UserboardSnippet';
 import Comments from 'components/app/Comments';
+import ChartistGraph from 'react-chartist';
+
 
 class Dashboard extends Component {
 
     static clientInit({store, nextState, replaceState, callback}) {
-        console.log("???");
         resolveAll([
             store.dispatch(DashboardActions.fetchActivityFeed(0)),
             store.dispatch(ProfileActions.fetchUserProfile(store.getState().user.data.Username)),
@@ -38,7 +39,64 @@ class Dashboard extends Component {
         this.props.dispatch(ProfileActions.turnCommentsPage(page))
     }
 
+    renderEmptyChartMessage() {
+        return (
+            <div className="row">
+                <div className="col col-xs-12 margin-top-2 text-center">
+                    <div className="fa fa-frown-o fa-3x text-primary"></div>
+                    <h4>No data to display</h4>
+                    <p className="text-muted">You need to play for at least 3 days in a row for the chart to show</p>
+                </div>
+            </div>
+        );
+    }
+
+    renderChart() {
+        // if (this.props.profile.charts === undefined || this.props.profile.charts.length < 3) {
+            return this.renderEmptyChartMessage();
+        // }
+
+        let labels = Object.keys(this.props.profile.charts).map((obj) => {
+            let date = obj.split("-");
+            return date[1] + "/" + date[2]
+        });
+
+        let maxWpm = 0;
+        let minWpm = 0;
+
+        let series = [ Object.keys(this.props.profile.charts).map((key) => {
+            let obj = this.props.profile.charts[key];
+            maxWpm = obj.wpm > maxWpm ? obj.wpm : maxWpm;
+            minWpm = obj.wpm < minWpm ? obj.wpm : minWpm;
+            return obj.wpm;
+        }) ];
+
+        let data = {
+            labels,
+            series,
+        };
+
+        let options = {
+            high: maxWpm + 10,
+            low: Math.max(minWpm - 10, 0),
+            axisX: {
+                labelInterpolationFnc: function(value, index) {
+                    return index % 2 === 0 ? value : null;
+                }
+            },
+        };
+
+        let type = 'Line';
+        return (
+            <div>
+                <div className="text-muted">Practice your typing every day and keep track on how your performance improves over time.</div>
+                <ChartistGraph data={data} options={options} type={type} />
+            </div>
+        )
+    }
+
     render() {
+
         return (
             <div className="container profile-page">
                 <div className="row">
@@ -56,6 +114,13 @@ class Dashboard extends Component {
                             <div className="col col-xs-12">
                                 <Panel loaded={ this.props.profile.stats !== undefined }><UserStats
                                     stats={ this.props.profile.stats }/></Panel>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-xs-12">
+                                <Panel loaded={true} title="Progress Charts">
+                                    { this.renderChart() }
+                                </Panel>
                             </div>
                         </div>
                         <div className="row">

@@ -143,7 +143,7 @@ class Homepage extends Component {
                                         the world, or <strong>practice</strong> to prepare your skills for the race.</p>
                                 </div>
                             </div>
-                            <div className="col col-xs-12 col-md-7 col-md-offset-1">
+                            <div className="col col-xs-12 col-md-7 col-md-offset-1 text-center">
                                 <img src="/static/images/pages/homepage/feature_1.jpg" className="img-mobile-stretch"
                                      alt="Game screen"/>
                             </div>
@@ -162,16 +162,30 @@ class Homepage extends Component {
                                         typing skills</p>
                                 </div>
                             </div>
-                            <div className="col col-xs-12 col-md-7 col-md-offset-1">
+                            <div className="col col-xs-12 col-md-7 col-md-offset-1 text-center">
                                 <img src="/static/images/pages/homepage/feature_2.jpg" className="img-mobile-stretch"
                                      alt="Game screen"/>
                             </div>
                         </div>
                     </div>
-
                 </div>
-
                 <div className="section section--white">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col col-xs-12 col-md-4">
+                                <div className="margin-top-7 margin-bottom-5">
+                                    <h2>Track your progress</h2>
+                                    <p>Monitor your performance with stunning charts and see how your typing speed and accuracy improve over time.</p>
+                                </div>
+                            </div>
+                            <div className="col col-xs-12 col-md-7 col-md-offset-1 text-center">
+                                <img src="/static/images/pages/homepage/feature_4.jpg" className="img-mobile-stretch margin-top-5"
+                                     alt="Game screen"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="section section--grey">
                     <div className="container">
                         <div className="row">
                             <div className="col col-xs-12 col-md-4">
@@ -185,15 +199,13 @@ class Homepage extends Component {
                                         most recent results.</p>
                                 </div>
                             </div>
-                            <div className="col col-xs-12 col-md-7 col-md-offset-1">
+                            <div className="col col-xs-12 col-md-7 col-md-offset-1 text-center">
                                 <img src="/static/images/pages/homepage/feature_3.jpg" className="img-mobile-stretch"
                                      alt="Game screen"/>
                             </div>
                         </div>
                     </div>
-
                 </div>
-
                 <div className="section section--light">
                     <div className="container">
                         <div className="row">

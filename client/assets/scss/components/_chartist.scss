@@ -1,0 +1,53 @@
+.ct-label.ct-vertical.ct-start {
+  height: 40px!important;
+}
+.ct-label.ct-horizontal.ct-end {
+  height: 40px!important;
+  margin-left: -15px;
+  margin-top: 5px;
+}
+
+.ct-chart {
+  position: relative;
+}
+
+.ct-tooltip {
+  position: absolute;
+  display: inline-block;
+  min-width: 5em;
+  padding: 8px 10px;
+  background: white;
+  box-shadow: 0 2px 35px 0 rgba(205,205,205,0.50);
+  color: $grey-600;
+  text-align: center;
+  pointer-events: none;
+  border-radius: $border-radius;
+  z-index: 100;
+  transition: opacity .2s linear;
+}
+
+.ct-tooltip:before {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  border: solid transparent;
+  content: ' ';
+  height: 0;
+  width: 0;
+  pointer-events: none;
+  border-color: rgba(251, 249, 228, 0);
+  border-top-color: white;
+  border-width: 7px;
+  box-shadow: 0 2px 35px 0 rgba(205,205,205,0.50);
+  margin-left: -8px;
+}
+
+.ct-tooltip.hide {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {
+  stroke: $brand-primary;
+}

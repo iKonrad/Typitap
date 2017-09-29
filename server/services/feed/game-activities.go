@@ -20,6 +20,14 @@ func (a ActivityActions) PlayerCompletedOfflineGameActivity(username string, wpm
 	}
 }
 
+func (a ActivityActions) GuestCompletedGameActivity(wpm int) map[string]string {
+	return map[string]string{
+		"activityType": "GAME_FINISHED_OFFLINE_RACE_GUEST",
+		"wpm":          strconv.Itoa(wpm),
+	}
+}
+
+
 func (a ActivityActions) GlobalGameFinished(username string, wpm int, players int) map[string]string {
 	return map[string]string{
 		"activityType": "GLOBAL_GAME_FINISHED",
