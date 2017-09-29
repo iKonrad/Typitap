@@ -4,6 +4,7 @@ import thunkMiddleware from 'redux-thunk';
 import {routerMiddleware} from 'react-router-redux'
 import socketMiddleware from "./middlewares/socketMiddleware";
 import gaMiddleware from './middlewares/gaMiddleware';
+import soundMiddleware from './middlewares/soundMiddleware';
 
 import { createLogger } from 'redux-logger'
 const middlewares = [];
@@ -23,6 +24,9 @@ export function createStore(state, history) {
 
     // Add google analytics middleware
     middlewares.push(gaMiddleware);
+
+    // Add google analytics middleware
+    middlewares.push(soundMiddleware);
 
     // Add state logger
     if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {

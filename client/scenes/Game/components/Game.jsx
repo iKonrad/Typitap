@@ -42,14 +42,12 @@ class Game extends Component {
                     </div>
                 </div>
                 { this.renderResultModal() }
-
             </div>
         )
     }
 
     componentWillMount() {
         // Check if the client is connected to the websocket.
-
         if (!this.props.socket.connected || this.props.socket.identifier === "") {
             let timeOut = setTimeout(() => {
                 if (this.props.socket.connected) {
@@ -62,19 +60,16 @@ class Game extends Component {
         } else {
             this.handleGameStart();
         }
-
         // Leave rooms when the browser is closed
         if (typeof window !== "undefined") {
             window.addEventListener('beforeunload', this.onUnload);
         }
-
     }
 
     componentWillUnmount() {
         if (typeof window !== "undefined") {
             window.removeEventListener('beforeunload', this.onUnload);
         }
-
         this.resetGame();
     }
 
@@ -94,8 +89,6 @@ class Game extends Component {
 
     componentWillReceiveProps(newProps) {
         // Check if the room ID has been passed over
-
-
         if (Object.keys(newProps).length === 0) {
             return;
         }
@@ -110,7 +103,6 @@ class Game extends Component {
                 this.props.dispatch(GameActions.startMatchmaking());
             }
         }
-
     }
 
     renderMain() {
@@ -166,9 +158,6 @@ class Game extends Component {
         }
         return "";
     }
-
-    
-
 }
 
 

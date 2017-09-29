@@ -1,23 +1,23 @@
-const START_GAME = "@@game/START_GAME";
-const FINISH_GAME = "@@game/FINISH_GAME";
-const FINISH_INPUT = '@@game/FINISH_INPUT';
+export const START_GAME = "@@game/START_GAME";
+export const FINISH_GAME = "@@game/FINISH_GAME";
+export const FINISH_INPUT = '@@game/FINISH_INPUT';
 export const COMPLETE_GAME = "@@game/COMPLETE_GAME";
-const UPDATE_INPUT = "@@game/UPDATE_INPUT";
-const FINISH_WORD = "@@game/FINISH_WORD";
-const MAKE_WORD_MISTAKE = "@@game/ERROR_WORD";
-const TICK_TIME = "@@game/TICK_TIME";
-const START_COUNTDOWN = "@@game/START_COUNTDOWN";
-const TICK_COUNTDOWN = "@@game/TICK_COUNTDOWN";
-const SET_COUNTDOWN = "@@game/SET_COUNTDOWN";
-const STOP_COUNTDOWN = "@@game/STOP_COUNTDOWN";
-const START_WAIT_COUNTDOWN = "@@game/START_WAIT_COUNTDOWN";
-const TICK_WAIT_COUNTDOWN = "@@game/TICK_WAIT_COUNTDOWN";
-const SET_WAIT_COUNTDOWN = "@@game/SET_WAIT_COUNTDOWN";
-const STOP_WAIT_COUNTDOWN = "@@game/STOP_WAIT_COUNTDOWN";
-const RESET_GAME = "@@game/RESET_GAME";
-const START_MATCHMAKING = "@@game/START_MATCHMAKING";
-const PLAYER_JOINED_ROOM = "@@game/PLAYER_JOINED_ROOM";
-const PLAYER_LEFT_ROOM = "@@game/PLAYER_LEFT_ROOM";
+export const UPDATE_INPUT = "@@game/UPDATE_INPUT";
+export const FINISH_WORD = "@@game/FINISH_WORD";
+export const MAKE_WORD_MISTAKE = "@@game/ERROR_WORD";
+export const TICK_TIME = "@@game/TICK_TIME";
+export const START_COUNTDOWN = "@@game/START_COUNTDOWN";
+export const TICK_COUNTDOWN = "@@game/TICK_COUNTDOWN";
+export const SET_COUNTDOWN = "@@game/SET_COUNTDOWN";
+export const STOP_COUNTDOWN = "@@game/STOP_COUNTDOWN";
+export const START_WAIT_COUNTDOWN = "@@game/START_WAIT_COUNTDOWN";
+export const TICK_WAIT_COUNTDOWN = "@@game/TICK_WAIT_COUNTDOWN";
+export const SET_WAIT_COUNTDOWN = "@@game/SET_WAIT_COUNTDOWN";
+export const STOP_WAIT_COUNTDOWN = "@@game/STOP_WAIT_COUNTDOWN";
+export const RESET_GAME = "@@game/RESET_GAME";
+export const START_MATCHMAKING = "@@game/START_MATCHMAKING";
+export const PLAYER_JOINED_ROOM = "@@game/PLAYER_JOINED_ROOM";
+export const PLAYER_LEFT_ROOM = "@@game/PLAYER_LEFT_ROOM";
 export const JOINED_ROOM = "@@game/JOINED_ROOM";
 export const LEFT_ROOM = "@@game/LEFT_ROOM";
 export const UPDATE_PLAYER_DATA = "@@game/UPDATE_PLAYER_DATA";
@@ -531,6 +531,8 @@ export function joinedRoom(roomId, players, text) {
     }
 
 }
+
+
 
 export function leftRoom() {
     return {type: LEFT_ROOM}

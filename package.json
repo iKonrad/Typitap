@@ -20,6 +20,7 @@
     "express": "^4.15.2",
     "extract-text-webpack-plugin": "^1.0.1",
     "font-awesome": "^4.7.0",
+    "howler": "^2.0.4",
     "is-retina": "^1.0.3",
     "jquery": "^3.2.1",
     "md5": "^2.2.1",
