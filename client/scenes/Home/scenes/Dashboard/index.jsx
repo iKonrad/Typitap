@@ -52,9 +52,9 @@ class Dashboard extends Component {
     }
 
     renderChart() {
-        // if (this.props.profile.charts === undefined || this.props.profile.charts.length < 3) {
+        if (this.props.profile.charts === undefined || this.props.profile.charts.length < 3) {
             return this.renderEmptyChartMessage();
-        // }
+        }
 
         let labels = Object.keys(this.props.profile.charts).map((obj) => {
             let date = obj.split("-");
