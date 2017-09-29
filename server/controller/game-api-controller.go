@@ -96,6 +96,7 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 		newResult, ok := game.SaveGuestResult(c.FormValue("user"), session.Id, mistakes, wpm, accuracy, gameTime, 0, utils.GetIPAdress(c.Request()), country)
 		if ok {
 			resultId = newResult["id"].(string)
+			feed.SendGlobalActivity(feed.Activities.GuestCompletedGameActivity(wpm))
 		} else {
 			return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 				"success": false,
