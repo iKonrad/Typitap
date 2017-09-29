@@ -42,19 +42,19 @@ class Dashboard extends Component {
     renderEmptyChartMessage() {
         return (
             <div className="row">
-                <div className="col col-xs-12 margin-top-4 text-center">
+                <div className="col col-xs-12 margin-top-2 text-center">
                     <div className="fa fa-frown-o fa-3x text-primary"></div>
                     <h4>No data to display</h4>
-                    <p className="text-muted">You need to play for at least 3 days in a row in order to display the chart</p>
+                    <p className="text-muted">You need to play for at least 3 days in a row for the chart to show</p>
                 </div>
             </div>
         );
     }
 
     renderChart() {
-        if (this.props.profile.charts === undefined || this.props.profile.charts.length < 3) {
+        // if (this.props.profile.charts === undefined || this.props.profile.charts.length < 3) {
             return this.renderEmptyChartMessage();
-        }
+        // }
 
         let labels = Object.keys(this.props.profile.charts).map((obj) => {
             let date = obj.split("-");
