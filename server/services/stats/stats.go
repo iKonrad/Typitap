@@ -8,6 +8,8 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	r "gopkg.in/gorethink/gorethink.v3"
+	"strconv"
+	"github.com/iKonrad/typitap/server/services/utils"
 )
 
 func NewStats(user entities.User) entities.UserStats {
@@ -145,7 +147,6 @@ func IncrementGamesStat(userId string) {
 }
 
 func GetStatsForUser(userId string) (map[string]interface{}, bool) {
-
 	resp, err := r.Table("user_stats").Get(userId).Without("userId").Run(db.Session)
 
 	if err != nil || resp.IsNil() {
@@ -156,5 +157,44 @@ func GetStatsForUser(userId string) (map[string]interface{}, bool) {
 	err = resp.One(&userStats)
 
 	return userStats, true
+}
 
+func GetChartStatsForUser(userId string) (map[string]interface{}, bool) {
+	resp, err := r.Table("game_results").
+		Filter(map[string]interface{}{"userId": userId}).
+		Pluck("created", "wpm", "accuracy").
+		Group(r.Row.Field("created").Year(), r.Row.Field("created").Month(), r.Row.Field("created").Day()).
+		Run(db.Session)
+
+	if err != nil || resp.IsNil() {
+		return map[string]interface{}{}, false
+	}
+
+	var userStats []map[string]interface{}
+	err = resp.All(&userStats)
+
+	returnStats := map[string]interface{}{}
+
+	// Go through all results and calculate average wpm/accuracy
+	for _, dayStats := range userStats {
+		sumWpm := 0
+		sumAccuracy := 0
+		gamesPlayed := 0
+
+		for _, stat := range dayStats["reduction"].([]interface{}) {
+			convStat := stat.(map[string]interface{})
+			sumWpm += int(convStat["wpm"].(float64))
+			sumAccuracy += int(convStat["accuracy"].(float64))
+			gamesPlayed++
+		}
+
+		dayIndex := dayStats["group"].([]interface{})
+		dayIndexText := strconv.Itoa(int(dayIndex[0].(float64))) + "-" + utils.LeftPad(strconv.Itoa(int(dayIndex[1].(float64))), "0", 2) + "-" + strconv.Itoa(int(dayIndex[2].(float64)))
+		returnStats[dayIndexText] = map[string]interface{}{
+			"wpm": int(float64(sumWpm) / float64(gamesPlayed)),
+			"accuracy": int(float64(sumAccuracy) / float64(gamesPlayed)),
+		}
+	}
+
+	return returnStats, true
 }

@@ -6,6 +6,10 @@
 
 
 @import 'bootstrap';
+
+@import 'components/chartist-variables';
+@import '~chartist/dist/scss/chartist';
+
 @import 'flatly/flatly_theme';
 
 @import "fonts";
@@ -25,7 +29,6 @@
 
 // 3. Pages
 @import 'pages/**/*.scss';
-
 
 
 

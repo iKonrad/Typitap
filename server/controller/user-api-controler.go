@@ -196,7 +196,7 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 
 func (gc UserAPIController) updateForumUserAttribute(username string, attribute string, value string) {
 	forumUser, forumError := flarumClient.GetUserByUsername(username)
-	forumUserData, ok := forumUser["data"].([]interface {})
+	forumUserData, ok := forumUser["data"].([]interface{})
 	if forumError == nil && ok && len(forumUserData) > 0 {
 		if forumUserId, ok := forumUserData[0].(map[string]interface{})["id"]; ok {
 			flarumClient.UpdateUserAttribute(forumUserId.(string), attribute, value)
@@ -303,7 +303,6 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 	u, ok := us.FindUserBy("username", username)
 
 	// Convert User struct into map
-
 	user := us.ConvertUserToMap(&u)
 	if !ok {
 		return c.JSON(http.StatusNoContent, map[string]interface{}{
@@ -319,11 +318,15 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 
 	// Get stats for user
 	userStats, ok := stats.GetStatsForUser(user["Id"].(string))
+
 	filters := map[string]interface{}{}
 	o := c.QueryParam("offset")
 	if o == "" {
 		o = "0"
 	}
+
+	// Get chart data
+	chartData, ok := stats.GetChartStatsForUser(user["Id"].(string))
 
 	offset, _ := strconv.Atoi(o)
 	filters["userId"] = user["Id"].(string)
@@ -336,6 +339,7 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 		"data": map[string]interface{}{
 			"user":     user,
 			"stats":    userStats,
+			"charts":   chartData,
 			"games":    recentGames,
 			"follow":   follow,
 			"comments": userComments.Items,

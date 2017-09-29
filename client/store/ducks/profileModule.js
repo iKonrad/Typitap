@@ -17,6 +17,7 @@ const initialState = {
         followers: [],
         following: [],
     },
+    charts: {},
     comments: [],
     commentsPage: 1,
 };

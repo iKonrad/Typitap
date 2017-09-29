@@ -6,7 +6,6 @@ import (
 )
 
 func registerStatsJobs() {
-	stats.CalculateAllStats()
 	c.AddFunc("0 0 * * * *", func() {
 		fmt.Println("CRON: Calculating stats for recent players")
 		stats.CalculateStats()
