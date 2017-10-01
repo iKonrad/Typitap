@@ -13,6 +13,7 @@ class OnlineRoomPanel extends React.Component {
         let hasJoined = props.game.room.id !== "" && props.game.online;
         this.state = {
             scroll: -40,
+            joined: hasJoined,
             players: hasJoined ? props.game.room.players : props.app.onlineRoom.players,
             countdownStarted: hasJoined ? props.game.waitCountdown : props.app.onlineRoom.waitCountdown,
             countdownSeconds: hasJoined ? props.game.waitCountdownSeconds : props.app.onlineRoom.waitCountdownSeconds,
@@ -34,6 +35,7 @@ class OnlineRoomPanel extends React.Component {
     componentWillReceiveProps(newProps) {
         let hasJoined = newProps.game.room.id !== "" && newProps.game.online;
         let state = {
+            joined: hasJoined,
             scroll: -40,
             players: hasJoined ? newProps.game.room.players : newProps.app.onlineRoom.players,
             countdownStarted: hasJoined ? newProps.game.waitCountdown : newProps.app.onlineRoom.waitCountdown,
@@ -140,9 +142,15 @@ class OnlineRoomPanel extends React.Component {
 
     renderPlayersCountBadge() {
         let playersCount = this.state.players !== undefined ? Object.keys(this.state.players).length : 0;
-        return (
-            <div className={`badge ${ playersCount > 0 ? "badge--has-players" : ""}`}>{ playersCount }</div>
-        );
+        if (this.state.joined && this.state.countdownStarted) {
+            return (
+                <div className={`badge badge-danger`}>{ this.state.countdownSeconds }</div>
+            );
+        } else {
+            return (
+                <div className={`badge ${ playersCount > 0 ? "badge--has-players" : ""}`}>{ playersCount }</div>
+            );
+        }
     }
 
     renderCountdown() {

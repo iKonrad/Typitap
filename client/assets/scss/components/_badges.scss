@@ -1,4 +1,9 @@
 
+.badge {
+  &-danger {
+    background-color: $brand-danger;
+  }
+}
 
 .result-badge {
 
