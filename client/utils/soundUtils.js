@@ -9,7 +9,7 @@ export const SOUNDS = {
     GAME_COUNTDOWN_START: SOUNDS_PATH + "s_game_countdown_start.ogg",
     GAME_START: SOUNDS_PATH + "s_game_start.ogg",
     GAME_PLAYER_JOINS: SOUNDS_PATH + "s_player_joins.ogg",
-    GAME_PLAYER_LEAVES: SOUNDS_PATH + "s_player_leaves.ogg",
+    GAME_PLAYER_LEAVES: SOUNDS_PATH + "s_player_leaves_2.ogg",
     GAME_MISTAKE: SOUNDS_PATH + "s_typo.ogg",
     GAME_WORD_FINISHED: SOUNDS_PATH + "s_word_finished.ogg",
 };

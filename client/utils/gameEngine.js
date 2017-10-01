@@ -3,6 +3,7 @@ import * as SocketActions from 'store/ducks/socketModule';
 
 import React from 'react';
 import {getStore} from "#app/store/store";
+import * as gameActions from "#app/store/ducks/gameModule";
 
 
 export function startTimer() {
@@ -49,8 +50,7 @@ export function resetGame() {
     if (getStore().getState().game.online) {
         getStore().dispatch(SocketActions.leaveRoom());
     }
-
-    getStore().dispatch(GameActions.resetGame());
+    getStore().dispatch(gameActions.resetGame());
 }
 
 

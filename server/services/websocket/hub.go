@@ -12,6 +12,12 @@ import (
 const (
 	TYPE_CONNECTED = "CONNECTED" // Used after successful connection to the websocket server
 	TYPE_ERROR     = "ERROR"     // Generic error type for any unsuccessful action
+
+	TYPE_ONLINE_GAME_PLAYERS_SET = "ONLINE_GAME_PLAYERS_SET"
+	TYPE_ONLINE_GAME_COUNTDOWN_STARTED = "TYPE_ONLINE_GAME_COUNTDOWN_STARTED"
+	TYPE_ONLINE_GAME_COUNTDOWN_STOPPED = "TYPE_ONLINE_GAME_COUNTDOWN_STOPPED"
+	TYPE_ONLINE_GAME_COUNTDOWN_SET = "TYPE_ONLINE_GAME_COUNTDOWN_SET"
+	TYPE_ONLINE_GAME_RESET = "TYPE_ONLINE_GAME_RESET"
 )
 
 const (
@@ -72,7 +78,7 @@ func (h *SocketHub) broadcastMessage(message string) {
 	for id, client := range h.clients {
 
 		select {
-		case client.send <- []byte("{\"name\":\"" + id + "\"}"):
+		case client.send <- []byte(message):
 			log.Println("Broadcasting message: ", message)
 			break
 		default:

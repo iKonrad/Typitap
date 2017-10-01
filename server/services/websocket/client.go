@@ -68,8 +68,6 @@ func ServeWs(context echo.Context) {
 		identifier = "guest-" + strconv.Itoa(randomNumber)
 	}
 
-
-
 	ip := utils.GetIPAdress(context.Request())
 	country, _ := user.GetCountryCodeByIP(ip)
 

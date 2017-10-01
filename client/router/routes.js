@@ -56,7 +56,7 @@ export default ({store, first}) => {
             </Route>
 
             <Route path="/play" component={Play} onEnter={w(Play.clientInit)} />
-            <Route path="/play/:type" component={GameWindow} onEnter={w(GameWindow.clientInit)} />
+            <Route path="/play/game" component={GameWindow} onEnter={w(GameWindow.clientInit)} />
 
             <Route path="/about" component={About} />
             <Route path="/terms" component={ Terms } />

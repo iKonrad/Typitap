@@ -7,6 +7,7 @@ import * as socketActions from 'store/ducks/socketModule';
 import AlertBar from './components/AlertBar';
 import Footer from 'components/navigation/Footer';
 import Helmet from 'react-helmet';
+import OnlineRoomPanel from 'components/game/OnlineRoomPanel';
 
 class Base extends Component {
 
@@ -96,6 +97,7 @@ class Base extends Component {
 
                 <div id="react-container" className="main-content">
                     { showEmptyBase ? "" : (<AlertBar/>) }
+                    { showEmptyBase || (this.props.router.getCurrentLocation().pathname === "/" && !this.props.user.loggedIn) ? "" : (<OnlineRoomPanel/>) }
                     { this.props.children }
                     { showEmptyBase ? "" : (<Footer/>) }
                 </div>

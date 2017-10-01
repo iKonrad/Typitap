@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 	"strconv"
+	"github.com/iKonrad/typitap/server/services/websocket"
 )
 
 func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
@@ -51,6 +52,10 @@ func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
 				"data":     map[string]interface{}{},
 				"loggedIn": false,
 			}
+		}
+
+		newStore["app"] = map[string]interface{}{
+			"onlineRoom": websocket.GetEngine().GetOnlineRoomData(),
 		}
 
 		c.Set("State", newStore)

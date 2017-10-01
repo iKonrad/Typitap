@@ -18,10 +18,10 @@ class GameWindow extends Component {
     render() {
 
         return (
-            <div className="container">
+            <div className="container" style={{marginTop: "40px"}}>
                 <div className="row">
-                    <div className="col col-xs-12 col-md-8 col-md-offset-2">
-                        <Game online={ this.props.params.type === "online" } />
+                    <div className="col col-xs-12 col-md-8 col-md-offset-2" >
+                        <Game online={ this.props.game.online } />
                     </div>
                 </div>
             </div>
