@@ -82,7 +82,7 @@
           }
           .navbar-btn {
             a {
-              background-color: $brand-secondary;
+              background-color: $brand-success;
             }
           }
 
@@ -95,9 +95,9 @@
             height: auto;
             color: white;
 
-            background-color: $brand-secondary;
+            background-color: $brand-success;
             &:hover {
-              background-color: darken($brand-secondary, 5%);
+              background-color: darken($brand-success, 5%);
             }
 
           }

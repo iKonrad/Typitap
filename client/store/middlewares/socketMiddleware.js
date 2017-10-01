@@ -1,9 +1,11 @@
 import * as socketActions from "store/ducks/socketModule";
 import * as gameActions from "store/ducks/gameModule";
 import Notifications from 'utils/notifications';
+import * as appActions from 'store/ducks/appModule';
 import * as GameEngine from 'utils/gameEngine';
 
 import React from 'react';
+
 const CODE_RECONNECT = 5001;
 const CODE_DISCONNECT = 5000;
 
@@ -32,10 +34,11 @@ const socketMiddleware = (function () {
                 store.dispatch(socketActions.setIdentifier(msg.data.identifier));
                 break;
             case "JOINED_ROOM":
-                store.dispatch(gameActions.joinedRoom(msg.data.roomId, msg.data.players, msg.data.text));
+                store.dispatch(gameActions.joinedRoom(msg.data.roomId, msg.data.players, msg.data.text, msg.data.online));
                 break;
             case "LEFT_ROOM":
                 store.dispatch(gameActions.leftRoom());
+                store.dispatch(gameActions.resetGame());
                 break;
             case "PLAYER_JOINED_ROOM":
                 store.dispatch(gameActions.playerJoinedRoom(msg.data.player));
@@ -44,6 +47,7 @@ const socketMiddleware = (function () {
                 store.dispatch(gameActions.playerLeftRoom(msg.data.identifier));
                 break;
             case "START_COUNTDOWN":
+                store.dispatch(appActions.closeOnlineSidebar());
                 store.dispatch(gameActions.startCountdown(msg.data.seconds));
                 break;
             case "TICK_COUNTDOWN":
@@ -77,10 +81,23 @@ const socketMiddleware = (function () {
                 let resultId = msg.data.resultId;
                 store.dispatch(gameActions.finishGame(wpm, accuracy, points, resultId));
                 break;
-
+            case "ONLINE_GAME_PLAYERS_SET":
+                console.log(msg.data)
+                store.dispatch(appActions.setOnlineRoomPlayers(msg.data.players));
+                break;
+            case "TYPE_ONLINE_GAME_COUNTDOWN_STARTED":
+                store.dispatch(appActions.setOnlineRoomCountdownStarted());
+                break;
+            case "TYPE_ONLINE_GAME_COUNTDOWN_STOPPED":
+                store.dispatch(appActions.setOnlineRoomCountdownStopped());
+                break;
+            case "TYPE_ONLINE_GAME_COUNTDOWN_SET":
+                store.dispatch(appActions.setOnlineRoomCountdownSeconds(msg.data.seconds));
+                break;
+            case "TYPE_ONLINE_GAME_RESET":
+                store.dispatch(appActions.resetOnlineRoom());
+                break;
         }
-
-        // Do some logic based on the message type
     };
 
     const onError = (ws, store) => evt => {
@@ -88,7 +105,6 @@ const socketMiddleware = (function () {
     }
 
     const reconnect = (ws, store) => {
-
         socket.close();
         store.dispatch(socketActions.disconnected());
         store.dispatch(socketActions.connect());
@@ -97,7 +113,6 @@ const socketMiddleware = (function () {
     return store => next => action => {
 
         switch (action.type) {
-
             //The user wants us to connect
             case socketActions.CONNECT:
                 //Start a new connection to the server
@@ -113,8 +128,6 @@ const socketMiddleware = (function () {
                 socket.onclose = onClose(socket, store);
                 socket.onopen = onOpen(socket, store, action.token);
                 socket.onerror = onError(socket, store);
-
-
                 break;
 
             //The user wants us to disconnect
@@ -148,7 +161,6 @@ const socketMiddleware = (function () {
                 }
                 break;
             case socketActions.LEAVE_ROOM:
-
                 if (socket !== null) {
                     socket.send(JSON.stringify({
                         type: "LEAVE_ROOM"
@@ -172,7 +184,7 @@ const socketMiddleware = (function () {
                             type: "COMPLETE_PLAYER_GAME",
                             mistakes: store.getState().game.mistakes,
                             playback: JSON.stringify(store.getState().game.playback),
-                    }))
+                        }))
                         ;
                     }
                 }

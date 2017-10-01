@@ -25,6 +25,12 @@ const soundMiddleware = (function () {
                 soundUtils.playSound(soundUtils.SOUNDS.GAME_COUNTDOWN_TICK);
                 next(action);
                 break;
+            case gameActions.SET_WAIT_COUNTDOWN:
+                if (action.seconds <= 3) {
+                    soundUtils.playSound(soundUtils.SOUNDS.GAME_COUNTDOWN_TICK);
+                }
+                next(action);
+                break;
             case gameActions.FINISH_GAME:
                 soundUtils.playSound(soundUtils.SOUNDS.GAME_FINISHED);
                 next(action);

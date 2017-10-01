@@ -6,6 +6,7 @@ import StatsBadge from 'components/user/UserStatsBadge';
 import * as GameUtils from 'utils/gameUtils';
 import * as GameEngine from 'utils/gameEngine';
 import * as SocketActions from 'store/ducks/socketModule';
+import * as AppActions from 'store/ducks/appModule';
 import {push} from 'react-router-redux';
 import {Link} from 'react-router';
 import Helmet from 'react-helmet';
@@ -80,9 +81,8 @@ class GameResultModal extends Component {
         );
     }
 
-    handleRestart() {
-        GameEngine.resetGame();
-        this.props.dispatch(SocketActions.joinRoom(this.props.game.online));
+    handleBack() {
+        this.props.dispatch(push("/play"));
     }
 
     handleCloseModal() {
@@ -192,15 +192,8 @@ class GameResultModal extends Component {
         return (
             <div>
                 <div className="row">
-                    <div className="col col-xs-12 col-sm-4 col-sm-offset-2">
-                        <button onClick={ this.handleRestart.bind(this) }
-                                className="btn btn-secondary btn-round btn-block">Start again
-                        </button>
-                    </div>
-                    <div className="col col-xs-12 col-sm-4">
-                        <button className="btn btn-default btn-round btn-block" onClick={ () => {
-                            this.props.dispatch(push("/play"))
-                        } }>Back to lobby
+                    <div className="col col-xs-12">
+                        <button className="btn btn-default btn-round btn-block" onClick={ this.handleBack.bind(this) }>Back to lobby
                         </button>
                     </div>
                 </div>

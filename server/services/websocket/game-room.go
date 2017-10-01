@@ -144,12 +144,17 @@ func (r *Room) restartWaitCountdown() {
 					"seconds": r.waitCountdownSeconds,
 				})
 
+				BroadcastMessage(TYPE_ONLINE_GAME_COUNTDOWN_SET, map[string]interface{}{
+					"seconds": r.waitCountdownSeconds,
+				})
+
 			} else {
 				r.stopWaitCountdown()
 				// Double check if all players are in the session and start the game
 				if len(r.Players) > 1 {
 					// Mark the room as closed so noone else can join
 					game.CloseGameSession(r.Id)
+					BroadcastMessage(TYPE_ONLINE_GAME_RESET, map[string]interface{}{})
 					r.startCountdown()
 				}
 			}
@@ -159,7 +164,6 @@ func (r *Room) restartWaitCountdown() {
 
 // Stops the countdown when waiting for players
 func (r *Room) stopWaitCountdown() {
-
 	if r.ticker != nil && r.waitCountdownStarted {
 		r.SendMessage(
 			TYPE_STOP_WAIT_COUNTDOWN,
@@ -192,14 +196,11 @@ func (r *Room) startCountdown() {
 				r.SendMessage(TYPE_TICK_COUNTDOWN, map[string]interface{}{
 					"seconds": r.countdownSeconds,
 				})
-
 			} else {
 				r.countdownStarted = false
 				r.ticker.Stop()
 				// Double check if all players are in the session and start the game
-
 				r.startGame()
-
 			}
 		}
 	}()
