@@ -2,6 +2,7 @@
 <html data-uuid="{{ .UUID }}" lang="en">
   <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/build/bundle.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <link rel="icon" type="image/x-icon" href="https://typitap.com/favicon.ico">
@@ -44,16 +45,6 @@
 
     <script onload="this.parentElement.removeChild(this)">window['--app-initial'] = JSON.parse("{{if .Initial}}{{ .Initial }}{{else}}{}{{end}}");</script>
     <script async defer src="/static/build/bundle.js" onload="this.parentElement.removeChild(this)"></script>
-
-    <script type="text/javascript">
-        /* First CSS File */
-        var giftofspeed = document.createElement('link');
-        giftofspeed.rel = 'stylesheet';
-        giftofspeed.href = '/static/build/bundle.css';
-        giftofspeed.type = 'text/css';
-        var godefer = document.getElementsByTagName('link')[0];
-        godefer.parentNode.insertBefore(giftofspeed, godefer);
-    </script>
 
     <script>
         (function(h,o,t,j,a,r){
