@@ -126,7 +126,7 @@ class UserSearch extends React.Component {
     render() {
         const {value, suggestions, isLoading} = this.state;
         const inputProps = {
-            placeholder: "Search for players...",
+            placeholder: "Search...",
             value,
             onChange: this.onChange,
             className: `form-control ${ isLoading ? "control-loading" : "" }`,

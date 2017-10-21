@@ -5,7 +5,6 @@ import SignupForm from './components/SignupForm';
 import PasswordResetForm from './components/PasswordResetForm';
 import PasswordForgotForm from './components/PasswordForgotForm';
 
-
 import {Link} from 'react-router';
 
 class Auth extends Component {

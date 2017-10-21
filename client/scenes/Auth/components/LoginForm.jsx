@@ -8,7 +8,7 @@ import { push } from 'react-router-redux'
 import Notifications from 'utils/notifications';
 import { connect } from 'react-redux';
 import * as socketActions from "store/ducks/socketModule";
-
+import Helmet from 'react-helmet';
 
 class LoginForm extends Component {
 
@@ -38,6 +38,7 @@ class LoginForm extends Component {
         const { handleSubmit, pristine, reset, submitting } = this.props;
         return (
             <div>
+                <Helmet title="Log in" />
                 <div className="panel panel-default card-login">
                     <div className="panel-heading"><h3>Log in</h3></div>
                     <div className="panel-body">

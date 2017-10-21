@@ -57,7 +57,7 @@ class Homepage extends Component {
                                             <div className="banner__title">
                                                 <img src="/static/images/identity/typitap-logo-white@1.5x.png"
                                                      alt="Typitap.com logo"/>
-                                                <h3>Ultimate online typing game</h3>
+                                                <h1 style={{fontSize: "28px"}}>Ultimate online typing game</h1>
                                             </div>
                                             <div className="banner__buttons">
 
@@ -85,7 +85,7 @@ class Homepage extends Component {
                                         <img src="/static/images/pages/homepage/icon-globe.png" alt="Icon Globe"/>
                                     </div>
 
-                                    <h3 className="blob__title">Compete with the world</h3>
+                                    <h3 className="blob__title">Compete and race with real people</h3>
                                     <p className="blob__text">Jump into the race track with people from around the
                                         entire world and challenge your typing skills.</p>
                                 </div>
@@ -106,7 +106,7 @@ class Homepage extends Component {
                                     <div className="blob__icon">
                                         <img src="/static/images/pages/homepage/icon-chart.png" alt="Icon Chart"/>
                                     </div>
-                                    <h3 className="blob__title">Track your progress</h3>
+                                    <h3 className="blob__title">Track your typing skills progress</h3>
                                     <p className="blob__text">Make use of the <strong>stunning charts</strong> to keep
                                         track on your progress and see how you perform on a long term basis</p>
                                 </div>
@@ -116,7 +116,7 @@ class Homepage extends Component {
                                     <div className="blob__icon">
                                         <img src="/static/images/pages/homepage/icon-comment.png" alt="Icon Comment"/>
                                     </div>
-                                    <h3 className="blob__title">Socialize</h3>
+                                    <h3 className="blob__title">Socialize and compare</h3>
                                     <p className="blob__text">Follow your friends and stay up to date with their
                                         recent results and never miss out a tiny detail.</p>
                                 </div>

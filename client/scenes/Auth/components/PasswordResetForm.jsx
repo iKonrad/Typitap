@@ -5,6 +5,7 @@ import Input from 'components/form/fields/Input';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
 import Notifications from 'utils/notifications';
+import Helmet from 'react-helmet';
 
 class PasswordResetForm extends Component {
 
@@ -26,6 +27,7 @@ class PasswordResetForm extends Component {
 
         return (
             <div className="">
+                <Helmet title="Password reset" />
                 {error && <strong>{error}</strong>}
                 <div className="panel panel-default card-login">
                     <div className="panel-heading"><h3>Reset your password</h3></div>

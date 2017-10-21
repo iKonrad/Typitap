@@ -16,6 +16,7 @@ import UserSearch from 'components/app/UserSearch';
 import TutorialModal from 'components/game/TutorialModal';
 import * as gaUtils from 'utils/gaUtils';
 import { Timeline } from 'react-twitter-widgets'
+import Helmet from 'react-helmet';
 
 class Play extends Component {
 
@@ -56,14 +57,24 @@ class Play extends Component {
         this.setState(state);
     }
 
+    getMetaTags() {
+        return  {
+            title: "Play online race",
+        }
+    }
+
     render() {
 
         return (
             <div className="page-play">
+                <Helmet { ...this.getMetaTags() } />
                 <div className="container">
                     <div className="row">
                         <div className="col col-xs-12 col-md-8">
-                            <Panel title="Search" loaded={true}><UserSearch/></Panel>
+                            <h1 style={{fontSize: "28px"}}>Play online race or practice your typing skills</h1>
+                        </div>
+                        <div className="col col-xs-12 col-md-8">
+                            <Panel title="Search for players" loaded={true}><UserSearch/></Panel>
                             <Panel title="Recent news" bodyClass=""
                                    loaded={ this.props.play.feed !== undefined }><ActivityFeed
                                 feed={ this.props.play.feed }/></Panel>

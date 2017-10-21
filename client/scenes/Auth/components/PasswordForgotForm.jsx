@@ -4,6 +4,7 @@ import * as FormActions from 'store/ducks/formModule';
 import Input from 'components/form/fields/Input';
 import { Link } from 'react-router';
 import Notifications from 'utils/notifications';
+import Helmet from 'react-helmet';
 
 class PasswordForgotForm extends Component {
 
@@ -19,6 +20,7 @@ class PasswordForgotForm extends Component {
         const { handleSubmit, pristine, reset, submitting } = this.props;
         return (
             <div className="">
+                <Helmet title="Forgot password" />
                 <div className="panel panel-default card-login">
                     <div className="panel-heading">
                         <h3>Forgot password</h3>

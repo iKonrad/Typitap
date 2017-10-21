@@ -66,9 +66,10 @@ class Profile extends Component {
     }
 
     render() {
+        console.log(this.props.profile.user.Username);
         return (
             <div className="container profile-page">
-                <Helmet title={this.props.user.data.Username} {...this.renderMetaTags()} />
+                <Helmet title={this.props.profile.user.Username + " game profile"} {...this.renderMetaTags()} />
                 <div className="row">
                     <div className="col col-xs-12 col-md-8">
                         <div className="row">

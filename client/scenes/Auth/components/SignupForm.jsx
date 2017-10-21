@@ -8,6 +8,7 @@ import * as UserActions from 'store/ducks/userModule';
 import Notifications from 'utils/notifications';
 import * as socketActions from "store/ducks/socketModule";
 import { connect } from 'react-redux';
+import Helmet from 'react-helmet';
 
 class SignupForm extends Component {
 
@@ -39,8 +40,8 @@ class SignupForm extends Component {
         const {handleSubmit, pristine, reset, submitting} = this.props;
 
         return (
-
             <div className="">
+                <Helmet title="Sign up" />
                 <div className="panel panel-default card-login">
                     <div className="panel-heading"><h3>Sign up</h3></div>
                     <div className="panel-body">
