@@ -18,6 +18,18 @@ export const MENU_TREE = [
         authenticated: true,
     },
     {
+        label: 'Blog',
+        type: 'href',
+        url: 'https://blog.typitap.com',
+        authenticated: false,
+    },
+    {
+        label: 'Blog',
+        type: 'href',
+        url: 'https://blog.typitap.com',
+        authenticated: true,
+    },
+    {
         label: 'Community',
         type: 'href',
         url: 'http://community.typitap.com',
