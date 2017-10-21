@@ -11,13 +11,8 @@ import Spinner from 'components/app/Spinner';
 import GameText from './GameText';
 import GameBar from './GameBar';
 import * as GameEngine from 'utils/gameEngine';
-import GameControls from './GameControls';
 import GameCountdown from './GameCountdown';
 import GamePlayerList from './GamePlayerList';
-import WaitPlayersModal from './WaitPlayersModal';
-import Notifications from 'utils/notifications';
-import * as GameActions from 'store/ducks/gameModule';
-import * as SocketActions from 'store/ducks/socketModule';
 import GameResultModal from 'components/game/GameResultModal';
 
 class Game extends Component {
@@ -37,38 +32,18 @@ class Game extends Component {
                 <GamePlayerList/>
                 <div className="panel panel-default">
                     <div className="panel-body">
-                        <GameBar />
-                        { this.renderMain() }
+                        <GameBar/>
+                        {this.renderMain()}
                     </div>
                 </div>
-                { this.renderResultModal() }
+                {this.renderResultModal()}
             </div>
         )
     }
 
-    componentWillMount() {
-        // Check if the client is connected to the websocket.
-        if (!this.props.socket.connected || this.props.socket.identifier === "") {
-            let timeOut = setTimeout(() => {
-                if (this.props.socket.connected) {
-                    this.handleGameStart();
-                } else {
-                    this.props.dispatch(Notifications.connectionIssue());
-                    this.props.dispatch(push("/play"));
-                }
-            }, 1000);
-        } else {
-            this.handleGameStart();
-        }
-        // Leave rooms when the browser is closed
-        if (typeof window !== "undefined") {
-            window.addEventListener('beforeunload', this.onUnload);
-        }
-    }
-
     componentWillUnmount() {
         if (typeof window !== "undefined") {
-            window.removeEventListener('beforeunload', this.onUnload);
+            window.removeEventListener('beforeunload', this.onUnload );
         }
         this.resetGame();
     }
@@ -77,31 +52,22 @@ class Game extends Component {
         GameEngine.resetGame();
     }
 
-    handleGameStart() {
-        this.resetGame();
-        this.props.dispatch(SocketActions.joinRoom(this.props.online));
-    }
-
-    handleGameFinish() {
-        GameEngine.finishGame();
-    }
-
-
-    componentWillReceiveProps(newProps) {
+    componentDidMount() {
         // Check if the room ID has been passed over
-        if (Object.keys(newProps).length === 0) {
+        if (this.props.game.room.id === "") {
+            this.props.dispatch(push("/play"));
             return;
         }
 
-        if ((!this.props.game.room.id || this.props.game.room.id === "") && newProps.game.room.id !== undefined && newProps.game.room.id !== "") {
-            // We've got the room ID, we can now proceed to start the game
-            if (!this.props.online) {
-                GameEngine.startCountdown(() => {
-                    GameEngine.startGame(this.props.online);
-                });
-            } else {
-                this.props.dispatch(GameActions.startMatchmaking());
-            }
+        if (typeof window !== "undefined") {
+            window.addEventListener('beforeunload', this.onUnload );
+        }
+
+        // We've got the room ID, we can now proceed to start the game
+        if (!this.props.online) {
+            GameEngine.startCountdown(() => {
+                GameEngine.startGame(false);
+            });
         }
     }
 
@@ -111,16 +77,8 @@ class Game extends Component {
             if (this.props.game.started || this.props.game.countdown) {
                 return (
                     <div>
-                        <GameText />
-                        { this.renderBottomRow() }
-                    </div>
-                );
-            } else {
-                // Otherwise, display a waiting for players message
-                return (
-                    <div className="text-center">
-                        <WaitPlayersModal/>
-                        Searching for players...
+                        <GameText/>
+                        {this.renderBottomRow()}
                     </div>
                 );
             }
@@ -128,8 +86,8 @@ class Game extends Component {
             // For offline game, show the game screen immediately
             return (
                 <div>
-                    <GameText />
-                    { this.renderBottomRow() }
+                    <GameText/>
+                    {this.renderBottomRow()}
                 </div>
             );
         }
@@ -138,28 +96,25 @@ class Game extends Component {
     renderBottomRow() {
         if (this.props.game.started && !this.props.game.finished) {
             if (this.props.game.finishedInput) {
-                return <Spinner />
+                return <Spinner/>
             } else {
-                return <GameInput onGameFinish={ this.handleGameFinish.bind(this) }/>;
+                return <GameInput onGameFinish={ GameEngine.finishGame.bind(this) }/>;
             }
         } else {
             if (this.props.game.countdown) {
-                return <GameCountdown />
-            } else if (this.props.game.finished) {
-                return <GameControls onGameStart={ this.handleGameStart.bind(this) }/>
+                return <GameCountdown/>
             }
-
         }
+        return "";
     }
 
     renderResultModal() {
         if (this.props.game.finished) {
-            return <GameResultModal open={ true }/>
+            return <GameResultModal open={true}/>
         }
         return "";
     }
 }
-
 
 const mapStateToProps = (state) => {
     return {

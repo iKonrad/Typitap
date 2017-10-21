@@ -36,7 +36,7 @@ const (
 	TYPE_FINISH_GAME         = "FINISH_GAME"
 	TYPE_UPDATE_PLAYERS_DATA = "UPDATE_PLAYERS_DATA"
 
-	WAIT_SECONDS        = 10   // How many seconds should the room count down for other players
+	WAIT_SECONDS        = 10     // How many seconds should the room count down for other players
 	FINISH_GAME_SECONDS = 4 * 60 // How many seconds must pass before the game automatically closes
 )
 
@@ -81,7 +81,7 @@ func (e *Engine) parseMessage(client *Client, message map[string]interface{}) {
 		if roomId, ok = GetEngine().handleJoinRoom(client.identifier, online.(bool)); ok {
 			logs.Log("Player joined room", "Player "+client.identifier+" joined room "+roomId, []string{"websocket", "game", "players"}, "Game Session "+roomId)
 			if online.(bool) {
-				logs.PushUrl("New online player", "A player "+ client.identifier +" joins an online room", "https://typitap.com/play/online")
+				logs.PushUrl("New online player", "A player "+client.identifier+" joins an online room", "https://typitap.com/play/online")
 			}
 		}
 
@@ -202,8 +202,13 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
 			"roomId":  room.Id,
 			"players": room.GetPlayers(), // @TODO: Return list of players in the room
 			"text":    session.Text.Text,
+			"online":  online,
 		},
 	)
+
+	BroadcastMessage(TYPE_ONLINE_GAME_PLAYERS_SET, map[string]interface{}{
+		"players": room.GetPlayers(),
+	})
 
 	// Send message to everyone that the player has joined the room
 	playerData := room.GetPlayer(identifier)
@@ -213,6 +218,7 @@ func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
 
 	// Start the countdown if amount of players is at least 2
 	if len(room.Players) > 1 {
+		BroadcastMessage(TYPE_ONLINE_GAME_COUNTDOWN_STARTED, map[string]interface{}{})
 		room.restartWaitCountdown()
 	}
 	return room.Id, true
@@ -227,7 +233,7 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 		var shouldOpen = len(e.rooms[roomId].Players) >= 5
 		e.rooms[roomId].RemovePlayer(identifier)
 
-		// Send message to everyone that the player has joined the room
+		// Send message to everyone that the player has left the room
 		e.rooms[roomId].SendMessage(TYPE_PLAYER_LEFT_ROOM, map[string]interface{}{
 			"identifier": identifier,
 		})
@@ -239,7 +245,16 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 
 		// If there's less than 2 players, stop the countdown ticker if it runs
 		if len(e.rooms[roomId].Players) < 2 {
+			if !e.rooms[roomId].gameStarted {
+				BroadcastMessage(TYPE_ONLINE_GAME_COUNTDOWN_STOPPED, map[string]interface{}{})
+			}
 			e.rooms[roomId].stopWaitCountdown()
+		}
+
+		if !e.rooms[roomId].gameStarted {
+			BroadcastMessage(TYPE_ONLINE_GAME_PLAYERS_SET, map[string]interface{}{
+				"players": e.rooms[roomId].GetPlayers(),
+			})
 		}
 
 		if len(e.rooms[roomId].Players) < 1 {
@@ -291,4 +306,34 @@ func (e *Engine) RemoveRoom(roomId string) {
 	e.rooms[roomId].finishGame()
 	game.MarkSessionFinished(roomId)
 	delete(e.rooms, roomId)
+}
+
+/*
+	GetOnlineRoomData returns details about an online room that hasn't started yet
+	It'll be used to display player counts badge and room info in the online sidebar
+ */
+func (e *Engine) GetOnlineRoomData() map[string]interface{} {
+
+	data := map[string]interface{}{
+		"players":          map[string]interface{}{},
+		"countdown":        false,
+		"countdownSeconds": 5,
+	}
+
+	var onlineRoom *Room
+
+	for _, room := range e.rooms {
+		if !room.gameStarted {
+			onlineRoom = room
+			break
+		}
+	}
+
+	if onlineRoom != nil {
+		data["players"] = onlineRoom.GetPlayers()
+		data["countdown"] = onlineRoom.waitCountdownStarted
+		data["countdownSeconds"] = onlineRoom.waitCountdownSeconds
+	}
+
+	return data
 }

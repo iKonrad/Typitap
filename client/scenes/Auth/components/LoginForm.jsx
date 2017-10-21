@@ -24,7 +24,6 @@ class LoginForm extends Component {
         }).then(() => {
             this.props.dispatch(socketActions.reconnect());
             // Check if there's a redirect URL provided
-            console.log("REDIRECT", this.props.redirect);
             if (this.props.redirect !== null && this.props.redirect.length > 0) {
                     window.location.href = this.props.redirect;
             } else {

@@ -1,0 +1,126 @@
+$sidebar-width: 350px;
+$sidebar-animation-duration: 0.15s;
+.fixed-sidebar {
+  height: 100vh;
+  width: $sidebar-width;
+  @include clearfix();
+  transition: right $sidebar-animation-duration ease-in-out;
+  position: fixed;
+  right: 0;
+  margin-top: -40px;
+
+  /* Rectangle 3: */
+  background-image: linear-gradient(40deg, #592A78 6%, #7C569C 63%, #8A68AB 87%, #8A68AB 87%, #8A68AB 87%, #9272B3 100%);
+  box-shadow: 0 2px 26px 2px rgba(58,58,58,0.5);
+
+  z-index: 99999999;
+
+  &--closed {
+    right: ($sidebar-width * -1);
+  }
+
+  &__handle {
+    width: 70px;
+    height: 70px;
+    background-color: #8160A1;
+    color: white;
+    transition: all $sidebar-animation-duration ease-in-out;
+
+    a {
+      color: white;
+    }
+
+    position: absolute;
+    left: -70px;
+    top: 0;
+    padding: 20px;
+    cursor: pointer;
+
+    .fa {
+      transition: all $sidebar-animation-duration ease-in-out;
+      position: relative;
+      color: white;
+    }
+
+    &:hover {
+      background-color: lighten(#8160A1, 5%);
+    }
+
+    .badge {
+      position: absolute;
+      bottom: -7px;
+      left: -7px;
+
+      &--has-players {
+        background-color: $brand-success
+      }
+    }
+  }
+
+  .player-slot {
+    &--joined {
+      @include transition();
+      background: rgba(255,255,255,0.17);
+      border: solid 2px rgba(255,255,255,0);
+      border-radius: 3px;
+      opacity: 0.82;
+      font-size: 16px;
+      color: white;
+      box-shadow: 0 0 12px 0 rgba(0,0,0,0.15);
+      display: block;
+      padding: 15px;
+      margin: 10px 0;
+
+      &:hover {
+        background: rgba(255,255,255,0.25);
+        border: solid 2px rgba(255,255,255,0);
+      }
+    }
+
+    &--free {
+      @include transition();
+      font-size: 16px;
+      color: rgba(255,255,255,0.54);
+      border: 2px dashed rgba(255,255,255,0.25);
+      display: block;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 3px;
+
+      &:hover {
+        color: rgba(255,255,255,0.6);
+        border: 2px dashed rgba(255,255,255,0.3);
+      }
+    }
+  }
+
+  .game-counter-label {
+    margin: 15px 0 -5px;
+    color: white;
+  }
+  .game-counter  {
+    margin-top: 0;
+    font-size: 40px;
+    font-weight: 500;
+    color: white;
+  }
+
+  .well {
+    /* Rectangle 6: */
+    opacity: 0.72;
+    margin: 15px 0;
+    background-image: linear-gradient(-180deg, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0.05) 100%);
+    border: 1px solid #FFFFFF;
+    border-radius: 4px;
+    padding: 15px;
+    /* The game will start: */
+
+    h4 {
+      margin: 0 0 10px 0;
+    }
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+  }
+}

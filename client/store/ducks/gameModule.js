@@ -15,7 +15,6 @@ export const TICK_WAIT_COUNTDOWN = "@@game/TICK_WAIT_COUNTDOWN";
 export const SET_WAIT_COUNTDOWN = "@@game/SET_WAIT_COUNTDOWN";
 export const STOP_WAIT_COUNTDOWN = "@@game/STOP_WAIT_COUNTDOWN";
 export const RESET_GAME = "@@game/RESET_GAME";
-export const START_MATCHMAKING = "@@game/START_MATCHMAKING";
 export const PLAYER_JOINED_ROOM = "@@game/PLAYER_JOINED_ROOM";
 export const PLAYER_LEFT_ROOM = "@@game/PLAYER_LEFT_ROOM";
 export const JOINED_ROOM = "@@game/JOINED_ROOM";
@@ -87,7 +86,7 @@ const initialState = {
     // Final accuracy (only after the game is finished)
     accuracy: 0,
 
-    // Online only - room data
+    // Contains data about the current room (joined)
     room: {
         id: '',
         players: {},
@@ -124,11 +123,6 @@ export default function reducer(state = initialState, action) {
                     }
                 ]
             };
-        case START_MATCHMAKING:
-            return {
-                ...state,
-                online: true,
-            }
         case UPDATE_INPUT:
 
             let time = +new Date();
@@ -184,7 +178,6 @@ export default function reducer(state = initialState, action) {
                 ]
             };
         case JOINED_ROOM:
-
             Object.keys(action.players).forEach((i) => {
                 if (typeof action.players[i].completed === "string") {
                     action.players[i].completed = action.players[i].completed === "1"
@@ -194,6 +187,7 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 text: action.text,
+                online: action.online,
                 room: {
                     id: action.roomId,
                     players: action.players,
@@ -510,14 +504,7 @@ export function resetGame() {
     }
 }
 
-
-export function startMatchmaking() {
-    return {
-        type: START_MATCHMAKING
-    }
-}
-
-export function joinedRoom(roomId, players, text) {
+export function joinedRoom(roomId, players, text, online) {
 
     if (players === undefined) {
         players = {};
@@ -526,6 +513,7 @@ export function joinedRoom(roomId, players, text) {
     return {
         type: JOINED_ROOM,
         roomId,
+        online: !!online,
         players,
         text
     }
