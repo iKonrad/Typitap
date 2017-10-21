@@ -5,6 +5,10 @@
 
   }
 
+  &__title {
+    @extend h3;
+  }
+
 
 
   &__icon {

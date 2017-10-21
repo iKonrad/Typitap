@@ -101,11 +101,12 @@ class Play extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col col-xs-12 col-md-8">
-                            <h1 style={{fontSize: "28px"}}>Play online race or practice your typing skills</h1>
+                            <h1 style={{fontSize: "28px"}}>Join online race or practice your typing skills</h1>
+                            <p><em>Hit the practice button to test your typing skills or challenge other players in an online race</em></p>
                         </div>
                         <div className="col col-xs-12 col-md-8">
                             <Panel title="Search for players" loaded={true}><UserSearch/></Panel>
-                            <Panel title="Recent news" bodyClass=""
+                            <Panel title="Recent news" subtitle="Recently completed games and achievements" bodyClass=""
                                    loaded={this.props.play.feed !== undefined}><ActivityFeed
                                 feed={this.props.play.feed}/></Panel>
                         </div>

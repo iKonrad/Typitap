@@ -61,7 +61,7 @@ class Homepage extends Component {
                                             </div>
                                             <div className="banner__buttons">
 
-                                                <Link to="/play" className="btn btn-round btn-xxl btn-secondary">Enter
+                                                <Link to="/play" className="btn btn-round btn-xxl btn-success">Enter
                                                     the game</Link>
 
                                                 <div className="margin-top-4 margin-bottom-4 white">- or -</div>
@@ -85,7 +85,7 @@ class Homepage extends Component {
                                         <img src="/static/images/pages/homepage/icon-globe.png" alt="Icon Globe"/>
                                     </div>
 
-                                    <h3 className="blob__title">Compete and race with real people</h3>
+                                    <h2 className="blob__title">Compete and race with real people</h2>
                                     <p className="blob__text">Jump into the race track with people from around the
                                         entire world and challenge your typing skills.</p>
                                 </div>
@@ -96,7 +96,7 @@ class Homepage extends Component {
                                     <div className="blob__icon">
                                         <img src="/static/images/pages/homepage/icon-trophy.png" alt="Icon Trophy"/>
                                     </div>
-                                    <h3 className="blob__title">Climb the ladder to the top</h3>
+                                    <h2 className="blob__title">Climb the ladder to the top</h2>
                                     <p className="blob__text">Make your way to the very top of the
                                         <strong>typitap</strong> charts and show off your progress</p>
                                 </div>
@@ -106,7 +106,7 @@ class Homepage extends Component {
                                     <div className="blob__icon">
                                         <img src="/static/images/pages/homepage/icon-chart.png" alt="Icon Chart"/>
                                     </div>
-                                    <h3 className="blob__title">Track your typing skills progress</h3>
+                                    <h2 className="blob__title">Track your typing skills progress</h2>
                                     <p className="blob__text">Make use of the <strong>stunning charts</strong> to keep
                                         track on your progress and see how you perform on a long term basis</p>
                                 </div>
@@ -116,7 +116,7 @@ class Homepage extends Component {
                                     <div className="blob__icon">
                                         <img src="/static/images/pages/homepage/icon-comment.png" alt="Icon Comment"/>
                                     </div>
-                                    <h3 className="blob__title">Socialize and compare</h3>
+                                    <h2 className="blob__title">Socialize and compare</h2>
                                     <p className="blob__text">Follow your friends and stay up to date with their
                                         recent results and never miss out a tiny detail.</p>
                                 </div>
