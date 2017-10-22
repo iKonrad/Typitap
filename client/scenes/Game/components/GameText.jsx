@@ -12,9 +12,22 @@ class GameText extends Component {
             words[this.props.game.currentIndex] = '<span class="word-highlighted">' + words[this.props.game.currentIndex] + '</span>';
         }
 
-        words = GameUtils.renderText(this.props.game.mistakes, words);
+        // Highlight word in red if typo was made
+        let newText = text;
 
-        return words.join(' ');
+        // Use this for cursor index when ready for deploy
+        // let letters = newText.split("");
+        // letters[this.props.game.currentIndex] = '<span class="word-index">'+ letters[this.props.game.currentIndex] + '</span>';
+        // newText = letters.join("");
+
+        if (Object.keys(this.props.game.mistakes).length > 0) {
+            if (Object.keys(this.props.game.mistakes)[Object.keys(this.props.game.mistakes).length - 1] == this.props.game.currentIndex) {
+                words[this.props.game.currentIndex] = '<span class="word-error">' + words[this.props.game.currentIndex] + '</span>';
+                newText = words.join(' ');
+            }
+        }
+
+        return newText;
     }
 
     render() {

@@ -115,13 +115,13 @@ export function getAccuracyMessage(accuracy) {
         case (accuracy === 100):
             text = "nailed it!";
             break;
-        case (accuracy >= 98):
+        case (accuracy >= 99):
             text = "impressive!";
             break;
-        case (accuracy >= 95):
+        case (accuracy >= 98):
             text = "great job!";
             break;
-        case (accuracy >= 90):
+        case (accuracy >= 97):
             text = "well done";
             break;
         default:

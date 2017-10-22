@@ -112,7 +112,7 @@ class GameInput extends Component {
             <div className={ this.renderClasses() }>
                 <input ref={ FIELD_REF } value={ this.props.game.inputValue } type="text" className="form-control"
                        placeholder="Type your text here" onKeyUp={ this.handleKeyInput.bind(this) }
-                       onChange={ this.handleKey.bind(this) }/>
+                       onChange={ this.handleKey.bind(this) } />
             </div>
         );
     }
