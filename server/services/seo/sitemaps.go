@@ -27,6 +27,7 @@ func GenerateSitemap(notify bool) {
 	sm.Add(stm.URL{"loc": "/about", "changefreq": "monthly", "mobile": true})
 	sm.Add(stm.URL{"loc": "/terms", "changefreq": "yearly", "mobile": true})
 	sm.Add(stm.URL{"loc": "/privacy", "changefreq": "yearly", "mobile": true})
+	sm.Add(stm.URL{"loc": "/typing-test", "changefreq": "monthly", "mobile": true})
 
 	resp, err := r.Table("users").Pluck("username").Run(db.Session)
 

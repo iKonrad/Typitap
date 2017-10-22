@@ -22,6 +22,9 @@ import PrivacyPolicy from 'scenes/PrivacyPolicy';
 import AdminTexts from 'scenes/Admin/scenes/AdminTexts';
 import NotFound from 'scenes/Errors/NotFound';
 
+// Static pages
+import TypingTest from 'scenes/Static/TypingTest';
+
 /**
  * Returns configured routes for different
  * environments. `w` - wrapper that helps skip
@@ -79,8 +82,12 @@ export default ({store, first}) => {
             <Route path="/auth/password/reset/:token" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)} />
             <Route path="/auth/password/forgot" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)} />
 
+
+            {/* Static pages */}
+            <Route path="/typing-test" component={TypingTest} onEnter={w(TypingTest.clientInit)} />
+
             {/* Replace with 404 */}
-            <Route path="*" component={NotFound} />
+            <Route path="*" component={NotFound} onEnter={w(NotFound.clientInit)} />
         </Route>
     );
 };

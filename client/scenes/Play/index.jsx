@@ -5,7 +5,6 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {push} from 'react-router-redux';
 import * as PlayActions from './ducks/playModule';
 import * as AppActions from 'store/ducks/appModule';
 import TopChart from 'components/app/TopChart';
@@ -32,6 +31,7 @@ class Play extends Component {
 
 
     static clientInit({store, nextState, replaceState, callback}) {
+        console.log("CLIENT");
         resolveAll([
             store.dispatch(AppActions.fetchChartsData()),
             store.dispatch(PlayActions.fetchGlobalFeed())
@@ -82,7 +82,7 @@ class Play extends Component {
     renderOfflineButton() {
         return (
             <button type="button" className="btn btn-default btn-block"
-                    onClick={this.handleOfflineButton.bind(this)}>Practice
+                    onClick={this.handleOfflineButton.bind(this)}>Practice alone
             </button>
         );
     }

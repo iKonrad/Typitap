@@ -1,8 +1,13 @@
 import React from 'react';
+import {Link} from 'react-router';
 
 class NotFound extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    static clientInit({store, nextState, replaceState, callback}) {
+        return Promise.resolve();
     }
 
     render() {
@@ -22,7 +27,7 @@ class NotFound extends React.Component {
                                     <h2 className="margin-top-6">Page not found</h2>
                                     <p>Ooops. The page you’re looking for has been moved or deleted.</p>
 
-                                    <a href="/" className="btn btn-link margin-top-5">Go to homepage</a>
+                                    <Link to="/" className="btn btn-link margin-top-5">Back to homepage</Link>
                                 </div>
                             </div>
                         </div>
