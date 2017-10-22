@@ -63,7 +63,7 @@ class UserLevel extends React.Component {
     renderPoints() {
 
         if (this.state.points > 0) {
-            let string = "+" + this.state.points;
+            let string = "+" + this.state.points + " exp";
             if ((this.state.exp + this.state.points) > this.state.next) {
                 string = string + " leveled up!";
             }

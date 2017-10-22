@@ -63,12 +63,13 @@ class GameResultModal extends Component {
                         <div className="col col-xs-12">
                             { this.renderPlayers() }
                         </div>
+                    </div>
+                    <div className="row">
                         <div className="col col-xs-12">
                             { this.renderUserLevel() }
                         </div>
-                        <div className="col col-xs-12">
-                            { this.renderShareButtons() }
-                        </div>
+                    </div>
+                    <div className="row">
                         <div className="col col-xs-12">
                             { this.renderStats() }
                         </div>
@@ -96,7 +97,6 @@ class GameResultModal extends Component {
         const {
             FacebookShareButton,
             TwitterShareButton,
-            VKShareButton,
         } = ShareButtons;
 
         let title = `I finished ${ this.props.game.online ? "an online" : "a practice" } race with ${ this.props.game.wpm } words per minute!`;
@@ -113,9 +113,9 @@ class GameResultModal extends Component {
 
         return (
             <div className="game-result__share">
-                <FacebookShareButton className="btn btn-sm btn-facebook" title={ title } description={ description }
+                <FacebookShareButton style={{marginBottom: 0}} className="btn btn-sm btn-facebook" title={ title } description={ description }
                                      picture={ image } url={ url } children="Share on Facebook"/>
-                <TwitterShareButton className="btn btn-sm btn-twitter" title={ title } via="https://typitap.com"
+                <TwitterShareButton style={{marginBottom: 0}} className="btn btn-sm btn-twitter" title={ title } via="https://typitap.com"
                                     url={ url } children="Share on Twitter"/>
             </div>
         );
@@ -165,19 +165,53 @@ class GameResultModal extends Component {
                               next={ this.props.user.data.NextExp } levelName={ this.props.user.data.LevelName }
                               points={ this.props.game.points }/>
         } else {
-            return <div className="text-muted margin-top-2 margin-bottom-2 text-center"><Link to="/login">Log in </Link>
-                 or <Link to="/signup">sign up</Link> to start recording your game results</div>
+            return (
+                <div className="modal-alert">
+                    <Link to="/signup">Create account</Link> or <Link to="/login">log in</Link> to start saving your results
+                </div>
+            );
         }
 
+    }
+
+    renderWPMMessage(wpm) {
+        let wpmMessage = GameEngine.getWPMMessage(wpm);
+        console.log("???", wpmMessage, wpm);
+
+        if (wpmMessage !== "") {
+            return  (
+                <div style={{textAlign: "center"}}>
+                    <div className="label label-success">{ wpmMessage }</div>
+                </div>
+            );
+        }
+    }
+
+    renderAccuracyMessage(accuracy) {
+        let accuracyMessage = GameEngine.getAccuracyMessage(accuracy);
+        if (accuracyMessage !== "") {
+            return  (
+                <div style={{textAlign: "center"}}>
+                    <div className="label label-info">{ accuracyMessage }</div>
+                </div>
+            );
+        }
     }
 
     renderStats() {
         return <div className="game-result__stats">
             <div className="pull-left">
-                <StatsBadge key={ `result-wpm` } type="wpm" label="wpm"
-                            value={ this.props.game.wpm }/>
-                <StatsBadge key={ `result-accuracy` } type="accuracy" label="accuracy"
-                            value={ this.props.game.accuracy + "%" }/>
+                <div style={{display: "inline-block"}}>
+                    <StatsBadge key={ `result-wpm` } type="wpm" label="wpm"
+                                value={ this.props.game.wpm }/>
+                    { this.renderWPMMessage(this.props.game.wpm) }
+                </div>
+                <div style={{display: "inline-block", verticalAlign: "top"}}>
+                    <StatsBadge key={ `result-accuracy` } type="accuracy" label="accuracy"
+                                value={ this.props.game.accuracy + "%" }/>
+                    { this.renderAccuracyMessage(this.props.game.accuracy) }
+                </div>
+
             </div>
             <div className="pull-right">
                 <StatsBadge key={ `result-time` } type="time"
@@ -191,15 +225,18 @@ class GameResultModal extends Component {
     renderButtons() {
         return (
             <div>
-                <div className="row">
-                    <div className="col col-xs-12">
-                        <button className="btn btn-default btn-round btn-block" onClick={ this.handleBack.bind(this) }>Back to lobby
+                <div className="row" style={{marginTop: "-20px"}}>
+                    <div className="col col-xs-12 text-left margin-bottom-2">
+                        <button className="btn btn-default btn-block" onClick={ this.handleBack.bind(this) }>Back to lobby
                         </button>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col col-xs-12">
-                        <div className="text-center margin-top-2">
+                    <div className="col col-xs-12 col-md-9">
+                        { this.renderShareButtons() }
+                    </div>
+                    <div className="col col-xs-12 col-md-3">
+                        <div className="margin-top-3">
                             <button onClick={ this.handleCloseModal.bind(this) } className="btn btn-link">Close window
                             </button>
                         </div>

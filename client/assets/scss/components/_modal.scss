@@ -79,7 +79,28 @@
 }
 
 .modal {
-  display: block
+  display: block;
+
+  .modal-title {
+    font-size: 30px;
+  }
+
+  .modal-body {
+    .modal-alert {
+      margin: 0 -20px;
+      background-color: $grey-100;
+      padding: 30px 20px;
+      font-size: 18px;
+      color: $grey-400;
+      text-align: center;
+
+      a {
+        font-size: 18px;
+        text-decoration: underline;
+      }
+
+    }
+  }
 }
 
 .modal-content > .close {

@@ -109,3 +109,82 @@ export function postGameResultData(results) {
 
 }
 
+export function getAccuracyMessage(accuracy) {
+    let text = "";
+    switch (true) {
+        case (accuracy === 100):
+            text = "nailed it!";
+            break;
+        case (accuracy >= 98):
+            text = "impressive!";
+            break;
+        case (accuracy >= 95):
+            text = "great job!";
+            break;
+        case (accuracy >= 90):
+            text = "well done";
+            break;
+        default:
+            text = "";
+    }
+
+    return text;
+}
+
+export function getWPMMessage(wpm) {
+    let text = "";
+    switch (true) {
+        case (wpm >= 170):
+            text = "improssibru!";
+            break;
+        case (wpm >= 140):
+            text = "monster!";
+            break;
+        case (wpm >= 130):
+            text = "oh em gee!";
+            break;
+        case (wpm >= 120):
+            text = "teach me!";
+            break;
+        case (wpm >= 110):
+            text = "incredible!";
+            break;
+        case (wpm >= 100):
+            text = "astonishing!";
+            break;
+        case (wpm >= 95):
+            text = "WOW";
+            break;
+        case (wpm >= 90):
+            text = "impressive!";
+            break;
+        case (wpm >= 85):
+            text = "superb!";
+            break;
+        case (wpm >= 80):
+            text = "amazing!";
+            break;
+        case (wpm >= 75):
+            text = "brilliant!";
+            break;
+        case (wpm >= 70):
+            text = "sweet!";
+            break;
+        case (wpm >= 65):
+            text = "great job";
+            break;
+        case (wpm >= 60):
+            text = "doin' good!";
+            break;
+        case (wpm >= 55):
+            text = "nice";
+            break;
+        case (wpm >= 50):
+            text = "good";
+            break;
+        default:
+            text = "";
+    }
+
+    return text;
+}
