@@ -31,7 +31,6 @@ class Play extends Component {
 
 
     static clientInit({store, nextState, replaceState, callback}) {
-        console.log("CLIENT");
         resolveAll([
             store.dispatch(AppActions.fetchChartsData()),
             store.dispatch(PlayActions.fetchGlobalFeed())

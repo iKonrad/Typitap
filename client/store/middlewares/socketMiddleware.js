@@ -82,7 +82,6 @@ const socketMiddleware = (function () {
                 store.dispatch(gameActions.finishGame(wpm, accuracy, points, resultId));
                 break;
             case "ONLINE_GAME_PLAYERS_SET":
-                console.log(msg.data)
                 store.dispatch(appActions.setOnlineRoomPlayers(msg.data.players));
                 break;
             case "TYPE_ONLINE_GAME_COUNTDOWN_STARTED":

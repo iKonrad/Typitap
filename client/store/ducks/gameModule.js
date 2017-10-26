@@ -49,6 +49,9 @@ const initialState = {
     // Object with mistakes {wordIndex: mistakeCount}
     mistakes: {},
 
+    // Does the currently word has any typos
+    hasError: false,
+
     // Game time
     time: 0,
 
@@ -158,7 +161,8 @@ export default function reducer(state = initialState, action) {
                         v,
                         c
                     }
-                ]
+                ],
+                hasError: action.hasError,
             };
         case FINISH_WORD:
 
@@ -321,7 +325,7 @@ export default function reducer(state = initialState, action) {
 
             currentMistakes++;
             let mistakes = {
-                ...state.mistakes
+                ...state.mistakes,
             };
 
             mistakes[state.currentIndex + ""] = currentMistakes;
@@ -417,10 +421,11 @@ export function finishGame(wpm, accuracy, points, resultId) {
     }
 }
 
-export function updateInput(value) {
+export function updateInput(value, hasError) {
     return {
         type: UPDATE_INPUT,
-        value
+        value,
+        hasError
     }
 }
 

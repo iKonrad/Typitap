@@ -66,7 +66,6 @@ class Profile extends Component {
     }
 
     render() {
-        console.log(this.props.profile.user.Username);
         return (
             <div className="container profile-page">
                 <Helmet title={this.props.profile.user.Username + " game profile"} {...this.renderMetaTags()} />

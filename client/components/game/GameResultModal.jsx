@@ -176,7 +176,6 @@ class GameResultModal extends Component {
 
     renderWPMMessage(wpm) {
         let wpmMessage = GameEngine.getWPMMessage(wpm);
-        console.log("???", wpmMessage, wpm);
 
         if (wpmMessage !== "") {
             return  (

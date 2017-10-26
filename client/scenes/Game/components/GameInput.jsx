@@ -46,13 +46,13 @@ class GameInput extends Component {
 
         // Handle error input
         inputValue = field.value;
+        let hasError = this.hasInputErrors(inputValue, currentWord);
 
-        this.props.dispatch(GameActions.updateInput(inputValue));
-
+        this.props.dispatch(GameActions.updateInput(inputValue, hasError));
 
         // Iterate through all the letters and check for errors
         if (!backSpacePressed) {
-            if (this.hasInputErrors(inputValue, currentWord)) {
+            if (hasError) {
                 this.props.dispatch(GameActions.makeMistake());
             }
         }
@@ -60,13 +60,11 @@ class GameInput extends Component {
     }
 
     hasInputErrors(input, word) {
-
         for (let i = 0; i < input.length; i++) {
             if (input[i] !== word[i]) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -88,23 +86,14 @@ class GameInput extends Component {
 
     }
 
-
     renderClasses() {
-
         let classes = "game__input";
-
-        let textWords = this.props.game.text.split(" ");
-        let currentWord = textWords[this.props.game.currentIndex];
-
         // Check if there are any errors for the current wor
-        if (this.hasInputErrors(this.props.game.inputValue, currentWord)) {
+        if (this.props.game.hasError) {
             classes = classes + " game__input--error";
         }
-
         return classes;
-
     }
-
 
     render() {
 
