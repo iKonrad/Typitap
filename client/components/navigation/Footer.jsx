@@ -42,6 +42,7 @@ class Footer extends React.PureComponent {
                                     <a style={{marginRight: "13px"}} href="http://community.typitap.com" className="white">Community</a>
                                     <Link to="/play" className="white" style={{marginRight: "13px"}}>Play</Link>
                                     <Link to="/terms" className="white" style={{marginRight: "13px"}}>Terms</Link>
+                                    <Link to="/typing-test" className="white" style={{marginRight: "13px"}}>Typing test</Link>
                                 </div>
                             </div>
                         </div>
