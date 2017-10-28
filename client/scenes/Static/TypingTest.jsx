@@ -7,11 +7,9 @@ import {connect} from "react-redux";
 import * as GameEngine from "#app/utils/gameEngine";
 
 class TypingTest extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     static clientInit({store, nextState, replaceState, callback}) {
+        callback();
         return Promise.resolve();
     }
 
