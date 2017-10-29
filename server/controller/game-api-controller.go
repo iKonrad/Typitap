@@ -40,11 +40,12 @@ func (ac *GameAPIController) GetSession(c echo.Context) error {
 	}
 
 	isOnline := sessionType == "online"
-	session, ok := game.FindOpenSession(isOnline)
+	language := "EN"
+	session, ok := game.FindOpenSession(isOnline, language)
 	// Create the session and return it
 	var err error
 	if !ok {
-		session, err = game.CreateSession(isOnline)
+		session, err = game.CreateSession(isOnline, language)
 	}
 
 	if err != nil {

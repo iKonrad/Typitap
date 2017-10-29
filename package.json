@@ -45,7 +45,6 @@
     "react-table": "^6.0.5",
     "react-timeago": "3.2.1",
     "react-twitter-widgets": "^1.6.1",
-    "react-typist": "git+ssh://git@github.com/iKonrad/react-typist.git",
     "reapop": "^1.1.1",
     "reapop-theme-wybo": "^0.4.1",
     "redux": "^3.6.0",

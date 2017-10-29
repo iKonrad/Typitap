@@ -77,8 +77,13 @@ func (e *Engine) parseMessage(client *Client, message map[string]interface{}) {
 			online = false
 		}
 
+		language, ok := message["language"]
+		if !ok {
+			language = "EN"
+		}
+
 		var roomId string
-		if roomId, ok = GetEngine().handleJoinRoom(client.identifier, online.(bool)); ok {
+		if roomId, ok = GetEngine().handleJoinRoom(client.identifier, online.(bool), language.(string)); ok {
 			logs.Log("Player joined room", "Player "+client.identifier+" joined room "+roomId, []string{"websocket", "game", "players"}, "Game Session "+roomId)
 			if online.(bool) {
 				logs.PushUrl("New online player", "A player "+client.identifier+" joins an online room", "https://typitap.com/play/online")
@@ -136,13 +141,13 @@ func (e *Engine) parseMessage(client *Client, message map[string]interface{}) {
 }
 
 // Adds client ID to the room if exists. If no room is found, it creates a new one
-func (e *Engine) handleJoinRoom(identifier string, online bool) (string, bool) {
+func (e *Engine) handleJoinRoom(identifier string, online bool, language string) (string, bool) {
 
 	// Get the next session
-	session, ok := game.FindOpenSession(online)
+	session, ok := game.FindOpenSession(online, language)
 	if !ok {
 		var err error
-		session, err = game.CreateSession(online)
+		session, err = game.CreateSession(online, language)
 		if err != nil {
 			GetHub().SendMessageToClient(
 				identifier,

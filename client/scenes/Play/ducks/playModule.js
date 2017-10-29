@@ -1,7 +1,9 @@
-const SET_GLOBAL_FEED = "SET_GLOBAL_FEED";
+export const SET_GLOBAL_FEED = "@@play/SET_GLOBAL_FEED";
+export const SHOW_LANGUAGE_SWITCHER = "@@play/SHOW_LANGUAGE_SWITCHER";
 
 const initialState = {
     feed: [],
+    showLanguageSwitcher: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -13,6 +15,11 @@ export default function reducer(state = initialState, action) {
                     ...action.feed
                 ]
             };
+        case SHOW_LANGUAGE_SWITCHER:
+            return {
+                ...state,
+                showLanguageSwitcher: true,
+            }
     }
     return state;
 }
@@ -36,3 +43,6 @@ export function fetchGlobalFeed() {
     }
 }
 
+export function showLanguageSwitcher() {
+    return {type: SHOW_LANGUAGE_SWITCHER}
+}

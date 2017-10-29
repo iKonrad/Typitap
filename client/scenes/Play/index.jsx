@@ -5,8 +5,9 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import * as PlayActions from './ducks/playModule';
+
 import * as AppActions from 'store/ducks/appModule';
+import * as PlayActions from './ducks/playModule';
 import TopChart from 'components/app/TopChart';
 import Panel from 'components/app/Panel';
 import ActivityFeed from 'components/app/ActivityFeed';
@@ -18,6 +19,7 @@ import { Timeline } from 'react-twitter-widgets'
 import * as SocketActions from "#app/store/ducks/socketModule";
 import * as GameEngine from "#app/utils/gameEngine";
 import Helmet from 'react-helmet';
+import LanguageSwitcher from './components/LanguageSwitcher'
 
 class Play extends Component {
 
@@ -86,6 +88,8 @@ class Play extends Component {
         );
     }
 
+
+
     getMetaTags() {
         return  {
             title: "Play online race",
@@ -101,7 +105,7 @@ class Play extends Component {
                     <div className="row">
                         <div className="col col-xs-12 col-md-8">
                             <h1 style={{fontSize: "28px"}}>Join online race or practice your typing skills</h1>
-                            <p><em>Hit the practice button to test your typing skills or challenge other players in an online race</em></p>
+                            <p>Hit the practice button to test your typing skills or challenge other players in an online race</p>
                         </div>
                         <div className="col col-xs-12 col-md-8">
                             <Panel title="Search for players" loaded={true}><UserSearch/></Panel>
@@ -112,6 +116,9 @@ class Play extends Component {
                         <div className="col col-xs-12 col-md-4">
                             {this.renderOnlineButton()}
                             {this.renderOfflineButton()}
+                            <Panel loaded={true} title="Settings">
+                                <LanguageSwitcher/>
+                            </Panel>
                             <div className="text-center margin-top-2">
                                 <button type="button" className="btn btn-link"
                                         onClick={this.openTutorial.bind(this)}>How to play?

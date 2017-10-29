@@ -22,11 +22,14 @@ export const LEFT_ROOM = "@@game/LEFT_ROOM";
 export const UPDATE_PLAYER_DATA = "@@game/UPDATE_PLAYER_DATA";
 export const UPDATE_PLAYERS_DATA = "@@game/UPDATE_PLAYERS_DATA";
 export const PLAYER_COMPLETED_GAME = "@@game/PLAYER_COMPLETED_GAME";
-
+export const CHANGE_GAME_LANGUAGE = "@@game/CHANGE_GAME_LANGUAGE";
 
 const initialState = {
     // Game text to be typed
     text: '',
+
+    // Language to play the game in
+    language: "EN",
 
     // Bool - has the game started
     started: false,
@@ -386,7 +389,13 @@ export default function reducer(state = initialState, action) {
         case RESET_GAME:
             return {
                 ...state,
-                ...initialState
+                ...initialState,
+                language: state.language,
+            }
+        case CHANGE_GAME_LANGUAGE:
+            return {
+                ...state,
+                language: action.language
             }
 
     }
@@ -553,4 +562,8 @@ export function setPlayerCompleted(identifier, place, wpm) {
 
 export function completeGame() {
     return { type: COMPLETE_GAME };
+}
+
+export function changeGameLanguage(language) {
+    return { type: CHANGE_GAME_LANGUAGE, language }
 }

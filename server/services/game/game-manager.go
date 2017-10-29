@@ -12,10 +12,10 @@ import (
 	r "gopkg.in/gorethink/gorethink.v3"
 )
 
-func CreateSession(online bool) (entities.GameSession, error) {
+func CreateSession(online bool, language string) (entities.GameSession, error) {
 
 	// Get random text from the database
-	gameText, err := getRandomGameText()
+	gameText, err := getRandomGameText(language)
 	if err != nil {
 		log.Println("No text found" + err.Error())
 		return entities.GameSession{}, err
@@ -64,7 +64,8 @@ func GetSession(sessionId string) (entities.GameSession, error) {
 }
 
 // Fetches the open session from database if exists
-func FindOpenSession(online bool) (entities.GameSession, bool) {
+func FindOpenSession(online bool, language string) (entities.GameSession, bool) {
+
 
 	// Fetch the game text
 	resp, err := r.Table("game_sessions").Filter(map[string]interface{}{
@@ -74,7 +75,10 @@ func FindOpenSession(online bool) (entities.GameSession, bool) {
 	}).OrderBy(r.Asc("created")).Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
 			"textId": r.Table("game_texts").Get(p.Field("textId")),
+			"language": r.Table("game_texts").Get(p.Field("language")),
 		}
+	}).Filter(map[string]interface{} {
+		"language": language,
 	}).Run(db.Session)
 
 	if err != nil {
@@ -111,9 +115,9 @@ func OpenGameSession(sessionId string) {
 	}).Exec(db.Session)
 }
 
-func getRandomGameText() (entities.GameText, error) {
+func getRandomGameText(language string) (entities.GameText, error) {
 
-	resp, err := r.Table("game_texts").Filter(map[string]interface{}{"disabled": false}).Sample(1).Run(db.Session)
+	resp, err := r.Table("game_texts").Filter(map[string]interface{}{"disabled": false, "language": language}).Sample(1).Run(db.Session)
 	defer resp.Close()
 	if err != nil {
 		log.Println("No text found" + err.Error())

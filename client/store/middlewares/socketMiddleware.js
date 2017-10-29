@@ -155,7 +155,8 @@ const socketMiddleware = (function () {
                 if (socket !== null) {
                     socket.send(JSON.stringify({
                         type: "JOIN_ROOM",
-                        online: action.online
+                        online: action.online,
+                        language: store.getState().game.language,
                     }));
                 }
                 break;

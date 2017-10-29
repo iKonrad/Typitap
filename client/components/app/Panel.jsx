@@ -22,7 +22,7 @@ class Panel extends Component {
             return (
                 <div className="panel-heading">
                     <h3>{ this.props.title }</h3>
-                    <p><em>{ this.props.subtitle !== undefined ? this.props.subtitle : "" }</em></p>
+                    <p>{ this.props.subtitle !== undefined ? this.props.subtitle : "" }</p>
                 </div>
             )
         }
