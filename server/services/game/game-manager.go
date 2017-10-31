@@ -297,7 +297,11 @@ func GetResultData(id string) (entities.GameResult, bool) {
 			"sessionId": r.Table("game_sessions").Get(p.Field("sessionId")).
 				Merge(func(s r.Term) interface{} {
 					return map[string]interface{}{
-						"textId": r.Table("game_texts").Get(s.Field("textId")),
+						"textId": r.Table("game_texts").Get(s.Field("textId")).Merge(func(t r.Term) interface{} {
+							return map[string]interface{}{
+								"language": r.Table("languages").Get(t.Field("language")),
+							}
+						}),
 					}
 				}),
 		}
