@@ -43,7 +43,11 @@ func GetSession(sessionId string) (entities.GameSession, error) {
 	// Fetch the game text
 	resp, err := r.Table("game_sessions").Get(sessionId).Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
-			"textId": r.Table("game_texts").Get(p.Field("textId")),
+			"textId": r.Table("game_texts").Get(p.Field("textId")).Merge(func(t r.Term) interface{} {
+				return map[string]interface{}{
+					"language": r.Table("languages").Get(t.Field("language")),
+				}
+			}),
 		}
 	}).Run(db.Session)
 	defer resp.Close()
