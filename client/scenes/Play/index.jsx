@@ -114,11 +114,9 @@ class Play extends Component {
                                 feed={this.props.play.feed}/></Panel>
                         </div>
                         <div className="col col-xs-12 col-md-4">
+                            <LanguageSwitcher/>
                             {this.renderOnlineButton()}
                             {this.renderOfflineButton()}
-                            <Panel loaded={true} title="Settings">
-                                <LanguageSwitcher/>
-                            </Panel>
                             <div className="text-center margin-top-2">
                                 <button type="button" className="btn btn-link"
                                         onClick={this.openTutorial.bind(this)}>How to play?

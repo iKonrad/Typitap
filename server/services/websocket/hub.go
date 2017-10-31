@@ -56,7 +56,6 @@ func (h *SocketHub) Run() {
 		case c := <-h.registerChannel:
 			logs.Log("Client connected", "Client "+c.identifier+" connected to the websocket", []string{"websocket"}, "Websocket")
 			h.clients[c.identifier] = c
-			log.Println("CLIENTS", float64(len(h.clients)))
 			logs.Gauge("clients", float64(len(h.clients)), []string{"websocket"})
 			break
 
@@ -76,10 +75,8 @@ func (h *SocketHub) Run() {
 
 func (h *SocketHub) broadcastMessage(message string) {
 	for id, client := range h.clients {
-
 		select {
 		case client.send <- []byte(message):
-			log.Println("Broadcasting message: ", message)
 			break
 		default:
 			close(client.send)

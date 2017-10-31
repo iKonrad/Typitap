@@ -4,6 +4,7 @@ import {push} from 'react-router-redux';
 import * as AppActions from 'store/ducks/appModule';
 import * as GameEngine from 'utils/gameEngine';
 import * as SocketActions from "#app/store/ducks/socketModule";
+import * as GameActions from 'store/ducks/gameModule';
 
 class OnlineRoomPanel extends React.Component {
 
@@ -11,13 +12,7 @@ class OnlineRoomPanel extends React.Component {
         super(props);
 
         let hasJoined = props.game.room.id !== "" && props.game.online;
-        this.state = {
-            scroll: -40,
-            joined: hasJoined,
-            players: hasJoined ? props.game.room.players : props.app.onlineRoom.players,
-            countdownStarted: hasJoined ? props.game.waitCountdown : props.app.onlineRoom.waitCountdown,
-            countdownSeconds: hasJoined ? props.game.waitCountdownSeconds : props.app.onlineRoom.waitCountdownSeconds,
-        }
+        this.state = this.createStateFromProps(props);
 
         this.scrollHandler = this.handleScroll.bind(this)
     }
@@ -31,16 +26,21 @@ class OnlineRoomPanel extends React.Component {
         return "";
     }
 
+    createStateFromProps(props) {
+        let hasJoined = props.game.room.id !== "" && props.game.online;
+        return {
+            joined: hasJoined,
+            language: hasJoined ? props.game.language : props.app.onlineRoom.language,
+            scroll: -40,
+            players: hasJoined ? props.game.room.players : props.app.onlineRoom.players,
+            countdownStarted: hasJoined ? props.game.waitCountdown : props.app.onlineRoom.waitCountdown,
+            countdownSeconds: hasJoined ? props.game.waitCountdownSeconds : props.app.onlineRoom.waitCountdownSeconds,
+        }
+    }
+
     // Redirects to the game screen on game countdown
     componentWillReceiveProps(newProps) {
-        let hasJoined = newProps.game.room.id !== "" && newProps.game.online;
-        let state = {
-            joined: hasJoined,
-            scroll: -40,
-            players: hasJoined ? newProps.game.room.players : newProps.app.onlineRoom.players,
-            countdownStarted: hasJoined ? newProps.game.waitCountdown : newProps.app.onlineRoom.waitCountdown,
-            countdownSeconds: hasJoined ? newProps.game.waitCountdownSeconds : newProps.app.onlineRoom.waitCountdownSeconds,
-        };
+        let state = this.createStateFromProps(newProps);
         this.setState(state);
 
         // Handle online room join
@@ -118,6 +118,7 @@ class OnlineRoomPanel extends React.Component {
 
     handleJoinButtonClick() {
         GameEngine.resetGame();
+        this.props.dispatch(GameActions.changeGameLanguage(this.state.language));
         if (this.props.game.room === undefined || this.props.game.room.id === "") {
             this.props.dispatch(SocketActions.joinRoom(true));
         }
@@ -178,6 +179,7 @@ class OnlineRoomPanel extends React.Component {
                 <div className="col col-xs-12">
                     <div className="text-center white">
                         <h3 className="white margin-top-4">Online Room</h3>
+                        { this.state.language !== "EN" ? <p><strong>Language:</strong> <div className={`flag flag-${ this.state.language.toLowerCase() }`} style={{position: "relative", top: "6px", margin: "0px 3px"}}></div>{ this.state.language }</p> : "" }
                         <div style={{maxWidth: "60px", marginLeft: "auto", marginRight: "auto"}}>
                             <hr/>
                         </div>

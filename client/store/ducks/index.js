@@ -11,6 +11,7 @@ import profileReducer from './profileModule';
 
 import dashboardReducer from 'scenes/Home/scenes/Dashboard/ducks/dashboardModule';
 import playReducer from 'scenes/Play/ducks/playModule';
+import adminTextReducer from 'scenes/Admin/scenes/AdminText/ducks/adminTextModule';
 
 // Combine all reducers you may have here
 export default combineReducers({
@@ -25,4 +26,5 @@ export default combineReducers({
     account: accountReducer,
     profile: profileReducer,
     play: playReducer,
+    adminText: adminTextReducer,
 });

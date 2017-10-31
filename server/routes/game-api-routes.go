@@ -20,4 +20,5 @@ func (api *GameAPIRoutes) Bind(group *echo.Group) {
 	group.GET("/feed", controller.GameAPI.GetGlobalFeed)
 	group.GET("/result/:id", controller.GameAPI.GetResultsData)
 	group.GET("/playbacks/:id", controller.GameAPI.GetPlaybackData)
+	group.GET("/languages", controller.GameAPI.GetLanguages)
 }

@@ -1,10 +1,12 @@
 import * as AdminActions from 'scenes/Admin/utils/adminActions';
 import React from 'react';
+import {push} from "react-router-redux";
 
 export function renderAdminEditableField(table, cellInfo) {
     let type = cellInfo.column.type === undefined ? "string" : cellInfo.column.type;
+
     return (
-        <div style={{backgroundColor: '#fafafa'}} contentEditable suppressContentEditableWarning onBlur={(e) => {
+        <div style={{backgroundColor: '#fafafa'}} contentEditable={ cellInfo.column.editable === undefined || cellInfo.column.editable } suppressContentEditableWarning onBlur={(e) => {
 
             let id = "";
             if (this.state.data[cellInfo.index]["id"] !== undefined) {
@@ -40,3 +42,10 @@ export function renderAdminEditableField(table, cellInfo) {
         </div>
     )
 }
+
+export function renderEditButton(url, cellInfo) {
+    return (
+        <a className="btn btn-outline btn-pink btn-xs" onClick={ () => { this.props.dispatch(push(url + this.state.data[cellInfo.index]["Id"])) } }>Edit</a>
+    )
+}
+

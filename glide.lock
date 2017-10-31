@@ -1,5 +1,5 @@
-hash: 8df80d547de25d23cfb4055b96434cbcde08db584699a1490b88c6d8fc6b1cd2
-updated: 2017-07-10T19:07:45.780873318+01:00
+hash: d0f279a159b8c8a0e0b98e05992c75b588701ac9dbfb51b232fe45a6ee2cf7f9
+updated: 2017-10-30T13:24:05.608369Z
 imports:
 - name: github.com/badoux/checkmail
   version: d0a759655d62bcdc95c50a0676f3e9702ed59453
@@ -43,6 +43,12 @@ imports:
   version: 7e5a8eef611ee84dd359503f3969f80df4c50723
 - name: github.com/fogleman/gg
   version: 6166aa3c1afaee416f384645a81636267aee6d25
+- name: github.com/go-playground/locales
+  version: e4cbcb5d0652150d40ad0646651076b6bd2be4f6
+  subpackages:
+  - currency
+- name: github.com/go-playground/universal-translator
+  version: 71201497bace774495daed26a3874fd339e0b538
 - name: github.com/go-redis/redis
   version: 564772f045d89bd55843d7dc8042e0a599401e09
   subpackages:
@@ -68,12 +74,16 @@ imports:
   version: 8b6b4cd75f07f7ee036eb37b8127bd40ab1efc49
 - name: github.com/gorilla/websocket
   version: 462d5c5828f6203e4047c47be2920315937be380
+- name: github.com/gregdel/pushover
+  version: 3c2e00dda05a0225e30f21659b7d9399278bf4a1
 - name: github.com/hailocab/go-hostpool
   version: e80d13ce29ede4452c43dea11e79b9bc8a15b478
 - name: github.com/ikeikeikeike/go-sitemap-generator
   version: e3c3d374db77838e92e5981ba81f26d1ecea4aa8
   subpackages:
   - stm
+- name: github.com/iKonrad/go-flarum
+  version: f25632f69245f65deaf8e48a6821d1a84a8342f8
 - name: github.com/imdario/mergo
   version: e3000cb3d28c72b837601cac94debd91032d19fe
 - name: github.com/itsjamie/go-bindata-templates
@@ -81,7 +91,7 @@ imports:
 - name: github.com/jteeuwen/go-bindata
   version: a0ff2567cfb70903282db057e799fd826784d41d
 - name: github.com/labstack/echo
-  version: 935a60782cbbc55110e7bd4b33120e4567cbee43
+  version: cec7629194fe4bf83b0c72d9a02d340c7a1468ac
   subpackages:
   - middleware
 - name: github.com/labstack/gommon
@@ -169,6 +179,8 @@ imports:
   - unicode/norm
 - name: gopkg.in/fatih/pool.v2
   version: 6e328e67893eb46323ad06f0e92cb9536babbabc
+- name: gopkg.in/go-playground/validator.v9
+  version: 1304298bf10d085adec514b076772a79c9cadb6b
 - name: gopkg.in/gorethink/gorethink.v3
   version: 7ab832f7b65573104a555d84a27992ae9ea1f659
   subpackages:

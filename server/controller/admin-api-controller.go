@@ -9,6 +9,7 @@ import (
 
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
+	"github.com/iKonrad/typitap/server/services/gametexts"
 	"github.com/labstack/echo"
 	r "gopkg.in/gorethink/gorethink.v3"
 )
@@ -66,7 +67,11 @@ func (uc AdminAPIController) GetLevels(c echo.Context) error {
 
 func (uc AdminAPIController) GetTexts(c echo.Context) error {
 
-	resp, err := r.Table("game_texts").Run(db.Session)
+	resp, err := r.Table("game_texts").Merge(func(p r.Term) interface{} {
+		return map[string]interface{}{
+			"language": r.Table("languages").Get(p.Field("language")),
+		}
+	}).Run(db.Session)
 	if err != nil {
 		log.Println("Error while fetching texts, ", err.Error())
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -86,6 +91,52 @@ func (uc AdminAPIController) GetTexts(c echo.Context) error {
 		"data":    texts,
 	})
 
+}
+
+func (uc AdminAPIController) GetText(c echo.Context) error {
+	textId := c.Param("id")
+	text, ok := gametexts.GetText(textId)
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": ok,
+		"data":    text,
+	})
+}
+
+func (uc AdminAPIController) SaveText(c echo.Context) error {
+
+	textId := c.Param("id")
+
+	data := map[string]interface{}{
+		"Text":     c.FormValue("Text"),
+		"ISBN":     c.FormValue("ISBN"),
+		"Disabled": c.FormValue("Disabled"),
+		"Language": c.FormValue("Language"),
+	}
+
+	isValid, errors := gametexts.ValidateText(data)
+
+	if !isValid {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"success": false,
+			"errors":    errors,
+		})
+	}
+
+	var updatedText entities.GameText
+
+	// If textID is empty or set as "new", add new text to the database
+	if textId == "" || textId == "new" {
+		updatedText = gametexts.CreateText(data)
+	} else {
+		// Otherwise, update the existing entry
+		updatedText = gametexts.UpdateText(textId, data)
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": updatedText.Id != "",
+		"data":    updatedText,
+	})
 }
 
 func (uc AdminAPIController) UpdateTableField(c echo.Context) error {
@@ -150,7 +201,6 @@ func (uc AdminAPIController) updateLevelsTable(c echo.Context) error {
 	})
 
 }
-
 
 func (uc AdminAPIController) updateTextsTable(c echo.Context) error {
 

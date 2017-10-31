@@ -22,17 +22,18 @@ class LanguageSwitcher extends React.Component {
         if (this.props.play.showLanguageSwitcher) {
             return (
                 <div className="form-group">
-                    <select className="form-control" onChange={ this.onLanguageChange.bind(this) } defaultValue={ this.props.game.language }>
-                        <option value="EN">English</option>
-                        <option value="PL">Polish</option>
+                    <label>Language:</label>
+                    <select className="form-control background-white" onChange={ this.onLanguageChange.bind(this) } value={ this.props.game.language }>
+                        { this.props.app.languages.map((language, index) => {
+                            return <option key={ `language-${index}` } value={ language.Id }>{ language.Name }</option>
+                        }) }
                     </select>
                 </div>
             );
         }
-
         return (
             <div>
-                <p>Current language: English <a href="#" onClick={ this.showLanguageSwitcher.bind(this) }>(change)</a></p>
+                <p><button onClick={ this.showLanguageSwitcher.bind(this) } className="btn btn-link btn-sm">Change game settings</button></p>
             </div>
         );
     }
@@ -40,6 +41,7 @@ class LanguageSwitcher extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        app: state.app,
         play: state.play,
         game: state.game,
     };

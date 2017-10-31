@@ -16,6 +16,7 @@ import (
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/iKonrad/typitap/server/services/utils"
 	"github.com/labstack/echo"
+	"github.com/iKonrad/typitap/server/services/gametexts"
 )
 
 type GameAPIController struct {
@@ -108,7 +109,6 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 	} else {
 
 		user := c.Get("User").(entities.User)
-
 		newResult, err := game.SaveResult(&user, c.FormValue("sessionId"), mistakes, wpm, int(accuracy), gameTime, 0, utils.GetIPAdress(c.Request()))
 
 		if err != nil {
@@ -169,11 +169,9 @@ func (ac *GameAPIController) SaveResult(c echo.Context) error {
 			"accuracy": accuracy,
 		},
 	})
-
 }
 
 func (ac *GameAPIController) GetChartsData(c echo.Context) error {
-
 	charts := topchart.GetCharts()
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
@@ -182,7 +180,6 @@ func (ac *GameAPIController) GetChartsData(c echo.Context) error {
 }
 
 func (ac *GameAPIController) GetChartData(c echo.Context) error {
-
 	name := c.Param("name")
 	chart := topchart.GetChart(name)
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -192,7 +189,6 @@ func (ac *GameAPIController) GetChartData(c echo.Context) error {
 }
 
 func (gc *GameAPIController) GetGlobalFeed(c echo.Context) error {
-
 	o := c.QueryParam("offset")
 	if o == "" {
 		o = "0"
@@ -213,7 +209,6 @@ func (gc *GameAPIController) GetGlobalFeed(c echo.Context) error {
 }
 
 func (gc *GameAPIController) GetResultsData(c echo.Context) error {
-
 	resultId := c.Param("id")
 	result, ok := game.GetResultData(resultId)
 
@@ -224,22 +219,17 @@ func (gc *GameAPIController) GetResultsData(c echo.Context) error {
 }
 
 func (gc *GameAPIController) GetPlaybackData(c echo.Context) error {
-
 	resultId := c.Param("id")
-
 	playback, ok := game.GetPlayback(resultId)
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": ok,
 		"data":    playback,
 	})
-
 }
 
 func (gc *GameAPIController) FetchResultboard(c echo.Context) error {
-
 	resultId := c.Param("id")
-
 	filePath := "static/images/resultboards/" + resultId + ".png"
 
 	// Get file stats
@@ -255,6 +245,15 @@ func (gc *GameAPIController) FetchResultboard(c echo.Context) error {
 	}
 
 	graphics.GenerateResultboard(result)
-
 	return c.File(filePath)
+}
+
+
+func (gc *GameAPIController) GetLanguages(c echo.Context) error {
+	languages := gametexts.GetTextLanguages()
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		 "success": true,
+		 "data": languages,
+	})
 }

@@ -4,11 +4,12 @@ import (
 	"log"
 	"sync"
 
+	"encoding/json"
+
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/iKonrad/typitap/server/services/game"
 	"github.com/iKonrad/typitap/server/services/logs"
 	"github.com/pkg/errors"
-	"encoding/json"
 )
 
 type Engine struct {
@@ -59,7 +60,6 @@ func (e *Engine) Run() {
 	for {
 		select {
 		case r := <-e.newRoomChannel:
-			log.Println("Adding new room", r)
 			e.rooms[r.Id] = r
 		}
 	}
@@ -82,9 +82,7 @@ func (e *Engine) parseMessage(client *Client, message map[string]interface{}) {
 			language = "EN"
 		}
 
-		var roomId string
-		if roomId, ok = GetEngine().handleJoinRoom(client.identifier, online.(bool), language.(string)); ok {
-			logs.Log("Player joined room", "Player "+client.identifier+" joined room "+roomId, []string{"websocket", "game", "players"}, "Game Session "+roomId)
+		if _, ok = GetEngine().handleJoinRoom(client.identifier, online.(bool), language.(string)); ok {
 			if online.(bool) {
 				logs.PushUrl("New online player", "A player "+client.identifier+" joins an online room", "https://typitap.com/play/online")
 			}
@@ -145,6 +143,7 @@ func (e *Engine) handleJoinRoom(identifier string, online bool, language string)
 
 	// Get the next session
 	session, ok := game.FindOpenSession(online, language)
+
 	if !ok {
 		var err error
 		session, err = game.CreateSession(online, language)
@@ -181,7 +180,7 @@ func (e *Engine) handleJoinRoom(identifier string, online bool, language string)
 	var room *Room
 	if !exists {
 		// Room doesn't exists, create a new one
-		room = NewRoom(session.Id, session.Text.Text)
+		room = NewRoom(session.Id, session.Text.Text, language)
 		e.newRoomChannel <- room
 		logs.Log("New room created", "Room '"+room.Id+"' has been created", []string{"websocket", "game"}, "Game Session "+room.Id)
 		logs.Gauge("rooms", float64(len(e.rooms)), []string{"websocket", "game"})
@@ -193,7 +192,6 @@ func (e *Engine) handleJoinRoom(identifier string, online bool, language string)
 	room.AddPlayer(identifier)
 
 	// If room is full, close the room
-	log.Println("Player joined. Players now:", len(room.Players))
 	if len(room.Players) >= 5 {
 		game.CloseGameSession(room.Id)
 		logs.Success("Room is full", "Room '"+room.Id+"' is full and has been closed", []string{"websocket", "game"}, "Game Session "+room.Id)
@@ -211,9 +209,11 @@ func (e *Engine) handleJoinRoom(identifier string, online bool, language string)
 		},
 	)
 
-	BroadcastMessage(TYPE_ONLINE_GAME_PLAYERS_SET, map[string]interface{}{
-		"players": room.GetPlayers(),
-	})
+	if online && room.language == "EN" {
+		BroadcastMessage(TYPE_ONLINE_GAME_PLAYERS_SET, map[string]interface{}{
+			"players": room.GetPlayers(),
+		})
+	}
 
 	// Send message to everyone that the player has joined the room
 	playerData := room.GetPlayer(identifier)
@@ -242,7 +242,6 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 		e.rooms[roomId].SendMessage(TYPE_PLAYER_LEFT_ROOM, map[string]interface{}{
 			"identifier": identifier,
 		})
-		log.Println("Player left. Now players: ", len(e.rooms[roomId].Players))
 		if shouldOpen {
 			log.Println("Opening back the session")
 			game.OpenGameSession(roomId)
@@ -256,7 +255,7 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 			e.rooms[roomId].stopWaitCountdown()
 		}
 
-		if !e.rooms[roomId].gameStarted {
+		if !e.rooms[roomId].gameStarted && e.rooms[roomId].language == "EN" {
 			BroadcastMessage(TYPE_ONLINE_GAME_PLAYERS_SET, map[string]interface{}{
 				"players": e.rooms[roomId].GetPlayers(),
 			})
@@ -316,19 +315,20 @@ func (e *Engine) RemoveRoom(roomId string) {
 /*
 	GetOnlineRoomData returns details about an online room that hasn't started yet
 	It'll be used to display player counts badge and room info in the online sidebar
- */
+*/
 func (e *Engine) GetOnlineRoomData() map[string]interface{} {
 
 	data := map[string]interface{}{
 		"players":          map[string]interface{}{},
 		"countdown":        false,
 		"countdownSeconds": 5,
+		"language":         "EN",
 	}
 
 	var onlineRoom *Room
 
 	for _, room := range e.rooms {
-		if !room.gameStarted {
+		if !room.gameStarted && room.language == "EN" {
 			onlineRoom = room
 			break
 		}
@@ -338,6 +338,7 @@ func (e *Engine) GetOnlineRoomData() map[string]interface{} {
 		data["players"] = onlineRoom.GetPlayers()
 		data["countdown"] = onlineRoom.waitCountdownStarted
 		data["countdownSeconds"] = onlineRoom.waitCountdownSeconds
+		data["language"] = onlineRoom.language
 	}
 
 	return data

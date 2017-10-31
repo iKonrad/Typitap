@@ -22,6 +22,9 @@ const initialState = {
         all: {}
     },
 
+    // Contains all available languages in game
+    languages: [],
+
     // Contains state of the online sidebar
     onlineSidebarOpen: false,
 
@@ -31,6 +34,7 @@ const initialState = {
         players: {},
         waitCountdown: false,
         waitCountdownSeconds: 10,
+        language: "EN",
     },
 }
 

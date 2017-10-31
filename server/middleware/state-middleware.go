@@ -9,6 +9,7 @@ import (
 	"time"
 	"strconv"
 	"github.com/iKonrad/typitap/server/services/websocket"
+	"github.com/iKonrad/typitap/server/services/gametexts"
 )
 
 func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
@@ -56,6 +57,7 @@ func GenerateStateHandler(next echo.HandlerFunc) echo.HandlerFunc {
 
 		newStore["app"] = map[string]interface{}{
 			"onlineRoom": websocket.GetEngine().GetOnlineRoomData(),
+			"languages": gametexts.GetActiveTextLanguages(),
 		}
 
 		c.Set("State", newStore)

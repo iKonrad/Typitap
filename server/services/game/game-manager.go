@@ -72,29 +72,33 @@ func FindOpenSession(online bool, language string) (entities.GameSession, bool) 
 		"online":   online,
 		"open":     true,
 		"finished": false,
-	}).OrderBy(r.Asc("created")).Merge(func(p r.Term) interface{} {
+	}).
+	Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
-			"textId": r.Table("game_texts").Get(p.Field("textId")),
-			"language": r.Table("game_texts").Get(p.Field("language")),
+			"textId": r.Table("game_texts").Get(p.Field("textId")).Merge(func(s r.Term) interface{} {
+				return map[string]interface{}{
+					"language": r.Table("languages").Get(s.Field("language")),
+				}
+			}),
 		}
-	}).Filter(map[string]interface{} {
-		"language": language,
-	}).Run(db.Session)
+	}).
+	Filter(func (p r.Term) r.Term {
+		return p.Field("textId").Field("language").Field("id").Eq(language)
+	}).
+	OrderBy(r.Asc("created")).
+	Run(db.Session)
 
 	if err != nil {
+		log.Println(err)
 		return entities.GameSession{}, false
 	}
 
 	var session entities.GameSession
 
 	// check if session exists
-	if !resp.IsNil() {
-		resp.One(&session)
-	} else {
-		return entities.GameSession{}, false
-	}
+	responseError := resp.One(&session)
 
-	if err != nil || session.Id == "" {
+	if responseError != nil || session.Id == "" {
 		return entities.GameSession{}, false
 	}
 
@@ -117,7 +121,15 @@ func OpenGameSession(sessionId string) {
 
 func getRandomGameText(language string) (entities.GameText, error) {
 
-	resp, err := r.Table("game_texts").Filter(map[string]interface{}{"disabled": false, "language": language}).Sample(1).Run(db.Session)
+	resp, err := r.Table("game_texts").
+	Filter(map[string]interface{}{"disabled": false, "language": language}).
+	Merge(func(p r.Term) interface{} {
+		return map[string]interface{}{
+			"language": r.Table("languages").Get(p.Field("language")),
+		}
+	}).
+	Sample(1).Run(db.Session)
+
 	defer resp.Close()
 	if err != nil {
 		log.Println("No text found" + err.Error())

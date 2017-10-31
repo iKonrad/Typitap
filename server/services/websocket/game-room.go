@@ -27,9 +27,10 @@ type Room struct {
 	gameStarted          bool
 	nextPlace            int8
 	time                 int
+	language             string
 }
 
-func NewRoom(id string, text string) *Room {
+func NewRoom(id string, text string, language string) *Room {
 
 	db.Redis.HSet("rooms:"+id, "started", false)
 
@@ -46,6 +47,7 @@ func NewRoom(id string, text string) *Room {
 		gameStarted:          false,
 		nextPlace:            1,
 		time:                 0,
+		language:             language,
 	}
 }
 
@@ -239,7 +241,7 @@ func (r *Room) startGame() {
 		"Game Session "+r.Id,
 	)
 
-	logs.Push("Online game started", "Online game with started with " + strconv.Itoa(len(r.Players)) + " players")
+	logs.Push("Online game started", "Online game with started with "+strconv.Itoa(len(r.Players))+" players")
 
 	go func() {
 		for range r.ticker.C {
@@ -418,7 +420,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int,
 				"accuracy":   accuracy,
 				"time":       playerTime,
 				"points":     points,
-				"resultId": resultId,
+				"resultId":   resultId,
 			})
 
 		// Increment next place
