@@ -59,7 +59,6 @@ func UpdateText(textId string, data map[string]interface{}) entities.GameText {
 }
 
 func CreateText(data map[string]interface{}) entities.GameText {
-
 	newId, _ := uuid.NewV4()
 
 	isDisabled := false
@@ -72,11 +71,12 @@ func CreateText(data map[string]interface{}) entities.GameText {
 		Text:     data["Text"].(string),
 		ISBN:     data["ISBN"].(string),
 		Disabled: isDisabled,
+		Language: entities.Language{
+			Id: data["Language"].(string),
+		},
 	}
 
-	r.Table("game_texts").Insert(text).Update(map[string]interface{}{
-		"language": data["Language"].(string),
-	}).Exec(db.Session)
+	r.Table("game_texts").Insert(text).Update(text).Exec(db.Session)
 	return text
 }
 
@@ -127,8 +127,8 @@ func GetTextLanguages() []entities.Language {
 
 // Retrieves list of languages that are actually used by texts in game
 func GetActiveTextLanguages() []entities.Language {
-	resp, err := r.Table("game_texts").Pluck("language").Distinct().Merge(func (p r.Term) interface{} {
-		return map[string]interface{} {
+	resp, err := r.Table("game_texts").Pluck("language").Distinct().Merge(func(p r.Term) interface{} {
+		return map[string]interface{}{
 			"language": r.Table("languages").Get(p.Field("language")),
 		}
 	}).Run(db.Session)
@@ -149,7 +149,7 @@ func GetActiveTextLanguages() []entities.Language {
 	for _, row := range resultMap {
 		if row != nil && row["language"] != nil {
 			languages = append(languages, entities.Language{
-				Id: row["language"]["id"].(string),
+				Id:   row["language"]["id"].(string),
 				Name: row["language"]["name"].(string),
 			})
 		}
