@@ -147,10 +147,12 @@ func GetActiveTextLanguages() []entities.Language {
 	}
 
 	for _, row := range resultMap {
-		languages = append(languages, entities.Language{
-			Id: row["language"]["id"].(string),
-			Name: row["language"]["name"].(string),
-		})
+		if row != nil && row["language"] != nil {
+			languages = append(languages, entities.Language{
+				Id: row["language"]["id"].(string),
+				Name: row["language"]["name"].(string),
+			})
+		}
 	}
 
 	return languages
