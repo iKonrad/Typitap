@@ -8,6 +8,7 @@ import Textarea from 'components/form/fields/textarea';
 import {Link} from 'react-router';
 import Notifications from 'utils/notifications';
 import Spinner from 'components/app/Spinner';
+import TextStats from 'components/form/ui/TextStats';
 
 class AdminText extends React.Component {
 
@@ -23,7 +24,7 @@ class AdminText extends React.Component {
         }
     }
 
-    componentWillMount() {
+    fetchFormData() {
         if (this.state.id !== "new" && this.state.id !== "") {
             fetch(`/api/admin/texts/${ this.state.id }`, {
                 credentials: "same-origin",
@@ -43,6 +44,10 @@ class AdminText extends React.Component {
         }
     }
 
+    componentWillMount() {
+        this.fetchFormData();
+    }
+
     componentWillUnmount() {
         this.props.dispatch(AdminTextActions.resetDataValues())
     }
@@ -54,62 +59,27 @@ class AdminText extends React.Component {
             } else {
                 this.props.load(values);
             }
-
-
             this.props.dispatch(Notifications.success("Text saved successfully"));
         });
     };
 
-
-    renderSidebar() {
-        if (this.props.text === undefined) {
-            return;
+    renderAcceptButton() {
+        if (this.props.accepted === undefined || !this.props.accepted) {
+            return (
+                <div className="form-group">
+                    <button type="submit" className="btn btn-primary btn-block" onClick={ this.handleAcceptButtonClick.bind(this) }>Accept text</button>
+                </div>
+            )
         }
-
-        let characters = this.props.text.length;
-        let words = this.props.text.split(" ");
-        let longestWord = "";
-        words.forEach((obj) => {
-            if (obj.length > longestWord.length) {
-                longestWord = obj;
-            }
-        });
-
-        let specialChars = {};
-        let specialCharsTotal = 0;
-        this.props.text.split("").forEach((letter) => {
-            if (!letter.match(/[a-zA-Z0-9 ]/)) {
-                specialChars[letter] = specialChars[letter] === undefined ? 1 : specialChars[letter] + 1;
-                specialCharsTotal++;
-            }
-        });
-
-        let averageWordLength = characters / words.length;
-
-        return (
-            <div>
-                <h4>Text details</h4>
-                <p key="1">
-                    <strong>Characters: </strong>
-                    <span className={(characters.length < 160 || characters.length > 240) ? "text-danger" : ""}>
-                        {characters}
-                    </span>
-                </p>
-                <p key="2"><strong>Words: </strong> {words.length}</p>
-                <p key="3"><strong>Average word length: </strong> {averageWordLength.toFixed(1)} characters</p>
-                <p key="4"><strong>Longest word: </strong> <em>{longestWord}</em> ({longestWord.length} characters)</p>
-                <p key="5"><strong>Special characters (total): </strong>{specialCharsTotal}</p>
-                <p key="6"><strong>Special characters: </strong> {Object.keys(specialChars).map((obj) => {
-                    return <span style={{
-                        background: "#EFEFEF",
-                        padding: "5px",
-                        margin: "2px"
-                    }}>{specialChars[obj]}<strong> {obj}</strong></span>
-                })}</p>
-            </div>
-        )
+        return <div></div>;
     }
 
+    handleAcceptButtonClick() {
+        return AdminTextActions.acceptText(this.state.id).then((details) => {
+            this.fetchFormData();
+            this.props.dispatch(Notifications.success("Text accepted. User has been notified via e-mail"));
+        });
+    }
 
     updateField(fieldName, e) {
         let value = e.target.value;
@@ -135,6 +105,7 @@ class AdminText extends React.Component {
                             <Panel loaded={true}>
                                 <h4 className="text-bold">{this.state.id === "new" ? "" : "ID: " + this.props.adminText.data.Id}</h4>
                                 <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
+                                    <Field id="Accepted" name="Accepted" component="hidden" />
                                     <div className="form-group">
                                         <label htmlFor="language">Text</label>
                                         <Field id="Text" name="Text" component={Textarea} className="form-control"
@@ -164,11 +135,12 @@ class AdminText extends React.Component {
                                                 className="btn btn-pink btn-block">{submitting ? "Saving..." : "Save"}</button>
                                     </div>
                                 </form>
+                                { this.renderAcceptButton() }
                             </Panel>
                         </div>
                         <div className="col col-md-4">
                             <Panel loaded={true}>
-                                {this.renderSidebar()}
+                                { <TextStats text={ this.props.text } /> }
                             </Panel>
                         </div>
                     </div>
@@ -200,6 +172,7 @@ AdminText = connect(
             initialValues: state.adminText.data,
             adminText: state.adminText,
             text: selector(state, "Text"),
+            accepted: selector(state, "Accepted"),
         }
     },
     {load: AdminTextActions.loadDataValues}               // bind account loading action creator

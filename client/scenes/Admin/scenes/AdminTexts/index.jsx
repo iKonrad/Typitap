@@ -38,6 +38,13 @@ class AdminTexts extends React.Component {
                 editable: false,
                 maxWidth: 50,
             }, {
+                Header: 'Accepted',
+                accessor: 'Accepted',
+                Cell: tableUtils.renderAdminEditableField.bind(this, "game_texts"),
+                type: "bool",
+                editable: false,
+                maxWidth: 50,
+            }, {
                 Header: 'Language',
                 accessor: 'Language',
                 Cell: tableUtils.renderAdminEditableField.bind(this, "game_texts"),
@@ -53,7 +60,7 @@ class AdminTexts extends React.Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         fetch(`/api/admin/texts`, {
             credentials: "same-origin",
             headers: {

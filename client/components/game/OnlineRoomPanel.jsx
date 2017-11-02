@@ -31,7 +31,7 @@ class OnlineRoomPanel extends React.Component {
         return {
             joined: hasJoined,
             language: hasJoined ? props.game.language : props.app.onlineRoom.language,
-            scroll: -40,
+            scroll: 0,
             players: hasJoined ? props.game.room.players : props.app.onlineRoom.players,
             countdownStarted: hasJoined ? props.game.waitCountdown : props.app.onlineRoom.waitCountdown,
             countdownSeconds: hasJoined ? props.game.waitCountdownSeconds : props.app.onlineRoom.waitCountdownSeconds,
@@ -62,7 +62,7 @@ class OnlineRoomPanel extends React.Component {
             let scrollPos = window.scrollY || window.scrollTop || document.getElementsByTagName("html")[0].scrollTop;
             let state = this.state;
             let scrollOffset = -40;
-            state.scroll = scrollPos <= 70 ? scrollOffset + (scrollPos * -1) : -110;
+            state.scroll = scrollPos <= 70 ? scrollPos * -1 : -70;
             this.setState(state);
         }
     }

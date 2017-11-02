@@ -68,9 +68,10 @@ func pullChart(name string) (entities.GameChart, bool) {
 					"userId": r.Table("users").Get(i.Field("userId")),
 					"sessionId": r.Table("game_sessions").Get(i.Field("sessionId")).Merge(func(j r.Term) interface{} {
 						return map[string]interface{}{
-							"textId": r.Table("game_texts").Get(j.Field("textId")).Merge(func(k r.Term) interface{} {
+							"text": r.Table("game_texts").Get(j.Field("text")).Merge(func(k r.Term) interface{} {
 								return map[string]interface{}{
 									"language": r.Table("languages").Get(k.Field("language")),
+									"user": r.Table("users").Get(k.Field("user")).Default(map[string]interface{}{"username": ""}).Pluck("username"),
 								}
 							}),
 						}

@@ -23,6 +23,7 @@ func init() {
 		Database: databaseName,
 	})
 
+
 	if err != nil {
 		log.Fatalln(err.Error())
 	}

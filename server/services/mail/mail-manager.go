@@ -15,9 +15,11 @@ func init() {
 
 func SendEmail(to string, templateName string, vars map[string]interface{}) bool {
 
-	if config.Config.UBool("debug", true) {
+	if !config.Config.UBool("send_emails", false) {
 		return true
 	}
+
+	fmt.Println("TEMPL", templateName)
 
 	email := &mail.InfoSendMail{
 		FromEmail:                config.Config.UString("mail_from_address", "jarson@me.com"),

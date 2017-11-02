@@ -16,6 +16,8 @@ func CreateSession(online bool, language string) (entities.GameSession, error) {
 
 	// Get random text from the database
 	gameText, err := getRandomGameText(language)
+
+
 	if err != nil {
 		log.Println("No text found" + err.Error())
 		return entities.GameSession{}, err
@@ -30,10 +32,25 @@ func CreateSession(online bool, language string) (entities.GameSession, error) {
 		Online:  online,
 		Open:    true,
 		Text:    gameText,
+		Finished: false,
+	}
+
+	gameSessionMap := map[string]interface{}{
+		"id": sessionId.String(),
+		"created": time.Now(),
+		"online": online,
+		"open": true,
+		"text": gameText.Id,
+		"finished": false,
 	}
 
 	// Save object in the database
-	r.Table("game_sessions").Insert(gameSession).Exec(db.Session)
+	_, err = r.Table("game_sessions").Insert(gameSessionMap).Run(db.Session)
+
+	if err != nil {
+		log.Println(err)
+	}
+
 	return gameSession, nil
 
 }
@@ -43,9 +60,10 @@ func GetSession(sessionId string) (entities.GameSession, error) {
 	// Fetch the game text
 	resp, err := r.Table("game_sessions").Get(sessionId).Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
-			"textId": r.Table("game_texts").Get(p.Field("textId")).Merge(func(t r.Term) interface{} {
+			"text": r.Table("game_texts").Get(p.Field("text")).Merge(func(t r.Term) interface{} {
 				return map[string]interface{}{
 					"language": r.Table("languages").Get(t.Field("language")),
+					"user": r.Table("users").Get(t.Field("user")).Default(map[string]interface{}{"username": ""}).Pluck("username"),
 				}
 			}),
 		}
@@ -79,15 +97,16 @@ func FindOpenSession(online bool, language string) (entities.GameSession, bool) 
 	}).
 	Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
-			"textId": r.Table("game_texts").Get(p.Field("textId")).Merge(func(s r.Term) interface{} {
+			"text": r.Table("game_texts").Get(p.Field("text")).Merge(func(s r.Term) interface{} {
 				return map[string]interface{}{
 					"language": r.Table("languages").Get(s.Field("language")),
+					"user": r.Table("users").Get(s.Field("user")).Default(map[string]interface{}{"username": ""}).Pluck("username"),
 				}
 			}),
 		}
 	}).
 	Filter(func (p r.Term) r.Term {
-		return p.Field("textId").Field("language").Field("id").Eq(language)
+		return p.Field("text").Field("language").Field("id").Eq(language)
 	}).
 	OrderBy(r.Asc("created")).
 	Run(db.Session)
@@ -103,6 +122,7 @@ func FindOpenSession(online bool, language string) (entities.GameSession, bool) 
 	responseError := resp.One(&session)
 
 	if responseError != nil || session.Id == "" {
+		log.Println(responseError)
 		return entities.GameSession{}, false
 	}
 
@@ -126,44 +146,23 @@ func OpenGameSession(sessionId string) {
 func getRandomGameText(language string) (entities.GameText, error) {
 
 	resp, err := r.Table("game_texts").
-	Filter(map[string]interface{}{"disabled": false, "language": language}).
+	Filter(map[string]interface{}{"disabled": false, "language": language, "accepted": true}).
 	Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
 			"language": r.Table("languages").Get(p.Field("language")),
+			"user": r.Table("users").Get(p.Field("user")).Default(map[string]interface{}{"username": ""}).Pluck("username"),
 		}
 	}).
 	Sample(1).Run(db.Session)
 
 	defer resp.Close()
 	if err != nil {
-		log.Println("No text found" + err.Error())
-		return entities.GameText{}, errors.New("An error occurred while fetching the game text")
+		return entities.GameText{}, err
 	}
 
 	var gameText entities.GameText
 	err = resp.One(&gameText)
 
-	if err != nil {
-		log.Println("Error while fetching the game text: " + err.Error())
-		return entities.GameText{}, errors.New("An error occurred while fetching the game text")
-	}
-
-	return gameText, nil
-
-}
-
-func getGameText(textId int) (entities.GameText, error) {
-
-	// Fetch the game text
-	resp, err := r.Table("game_texts").Get(textId).Run(db.Session)
-	defer resp.Close()
-	if err != nil {
-		log.Println("No Text found for ID" + err.Error())
-		return entities.GameText{}, errors.New("An error occurred while fetching the game text")
-	}
-
-	var gameText entities.GameText
-	err = resp.One(&gameText)
 	if err != nil {
 		log.Println("Error while fetching the game text: " + err.Error())
 		return entities.GameText{}, errors.New("An error occurred while fetching the game text")
@@ -297,9 +296,10 @@ func GetResultData(id string) (entities.GameResult, bool) {
 			"sessionId": r.Table("game_sessions").Get(p.Field("sessionId")).
 				Merge(func(s r.Term) interface{} {
 					return map[string]interface{}{
-						"textId": r.Table("game_texts").Get(s.Field("textId")).Merge(func(t r.Term) interface{} {
+						"text": r.Table("game_texts").Get(s.Field("text")).Merge(func(t r.Term) interface{} {
 							return map[string]interface{}{
 								"language": r.Table("languages").Get(t.Field("language")),
+								"user": r.Table("users").Get(t.Field("user")).Default(map[string]interface{}{"username": ""}).Pluck("username"),
 							}
 						}),
 					}

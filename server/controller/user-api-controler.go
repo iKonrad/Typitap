@@ -16,6 +16,8 @@ import (
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/iKonrad/typitap/server/services/utils"
 	"github.com/labstack/echo"
+	"github.com/iKonrad/typitap/server/services/gametexts"
+	"log"
 )
 
 type UserAPIController struct {
@@ -27,7 +29,7 @@ func init() {
 	UserAPI = UserAPIController{}
 }
 
-func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
+func (uc UserAPIController) GetUserGameResults(c echo.Context) error {
 
 	user := c.Get("User").(entities.User)
 
@@ -65,7 +67,7 @@ func (gc UserAPIController) GetUserGameResults(c echo.Context) error {
 	})
 }
 
-func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
+func (uc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 
 	field := c.FormValue("field")
 	value := c.FormValue("value")
@@ -121,7 +123,7 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 		if isValid {
 			us.UpdateUserPassword(value, user)
 
-			gc.updateForumUserAttribute(user.Username, "password", value)
+			uc.updateForumUserAttribute(user.Username, "password", value)
 
 			return c.JSON(http.StatusOK, map[string]interface{}{
 				"success": true,
@@ -158,7 +160,7 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 		}
 		user.Bio = value
 
-		gc.updateForumUserAttribute(user.Username, "bio", value)
+		uc.updateForumUserAttribute(user.Username, "bio", value)
 
 	case "Country":
 		if value == "" {
@@ -194,7 +196,7 @@ func (gc UserAPIController) UpdateAccountInformation(c echo.Context) error {
 
 }
 
-func (gc UserAPIController) updateForumUserAttribute(username string, attribute string, value string) {
+func (uc UserAPIController) updateForumUserAttribute(username string, attribute string, value string) {
 	forumUser, forumError := flarumClient.GetUserByUsername(username)
 	forumUserData, ok := forumUser["data"].([]interface{})
 	if forumError == nil && ok && len(forumUserData) > 0 {
@@ -204,7 +206,7 @@ func (gc UserAPIController) updateForumUserAttribute(username string, attribute 
 	}
 }
 
-func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
+func (uc UserAPIController) GetUserActivityFeed(c echo.Context) error {
 
 	o := c.QueryParam("offset")
 	if o == "" {
@@ -228,7 +230,7 @@ func (gc UserAPIController) GetUserActivityFeed(c echo.Context) error {
 
 }
 
-func (gc UserAPIController) GetUserStats(c echo.Context) error {
+func (uc UserAPIController) GetUserStats(c echo.Context) error {
 
 	// Check if user is logged in
 	if !c.Get("IsLoggedIn").(bool) {
@@ -252,7 +254,7 @@ func (gc UserAPIController) GetUserStats(c echo.Context) error {
 	})
 }
 
-func (gc UserAPIController) FollowUser(c echo.Context) error {
+func (uc UserAPIController) FollowUser(c echo.Context) error {
 
 	user := c.Get("User").(entities.User)
 	followingUserId := c.Param("followUser")
@@ -276,7 +278,7 @@ func (gc UserAPIController) FollowUser(c echo.Context) error {
 	})
 }
 
-func (gc UserAPIController) UnfollowUser(c echo.Context) error {
+func (uc UserAPIController) UnfollowUser(c echo.Context) error {
 
 	user := c.Get("User").(entities.User)
 	followingUser := c.Param("followUser")
@@ -296,7 +298,7 @@ func (gc UserAPIController) UnfollowUser(c echo.Context) error {
 }
 
 // Retrieves user's profile data
-func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
+func (uc UserAPIController) GetUserProfileData(c echo.Context) error {
 
 	username := c.Param("user")
 
@@ -348,7 +350,7 @@ func (gc UserAPIController) GetUserProfileData(c echo.Context) error {
 }
 
 // Retrieves user followers and following users
-func (gc UserAPIController) GetUserFollow(c echo.Context) error {
+func (uc UserAPIController) GetUserFollow(c echo.Context) error {
 
 	// Check if user is logged in
 	if !c.Get("IsLoggedIn").(bool) {
@@ -369,7 +371,7 @@ func (gc UserAPIController) GetUserFollow(c echo.Context) error {
 }
 
 // Crates an activate token and sends an e-mail with a link to confirm users account
-func (gc UserAPIController) ResendActivationLink(c echo.Context) error {
+func (uc UserAPIController) ResendActivationLink(c echo.Context) error {
 
 	user := c.Get("User").(entities.User)
 
@@ -405,7 +407,7 @@ func (gc UserAPIController) ResendActivationLink(c echo.Context) error {
 
 }
 
-func (gc UserAPIController) FetchUserboard(c echo.Context) error {
+func (uc UserAPIController) FetchUserboard(c echo.Context) error {
 
 	id := c.Param("id")
 	filePath := "static/images/userboards/" + id + ".png"
@@ -437,7 +439,7 @@ func (gc UserAPIController) FetchUserboard(c echo.Context) error {
 
 }
 
-func (gc UserAPIController) HandleUserSearch(c echo.Context) error {
+func (uc UserAPIController) HandleUserSearch(c echo.Context) error {
 
 	query := c.Param("query")
 
@@ -453,5 +455,43 @@ func (gc UserAPIController) HandleUserSearch(c echo.Context) error {
 	return c.JSON(200, map[string]interface{}{
 		"success": true,
 		"data":    users,
+	})
+}
+
+
+func (uc UserAPIController) SubmitText(c echo.Context) error {
+
+	data := map[string]interface{}{
+		"Text":     c.FormValue("Text"),
+		"ISBN":     c.FormValue("ISBN"),
+		"Disabled": c.FormValue("Disabled"),
+		"Language": c.FormValue("Language"),
+		"Accepted": false,
+	}
+
+	log.Println("LOGGEDIN?", c.Get("IsLoggedIn").(bool))
+
+	if c.Get("IsLoggedIn").(bool) {
+		data["User"] = c.Get("User").(entities.User).Id
+	} else {
+		data["User"] = ""
+	}
+
+	log.Println(data)
+
+	isValid, errors := gametexts.ValidateText(data)
+
+	if !isValid {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"success": false,
+			"errors":    errors,
+		})
+	}
+
+	submittedText := gametexts.CreateText(data)
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": submittedText.Id != "",
+		"data":    submittedText,
 	})
 }

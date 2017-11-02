@@ -19,6 +19,7 @@ func GetText(textId string) (entities.GameText, bool) {
 	resp, err := r.Table("game_texts").Get(textId).Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
 			"language": r.Table("languages").Get(p.Field("language")),
+			"user": r.Table("users").Get(p.Field("user")).Default(map[string]interface{}{"username": "", "name": ""}),
 		}
 	}).Run(db.Session)
 
@@ -39,23 +40,44 @@ func GetText(textId string) (entities.GameText, bool) {
 
 func UpdateText(textId string, data map[string]interface{}) entities.GameText {
 
-	isDisabled := false
-	if data["Disabled"].(string) == "true" {
-		isDisabled = true
+	text := map[string]interface{}{}
+
+	if data["Text"] != nil {
+		text["text"] = data["Text"].(string)
 	}
 
-	text := entities.GameText{
-		Id:       textId,
-		Text:     data["Text"].(string),
-		ISBN:     data["ISBN"].(string),
-		Disabled: isDisabled,
-		Language: entities.Language{
-			Id: data["Language"].(string),
-		},
+	if data["ISBN"] != nil {
+		text["isbn"] = data["ISBN"].(string)
+	}
+
+	if data["Disabled"] != nil {
+		if data["Disabled"].(string) == "true" {
+			text["disabled"] = true
+		} else {
+			text["disabled"] = false
+		}
+	}
+
+	if data["Language"] != nil {
+		text["language"] = data["Language"].(string)
+	}
+
+	if data["User"] != nil {
+		text["user"] = data["User"].(string)
+	}
+
+	if data["Accepted"] != nil {
+		if data["Accepted"].(string) == "true" {
+			text["accepted"] = true
+		} else {
+			text["accepted"] = false
+		}
 	}
 
 	r.Table("game_texts").Get(textId).Update(text).Exec(db.Session)
-	return text
+	newText, _ := GetText(textId)
+
+	return newText
 }
 
 func CreateText(data map[string]interface{}) entities.GameText {
@@ -74,9 +96,12 @@ func CreateText(data map[string]interface{}) entities.GameText {
 		Language: entities.Language{
 			Id: data["Language"].(string),
 		},
+		User: entities.User {
+			Id: data["User"].(string),
+		},
 	}
 
-	r.Table("game_texts").Insert(text).Update(text).Exec(db.Session)
+	r.Table("game_texts").Insert(text).Exec(db.Session)
 	return text
 }
 

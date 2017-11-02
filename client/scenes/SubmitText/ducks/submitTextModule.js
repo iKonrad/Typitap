@@ -1,7 +1,7 @@
 import {SubmissionError} from "redux-form";
 
-const LOAD_DATA_VALUES = '@@adminTextForm/LOAD_DATA_VALUES';
-const RESET_DATA_VALUES = '@@adminTextForm/RESET_DATA_VALUES';
+const LOAD_DATA_VALUES = '@@submitTextForm/LOAD_DATA_VALUES';
+const RESET_DATA_VALUES = '@@submitTextForm/RESET_DATA_VALUES';
 
 const initialState = {
     data: {},
@@ -32,7 +32,7 @@ export function submitForm(data) {
         formData.append(i, data[i]);
     }
 
-    let url = "/api/admin/texts";
+    let url = "/api/user/texts";
 
     if (data["Id"] !== undefined) {
         url = url + "/" + data["Id"];
@@ -55,32 +55,6 @@ export function submitForm(data) {
             throw new SubmissionError({_error: response.error, text: response.error});
         }
 
-        return {data: response.data};
-    });
-}
-
-export function acceptText(textId) {
-
-    if (textId === undefined || textId === "") {
-        return;
-    }
-
-    let url = "/api/admin/texts/" + textId + "/accept";
-
-    return fetch(url, {
-        method: "POST",
-        credentials: "same-origin",
-    }).then((response) => {
-        return response.json();
-    }).then((response) => {
-        // Check if login was successful
-        if (response.errors) {
-            throw new SubmissionError(response.errors);
-        }
-
-        if (response.error) {
-            throw new SubmissionError({_error: response.error, text: response.error});
-        }
         return {data: response.data};
     });
 }

@@ -67,7 +67,7 @@ class Navbar extends PureComponent {
                             </li>
 
                             {this.state.menu.map((obj, index) => {
-                                if (this.props.user && ((!obj.authenticated && this.props.user.loggedIn === undefined) || obj.authenticated === this.props.user.loggedIn)) {
+                                if (this.props.user && ((!obj.authenticated && this.props.user.loggedIn === undefined) || obj.authenticated === this.props.user.loggedIn || obj.authenticated === undefined)) {
                                     let parsedObj = obj;
                                     parsedObj.label = that.parseValue(obj.label);
                                     if (obj.type === 'link' || obj.type === 'button') {

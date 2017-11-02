@@ -15,6 +15,7 @@ func (api *UserAPIAdminRoutes) Bind(group *echo.Group) {
 	group.GET("/levels", controller.AdminAPI.GetLevels)
 	group.GET("/texts/:id", controller.AdminAPI.GetText)
 	group.POST("/texts/:id", controller.AdminAPI.SaveText)
+	group.POST("/texts/:id/accept", controller.AdminAPI.AcceptText)
 	group.POST("/texts", controller.AdminAPI.SaveText)
 	group.GET("/texts", controller.AdminAPI.GetTexts)
 }

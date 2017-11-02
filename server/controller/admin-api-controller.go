@@ -10,6 +10,7 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/iKonrad/typitap/server/services/gametexts"
+	"github.com/iKonrad/typitap/server/services/mail"
 	"github.com/labstack/echo"
 	r "gopkg.in/gorethink/gorethink.v3"
 )
@@ -70,6 +71,7 @@ func (uc AdminAPIController) GetTexts(c echo.Context) error {
 	resp, err := r.Table("game_texts").Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
 			"language": r.Table("languages").Get(p.Field("language")),
+			"user":     r.Table("users").Get(p.Field("user")).Default(map[string]interface{}{"username": ""}).Pluck("username"),
 		}
 	}).Run(db.Session)
 	if err != nil {
@@ -119,7 +121,7 @@ func (uc AdminAPIController) SaveText(c echo.Context) error {
 	if !isValid {
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"success": false,
-			"errors":    errors,
+			"errors":  errors,
 		})
 	}
 
@@ -131,6 +133,27 @@ func (uc AdminAPIController) SaveText(c echo.Context) error {
 	} else {
 		// Otherwise, update the existing entry
 		updatedText = gametexts.UpdateText(textId, data)
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": updatedText.Id != "",
+		"data":    updatedText,
+	})
+}
+
+func (uc AdminAPIController) AcceptText(c echo.Context) error {
+	textId := c.Param("id")
+
+	updatedText := gametexts.UpdateText(textId, map[string]interface{}{
+		"Accepted": "true",
+	})
+
+	if updatedText.Id != "" && updatedText.User.Email != "" {
+		mail.SendEmail(updatedText.User.Email, mail.TEMPLATE_TEXT_ACCEPTED, mail.TemplateTextAccepted(
+			updatedText.User.Name,
+			updatedText.User.Username,
+			updatedText.Text,
+		))
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -243,5 +266,4 @@ func (uc AdminAPIController) convertProperty(property string, stringValue string
 	}
 
 	return updateValues
-
 }

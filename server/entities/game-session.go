@@ -8,5 +8,5 @@ type GameSession struct {
 	Online   bool      `gorethink:"online"`
 	Open     bool      `gorethink:"open"`
 	Finished bool      `gorethink:"finished"`
-	Text     GameText  `gorethink:"textId,reference" gorethink_ref:"id"`
+	Text     GameText  `gorethink:"text,reference" gorethink_ref:"id"`
 }

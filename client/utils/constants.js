@@ -21,25 +21,11 @@ export const MENU_TREE = [
         label: 'Blog',
         type: 'href',
         url: 'https://blog.typitap.com',
-        authenticated: false,
-    },
-    {
-        label: 'Blog',
-        type: 'href',
-        url: 'https://blog.typitap.com',
-        authenticated: true,
     },
     {
         label: 'Community',
         type: 'href',
         url: 'http://community.typitap.com',
-        authenticated: false,
-    },
-    {
-        label: 'Community',
-        type: 'href',
-        url: 'http://community.typitap.com',
-        authenticated: true,
     },
     {
         label: '%%Name%%',
@@ -47,6 +33,11 @@ export const MENU_TREE = [
         url: '#',
         authenticated: true,
         items: [
+            {
+                label: 'Submit text',
+                type: 'link',
+                url: '/submit-text',
+            },
             {
                 label: 'Settings',
                 type: 'link',
@@ -65,12 +56,5 @@ export const MENU_TREE = [
         label: 'Play',
         type: 'button',
         url: '/play',
-        authenticated: false
-    },
-    {
-        label: 'Play',
-        type: 'button',
-        url: '/play',
-        authenticated: true
     },
 ];

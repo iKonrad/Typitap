@@ -101,7 +101,7 @@ class Base extends Component {
 
                 <div id="react-container" className="main-content">
                     { showEmptyBase ? "" : (<AlertBar/>) }
-                    { showEmptyBase || ((this.props.router.getCurrentLocation().pathname === "/" || this.props.router.getCurrentLocation().pathname === "/typing-test") && !this.props.user.loggedIn) ? "" : (<OnlineRoomPanel/>) }
+                    { showEmptyBase ? "" : <OnlineRoomPanel/> }
                     {this.props.children }
                     { showEmptyBase ? "" : (<Footer/>) }
                 </div>

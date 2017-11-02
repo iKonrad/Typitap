@@ -9,6 +9,7 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/iKonrad/typitap/server/services/feed"
 	"github.com/iKonrad/typitap/server/services/game"
+	"github.com/iKonrad/typitap/server/services/gametexts"
 	"github.com/iKonrad/typitap/server/services/graphics"
 	"github.com/iKonrad/typitap/server/services/levels"
 	"github.com/iKonrad/typitap/server/services/stats"
@@ -16,7 +17,6 @@ import (
 	us "github.com/iKonrad/typitap/server/services/user"
 	"github.com/iKonrad/typitap/server/services/utils"
 	"github.com/labstack/echo"
-	"github.com/iKonrad/typitap/server/services/gametexts"
 )
 
 type GameAPIController struct {
@@ -248,12 +248,44 @@ func (gc *GameAPIController) FetchResultboard(c echo.Context) error {
 	return c.File(filePath)
 }
 
-
 func (gc *GameAPIController) GetLanguages(c echo.Context) error {
 	languages := gametexts.GetTextLanguages()
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		 "success": true,
-		 "data": languages,
+		"success": true,
+		"data":    languages,
+	})
+}
+
+func (gc *GameAPIController) SubmitText(c echo.Context) error {
+
+	data := map[string]interface{}{
+		"Text":     c.FormValue("Text"),
+		"ISBN":     c.FormValue("ISBN"),
+		"Disabled": c.FormValue("Disabled"),
+		"Language": c.FormValue("Language"),
+		"Accepted": false,
+	}
+
+	if c.Get("IsLoggedIn").(bool) {
+		data["User"] = c.Get("User").(entities.User).Id
+	} else {
+		data["User"] = ""
+	}
+
+	isValid, errors := gametexts.ValidateText(data)
+
+	if !isValid {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"success": false,
+			"errors":  errors,
+		})
+	}
+
+	submittedText := gametexts.CreateText(data)
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": submittedText.Id != "",
+		"data":    submittedText,
 	})
 }

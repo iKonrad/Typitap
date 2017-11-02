@@ -22,6 +22,7 @@ import PrivacyPolicy from 'scenes/PrivacyPolicy';
 import AdminText from 'scenes/Admin/scenes/AdminText';
 import AdminTexts from 'scenes/Admin/scenes/AdminTexts';
 import NotFound from 'scenes/Errors/NotFound';
+import SubmitText from 'scenes/SubmitText';
 
 // Static pages
 import TypingTest from 'scenes/Static/TypingTest';
@@ -74,6 +75,7 @@ export default ({store, first}) => {
                 <Route emptyBase={true} path="texts" component={Permissions.OnlyAdmins(AdminTexts)} onEnter={w(AdminTexts.clientInit)} />
             </Route>
 
+            <Route path="/submit-text" component={SubmitText} onEnter={ w(SubmitText.clientInit) } />
 
             <Route path="/u/:user" component={Profile} onEnter={w(Profile.clientInit)}/>
             <Route path="/u/:user/:resultId" component={Profile} onEnter={w(Profile.clientInit)}/>

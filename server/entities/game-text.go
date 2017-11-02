@@ -6,6 +6,8 @@ type GameText struct {
 	Disabled bool `gorethink:"disabled"`
 	Language Language `gorethink:"language,reference" gorethink_ref:"id"`
 	ISBN string `gorethink:"isbn"`
+	User User `gorethink:"user,reference" gorethink_ref:"id"`
+	Accepted bool `gorethink:"accepted"`
 }
 
 
