@@ -19,8 +19,6 @@ func SendEmail(to string, templateName string, vars map[string]interface{}) bool
 		return true
 	}
 
-	fmt.Println("TEMPL", templateName)
-
 	email := &mail.InfoSendMail{
 		FromEmail:                config.Config.UString("mail_from_address", "jarson@me.com"),
 		FromName:                 "Typitap",
@@ -37,12 +35,11 @@ func SendEmail(to string, templateName string, vars map[string]interface{}) bool
 		Vars: vars,
 	}
 
-	res, err := client.SendMail(email)
+	_, err := client.SendMail(email)
 	if err != nil {
 		fmt.Println("MAIL ERR", err)
 		return false
 	} else {
-		fmt.Println("MAIL SUCCESS", res)
 		return true
 	}
 
