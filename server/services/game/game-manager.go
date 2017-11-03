@@ -107,6 +107,9 @@ func FindOpenSession(online bool, language string) (entities.GameSession, bool) 
 			}),
 		}
 	}).
+	Filter(func (p r.Term) r.Term {
+		return p.Field("text").Field("language").Field("id").Eq(language)
+	}).
 	OrderBy(r.Asc("created")).
 	Run(db.Session)
 
