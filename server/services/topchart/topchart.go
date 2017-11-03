@@ -68,11 +68,12 @@ func pullChart(name string) (entities.GameChart, bool) {
 					"userId": r.Table("users").Get(i.Field("userId")),
 					"sessionId": r.Table("game_sessions").Get(i.Field("sessionId")).Merge(func(j r.Term) interface{} {
 						return map[string]interface{}{
-							"text": r.Table("game_texts").Get(j.Field("text")).Merge(func(k r.Term) interface{} {
-								return map[string]interface{}{
-									"language": r.Table("languages").Get(k.Field("language")),
-									"user": r.Table("users").Get(k.Field("user")).Default(map[string]interface{}{"username": ""}).Pluck("username"),
-								}
+							"text": r.Table("game_texts").Get(j.Field("text")).Do(func(row r.Term) interface{} {
+								return r.Branch(row, row.Merge(func (s r.Term) map[string]interface{} {
+									return map[string]interface{}{
+										"language": r.Table("languages").Get(s.Field("language")),
+									}
+								}), nil)
 							}),
 						}
 					}),
@@ -116,9 +117,20 @@ func createChart(name string) entities.GameChart {
 func saveChart(chart *entities.GameChart) {
 
 	charts[chart.Id] = *chart
-	err := r.Table("game_charts").Get(chart.Id).Update(chart).Exec(db.Session)
+
+	resultItems := []string{}
+
+	for _, item := range chart.Items {
+		resultItems = append(resultItems, item.Id)
+	}
+
+	chartData := map[string]interface{} {
+		"items": resultItems,
+	}
+
+	err := r.Table("game_charts").Get(chart.Id).Update(chartData).Exec(db.Session)
 	if err != nil {
-		log.Println("Error whle saving chart", err)
+		log.Println("Error wh le saving chart", err)
 	}
 }
 

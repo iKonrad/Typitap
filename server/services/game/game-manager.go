@@ -97,16 +97,15 @@ func FindOpenSession(online bool, language string) (entities.GameSession, bool) 
 	}).
 	Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
-			"text": r.Table("game_texts").Get(p.Field("text")).Merge(func(s r.Term) interface{} {
-				return map[string]interface{}{
-					"language": r.Table("languages").Get(s.Field("language")),
-					"user": r.Table("users").Get(s.Field("user")).Default(map[string]interface{}{"username": ""}).Pluck("username"),
-				}
+			"text": r.Table("game_texts").Get(p.Field("text")).Do(func(row r.Term) interface{} {
+				return r.Branch(row, row.Merge(func (s r.Term) map[string]interface{} {
+					return map[string]interface{}{
+						"language": r.Table("languages").Get(s.Field("language")),
+						"user": r.Table("users").Get(s.Field("user")).Default(map[string]interface{}{"username": ""}).Pluck("username"),
+					}
+				}), nil)
 			}),
 		}
-	}).
-	Filter(func (p r.Term) r.Term {
-		return p.Field("text").Field("language").Field("id").Eq(language)
 	}).
 	OrderBy(r.Asc("created")).
 	Run(db.Session)
@@ -230,7 +229,25 @@ func SaveResult(user *entities.User, sessionId string, mistakes map[string]int, 
 
 	// Save the result in the database
 
-	r.Table("game_results").Insert(newResult).Exec(db.Session)
+	newResultMap := map[string]interface{} {
+		"id": newId.String(),
+		"userId": user.Id,
+		"created": time.Now(),
+		"wpm": wpm,
+		"accuracy": accuracy,
+		"time": gameTime,
+		"mistakes": mistakes,
+		"sessionId": session.Id,
+		"place": place,
+		"ip": ip,
+	}
+
+	_, err = r.Table("game_results").Insert(newResultMap).Run(db.Session)
+
+	if err != nil {
+		log.Println(err)
+	}
+
 	return newResult, nil
 
 }

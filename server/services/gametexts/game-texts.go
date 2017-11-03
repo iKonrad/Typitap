@@ -8,8 +8,8 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/nu7hatch/gouuid"
-	r "gopkg.in/gorethink/gorethink.v3"
 	"gopkg.in/go-playground/validator.v9"
+	r "gopkg.in/gorethink/gorethink.v3"
 )
 
 const TEXT_MIN_LENGTH = 160
@@ -19,7 +19,7 @@ func GetText(textId string) (entities.GameText, bool) {
 	resp, err := r.Table("game_texts").Get(textId).Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
 			"language": r.Table("languages").Get(p.Field("language")),
-			"user": r.Table("users").Get(p.Field("user")).Default(map[string]interface{}{"username": "", "name": ""}),
+			"user":     r.Table("users").Get(p.Field("user")).Default(map[string]interface{}{"username": "", "name": ""}),
 		}
 	}).Run(db.Session)
 
@@ -96,12 +96,29 @@ func CreateText(data map[string]interface{}) entities.GameText {
 		Language: entities.Language{
 			Id: data["Language"].(string),
 		},
-		User: entities.User {
-			Id: data["User"].(string),
-		},
 	}
 
-	r.Table("game_texts").Insert(text).Exec(db.Session)
+	textMap := map[string]interface{}{
+		"text":     data["Text"].(string),
+		"isbn":     data["ISBN"].(string),
+		"disabled": isDisabled,
+		"language": data["Language"].(string),
+	}
+
+	userId, ok := data["User"]
+	if ok {
+		text.User = entities.User{
+			Id: userId.(string),
+		}
+		textMap["user"] = userId.(string)
+	}
+
+	_, err := r.Table("game_texts").Insert(textMap).Run(db.Session)
+
+	if err != nil {
+		log.Println("Error while creating a text", err)
+	}
+
 	return text
 }
 

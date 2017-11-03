@@ -5,9 +5,9 @@ import ResultRow from 'components/app/ResultRow';
 class RecentGames extends PureComponent {
 
     renderItems() {
-
         if (this.props.games !== undefined && this.props.games !== null) {
             if (this.props.games.length > 0) {
+
                 let items = this.props.games.map((item, index) => {
                     let isPerfect = 1;
                     if (item.mistakes !== undefined && item.mistakes !== null) {
