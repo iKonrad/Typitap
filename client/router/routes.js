@@ -23,6 +23,7 @@ import AdminText from 'scenes/Admin/scenes/AdminText';
 import AdminTexts from 'scenes/Admin/scenes/AdminTexts';
 import NotFound from 'scenes/Errors/NotFound';
 import SubmitText from 'scenes/SubmitText';
+import FAQ from 'scenes/Static/FAQ';
 
 // Static pages
 import TypingTest from 'scenes/Static/TypingTest';
@@ -89,6 +90,7 @@ export default ({store, first}) => {
 
             {/* Static pages */}
             <Route path="/typing-test" component={TypingTest} onEnter={w(TypingTest.clientInit)} />
+            <Route path="/faq" component={FAQ} onEnter={w(FAQ.clientInit)} />
 
             {/* Replace with 404 */}
             <Route path="*" component={NotFound} onEnter={w(NotFound.clientInit)} />
