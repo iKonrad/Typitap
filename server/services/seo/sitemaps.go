@@ -21,13 +21,15 @@ func GenerateSitemap(notify bool) {
 	sm.Create()
 
 	sm.Add(stm.URL{"loc": "/", "changefreq": "daily", "mobile": true, "priority": "0.9"})
+	sm.Add(stm.URL{"loc": "/typing-test", "changefreq": "monthly", "mobile": true, "priority": "0.9"})
 	sm.Add(stm.URL{"loc": "/login", "changefreq": "monthly", "mobile": true})
 	sm.Add(stm.URL{"loc": "/signup", "changefreq": "monthly", "mobile": true})
 	sm.Add(stm.URL{"loc": "/play", "changefreq": "daily", "mobile": true})
 	sm.Add(stm.URL{"loc": "/about", "changefreq": "monthly", "mobile": true})
 	sm.Add(stm.URL{"loc": "/terms", "changefreq": "yearly", "mobile": true})
 	sm.Add(stm.URL{"loc": "/privacy", "changefreq": "yearly", "mobile": true})
-	sm.Add(stm.URL{"loc": "/typing-test", "changefreq": "monthly", "mobile": true})
+	sm.Add(stm.URL{"loc": "/submit-text", "changefreq": "monthly", "mobile": true})
+	sm.Add(stm.URL{"loc": "/faq", "changefreq": "monthly", "mobile": true})
 
 	resp, err := r.Table("users").Pluck("username").Run(db.Session)
 
