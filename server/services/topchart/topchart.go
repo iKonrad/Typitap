@@ -72,6 +72,7 @@ func pullChart(name string) (entities.GameChart, bool) {
 								return r.Branch(row, row.Merge(func (s r.Term) map[string]interface{} {
 									return map[string]interface{}{
 										"language": r.Table("languages").Get(s.Field("language")),
+										"user": r.Table("users").Get(s.Field("user")).Default(map[string]interface{}{"id": "", "username": ""}),
 									}
 								}), nil)
 							}),
