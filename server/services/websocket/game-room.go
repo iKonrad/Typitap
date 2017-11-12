@@ -28,9 +28,10 @@ type Room struct {
 	nextPlace            int8
 	time                 int
 	language             string
+	product              map[string]interface{}
 }
 
-func NewRoom(id string, text string, language string) *Room {
+func NewRoom(id string, text string, language string, product map[string]interface{}) *Room {
 
 	db.Redis.HSet("rooms:"+id, "started", false)
 
@@ -48,6 +49,7 @@ func NewRoom(id string, text string, language string) *Room {
 		nextPlace:            1,
 		time:                 0,
 		language:             language,
+		product:              product,
 	}
 }
 

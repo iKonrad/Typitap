@@ -6,6 +6,42 @@
     text-align: left;
   }
 
+  &__affiliate {
+    position: relative;
+    padding: 15px;
+    background-color: lighten($grey-100, 2%);
+    @include clearfix();
+
+    &__caption {
+      font-size: 16px;
+      display: inline-block;
+      margin-top: 10px;
+      padding-left: 10px;
+    }
+
+    &__title {
+      font-size: 18px;
+      font-weight: 500;
+      display: inline-block;
+      margin-top: 5px;
+      padding-left: 10px;
+    }
+
+    &__image {
+      display: inline-block;
+      float: left;
+      @include clearfix();
+    }
+
+    &__button {
+      float: right;
+      display: inline-block;
+      position: absolute;
+      right: 15px;
+      top: 40px;
+    }
+  }
+
   &__players {
     margin: 10px 0;
     &__player {

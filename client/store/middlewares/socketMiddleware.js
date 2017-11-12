@@ -34,7 +34,7 @@ const socketMiddleware = (function () {
                 store.dispatch(socketActions.setIdentifier(msg.data.identifier));
                 break;
             case "JOINED_ROOM":
-                store.dispatch(gameActions.joinedRoom(msg.data.roomId, msg.data.players, msg.data.text, msg.data.online));
+                store.dispatch(gameActions.joinedRoom(msg.data.roomId, msg.data.players, msg.data.text, msg.data.online, msg.data.product));
                 break;
             case "LEFT_ROOM":
                 store.dispatch(gameActions.leftRoom());

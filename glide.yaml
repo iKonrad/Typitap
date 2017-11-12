@@ -26,8 +26,9 @@ import:
 - package: github.com/olebedev/gojax
   subpackages:
   - fetch
-- package: github.com/dop251/goja
 - package: github.com/gregdel/pushover
 - package: github.com/iKonrad/go-flarum
 - package: gopkg.in/go-playground/validator.v9
   version: ~9.8.0
+- package: github.com/dominicphillips/amazing
+- package: github.com/dop251/goja

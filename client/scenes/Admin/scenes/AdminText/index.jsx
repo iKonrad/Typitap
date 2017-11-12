@@ -64,20 +64,41 @@ class AdminText extends React.Component {
     };
 
     renderAcceptButton() {
-        if (this.props.accepted === undefined || !this.props.accepted) {
-            return (
-                <div className="form-group">
-                    <button type="submit" className="btn btn-primary btn-block" onClick={ this.handleAcceptButtonClick.bind(this) }>Accept text</button>
-                </div>
-            )
+        let buttons = [];
+        if (this.state.id !== "" && this.state.id !== "new") {
+            if (this.props.status !== 2) {
+                buttons.push(
+                    <div className="col col-md-6">
+                        <div className="form-group">
+                            <button type="submit" className="btn btn-success btn-block" onClick={ this.handleAcceptButtonClick.bind(this) }>Accept text</button>
+                        </div>
+                    </div>
+                );
+            }
+            if (this.props.status !== 0) {
+                buttons.push(
+                    <div className="col col-md-6">
+                        <div className="form-group">
+                            <button type="submit" className="btn btn-danger btn-block" onClick={ this.handleRejectButtonClick.bind(this) }>{ this.props.status === 1 ? "Reject" : "Disable" } text</button>
+                        </div>
+                    </div>
+                );
+            }
         }
-        return <div></div>;
+        return <div className="row">{ buttons }</div>;
     }
 
     handleAcceptButtonClick() {
         return AdminTextActions.acceptText(this.state.id).then((details) => {
             this.fetchFormData();
-            this.props.dispatch(Notifications.success("Text accepted. User has been notified via e-mail"));
+            this.props.dispatch(Notifications.success("Text accepted"));
+        });
+    }
+
+    handleRejectButtonClick() {
+        return AdminTextActions.rejectText(this.state.id).then((details) => {
+            this.fetchFormData();
+            this.props.dispatch(Notifications.success("Text disabled"));
         });
     }
 
@@ -86,6 +107,17 @@ class AdminText extends React.Component {
         let state = this.state;
         state.data[fieldName] = value;
         this.setState(state);
+    }
+
+    renderCodeField() {
+        if (this.props.type !== "") {
+            return (
+                <div className="form-group">
+                    <Field id="Code" name="Code" component={Input} label={ this.props.type } placeho className="form-control" />
+                </div>
+            );
+        }
+        return <div></div>
     }
 
     render() {
@@ -104,10 +136,13 @@ class AdminText extends React.Component {
                         <div className="col col-md-8">
                             <Panel loaded={true}>
                                 <h4 className="text-bold">{this.state.id === "new" ? "" : "ID: " + this.props.adminText.data.Id}</h4>
+                                <p><strong>Status: </strong> { (() => {
+                                    let statuses = [this.props.isSubmitted ? "Rejected" : "Disabled", "Submitted", "Active"];
+                                    return statuses[this.props.status]
+                                })() }</p>
                                 <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
-                                    <Field id="Accepted" name="Accepted" component="hidden" />
                                     <div className="form-group">
-                                        <label htmlFor="language">Text</label>
+                                        <label htmlFor="Text">Text</label>
                                         <Field id="Text" name="Text" component={Textarea} className="form-control"
                                                onChange={this.updateField.bind(this, "Text")}/>
                                     </div>
@@ -120,16 +155,26 @@ class AdminText extends React.Component {
                                         </Field>
                                     </div>
                                     <div className="form-group">
-                                        <div className="form-check">
-                                            <Field id="Disabled" name="Disabled" className="form-check-input"
-                                                   component="input" type="checkbox"/>
-                                            <label htmlFor="Disabled" className="form-check-label">Disabled</label>
-                                        </div>
-                                        <p className="small">When this option is enabled, this text will no longer will show up in the game</p>
+                                        <label htmlFor="Source">Is this text from a book, movie or a song?</label>
+                                        <Field id="Source" name="Source" component="select"
+                                               className="form-control">
+                                            <option value="other">Other sources / my own</option>
+                                            <option value="book">Book</option>
+                                            <option value="movie">Movie</option>
+                                            <option value="song">Song</option>
+                                        </Field>
                                     </div>
                                     <div className="form-group">
-                                        <Field name="ISBN" component={Input} type="text" label="ISBN"/>
+                                        <label htmlFor="Type">Please provide a book/song title, or ISBN/Amazon Code if available</label>
+                                        <Field id="Type" name="Type" component="select"
+                                               className="form-control">
+                                            <option value="">None</option>
+                                            <option value="title">Title</option>
+                                            <option value="ISBN">ISBN number</option>
+                                            <option value="ASIN">Amazon Item ID (ASIN)</option>
+                                        </Field>
                                     </div>
+                                    { this.renderCodeField() }
                                     <div className="form-group">
                                         <button type="submit" disabled={pristine || submitting}
                                                 className="btn btn-pink btn-block">{submitting ? "Saving..." : "Save"}</button>
@@ -172,7 +217,8 @@ AdminText = connect(
             initialValues: state.adminText.data,
             adminText: state.adminText,
             text: selector(state, "Text"),
-            accepted: selector(state, "Accepted"),
+            type: selector(state, "Type"),
+            status: selector(state, "Status"),
         }
     },
     {load: AdminTextActions.loadDataValues}               // bind account loading action creator

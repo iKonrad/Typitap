@@ -111,8 +111,9 @@ func (uc AdminAPIController) SaveText(c echo.Context) error {
 
 	data := map[string]interface{}{
 		"Text":     c.FormValue("Text"),
-		"ISBN":     c.FormValue("ISBN"),
-		"Disabled": c.FormValue("Disabled"),
+		"Source":   c.FormValue("Source"),
+		"Type":     c.FormValue("Type"),
+		"Code":     c.FormValue("Code"),
 		"Language": c.FormValue("Language"),
 	}
 
@@ -129,6 +130,8 @@ func (uc AdminAPIController) SaveText(c echo.Context) error {
 
 	// If textID is empty or set as "new", add new text to the database
 	if textId == "" || textId == "new" {
+		data["IsSubmitted"] = false
+		data["Status"] = "2"
 		updatedText = gametexts.CreateText(data)
 	} else {
 		// Otherwise, update the existing entry
@@ -145,7 +148,7 @@ func (uc AdminAPIController) AcceptText(c echo.Context) error {
 	textId := c.Param("id")
 
 	updatedText := gametexts.UpdateText(textId, map[string]interface{}{
-		"Accepted": "true",
+		"Status": "2",
 	})
 
 	if updatedText.Id != "" && updatedText.User.Email != "" {
@@ -155,6 +158,19 @@ func (uc AdminAPIController) AcceptText(c echo.Context) error {
 			updatedText.Text,
 		))
 	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"success": updatedText.Id != "",
+		"data":    updatedText,
+	})
+}
+
+func (uc AdminAPIController) RejectText(c echo.Context) error {
+	textId := c.Param("id")
+
+	updatedText := gametexts.UpdateText(textId, map[string]interface{}{
+		"Status": "0",
+	})
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": updatedText.Id != "",

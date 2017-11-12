@@ -36,14 +36,16 @@ class SubmitText extends React.Component {
         });
     }
 
-    onBookValueChange() {
-        let state = this.state;
-        state.isBook = !state.isBook;
-        this.setState(state);
+    renderCodeField() {
 
-        if (!state.isBook) {
-            this.props.change("ISBN", "");
+        if (this.props.type !== undefined && this.props.type !== "") {
+            return (
+                <div className="form-group">
+                    <Field id="Code" name="Code" component={Input} label={ this.props.type } placeho className="form-control" />
+                </div>
+            );
         }
+        return <div></div>
     }
 
     render() {
@@ -72,18 +74,26 @@ class SubmitText extends React.Component {
                                     </Field>
                                 </div>
                                 <div className="form-group">
-                                    <div className="form-check">
-                                        <Field id="isBook" name="isBook" className="form-check-input"
-                                               component="input" type="checkbox" onChange={ this.onBookValueChange.bind(this) } />
-                                        <label htmlFor="isBook" className="form-check-label">This is a quote from a book</label>
-                                    </div>
-                                    <p className="small">
-                                        If you have taken this text from a book, that's great. Just please provide an <strong>ISBN</strong> number so we can display more information about the book to people.
-                                    </p>
+                                    <label htmlFor="Source">Is this text from a book, movie or a song?</label>
+                                    <Field id="Source" name="Source" component="select"
+                                           className="form-control">
+                                        <option value="other">Other sources / my own</option>
+                                        <option value="book">Book</option>
+                                        <option value="movie">Movie</option>
+                                        <option value="song">Song</option>
+                                    </Field>
                                 </div>
-                                <div className="form-group" style={ this.state.isBook ? {} : {display: "none"} }>
-                                    <Field name="ISBN" component={Input} type="text" label="ISBN"/>
+                                <div className="form-group">
+                                    <label htmlFor="Type">Please provide a book/song title, or ISBN/Amazon Code if available</label>
+                                    <Field id="Type" name="Type" component="select"
+                                           className="form-control">
+                                        <option value="">None</option>
+                                        <option value="title">Title</option>
+                                        <option value="ISBN">ISBN number</option>
+                                        <option value="ASIN">Amazon Item ID (ASIN)</option>
+                                    </Field>
                                 </div>
+                                { this.renderCodeField() }
                                 <div className="form-group">
                                     <button type="submit" disabled={pristine || submitting}
                                             className="btn btn-primary btn-block">{submitting ? "Submitting..." : "Submit"}</button>
@@ -118,9 +128,8 @@ SubmitText = connect(
             initialValues: state.adminText.data,
             adminText: state.adminText,
             text: selector(state, "Text"),
-            changeFieldValue: function(field, value) {
-                dispatch(change(form, field, value))
-            }
+            type: selector(state, "Type"),
+            status: selector(state, "Status"),
         }
     },
     {

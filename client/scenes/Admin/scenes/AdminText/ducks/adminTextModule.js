@@ -60,13 +60,11 @@ export function submitForm(data) {
 }
 
 export function acceptText(textId) {
-
     if (textId === undefined || textId === "") {
         return;
     }
 
     let url = "/api/admin/texts/" + textId + "/accept";
-
     return fetch(url, {
         method: "POST",
         credentials: "same-origin",
@@ -78,6 +76,29 @@ export function acceptText(textId) {
             throw new SubmissionError(response.errors);
         }
 
+        if (response.error) {
+            throw new SubmissionError({_error: response.error, text: response.error});
+        }
+        return {data: response.data};
+    });
+}
+
+export function rejectText(textId) {
+    if (textId === undefined || textId === "") {
+        return;
+    }
+
+    let url = "/api/admin/texts/" + textId + "/reject";
+    return fetch(url, {
+        method: "POST",
+        credentials: "same-origin",
+    }).then((response) => {
+        return response.json();
+    }).then((response) => {
+        // Check if login was successful
+        if (response.errors) {
+            throw new SubmissionError(response.errors);
+        }
         if (response.error) {
             throw new SubmissionError({_error: response.error, text: response.error});
         }

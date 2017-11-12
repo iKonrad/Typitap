@@ -6,6 +6,7 @@ import (
 
 	"encoding/json"
 
+	"github.com/iKonrad/typitap/server/services/affiliates"
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/iKonrad/typitap/server/services/game"
 	"github.com/iKonrad/typitap/server/services/logs"
@@ -159,6 +160,10 @@ func (e *Engine) handleJoinRoom(identifier string, online bool, language string)
 		}
 	}
 
+	// Get Amazon affiliate data from the text ID
+	product, ok := affiliates.GetAmazonItemByCode(session.Text.Type, session.Text.Code)
+	product["source"] = session.Text.Source
+
 	// If the session is offline, send the message back to the client with sessionId
 	if !online {
 		// Send message to the new player with a list of players
@@ -166,8 +171,9 @@ func (e *Engine) handleJoinRoom(identifier string, online bool, language string)
 			identifier,
 			TYPE_JOINED_ROOM,
 			map[string]interface{}{
-				"roomId": session.Id,
-				"text":   session.Text.Text,
+				"roomId":  session.Id,
+				"text":    session.Text.Text,
+				"product": product,
 			},
 		)
 		return session.Id, true
@@ -180,7 +186,7 @@ func (e *Engine) handleJoinRoom(identifier string, online bool, language string)
 	var room *Room
 	if !exists {
 		// Room doesn't exists, create a new one
-		room = NewRoom(session.Id, session.Text.Text, language)
+		room = NewRoom(session.Id, session.Text.Text, language, product)
 		e.newRoomChannel <- room
 		logs.Log("New room created", "Room '"+room.Id+"' has been created", []string{"websocket", "game"}, "Game Session "+room.Id)
 		logs.Gauge("rooms", float64(len(e.rooms)), []string{"websocket", "game"})
@@ -206,6 +212,7 @@ func (e *Engine) handleJoinRoom(identifier string, online bool, language string)
 			"players": room.GetPlayers(), // @TODO: Return list of players in the room
 			"text":    session.Text.Text,
 			"online":  online,
+			"product": room.product,
 		},
 	)
 

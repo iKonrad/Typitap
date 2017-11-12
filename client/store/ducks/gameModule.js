@@ -1,3 +1,5 @@
+import {SubmissionError} from "redux-form";
+
 export const START_GAME = "@@game/START_GAME";
 export const FINISH_GAME = "@@game/FINISH_GAME";
 export const FINISH_INPUT = '@@game/FINISH_INPUT';
@@ -97,6 +99,8 @@ const initialState = {
         id: '',
         players: {},
     },
+
+    product: {},
 
     resultId: "",
 };
@@ -198,7 +202,8 @@ export default function reducer(state = initialState, action) {
                 room: {
                     id: action.roomId,
                     players: action.players,
-                }
+                },
+                product: action.product,
             };
         case PLAYER_JOINED_ROOM:
 
@@ -341,62 +346,62 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 time: state.time + 1,
-            }
+            };
         case START_COUNTDOWN:
             return {
                 ...state,
                 countdown: true,
                 countdownSeconds: action.seconds !== undefined ? action.seconds : initialState.countdownSeconds
-            }
+            };
         case TICK_COUNTDOWN:
             return {
                 ...state,
                 countdownSeconds: state.countdownSeconds - 1
-            }
+            };
         case SET_COUNTDOWN:
             return {
                 ...state,
                 countdownSeconds: action.seconds,
-            }
+            };
         case STOP_COUNTDOWN:
             return {
                 ...state,
                 countdown: false,
                 countdownSeconds: 0,
-            }
+            };
         case START_WAIT_COUNTDOWN:
             return {
                 ...state,
                 waitCountdown: true,
                 waitCountdownSeconds: action.seconds !== undefined ? action.seconds : initialState.waitCountdownSeconds
-            }
+            };
         case TICK_WAIT_COUNTDOWN:
             return {
                 ...state,
                 waitCountdownSeconds: state.waitCountdownSeconds - 1
-            }
+            };
         case SET_WAIT_COUNTDOWN:
             return {
                 ...state,
                 waitCountdownSeconds: action.seconds,
-            }
+            };
         case STOP_WAIT_COUNTDOWN:
             return {
                 ...state,
                 waitCountdown: false,
                 waitCountdownSeconds: 0,
-            }
+            };
         case RESET_GAME:
             return {
                 ...state,
                 ...initialState,
                 language: state.language,
-            }
+            };
         case CHANGE_GAME_LANGUAGE:
             return {
                 ...state,
                 language: action.language
-            }
+            };
 
     }
 
@@ -518,7 +523,7 @@ export function resetGame() {
     }
 }
 
-export function joinedRoom(roomId, players, text, online) {
+export function joinedRoom(roomId, players, text, online, product) {
 
     if (players === undefined) {
         players = {};
@@ -529,7 +534,8 @@ export function joinedRoom(roomId, players, text, online) {
         roomId,
         online: !!online,
         players,
-        text
+        text,
+        product
     }
 
 }

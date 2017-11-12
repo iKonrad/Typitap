@@ -195,7 +195,16 @@ func NewApp(opts ...AppOptions) *App {
 		app.Engine.Group(
 			"/api/comments",
 		),
+
 	)
+
+	affiliatesRoutes := routes.AffiliatesAPIRoutes{}
+	affiliatesRoutes.Bind(
+		app.Engine.Group(
+			"/api/affiliates",
+		),
+	)
+
 
 	engine.GET("/ws", app.handleWebsocket)
 

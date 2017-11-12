@@ -17,7 +17,7 @@ import (
 	"github.com/iKonrad/typitap/server/services/utils"
 	"github.com/labstack/echo"
 	"github.com/iKonrad/typitap/server/services/gametexts"
-	"log"
+	"github.com/iKonrad/typitap/server/services/logs"
 )
 
 type UserAPIController struct {
@@ -463,21 +463,19 @@ func (uc UserAPIController) SubmitText(c echo.Context) error {
 
 	data := map[string]interface{}{
 		"Text":     c.FormValue("Text"),
-		"ISBN":     c.FormValue("ISBN"),
-		"Disabled": c.FormValue("Disabled"),
+		"Source":     c.FormValue("Source"),
+		"Type":     c.FormValue("Type"),
+		"Code": c.FormValue("Code"),
 		"Language": c.FormValue("Language"),
-		"Accepted": false,
+		"Status": 1,
+		"IsSubmitted": true,
 	}
-
-	log.Println("LOGGEDIN?", c.Get("IsLoggedIn").(bool))
 
 	if c.Get("IsLoggedIn").(bool) {
 		data["User"] = c.Get("User").(entities.User).Id
 	} else {
 		data["User"] = ""
 	}
-
-	log.Println(data)
 
 	isValid, errors := gametexts.ValidateText(data)
 
@@ -487,6 +485,8 @@ func (uc UserAPIController) SubmitText(c echo.Context) error {
 			"errors":    errors,
 		})
 	}
+
+	logs.Push("New text submitted", "Someone submitted a new text to review")
 
 	submittedText := gametexts.CreateText(data)
 

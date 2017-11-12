@@ -28,42 +28,6 @@ func init() {
 	GameAPI = GameAPIController{}
 }
 
-func (ac *GameAPIController) GetSession(c echo.Context) error {
-
-	sessionType := c.Param("type")
-
-	var user entities.User
-	// Check if user is logged in
-	if c.Get("IsLoggedIn").(bool) {
-		// If logged in, check if there's already an open offline session, and delete it
-		user = c.Get("User").(entities.User)
-		game.DeleteOldSessionsForUser(user.Id)
-	}
-
-	isOnline := sessionType == "online"
-	language := "EN"
-	session, ok := game.FindOpenSession(isOnline, language)
-	// Create the session and return it
-	var err error
-	if !ok {
-		session, err = game.CreateSession(isOnline, language)
-	}
-
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"success": false,
-			"message": "Error while creating a session",
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"success":   true,
-		"sessionId": session.Id,
-		"text":      session.Text.Text,
-	})
-
-}
-
 func (ac *GameAPIController) SaveResult(c echo.Context) error {
 
 	var mistakes map[string]int
@@ -254,38 +218,5 @@ func (gc *GameAPIController) GetLanguages(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"success": true,
 		"data":    languages,
-	})
-}
-
-func (gc *GameAPIController) SubmitText(c echo.Context) error {
-
-	data := map[string]interface{}{
-		"Text":     c.FormValue("Text"),
-		"ISBN":     c.FormValue("ISBN"),
-		"Disabled": c.FormValue("Disabled"),
-		"Language": c.FormValue("Language"),
-		"Accepted": false,
-	}
-
-	if c.Get("IsLoggedIn").(bool) {
-		data["User"] = c.Get("User").(entities.User).Id
-	} else {
-		data["User"] = ""
-	}
-
-	isValid, errors := gametexts.ValidateText(data)
-
-	if !isValid {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"success": false,
-			"errors":  errors,
-		})
-	}
-
-	submittedText := gametexts.CreateText(data)
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"success": submittedText.Id != "",
-		"data":    submittedText,
 	})
 }

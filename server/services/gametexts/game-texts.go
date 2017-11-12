@@ -8,7 +8,6 @@ import (
 	"github.com/iKonrad/typitap/server/entities"
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/nu7hatch/gouuid"
-	"gopkg.in/go-playground/validator.v9"
 	r "gopkg.in/gorethink/gorethink.v3"
 )
 
@@ -46,16 +45,21 @@ func UpdateText(textId string, data map[string]interface{}) entities.GameText {
 		text["text"] = data["Text"].(string)
 	}
 
-	if data["ISBN"] != nil {
-		text["isbn"] = data["ISBN"].(string)
+	if data["Status"] != nil {
+		status, _ := strconv.Atoi(data["Status"].(string))
+		text["status"] = status
 	}
 
-	if data["Disabled"] != nil {
-		if data["Disabled"].(string) == "true" {
-			text["disabled"] = true
-		} else {
-			text["disabled"] = false
-		}
+	if data["Source"] != nil {
+		text["source"] = data["Source"].(string)
+	}
+
+	if data["Type"] != nil {
+		text["type"] = data["Type"].(string)
+	}
+
+	if data["Code"] != nil {
+		text["code"] = data["Code"].(string)
 	}
 
 	if data["Language"] != nil {
@@ -64,14 +68,6 @@ func UpdateText(textId string, data map[string]interface{}) entities.GameText {
 
 	if data["User"] != nil {
 		text["user"] = data["User"].(string)
-	}
-
-	if data["Accepted"] != nil {
-		if data["Accepted"].(string) == "true" {
-			text["accepted"] = true
-		} else {
-			text["accepted"] = false
-		}
 	}
 
 	r.Table("game_texts").Get(textId).Update(text).Exec(db.Session)
@@ -83,16 +79,20 @@ func UpdateText(textId string, data map[string]interface{}) entities.GameText {
 func CreateText(data map[string]interface{}) entities.GameText {
 	newId, _ := uuid.NewV4()
 
-	isDisabled := false
-	if data["Disabled"].(string) == "true" {
-		isDisabled = true
+	statusString, ok := data["Status"].(string)
+
+	if !ok {
+		statusString = "1"
 	}
+	status, _ := strconv.Atoi(statusString)
 
 	text := entities.GameText{
-		Id:       newId.String(),
-		Text:     data["Text"].(string),
-		ISBN:     data["ISBN"].(string),
-		Disabled: isDisabled,
+		Id:     newId.String(),
+		Text:   data["Text"].(string),
+		Status: status,
+		Source: data["Source"].(string),
+		Code:   data["Code"].(string),
+		Type:   data["Type"].(string),
 		Language: entities.Language{
 			Id: data["Language"].(string),
 		},
@@ -100,9 +100,16 @@ func CreateText(data map[string]interface{}) entities.GameText {
 
 	textMap := map[string]interface{}{
 		"text":     data["Text"].(string),
-		"isbn":     data["ISBN"].(string),
-		"disabled": isDisabled,
+		"source":   data["Source"].(string),
+		"type":     data["Type"].(string),
+		"code":     data["Code"].(string),
+		"status":   status,
 		"language": data["Language"].(string),
+	}
+
+	if data["IsSubmitted"] != nil {
+		text.IsSubmitted = data["IsSubmitted"].(bool)
+		textMap["isSubmitted"] = data["IsSubmitted"].(bool)
 	}
 
 	userId, ok := data["User"]
@@ -137,15 +144,16 @@ func ValidateText(data map[string]interface{}) (bool, map[string]string) {
 		}
 	}
 
-	isbn := data["ISBN"].(string)
-	if isbn != "" {
-		validate := validator.New()
-		err := validate.Var(isbn, "isbn")
-		if err != nil {
-			isValid = false
-			fieldErrors["ISBN"] = "Invalid ISBN number"
-		}
-	}
+	// @TODO: Update this with ASIN/ISBN validation
+	//isbn := data["ISBN"].(string)
+	//if isbn != "" {
+	//	validate := validator.New()
+	//	err := validate.Var(isbn, "isbn")
+	//	if err != nil {
+	//		isValid = false
+	//		fieldErrors["ISBN"] = "Invalid ISBN number"
+	//	}
+	//}
 
 	return isValid, fieldErrors
 

@@ -124,7 +124,6 @@ func FindOpenSession(online bool, language string) (entities.GameSession, bool) 
 	responseError := resp.One(&session)
 
 	if responseError != nil || session.Id == "" {
-		log.Println(responseError)
 		return entities.GameSession{}, false
 	}
 
@@ -148,7 +147,7 @@ func OpenGameSession(sessionId string) {
 func getRandomGameText(language string) (entities.GameText, error) {
 
 	resp, err := r.Table("game_texts").
-	Filter(map[string]interface{}{"disabled": false, "language": language, "accepted": true}).
+	Filter(map[string]interface{}{"language": language, "status": entities.TEXT_STATUS_ACCEPTED}).
 	Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{
 			"language": r.Table("languages").Get(p.Field("language")),
