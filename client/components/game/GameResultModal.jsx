@@ -88,10 +88,10 @@ class GameResultModal extends Component {
     }
     
     renderAffiliateProduct() {
-        if (Object.keys(this.props.game.product).length < 1) {
+        let product = this.props.game.product;
+        if (Object.keys(product).length < 1 || product.images === undefined) {
             return <span></span>;
         }
-        let product = this.props.game.product;
         return (<div className="margin-top-4 game-result__affiliate">
             <div className="game-result__affiliate__button">
                 <a href={ product.url } target="_blank" className="btn btn-sm btn-secondary btn-outline btn-block">Get on Amazon</a>
