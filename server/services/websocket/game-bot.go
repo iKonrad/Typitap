@@ -9,7 +9,7 @@ const TYPE_BOT_EASY = 1
 const TYPE_BOT_MEDIUM = 2
 const TYPE_BOT_HARD = 3
 const TYPE_BOT_SUPER_HARD = 4
-const TYPE_BOT_WPM_MULTIPLIER = 25
+const TYPE_BOT_WPM_MULTIPLIER = 30
 
 type Bot struct {
 	Difficulty int
@@ -21,7 +21,7 @@ type Bot struct {
 func NewBot(identifier string, difficulty int) Bot {
 	wpm := difficulty * TYPE_BOT_WPM_MULTIPLIER
 	rand.Seed(time.Now().Unix())
-	wpm = wpm + (rand.Intn(10+15) - 15)
+	wpm = wpm + (rand.Intn(10+10) - 10)
 
 	bot := Bot {
 		Identifier: identifier,
