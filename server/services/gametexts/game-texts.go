@@ -86,6 +86,11 @@ func CreateText(data map[string]interface{}) entities.GameText {
 	}
 	status, _ := strconv.Atoi(statusString)
 
+	language, ok := data["Language"].(string)
+	if language == "" {
+		language = "EN"
+	}
+
 	text := entities.GameText{
 		Id:     newId.String(),
 		Text:   data["Text"].(string),
@@ -94,7 +99,7 @@ func CreateText(data map[string]interface{}) entities.GameText {
 		Code:   data["Code"].(string),
 		Type:   data["Type"].(string),
 		Language: entities.Language{
-			Id: data["Language"].(string),
+			Id: language,
 		},
 	}
 
@@ -104,7 +109,7 @@ func CreateText(data map[string]interface{}) entities.GameText {
 		"type":     data["Type"].(string),
 		"code":     data["Code"].(string),
 		"status":   status,
-		"language": data["Language"].(string),
+		"language": language,
 	}
 
 	if data["IsSubmitted"] != nil {
