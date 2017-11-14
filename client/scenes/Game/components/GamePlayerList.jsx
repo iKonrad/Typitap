@@ -28,10 +28,10 @@ class PlayerList extends Component {
                             <div
                                 className={`progress-bar progress-bar-${player.left ? "default" : "success"}`}
                                 role="progressbar"
-                                aria-valuenow={ current }
+                                aria-valuenow={ player.left ? 0 : current }
                                 aria-valuemin="0"
                                 aria-valuemax={ words }
-                                style={{ 'width': ((current / words) * 100) + '%' }}>
+                                style={{ 'width': (player.left ? 0 : (current / words) * 100) + '%' }}>
                             </div>
                         </div>
                         { that.renderPlace(player.place) }
