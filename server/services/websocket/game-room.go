@@ -5,6 +5,10 @@ import (
 	"strconv"
 	"time"
 
+	"math/rand"
+
+	"strings"
+
 	"github.com/go-redis/redis"
 	db "github.com/iKonrad/typitap/server/services/database"
 	"github.com/iKonrad/typitap/server/services/feed"
@@ -19,7 +23,12 @@ import (
 type Room struct {
 	Id                   string
 	Players              map[string]bool
+	Bots                 map[string]Bot
 	ticker               *time.Ticker
+	botTicker            *time.Ticker
+	botCountdownSeconds  int8
+	botCountdownStarted  bool
+	maxBots              int8
 	countdownSeconds     int8
 	countdownStarted     bool
 	waitCountdownSeconds int8
@@ -29,6 +38,7 @@ type Room struct {
 	time                 int
 	language             string
 	product              map[string]interface{}
+	textLength           int
 }
 
 func NewRoom(id string, text string, language string, product map[string]interface{}) *Room {
@@ -37,10 +47,15 @@ func NewRoom(id string, text string, language string, product map[string]interfa
 
 	db.Redis.HSet("rooms:"+id, "text", text)
 
+	rand.Seed(time.Now().Unix())
+
 	// Add player to the room
 	return &Room{
 		Id:                   id,
 		Players:              make(map[string]bool),
+		Bots:                 make(map[string]Bot),
+		botCountdownSeconds:  0,
+		botCountdownStarted:  false,
 		countdownSeconds:     0,
 		countdownStarted:     false,
 		waitCountdownSeconds: 0,
@@ -50,6 +65,8 @@ func NewRoom(id string, text string, language string, product map[string]interfa
 		time:                 0,
 		language:             language,
 		product:              product,
+		maxBots:              int8(rand.Intn(4-1) + 1),
+		textLength:           len(strings.Fields(text)),
 	}
 }
 
@@ -58,7 +75,6 @@ func (r *Room) Run() {
 
 // Adds a new player to the room
 func (r *Room) AddPlayer(identifier string) {
-
 	err := db.Redis.HSet("rooms:"+r.Id+":players:"+identifier, "identifier", identifier).Err()
 	if err != nil {
 		log.Println("Error while adding a user to the room --"+"rooms:"+r.Id+":players:"+identifier, err)
@@ -79,16 +95,125 @@ func (r *Room) RemovePlayer(identifier string) {
 	db.Redis.HDel("rooms:"+r.Id+":players:"+identifier, "identifier", "score")
 	db.Redis.HDel("player:"+identifier, "roomId")
 	delete(r.Players, identifier)
+	delete(r.Bots, identifier)
+}
+
+func (r *Room) AddBot(identifier string, difficulty int) {
+	err := db.Redis.HSet("rooms:"+r.Id+":players:"+identifier, "identifier", identifier).Err()
+	if err != nil {
+		log.Println("Error while adding a user to the room --"+"rooms:"+r.Id+":players:"+identifier, err)
+	}
+
+	pipeline := db.Redis.Pipeline()
+	defer pipeline.Close()
+	pipeline.HSet("rooms:"+r.Id+":players:"+identifier, "score", 0)
+	pipeline.HSet("rooms:"+r.Id+":players:"+identifier, "place", 0)
+	pipeline.HSet("rooms:"+r.Id+":players:"+identifier, "completed", false)
+	pipeline.HSet("player:"+identifier, "roomId", r.Id)
+	_, err = pipeline.Exec()
+
+	rand.Seed(time.Now().Unix())
+
+	r.Bots[identifier] = NewBot(identifier, rand.Intn(TYPE_MAX_BOTS - TYPE_MIN_BOTS) + TYPE_MIN_BOTS)
+
+	// Send message to everyone that the player has joined the room
+	playerData := r.GetPlayer(identifier)
+	r.SendMessage(TYPE_PLAYER_JOINED_ROOM, map[string]interface{}{
+		"player": playerData,
+	})
+
+	BroadcastMessage(TYPE_ONLINE_GAME_COUNTDOWN_STARTED, map[string]interface{}{})
+	r.restartWaitCountdown()
+}
+
+// Removes player from the room
+func (r *Room) RemoveBot(identifier string) {
+	db.Redis.HDel("rooms:"+r.Id+":players:"+identifier, "identifier", "score")
+	db.Redis.HDel("player:"+identifier, "roomId")
+	delete(r.Bots, identifier)
+
+	// Send message to everyone that the player has left the room
+	r.SendMessage(TYPE_PLAYER_LEFT_ROOM, map[string]interface{}{
+		"identifier": identifier,
+	})
+}
+
+// Remove a given number of bots from the room (if exist)
+func (r *Room) RemoveBots(count int) {
+	if count > 0 {
+		ids := []string{}
+		for identifier := range r.Bots {
+			ids = append(ids, identifier)
+		}
+
+		for i := 0; i < count; i++ {
+			if len(ids) > i {
+				r.RemoveBot(ids[i])
+			}
+		}
+	}
+}
+
+func (r *Room) RemoveAllBots() {
+	bots := r.Bots
+	for identifier := range bots {
+		r.RemoveBot(identifier)
+	}
+}
+
+func (r *Room) StartBotCountdown() {
+	r.botTicker = time.NewTicker(time.Millisecond * 1000)
+
+	// Get random number of seconds (between 1 and 4) for when the bot will join
+	rand.Seed(time.Now().Unix())
+	r.botCountdownSeconds = int8(rand.Intn(7-2) + 2)
+	r.botCountdownStarted = true
+
+	go func() {
+		for range r.botTicker.C {
+			r.botCountdownSeconds--
+			if r.botCountdownSeconds <= 0 && !r.countdownStarted && !r.gameStarted {
+				r.botCountdownStarted = false
+				r.botTicker.Stop()
+
+				randomNumber := rand.Int()
+				r.AddBot("guest-b"+strconv.Itoa(randomNumber), TYPE_BOT_EASY)
+
+				if r.language == "EN" {
+					BroadcastMessage(TYPE_ONLINE_GAME_PLAYERS_SET, map[string]interface{}{
+						"players": r.GetPlayers(),
+					})
+				}
+
+				if int8(len(r.Bots)) < r.maxBots {
+					r.StartBotCountdown()
+				}
+			}
+		}
+	}()
+}
+
+func (r *Room) StopBotCountdown() {
+	if r.botTicker != nil && r.botCountdownStarted {
+		r.botTicker.Stop()
+		r.botCountdownStarted = false
+		r.botCountdownSeconds = 0
+	}
 }
 
 // Returns a slice with players in this room along with all the data
 func (r *Room) GetPlayers() map[string]interface{} {
-
 	players := make(map[string]interface{})
 
 	// Iterate over all the players
 	for identifier := range r.Players {
 		// Get the current player from Redis
+		players[identifier] = db.Redis.HGetAll("rooms:" + r.Id + ":players:" + identifier).Val()
+	}
+
+	// Iterate over all the players
+	for identifier := range r.Bots {
+		// Get the current bot from Redis
 		players[identifier] = db.Redis.HGetAll("rooms:" + r.Id + ":players:" + identifier).Val()
 	}
 
@@ -119,7 +244,8 @@ func (r *Room) SendMessage(messageType string, message interface{}) bool {
 }
 
 func (r *Room) canStartGame() bool {
-	return len(r.Players) > 1
+
+	return (len(r.Players) + len(r.Bots)) > 1
 }
 
 // Resets the wait countdown (for example, when a new player enters the room)
@@ -155,11 +281,12 @@ func (r *Room) restartWaitCountdown() {
 			} else {
 				r.stopWaitCountdown()
 				// Double check if all players are in the session and start the game
-				if len(r.Players) > 1 {
+				if len(r.Players) >= 1 && (len(r.Players)+len(r.Bots) > 1) {
 					// Mark the room as closed so noone else can join
 					game.CloseGameSession(r.Id)
 					BroadcastMessage(TYPE_ONLINE_GAME_RESET, map[string]interface{}{})
 					r.startCountdown()
+					r.StopBotCountdown()
 				}
 			}
 		}
@@ -177,12 +304,10 @@ func (r *Room) stopWaitCountdown() {
 		r.waitCountdownStarted = false
 		r.waitCountdownSeconds = 0
 	}
-
 }
 
 // Starts the final game countdown
 func (r *Room) startCountdown() {
-
 	r.SendMessage(
 		TYPE_START_COUNTDOWN,
 		map[string]interface{}{
@@ -208,7 +333,6 @@ func (r *Room) startCountdown() {
 			}
 		}
 	}()
-
 }
 
 // Stops and resets the game countdown
@@ -248,6 +372,11 @@ func (r *Room) startGame() {
 	go func() {
 		for range r.ticker.C {
 			r.time++
+
+			// Update bot scores
+			r.updateBotsProgress()
+
+			// Fetch players data and send a socket message to all players in the room
 			playersData := r.getPlayersData()
 			r.SendMessage(
 				TYPE_UPDATE_PLAYERS_DATA,
@@ -277,6 +406,10 @@ func (r *Room) getPlayersData() map[string]interface{} {
 	defer pipeline.Close()
 	playerResults := make(map[string]*redis.StringStringMapCmd)
 	for identifier := range r.Players {
+		playerResults[identifier] = pipeline.HGetAll("rooms:" + r.Id + ":players:" + identifier)
+	}
+
+	for identifier := range r.Bots {
 		playerResults[identifier] = pipeline.HGetAll("rooms:" + r.Id + ":players:" + identifier)
 	}
 
@@ -314,6 +447,42 @@ func (r *Room) resetRoom() {
 	}
 }
 
+func (r *Room) updateBotsProgress() {
+	if len(r.Bots) > 0 && r.gameStarted {
+		for _, bot := range r.Bots {
+
+			if !bot.Finished {
+				score := bot.calculateScoreForTime(r.time)
+				db.Redis.HSet("rooms:"+r.Id+":players:"+bot.Identifier, "score", score)
+				if score >= r.textLength {
+					db.Redis.HSet("rooms:"+r.Id+":players:"+bot.Identifier, "completed", true)
+
+					text := db.Redis.HGet("rooms:"+r.Id, "text")
+					playerTime := int(r.time)
+
+					// Calculate WPM and accuracy
+					wpm, _ := game.CalculateScore(playerTime, 0, text.Val())
+
+					r.SendMessage(
+						TYPE_PLAYER_COMPLETED_GAME,
+						map[string]interface{}{
+							"identifier": bot.Identifier,
+							"place":      r.nextPlace,
+							"wpm":        wpm,
+							"time":       r.time,
+							"points":     0,
+							"resultId":   "",
+						},
+					)
+					bot.Finished = true
+					r.Bots[bot.Identifier] = bot
+					r.nextPlace++
+				}
+			}
+		}
+	}
+}
+
 // Receives the player score and updates the redis database
 func (r *Room) handlePlayerUpdate(identifier string, score float64) {
 	if r.gameStarted {
@@ -328,7 +497,6 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int,
 		db.Redis.HSet("rooms:"+r.Id+":players:"+identifier, "completed", true)
 
 		text := db.Redis.HGet("rooms:"+r.Id, "text")
-
 		playerTime := int(r.time)
 
 		// Calculate WPM and accuracy
@@ -437,6 +605,10 @@ func (r *Room) haveAllPlayersCompletedGame() bool {
 
 	var parsedResults = make(map[string]*redis.StringCmd)
 	for identifier := range r.Players {
+		parsedResults[identifier] = pipeline.HGet("rooms:"+r.Id+":players:"+identifier, "completed")
+	}
+
+	for identifier := range r.Bots {
 		parsedResults[identifier] = pipeline.HGet("rooms:"+r.Id+":players:"+identifier, "completed")
 	}
 

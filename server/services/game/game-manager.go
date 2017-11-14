@@ -87,8 +87,6 @@ func GetSession(sessionId string) (entities.GameSession, error) {
 
 // Fetches the open session from database if exists
 func FindOpenSession(online bool, language string) (entities.GameSession, bool) {
-
-
 	// Fetch the game text
 	resp, err := r.Table("game_sessions").Filter(map[string]interface{}{
 		"online":   online,

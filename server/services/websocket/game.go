@@ -22,6 +22,7 @@ const (
 	ROOM_EXPIRY_TIME        = 3600 * 24
 	TYPE_LEFT_ROOM          = "LEFT_ROOM" // Sent to user after successful room leaving
 	TYPE_JOINED_ROOM        = "JOINED_ROOM"
+	TYPE_MAX_PLAYERS		= 5
 	TYPE_PLAYER_JOINED_ROOM = "PLAYER_JOINED_ROOM"
 	TYPE_PLAYER_LEFT_ROOM   = "PLAYER_LEFT_ROOM"
 
@@ -37,6 +38,9 @@ const (
 	TYPE_START_GAME          = "START_GAME"
 	TYPE_FINISH_GAME         = "FINISH_GAME"
 	TYPE_UPDATE_PLAYERS_DATA = "UPDATE_PLAYERS_DATA"
+
+	TYPE_MIN_BOTS = 1
+	TYPE_MAX_BOTS = 3
 
 	WAIT_SECONDS        = 10     // How many seconds should the room count down for other players
 	FINISH_GAME_SECONDS = 4 * 60 // How many seconds must pass before the game automatically closes
@@ -198,7 +202,9 @@ func (e *Engine) handleJoinRoom(identifier string, online bool, language string)
 	room.AddPlayer(identifier)
 
 	// If room is full, close the room
-	if len(room.Players) >= 5 {
+	if len(room.Players) >= TYPE_MAX_PLAYERS {
+		room.StopBotCountdown()
+		room.RemoveAllBots()
 		game.CloseGameSession(room.Id)
 		logs.Success("Room is full", "Room '"+room.Id+"' is full and has been closed", []string{"websocket", "game"}, "Game Session "+room.Id)
 	}
@@ -229,10 +235,18 @@ func (e *Engine) handleJoinRoom(identifier string, online bool, language string)
 	})
 
 	// Start the countdown if amount of players is at least 2
-	if len(room.Players) > 1 {
-		BroadcastMessage(TYPE_ONLINE_GAME_COUNTDOWN_STARTED, map[string]interface{}{})
+	if len(room.Players) >= 1 && (len(room.Players) + len(room.Bots) > 1) {
+		// Check if we need to kick some bots due to having too many players
+		if (len(room.Players) + len(room.Bots) > TYPE_MAX_PLAYERS) && len(room.Bots) >= 1 {
+			room.RemoveBots((len(room.Players) + len(room.Bots)) - TYPE_MAX_PLAYERS)
+		}
 		room.restartWaitCountdown()
+		BroadcastMessage(TYPE_ONLINE_GAME_COUNTDOWN_STARTED, map[string]interface{}{})
+	} else if len(room.Players) == 1 {
+		// If there's not enough players, and it's an online game, add a bot after a delay
+		room.StartBotCountdown()
 	}
+
 	return room.Id, true
 }
 
@@ -242,20 +256,21 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 	roomId, ok := e.getRoomForClientId(identifier)
 	if ok {
 
-		var shouldOpen = len(e.rooms[roomId].Players) >= 5
+		var shouldOpen = len(e.rooms[roomId].Players) >= TYPE_MAX_PLAYERS
 		e.rooms[roomId].RemovePlayer(identifier)
 
 		// Send message to everyone that the player has left the room
 		e.rooms[roomId].SendMessage(TYPE_PLAYER_LEFT_ROOM, map[string]interface{}{
 			"identifier": identifier,
 		})
+
 		if shouldOpen {
 			log.Println("Opening back the session")
 			game.OpenGameSession(roomId)
 		}
 
 		// If there's less than 2 players, stop the countdown ticker if it runs
-		if len(e.rooms[roomId].Players) < 2 {
+		if len(e.rooms[roomId].Players) < 2 && (len(e.rooms[roomId].Players) + len(e.rooms[roomId].Bots) < 2) {
 			if !e.rooms[roomId].gameStarted {
 				BroadcastMessage(TYPE_ONLINE_GAME_COUNTDOWN_STOPPED, map[string]interface{}{})
 			}
@@ -269,7 +284,12 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 		}
 
 		if len(e.rooms[roomId].Players) < 1 {
+			e.rooms[roomId].RemoveAllBots()
+			e.rooms[roomId].StopBotCountdown()
 			e.RemoveRoom(roomId)
+		} else if len(e.rooms[roomId].Bots) < 1 {
+			e.rooms[roomId].StopBotCountdown()
+			e.rooms[roomId].StartBotCountdown()
 		}
 
 		logs.Log("Player left room", "Player "+identifier+" left room", []string{"websocket", "game", "players"}, "Game Session "+roomId)
@@ -281,14 +301,11 @@ func (e *Engine) handleLeaveRoom(identifier string) error {
 
 // Helper function that fetches the RoomID (SessionID) for a given Client identifier
 func (e *Engine) getRoomForClientId(identifier string) (sessionId string, ok bool) {
-
 	sessionId = db.Redis.HGet("player:"+identifier, "roomId").Val()
 	ok = false
-
 	if e.roomExists(sessionId) {
 		ok = true
 	}
-
 	return
 }
 
