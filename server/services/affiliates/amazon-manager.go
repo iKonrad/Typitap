@@ -40,9 +40,13 @@ func GetAmazonItemByCode(idType string, id string) (map[string]interface{}, bool
 		return map[string]interface{}{}, false
 	}
 
-	return map[string]interface{}{
-		"url":    result.AmazonItems.Items[0].DetailPageURL,
-		"title":  result.AmazonItems.Items[0].ItemAttributes.Title,
-		"images": result.AmazonItems.Items[0].ImageSets[0],
-	}, len(result.AmazonItems.Items) > 0
+	if len(result.AmazonItems.Items) > 0 {
+		return map[string]interface{}{
+			"url":    result.AmazonItems.Items[0].DetailPageURL,
+			"title":  result.AmazonItems.Items[0].ItemAttributes.Title,
+			"images": result.AmazonItems.Items[0].ImageSets[0],
+		}, len(result.AmazonItems.Items) > 0
+	}
+
+	return map[string]interface{}{}, false
 }
