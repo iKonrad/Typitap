@@ -25,9 +25,7 @@ export function logModal(modalName) {
 export function setNoTrack() {
     if (typeof document !== "undefined" && typeof window !== "undefined") {
         if (document.cookie.indexOf("TYPITAP_NOTRACK=") >= 0) {
-            GA.set({
-                NoTrackCookie: 1,
-            })
+            GA.ga('set', 'dimension1', 1);
         }
     }
 }
