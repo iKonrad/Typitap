@@ -7,6 +7,8 @@ import {Promise} from 'when';
 import createRoutes from './routes';
 import {createStore, setAsCurrentStore} from 'store/store';
 import { syncHistoryWithStore } from 'react-router-redux'
+import * as GaUtils from 'utils/gaUtils';
+
 // import ReactWastageMonitor from 'react-wastage-monitor';
 
 export function run() {
@@ -30,6 +32,8 @@ export function run() {
     // }
 
     let history = syncHistoryWithStore(browserHistory, store);
+
+    GaUtils.setNoTrack();
 
     render(
         <Provider store={store}>

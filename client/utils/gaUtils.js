@@ -21,3 +21,13 @@ export function logEvent(category, action, label) {
 export function logModal(modalName) {
     GA.modalview(modalName);
 }
+
+export function setNoTrack() {
+    if (typeof document !== "undefined" && typeof window !== "undefined") {
+        if (document.cookie.indexOf("TYPITAP_NOTRACK=") >= 0) {
+            GA.set({
+                NoTrackCookie: 1,
+            })
+        }
+    }
+}
