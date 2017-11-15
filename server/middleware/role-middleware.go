@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"strings"
 
-	"log"
-
 	"github.com/iKonrad/typitap/server/entities"
 	"github.com/iKonrad/typitap/server/services/roles"
 	"github.com/labstack/echo"

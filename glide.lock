@@ -1,5 +1,5 @@
-hash: ec92759bed9be2af4ce924a99b77a3dd1aad6a7fb7c817c28c667d89d84583e4
-updated: 2017-11-12T20:53:42.990666Z
+hash: 5469ce58eba42e4f518af369d42b00f7adecb4e89e63f1091995b1f056c5c2aa
+updated: 2017-11-15T16:22:00.404713Z
 imports:
 - name: github.com/badoux/checkmail
   version: d0a759655d62bcdc95c50a0676f3e9702ed59453
@@ -14,7 +14,7 @@ imports:
 - name: github.com/dancannon/gorethink
   version: 7f5bdfd858bb064d80559b2a32b86669c5de5d3b
 - name: github.com/DataDog/datadog-go
-  version: c74bd0589c83817c93e4eff39ccae69d6c46df9b
+  version: 2a3d87edb8fe6799399ed082afce34963f930bb4
   subpackages:
   - statsd
 - name: github.com/dgrijalva/jwt-go
@@ -59,7 +59,7 @@ imports:
   - raster
   - truetype
 - name: github.com/golang/protobuf
-  version: 1643683e1b54a9e88ad26d98f81400c8c9d9f4f9
+  version: 1e59b77b52bf8e4b449a57e6f79f21226d571845
   subpackages:
   - proto
 - name: github.com/gorilla/context
@@ -121,6 +121,8 @@ imports:
   version: 5b1dc16861f81d05d9836bb21c2d0d65282fc0b8
 - name: github.com/oschwald/maxminddb-golang
   version: 26fe5ace1c706491c2936119e1dc69c1a9c04d7f
+- name: github.com/Pallinder/go-randomdata
+  version: acaf3d8cb4966dde9acb023a9cfde148993fd392
 - name: github.com/pariz/gountries
   version: adb00f6513a307f9f7a4ee57eca79a703b8a7272
 - name: github.com/pkg/errors
@@ -140,7 +142,7 @@ imports:
   subpackages:
   - syncutil
 - name: golang.org/x/crypto
-  version: 6a293f2d4b14b8e6d3f0539e383f6d0d30fce3fd
+  version: 9f005a07e0d31d45e6656d241bb5c0f2efd4bc94
   subpackages:
   - acme
   - acme/autocert
@@ -151,17 +153,15 @@ imports:
 - name: golang.org/x/image
   version: f7e31b4ea2e3413ab91b4e7d2dc83e5f8d19a44c
   subpackages:
-  - draw
   - font
   - font/basicfont
-  - math/f64
   - math/fixed
 - name: golang.org/x/net
-  version: a337091b0525af65de94df2eb7e98bd9962dcbe2
+  version: 9dfe39835686865bff950a07b394c12a98ddc811
   subpackages:
   - context
 - name: golang.org/x/sys
-  version: 1e2299c37cc91a509f1b12369872d27be0ce98a6
+  version: bf42f188b9bc6f2cf5b8ee5a912ef1aedd0eba4c
   subpackages:
   - unix
   - windows

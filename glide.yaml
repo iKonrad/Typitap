@@ -32,3 +32,4 @@ import:
   version: ~9.8.0
 - package: github.com/dominicphillips/amazing
 - package: github.com/dop251/goja
+- package: github.com/Pallinder/go-randomdata

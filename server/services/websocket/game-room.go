@@ -18,6 +18,7 @@ import (
 	"github.com/iKonrad/typitap/server/services/stats"
 	"github.com/iKonrad/typitap/server/services/topchart"
 	us "github.com/iKonrad/typitap/server/services/user"
+	"github.com/Pallinder/go-randomdata"
 )
 
 type Room struct {
@@ -176,8 +177,15 @@ func (r *Room) StartBotCountdown() {
 				r.botCountdownStarted = false
 				r.botTicker.Stop()
 
-				randomNumber := rand.Int()
-				r.AddBot("guest-b"+strconv.Itoa(randomNumber), TYPE_BOT_EASY)
+				// Sometimes use Sillyname and sometimes guest ID for extra randomness
+				useSillyName := rand.Intn(2)
+				botName := "guest-b" + strconv.Itoa(rand.Int())
+				log.Println("USESILLY", useSillyName)
+				if useSillyName == 1 {
+					botName = strings.ToLower(randomdata.SillyName())
+				}
+
+				r.AddBot(botName, TYPE_BOT_EASY)
 
 				if r.language == "EN" {
 					BroadcastMessage(TYPE_ONLINE_GAME_PLAYERS_SET, map[string]interface{}{
