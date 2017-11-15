@@ -296,3 +296,12 @@ export function getKeyboardForId(id) {
     return keyboard;
 
 }
+
+
+export function isTrackingCookieAdded() {
+    if (document !== undefined && window !== undefined) {
+        return document.cookie.indexOf("TYPITAP_NOTRACK=") >= 0;
+    };
+
+    return false
+}
