@@ -183,6 +183,13 @@ func NewApp(opts ...AppOptions) *App {
 		),
 	)
 
+	internalAPI := routes.InternalAPIRoutes{}
+	internalAPI.Bind(
+		app.Engine.Group(
+			"/api/internal",
+		),
+	)
+
 	authRoutes := routes.AuthenticationRoutes{}
 	authRoutes.Bind(
 		app.Engine.Group(

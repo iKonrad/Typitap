@@ -65,6 +65,7 @@ func CanRoleAccessURL(role string, url string) bool {
 	if !ok {
 		return true
 	}
+
 	r, ok := getRoleForString(role)
 	if !ok {
 		return false
