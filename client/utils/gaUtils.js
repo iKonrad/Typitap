@@ -2,6 +2,11 @@ var GA = require('react-ga');
 
 if (typeof window !== "undefined") {
     GA.initialize('UA-79863706-2');
+    if (typeof document !== "undefined" && typeof window !== "undefined") {
+        if (document.cookie.indexOf("TYPITAP_NOTRACK=") >= 0) {
+            GA.ga('set', 'dimension1', 1);
+        }
+    }
     logPageView(window.location.pathname)
 }
 export function logPageView(path) {
@@ -20,12 +25,4 @@ export function logEvent(category, action, label) {
 
 export function logModal(modalName) {
     GA.modalview(modalName);
-}
-
-export function setNoTrack() {
-    if (typeof document !== "undefined" && typeof window !== "undefined") {
-        if (document.cookie.indexOf("TYPITAP_NOTRACK=") >= 0) {
-            GA.ga('set', 'dimension1', 1);
-        }
-    }
 }

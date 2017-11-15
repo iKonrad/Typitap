@@ -33,8 +33,6 @@ export function run() {
 
     let history = syncHistoryWithStore(browserHistory, store);
 
-    GaUtils.setNoTrack();
-
     render(
         <Provider store={store}>
             <Router history={history}>{createRoutes({store, first: {time: true}})}</Router>
