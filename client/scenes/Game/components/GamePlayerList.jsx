@@ -26,7 +26,7 @@ class PlayerList extends Component {
                         <div className={`game__progress__name ${player.left ? "game__progress__name--left" : ""}`}>{ obj }</div>
                         <div className="progress">
                             <div
-                                className={`progress-bar progress-bar-${player.left ? "default" : "success"}`}
+                                className={`progress-bar progress-bar-${player.left ? "default" : "info"}`}
                                 role="progressbar"
                                 aria-valuenow={ player.left ? 0 : current }
                                 aria-valuemin="0"
@@ -47,21 +47,10 @@ class PlayerList extends Component {
 
     renderPlace(place) {
         if (place !== undefined && place > 0) {
-            let placeString = '';
-            if (place === 1) {
-                placeString = 'st';
-            } else if (place === 2) {
-                placeString = 'nd';
-            } else if (place === 3) {
-                placeString = 'rd';
-            } else {
-                placeString = 'th';
-            }
             return (
                 <div className="progress__result__wrapper">
                     <div className="progress__result">
                         <i className={ "fa fa-trophy progress__result__icon place-" + place }> </i>
-                        <div className="progress__result__place">{place}{placeString}</div>
                     </div>
                 </div>
             );
@@ -87,7 +76,7 @@ class PlayerList extends Component {
             <div className="game__progress">
                 { this.renderPlayersProgress() }
                 <div className="" key="progress-player">
-                    <div className="game__progress__name" style={{ fontWeight: 'bold' }}>{ this.props.socket.identifier }</div>
+                    <div className="game__progress__name"><strong>{ this.props.socket.identifier }</strong> (you)</div>
                     <div className="progress">
                         <div className="progress-bar progress-bar-success" role="progressbar" aria-valuenow={ current } aria-valuemin="0" aria-valuemax={ words } style={{ 'width': ((current / words) * 100) + '%' }}>
                         </div>

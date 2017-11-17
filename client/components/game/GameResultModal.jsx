@@ -71,12 +71,12 @@ class GameResultModal extends Component {
                     </div>
                     <div className="row">
                         <div className="col col-xs-12">
-                            { this.renderAffiliateProduct() }
+                            { this.renderStats() }
                         </div>
                     </div>
                     <div className="row">
                         <div className="col col-xs-12">
-                            { this.renderStats() }
+                            { this.renderAffiliateProduct() }
                         </div>
                     </div>
                 </Modal.Body>
@@ -134,9 +134,9 @@ class GameResultModal extends Component {
 
         return (
             <div className="game-result__share">
-                <FacebookShareButton style={{marginBottom: 0}} className="btn btn-sm btn-facebook" title={ title } description={ description }
+                <FacebookShareButton style={{marginBottom: 0}} className="btn btn-sm btn-facebook" title={ title } quote={ description }
                                      picture={ image } url={ url } children="Share on Facebook"/>
-                <TwitterShareButton style={{marginBottom: 0}} className="btn btn-sm btn-twitter" title={ title } via="https://typitap.com"
+                <TwitterShareButton style={{marginBottom: 0}} className="btn btn-sm btn-twitter" title={ title } via="typitap"
                                     url={ url } children="Share on Twitter"/>
             </div>
         );
@@ -247,7 +247,7 @@ class GameResultModal extends Component {
             <div>
                 <div className="row" style={{marginTop: "-20px"}}>
                     <div className="col col-xs-12 text-left margin-bottom-2">
-                        <button className="btn btn-default btn-block" onClick={ this.handleBack.bind(this) }>Back to lobby
+                        <button className="btn btn-primary btn-block" onClick={ this.handleBack.bind(this) }>Back to lobby
                         </button>
                     </div>
                 </div>

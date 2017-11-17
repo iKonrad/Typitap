@@ -1,32 +1,4 @@
 
-$gray-base:              #000 !default;
-$gray-darker:            lighten($gray-base, 13.5%) !default; // #222
-$gray-dark:              #7b8a8b !default;   // #333
-$gray:                   #95a5a6 !default; // #555
-$gray-light:             #b4bcc2 !default;   // #999
-$gray-lighter:           #ecf0f1 !default; // #eee
-
-//$brand-primary:         #2C3E50 !default;
-//$brand-success:         #8de552 !default;
-//$brand-info:            #3498DB !default;
-//$brand-warning:         #F39C12 !default;
-//$brand-danger:          #E74C3C !default;
-
-$brand-primary:         #774a8a !default;
-$brand-secondary:       #59c3c3 !default;
-$brand-success:         #8de552 !default;
-$brand-info:            #4062BB !default;
-$brand-warning:         #F39C12 !default;
-$brand-danger:          #F45B69 !default;
-$brand-grey: #EBEBEB;
-
-
-
-$blue-follow: #50E3C2!default;
-
-$kasia-pink: #FF80AB;
-
-
 /* Brand colors */
 $jet: rgba(49, 62, 80, 1);
 $red: rgba(244, 96, 54, 1);
@@ -101,6 +73,36 @@ $grey-150: lighten($dark-grey, 73%);
 $grey-100: $clouds;
 $grey-050: lighten($clouds, 4%);
 $grey-030: lighten($clouds, 5%);
+
+
+$gray-base:              #000 !default;
+$gray-darker:            lighten($gray-base, 13.5%) !default; // #222
+$gray-dark:              #7b8a8b !default;   // #333
+$gray:                   #95a5a6 !default; // #555
+$gray-light:             #b4bcc2 !default;   // #999
+$gray-lighter:           #ecf0f1 !default; // #eee
+
+//$brand-primary:         #2C3E50 !default;
+//$brand-success:         #8de552 !default;
+//$brand-info:            #3498DB !default;
+//$brand-warning:         #F39C12 !default;
+//$brand-danger:          #E74C3C !default;
+
+$brand-primary:         #774a8a !default;
+$brand-secondary:       #59c3c3 !default;
+$brand-success:         #8de552 !default;
+$brand-info:            $blue-100!default;
+$brand-warning:         #F39C12 !default;
+$brand-danger:          #F45B69 !default;
+$brand-grey: #EBEBEB;
+
+
+
+$blue-follow: #50E3C2!default;
+
+$kasia-pink: #FF80AB;
+
+
 
 
 $nav-color: $purple-200;

@@ -23,13 +23,15 @@ class ResultRow extends PureComponent {
         return (
             <div className="result-row row">
                 { this.renderPlace(this.props.place) }
-                <div className={"col col-xs-"+ (this.props.place ? 7 : 8) +" data-table--cell"}>
-                    <p className="text-md">{ this.props.name }</p>
-                    <div className="text-caption"><small><TimeAgo date={ this.props.date } /></small></div>
+                <div className={"col col-xs-"+ (this.props.place ? 7 : 8)}>
+                    <div className="data-table--cell">
+                        <p className="text-md">{ this.props.name }</p>
+                        <div className="text-caption"><small><TimeAgo date={ this.props.date } /></small></div>
+                    </div>
                 </div>
-                <div className="col col-xs-4 data-table--cell">
-                    <div className="pull-right text-xl" >
-                        <ScoreBadge score={ this.props.score } perfect={ this.props.perfect } resultId={ this.props.resultId }  />
+                <div className="col col-xs-4">
+                    <div className="data-table--cell pull-right text-xl">
+                            <ScoreBadge score={ this.props.score } perfect={ this.props.perfect } resultId={ this.props.resultId }  />
                     </div>
                 </div>
             </div>
