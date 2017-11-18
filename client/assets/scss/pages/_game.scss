@@ -156,6 +156,7 @@
   .game__progress {
 
     &__name {
+      @include FontSourceSans();
       color: $grey-400;
       &--left {
         @extend .text-muted;
@@ -163,7 +164,7 @@
     }
 
     .progress {
-      margin-bottom: 10px;
+      margin-bottom: 15px;
     }
 
     .progress-bar {
