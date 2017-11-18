@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Follow } from 'react-twitter-widgets'
-import FacebookProvider, { Like } from 'react-facebook';
 
 class Footer extends React.PureComponent {
     constructor(props) {
@@ -13,36 +11,37 @@ class Footer extends React.PureComponent {
             <footer id="footer" className="footer">
                     <div className="container">
                         <div className="row">
-                            <div className="col col-xs-12">
-                                <div className="footer__social">
-                                    <div className="row">
-                                        <div className="col col-xs-12 col-md-offset-4 col-md-2">
-                                            <Follow username="typitap"></Follow>
-                                        </div>
-                                        <div className="col col-xs-12 col-md-2 text-left">
-                                            <FacebookProvider appId="1776657649242212">
-                                                <Like href="http://www.facebook.com/typitap" colorScheme="dark" share />
-                                            </FacebookProvider>
+                            <div className="col col-xs-12 col-sm-6 col-md-3 text-center" style={{minHeight: "150px"}}>
+                                <div className="row">
+                                    <div className="col">
+                                        <div className="margin-top-6 text-center">
+                                            <img src="/static/images/identity/typitap-logo-white-beta@1.25x.png" />
+                                            <div className="white">Made by <a href="http://jarosinski.uk" className="white" target="_blank">Konrad Jarosinski</a> © 2017</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col col-xs-12 col-sm-4">
-                                <div className="margin-top-3 text-center">
-                                    <div className="white"><a href="http://jarosinski.uk" className="white" target="_blank">Konrad Jarosinski</a> © 2017</div>
+                            <div className="col col-xs-12 col-sm-6 col-md-3 text-center" style={{minHeight: "150px"}}>
+                                <div className="margin-top-6">
+                                    <a target="_blank" href="https://www.facebook.com/typitap" className="btn btn-white btn-outline btn-circle"><i className="fa fa-facebook"></i></a>
+                                    <a target="_blank" href="https://twitter.com/typitap" className="btn btn-white btn-outline btn-circle"><i className="fa fa-twitter"></i></a>
+                                    <a target="_blank" href="https://plus.google.com/b/115496080103251519478/115496080103251519478" className="btn btn-white btn-outline btn-circle"><i className="fa fa-google-plus"></i></a>
                                 </div>
                             </div>
-                            <div className="col col-xs-12 col-sm-8 text-center">
-                                <div className="text-right margin-top-3">
-                                    <Link to="/" className="white" style={{marginRight: "13px"}}>Home</Link>
-                                    <Link to="/about" className="white" style={{marginRight: "13px"}}>About</Link>
-                                    <a style={{marginRight: "13px"}} href="https://blog.typitap.com" className="white">Blog</a>
-                                    <a style={{marginRight: "13px"}} href="http://community.typitap.com" className="white">Community</a>
-                                    <Link to="/play" className="white" style={{marginRight: "13px"}}>Play</Link>
-                                    <Link to="/faq" className="white" style={{marginRight: "13px"}}>FAQ</Link>
-                                    <Link to="/submit-text" className="white" style={{marginRight: "13px"}}>Submit text</Link>
+                            <div className="col col-xs-12 col-sm-6 col-md-3 text-center" style={{minHeight: "150px"}}>
+                                <div className="margin-top-4">
+                                    <Link to="/" className="btn btn-link btn-white btn-block margin-top-4">Home</Link>
+                                    <Link to="/about" className="btn btn-link btn-white btn-block margin-top-1">About</Link>
+                                    <a href="https://blog.typitap.com" className="btn btn-link btn-white btn-block margin-top-1">Blog</a>
+                                    <a href="http://community.typitap.com" className="btn btn-link btn-white btn-block margin-top-1">Community</a>
+                                </div>
+                            </div>
+                            <div className="col col-xs-12 col-sm-6 col-md-3 text-center" style={{minHeight: "150px"}}>
+                                <div className="text-right margin-top-4">
+                                    <Link to="/play" className="btn btn-link btn-white btn-block margin-top-4">Play</Link>
+                                    <Link to="/faq" className="btn btn-link btn-white btn-block margin-top-1">FAQ</Link>
+                                    <Link to="/submit-text" className="btn btn-link btn-white btn-block margin-top-1">Submit text</Link>
+                                    <Link to="/typing-text" className="btn btn-link btn-white btn-block margin-top-1">Typing test</Link>
                                 </div>
                             </div>
                         </div>

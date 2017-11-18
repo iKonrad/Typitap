@@ -101,13 +101,23 @@
   }
 
   &.btn-link {
-    padding: 0 5px;
+    padding: 2px 5px;
     color: $brand-primary;
     min-height: 0;
     border: 1px solid transparent;
 
+    &.btn-sm {
+      padding: 0px 5px;
+    }
+
     &.btn-white {
       color: white;
+      background-color: transparent;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
     }
 
     &:hover {
@@ -283,6 +293,7 @@
   &.btn-outline {
     background-color: transparent;
     transition: all .5s;
+    color: white;
 
     &.btn-primary {
       border: 1px solid $brand-primary;
@@ -335,7 +346,7 @@
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.8);
-        color: $brand-primary;
+        color: $grey-500;
         border: 1px solid rgba(255, 255, 255, 0.8);
       }
     }

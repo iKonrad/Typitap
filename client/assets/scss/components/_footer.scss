@@ -1,41 +1,9 @@
 /* Sticky footer styles
 -------------------------------------------------- */
 
-$footer-size: 110px;
+$footer-size: 650px;
 
-//html,
-//body, #react-container, .app-wrapper, div[id^='sfreact'] {
-//  height: 100%;
-//  /* The html and body elements cannot have any padding or margin. */
-//}
 
-//  body {
-//  margin-bottom: $footer-size;
-//}
-
-/* Wrapper for page content to push down footer */
-//#react-container {
-  //min-height: 100%;
-  //height: auto;
-  /* Negative indent footer by its height */
-  //margin: 0 auto ($footer-size * -1);
-  ///* Pad bottom by footer height */
-  //padding: 0 0 $footer-size;
-//}
-
-/* Set the fixed height of the footer here */
-//#footer {
-//  height: $footer-size;
-//  position: absolute;
-//  bottom: 0;
-//  width: 100%;
-//  background-image: linear-gradient(-180deg, #3d3d3d 0%, #1E1E1E 100%);
-//
-//  .container {
-//    padding: 30px 0;
-//    color: white;
-//  }
-//}
 
 
 html { height: 100%; }
@@ -48,6 +16,16 @@ body {
   position: absolute;
   left: 0 ; right: 0; bottom: 0;
   height: $footer-size;
+
+  @include sm {
+    height: 350px;
+  }
+
+
+  @include md {
+    height: 180px;
+  }
+
   background-image: linear-gradient(-180deg, #3d3d3d 0%, #1E1E1E 100%);
   color: white;
 
