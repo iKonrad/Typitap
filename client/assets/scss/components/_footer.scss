@@ -11,6 +11,17 @@ body {
   min-height:100%;
   position:relative;
   padding-bottom: $footer-size;
+
+  @include sm {
+    height: 350px;
+  }
+
+
+  @include md {
+    height: 180px;
+  }
+
+
 }
 .footer {
   position: absolute;
