@@ -13,16 +13,16 @@ body {
   padding-bottom: $footer-size;
 
   @include sm {
-    height: 350px;
+    padding-bottom: 350px;
   }
 
 
   @include md {
-    height: 180px;
+    padding-bottom: 180px;
   }
-
-
 }
+
+
 .footer {
   position: absolute;
   left: 0 ; right: 0; bottom: 0;
