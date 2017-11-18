@@ -543,7 +543,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int,
 			}
 
 			// Increment trophy stat only if there's more players than the trophy (to get silver trophy, there must be at least 3 people)
-			if r.nextPlace <= 3 && int(r.nextPlace) < len(r.Players) {
+			if r.nextPlace <= 3 && int(r.nextPlace) < (len(r.Players) + len(r.Bots)) {
 				stats.IncrementTrophyStat(r.nextPlace, user.Id)
 			}
 
