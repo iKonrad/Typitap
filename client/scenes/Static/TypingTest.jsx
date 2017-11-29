@@ -27,7 +27,7 @@ class TypingTest extends React.Component {
                 <div className="banner">
                     <div className="container">
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <div className="banner__titles">
                                     <h1>Start typing test online and see your typing speed</h1>
                                     <p className="text-lg">An average person’s typing speed is around 40 words per minute. Can you beat that?</p>
@@ -41,11 +41,11 @@ class TypingTest extends React.Component {
                 </div>
 
                 <div className="container">
-                    <div className="row margin-top-8">
-                        <div className="col col-xs-12 col-md-6">
+                    <div className="row mt-8">
+                        <div className="col-12 col-md-6">
                             <img className="img-responsive" src="/static/images/pages/homepage/feature_2.jpg" alt="Game screen"/>
                         </div>
-                        <div className="col col-xs-12 col-md-6">
+                        <div className="col-12 col-md-6">
                             <h2>How do we measure typing speed?</h2>
                             <p>In typitap, typing speed is measured in words per minute (wpm).</p>
                             <p>WPM is the most common measure for the speed of typing, reading and even Morse code sending and receiving.</p>
@@ -54,8 +54,8 @@ class TypingTest extends React.Component {
                         </div>
                     </div>
 
-                    <div className="row margin-top-8">
-                        <div className="col col-xs-12 col-md-6 text-center">
+                    <div className="row mt-8">
+                        <div className="col-12 col-md-6 text-center">
                             <div className="info-blob">
                                 <div className="info-blob__counter">
                                     40
@@ -65,7 +65,7 @@ class TypingTest extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col col-xs-12 col-md-6">
+                        <div className="col-12 col-md-6">
                             <h2>What is an average typing speed?</h2>
                             <p>It has been estimated that an average person types around 40 words per minute.  Professional typists, though, usually are able to type around 65-70 wpm and more.</p>
 
@@ -73,9 +73,9 @@ class TypingTest extends React.Component {
                         </div>
                     </div>
 
-                    <div className="row margin-top-8">
-                        <div className="col col-xs-12 col-md-6 text-center">
-                            <div className="info-blob info-blob--yellow margin-top-2">
+                    <div className="row mt-8">
+                        <div className="col-12 col-md-6 text-center">
+                            <div className="info-blob info-blob--yellow mt-2">
                                 <div className="info-blob__counter">
                                     216
                                 </div>
@@ -84,15 +84,15 @@ class TypingTest extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col col-xs-12 col-md-6">
+                        <div className="col-12 col-md-6">
                             <h2>What is fastest typing speed?</h2>
                             <p>The world record for being the fastest typist in the world is currently held by Stella Pajunas, an ex-IBM Electric typewriter, who managed to type a whopping 216 words per minute. To put that into perspective, she typed <strong>faster than 5 average people combined</strong>.</p>
                             <p>For shorter texts there were also instances of people reaching over 270 wpm in online games.</p>
                         </div>
                     </div>
 
-                    <div className="row margin-top-8 margin-bottom-8">
-                        <div className="col col-xs-12 col-md-6 text-center">
+                    <div className="row mt-8 mb-8">
+                        <div className="col-12 col-md-6 text-center">
                             <div className="info-blob info-blob--teal">
                                 <div className="info-blob__counter">
                                     92%
@@ -102,7 +102,7 @@ class TypingTest extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col col-xs-12 col-md-6">
+                        <div className="col-12 col-md-6">
                             <h2>But... what if I make a typo?</h2>
                             <p>Worry not. An average person has around 92% typing accuracy, which suggests that a one typo is made for every 10 words typed.</p>
                             <p>It's been found, however, that making mistakes can slow down your typing speed by as much as 50%, therefore maintaining a good accuracy is a key to become the best typist.</p>
@@ -113,7 +113,7 @@ class TypingTest extends React.Component {
                 <div className="banner">
                     <div className="container">
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <div className="banner__titles">
                                     <h2 className="h1">Are you up for the challenge?</h2>
                                     <p className="text-lg">Check your typing speed and improve your results</p>

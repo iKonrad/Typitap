@@ -119,6 +119,7 @@ var config = {
             'scenes': path.join(__dirname, 'client/scenes'),
             'utils': path.join(__dirname, 'client/utils'),
             'store': path.join(__dirname, 'client/store'),
+            'node_modules': path.join(__dirname, 'node_modules'),
 
         }
     },

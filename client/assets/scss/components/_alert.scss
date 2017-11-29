@@ -32,16 +32,20 @@
     font-weight: 400;
     display: inline-block;
     max-width: 320px;
-    @media screen and (min-width: $screen-xs-min){
+
+    @include media-breakpoint-up(xs) {
       max-width: 500px;
     }
-    @media screen and (min-width: $screen-sm-min){
+
+    @include media-breakpoint-up(sm) {
       max-width: 650px;
     }
-    @media screen and (min-width: $screen-md-min){
+
+    @include media-breakpoint-up(md) {
       max-width: 800px;
     }
-    @media screen and (min-width: $screen-lg-min){
+
+    @include media-breakpoint-up(lg) {
       max-width: 1000px;
     }
 

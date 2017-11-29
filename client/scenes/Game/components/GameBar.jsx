@@ -9,7 +9,7 @@ class GameBar extends Component {
         return (
             <div className="game__bar">
                 <div className="row">
-                    <div className="col-xs-12">
+                    <div className="col">
                         <div className="pull-left">
                             <div className="game__bar__label">{ Object.keys(this.props.game.mistakes).length }</div> <i className=" game__bar__icon fa fa-bug"> </i>
                         </div>

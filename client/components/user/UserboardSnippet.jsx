@@ -17,7 +17,7 @@ class UserboardSnippet extends React.Component {
                 </div>
                 <textarea style={{ minHeight: "80px", margin: "15px 0", color: "grey", resize: "none", fontFamily: "Courier New", fontSize: "14px", fontWeight: "100" }} className="form-control" readOnly value={ this.generateCode() }></textarea>
 
-                <div className="text-muted text-small margin-bottom-2">It will display an image like below with a link to your profile:</div>
+                <div className="text-muted text-small mb-2">It will display an image like below with a link to your profile:</div>
 
                 <div>
                     <a href={`${ JsUtils.getBaseUrl() }u/${this.props.user.Username}`}>

@@ -33,7 +33,7 @@ class LanguageSwitcher extends React.Component {
         }
         return (
             <div>
-                <p><button onClick={ this.showLanguageSwitcher.bind(this) } className="btn btn-link btn-sm">Change game settings</button></p>
+                <p><button onClick={ this.showLanguageSwitcher.bind(this) } className="btn btn-link mt-2 btn-sm btn-white">Change game settings</button></p>
             </div>
         );
     }

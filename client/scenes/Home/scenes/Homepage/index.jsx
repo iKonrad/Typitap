@@ -50,10 +50,10 @@ class Homepage extends Component {
                     <div className="banner">
                         <div className="container">
                             <div className="row">
-                                <div className="col col-xs-12 text-center">
+                                <div className="col-12 text-center">
                                     <div className="row">
 
-                                        <div className="col col-xs-12 text-center banner__content">
+                                        <div className="col-12 text-center banner__content">
                                             <div className="banner__title">
                                                 <img src="/static/images/identity/typitap-logo-white@1.5x.png"
                                                      alt="Typitap.com logo"/>
@@ -64,7 +64,7 @@ class Homepage extends Component {
                                                 <Link to="/play" className="btn btn-round btn-xxl btn-success">Enter
                                                     the game</Link>
 
-                                                <div className="margin-top-4 margin-bottom-4 white">- or -</div>
+                                                <div className="mt-4 mb-4 white">- or -</div>
 
                                                 <Link to="/signup" className="btn btn-round btn-outline btn-white">Create
                                                     account</Link>
@@ -79,7 +79,7 @@ class Homepage extends Component {
                 <div className="section section--dark">
                     <div className="container">
                         <div className="row text-center">
-                            <div className="col col-xs-12 col-sm-6 col-md-3 ">
+                            <div className="col-12 col-sm-6 col-md-3 ">
                                 <div className="blob">
                                     <div className="blob__icon">
                                         <img src="/static/images/pages/homepage/icon-globe.png" alt="Icon Globe"/>
@@ -91,7 +91,7 @@ class Homepage extends Component {
                                 </div>
 
                             </div>
-                            <div className="col col-xs-12 col-sm-6 col-md-3">
+                            <div className="col-12 col-sm-6 col-md-3">
                                 <div className="blob">
                                     <div className="blob__icon">
                                         <img src="/static/images/pages/homepage/icon-trophy.png" alt="Icon Trophy"/>
@@ -101,7 +101,7 @@ class Homepage extends Component {
                                         <strong>typitap</strong> charts and show off your progress</p>
                                 </div>
                             </div>
-                            <div className="col col-xs-12 col-sm-6 col-md-3">
+                            <div className="col-12 col-sm-6 col-md-3">
                                 <div className="blob">
                                     <div className="blob__icon">
                                         <img src="/static/images/pages/homepage/icon-chart.png" alt="Icon Chart"/>
@@ -111,7 +111,7 @@ class Homepage extends Component {
                                         track on your progress and see how you perform on a long term basis</p>
                                 </div>
                             </div>
-                            <div className="col col-xs-12 col-sm-6 col-md-3">
+                            <div className="col-12 col-sm-6 col-md-3">
                                 <div className="blob">
                                     <div className="blob__icon">
                                         <img src="/static/images/pages/homepage/icon-comment.png" alt="Icon Comment"/>
@@ -126,16 +126,16 @@ class Homepage extends Component {
                 </div>
                 <div className="section section--white">
                     <div className="container">
-                        <div className="row margin-bottom-8 text-center">
+                        <div className="row mb-8 text-center">
                             <h2>What is typitap?</h2>
                             <p>Typitap is an online typing game where players from the entire world compete with each
                                 other by re-typing text from the screen. If you enjoy typing on a keyboard, and wish
                                 to <strong>improve</strong> and <strong>monitor</strong> your typing skills, typitap is
                                 for you</p>
                         </div>
-                        <div className="row margin-top-2">
-                            <div className="col col-xs-12 col-md-4">
-                                <div className="margin-top-7 margin-bottom-5">
+                        <div className="row mt-2">
+                            <div className="col-12 col-md-4">
+                                <div className="mt-7 mb-5">
                                     <h2>Compete with real people</h2>
                                     <p>Play with people from around the world and put your typing skills to the
                                         test.</p>
@@ -143,7 +143,7 @@ class Homepage extends Component {
                                         the world, or <strong>practice</strong> to prepare your skills for the race.</p>
                                 </div>
                             </div>
-                            <div className="col col-xs-12 col-md-7 col-md-offset-1 text-center">
+                            <div className="col-12 col-md-7 col-md-offset-1 text-center">
                                 <img src="/static/images/pages/homepage/feature_1.jpg" className="img-mobile-stretch"
                                      alt="Game screen"/>
                             </div>
@@ -153,8 +153,8 @@ class Homepage extends Component {
                 <div className="section section--grey">
                     <div className="container">
                         <div className="row">
-                            <div className="col col-xs-12 col-md-4">
-                                <div className="margin-top-7 margin-bottom-5">
+                            <div className="col-12 col-md-4">
+                                <div className="mt-7 mb-5">
                                     <h2>View and replay your games</h2>
                                     <p>You can browse through all your past games and replay them in real-time to see
                                         how you performed. <strong>Just click on the result badge.</strong></p>
@@ -162,7 +162,7 @@ class Homepage extends Component {
                                         typing skills</p>
                                 </div>
                             </div>
-                            <div className="col col-xs-12 col-md-7 col-md-offset-1 text-center">
+                            <div className="col-12 col-md-7 col-md-offset-1 text-center">
                                 <img src="/static/images/pages/homepage/feature_2.jpg" className="img-mobile-stretch"
                                      alt="Game screen"/>
                             </div>
@@ -172,14 +172,14 @@ class Homepage extends Component {
                 <div className="section section--white">
                     <div className="container">
                         <div className="row">
-                            <div className="col col-xs-12 col-md-4">
-                                <div className="margin-top-7 margin-bottom-5">
+                            <div className="col-12 col-md-4">
+                                <div className="mt-7 mb-5">
                                     <h2>Track your progress</h2>
                                     <p>Monitor your performance with stunning charts and see how your typing speed and accuracy improve over time.</p>
                                 </div>
                             </div>
-                            <div className="col col-xs-12 col-md-7 col-md-offset-1 text-center">
-                                <img src="/static/images/pages/homepage/feature_4.jpg" className="img-mobile-stretch margin-top-5"
+                            <div className="col-12 col-md-7 col-md-offset-1 text-center">
+                                <img src="/static/images/pages/homepage/feature_4.jpg" className="img-mobile-stretch mt-5"
                                      alt="Game screen"/>
                             </div>
                         </div>
@@ -188,8 +188,8 @@ class Homepage extends Component {
                 <div className="section section--grey">
                     <div className="container">
                         <div className="row">
-                            <div className="col col-xs-12 col-md-4">
-                                <div className="margin-top-5 margin-bottom-3">
+                            <div className="col-12 col-md-4">
+                                <div className="mt-5 mb-3">
                                     <h2>Shiny dashboard</h2>
                                     <p>On your dashboard, you can check your <strong>stats</strong>, chat with others
                                         and browse through past games.</p>
@@ -199,7 +199,7 @@ class Homepage extends Component {
                                         most recent results.</p>
                                 </div>
                             </div>
-                            <div className="col col-xs-12 col-md-7 col-md-offset-1 text-center">
+                            <div className="col-12 col-md-7 col-md-offset-1 text-center">
                                 <img src="/static/images/pages/homepage/feature_3.jpg" className="img-mobile-stretch"
                                      alt="Game screen"/>
                             </div>
@@ -209,15 +209,15 @@ class Homepage extends Component {
                 <div className="section section--light">
                     <div className="container">
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <h2>What's new?</h2>
                             </div>
-                            <div className="col col-xs-12 col-md-7 col-lg-8 margin-top-5">
+                            <div className="col-12 col-md-7 col-lg-8 mt-5">
                                 <Panel title="Recent news" bodyClass=""
                                        loaded={this.props.play.feed !== undefined}><ActivityFeed
                                     feed={this.props.play.feed}/></Panel>
                             </div>
-                            <div className="col col-xs-12 col-md-5 col-lg-4 margin-top-5">
+                            <div className="col-12 col-md-5 col-lg-4 mt-5">
                                 <img style={{position: "absolute", right: "10px", zIndex: 2, top: "-40px"}}
                                      className="no-select no-drag" src="/static/images/pages/homepage/hint_arrow.png"/>
                                 <TopChart name="month" title={`TOP 10 of ${month}`}/>
@@ -228,9 +228,9 @@ class Homepage extends Component {
                 <div className="section section--gradient">
                     <div className="container">
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <div className="row">
-                                    <div className="col-xs-12 feature-title">
+                                    <div className="col-12 feature-title">
                                         <div className="feature-title__icon">
                                             <img src="/static/images/pages/homepage/icon-trophy.png" alt=""/>
                                         </div>
@@ -242,7 +242,7 @@ class Homepage extends Component {
                                 </div>
 
                                 <div className="row">
-                                    <div className="col col-xs-12">
+                                    <div className="col">
                                         <ul className="feature-list feature-list--white">
                                             <li>Stand out from the crowd and use custom username</li>
                                             <li>Save all your game results</li>
@@ -257,7 +257,7 @@ class Homepage extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+                            <div className="col-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
                                 <Link to="/signup" className="btn btn-secondary btn-round btn-block">Sign up</Link>
                             </div>
                         </div>

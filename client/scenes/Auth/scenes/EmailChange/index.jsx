@@ -37,7 +37,7 @@ class EmailChange extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                    <div className="col-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
                         <div className="panel panel-default card-login">
                             <div className="panel-heading"><h2>E-mail change</h2></div>
                             <div className="panel-body">

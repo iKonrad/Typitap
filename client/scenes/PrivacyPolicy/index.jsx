@@ -9,7 +9,7 @@ class PrivacyPolicy extends React.Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col col-xs-12 margin-top-5">
+                    <div className="col-12 mt-5">
 
 
                         <h2 style={{textAlign: "center"}}>PRIVACY POLICY</h2>

@@ -129,7 +129,7 @@ class UserSearch extends React.Component {
             placeholder: "Search...",
             value,
             onChange: this.onChange,
-            className: `form-control ${ isLoading ? "control-loading" : "" }`,
+            className: `form-control ${ isLoading ? "form-control--loading" : "" }`,
         };
 
         return (

@@ -1,0 +1,95 @@
+$input-background-color: $brand-light-shades;
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content
+  }
+  &:-moz-placeholder {
+    @content
+  }
+  &::-moz-placeholder {
+    @content
+  }
+  &:-ms-input-placeholder {
+    @content
+  }
+}
+
+
+.form-group {
+  .form-control {
+
+    height: 50px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: $grey-400;
+    font-weight: 600;
+
+    border: none;
+
+    background: $input-background-color;
+    border-bottom: 2px solid darken($input-background-color, 15%) !important;
+
+    border-radius: 6px;
+
+    &--white {
+      background-color: white;
+    }
+
+    &--sm {
+      height: 30px;
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+
+    &--loading {
+      background-image: url('/static/images/icons/loading.gif');
+      background-size: 22px;
+      background-position:right 15px center;
+      background-repeat: no-repeat;
+    }
+
+    &:active, &:focus {
+      background-color: darken($brand-light-shades, 1%);
+    }
+
+    @include placeholder() {
+      font-size: 16px;
+      color: $gray-400;
+      font-weight: 600;
+    }
+  }
+
+  &--error {
+    .form-control {
+      border: 2px solid $brand-danger !important;
+    }
+
+    label {
+      color: $brand-danger;
+    }
+
+    .form-control-error {
+      color: $brand-danger;
+      @extend small;
+      font-weight: 600;
+    }
+
+  }
+}
+
+
+
+label {
+  margin-bottom: 2px;
+  font-weight: 600;
+  color: $gray-500;
+  font-size: 14px;
+}
+
+*:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: none!important;
+}
+

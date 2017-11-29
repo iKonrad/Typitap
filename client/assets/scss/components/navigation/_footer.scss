@@ -12,12 +12,11 @@ body {
   position:relative;
   padding-bottom: $footer-size;
 
-  @include sm {
+  @include media-breakpoint-up(sm) {
     padding-bottom: 350px;
   }
 
-
-  @include md {
+  @include media-breakpoint-up(md) {
     padding-bottom: 180px;
   }
 }
@@ -28,12 +27,11 @@ body {
   left: 0 ; right: 0; bottom: 0;
   height: $footer-size;
 
-  @include sm {
+  @include media-breakpoint-up(sm) {
     height: 350px;
   }
 
-
-  @include md {
+  @include media-breakpoint-up(md) {
     height: 180px;
   }
 

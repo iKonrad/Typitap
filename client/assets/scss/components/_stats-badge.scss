@@ -55,7 +55,8 @@
     }
   }
 
-  @media screen and (min-width: $screen-sm-min) {
+
+  @include media-breakpoint-up(sm) {
     width: 80px;
     height: 80px;
     margin: 0 5px;
@@ -74,7 +75,6 @@
       opacity: 1;
     }
   }
-
 
   &.badge-wpm {
     background-color: $brand-primary;

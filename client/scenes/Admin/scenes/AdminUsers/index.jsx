@@ -81,7 +81,7 @@ class AdminUsers extends React.Component {
             );
         } else {
             return (
-                <div className="text-center margin-top-5">
+                <div className="text-center mt-5">
                     Loading data...
                 </div>
             );

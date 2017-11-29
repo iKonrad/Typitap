@@ -176,9 +176,9 @@ class OnlineRoomPanel extends React.Component {
                     { this.renderPlayersCountBadge() }
                     <div className="fa fa-flag-checkered fa-2x"></div>
                 </div>
-                <div className="col col-xs-12">
+                <div className="col">
                     <div className="text-center white">
-                        <h3 className="white margin-top-4">Online Room</h3>
+                        <h3 className="white mt-4">Online Room</h3>
                         { this.state.language !== "EN" ? <p><strong>Language:</strong> <div className={`flag flag-${ this.state.language.toLowerCase() }`} style={{position: "relative", top: "6px", margin: "0px 3px"}}></div>{ this.state.language }</p> : "" }
                         <div style={{maxWidth: "60px", marginLeft: "auto", marginRight: "auto"}}>
                             <hr/>

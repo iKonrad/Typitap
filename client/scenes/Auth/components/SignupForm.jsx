@@ -61,7 +61,7 @@ class SignupForm extends Component {
                     </div>
                     <div className="panel-footer">
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <div className="pull-left">
                                     <Link to="/login">Log in</Link>
                                 </div>

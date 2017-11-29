@@ -1,24 +1,19 @@
-//$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+/** Main stylesheet */
 @import "colours";
 @import "variables";
-//@import "~bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 
-
-
-@import 'bootstrap';
+@import '~bootstrap/scss/bootstrap';
 
 @import 'components/chartist-variables';
 @import '~chartist/dist/scss/chartist';
 
-@import 'flatly/flatly_theme';
-
 @import "fonts";
 
 // 0. Utils
-@import 'utils/**/*.scss';
+//@import 'utils/**/*.scss';
 
 // 1. Layout
-//@import 'layout/**/*.scss';
+@import 'base/**/*.scss';
 
 // 1. Mixins
 @import 'mixins/**/*.scss';

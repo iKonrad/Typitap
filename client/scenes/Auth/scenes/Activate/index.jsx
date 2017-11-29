@@ -31,14 +31,14 @@ class Activate extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                    <div className="col-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
                         <div className="panel panel-default card-login">
                             <div className="panel-heading"><h2>Account activation</h2></div>
                             <div className="panel-body">
                                 <div className="">
                                     { response.success ? this.renderSuccessMessage() : this.renderErrorMessage() }
                                 </div>
-                                <div className="margin-top-3">
+                                <div className="mt-3">
                                     <Link to="/" className={`btn btn-link`}>Back to home</Link>
                                 </div>
 

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import * as Constants from 'utils/constants';
 import Navbar from 'components/navigation/Navbar';
 import NotificationsSystem from 'reapop';
 import theme from 'reapop-theme-wybo';
@@ -10,8 +11,6 @@ import Helmet from 'react-helmet';
 import OnlineRoomPanel from 'components/game/OnlineRoomPanel';
 
 class Base extends Component {
-
-
     constructor(props) {
         super(props);
         this.onUnload = this.disconnectWebsocket.bind(this)
@@ -23,8 +22,6 @@ class Base extends Component {
         this.state = {
             loaded: false,
         }
-
-
     }
 
     componentDidMount() {
@@ -58,7 +55,6 @@ class Base extends Component {
     }
 
     render() {
-
         let showEmptyBase = false;
         this.props.router.routes.forEach((obj) => {
             if (obj.emptyBase !== undefined && obj.emptyBase) {
@@ -75,16 +71,13 @@ class Base extends Component {
                     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
                     <meta name="description" content="Typitap is an online typing game where people can practice typing, race real people, and test and improve their typing skills while having a great fun"/>
                     <meta name="keywords" content="typing games, online typing games, typing test, online typing test, wpm, race, typing lessons, typing game, typing practice, free typing games, typing games for kids, typing skills, best typing games" />
-
                     <meta property="fb:app_id" content="1776657649242212"/>
-
                     <meta property="twitter:site" content="typitap"/>
                     <meta property="twitter:description" content="Typitap is an online typing game where people can practice typing, race real people, and test and improve their typing skills while having a great fun"/>
                     <meta name="twitter:title" content="typitap.com - online type racing"/>
                     <meta name="twitter:image" content="https://typitap.com/static/images/seo/og_image.png"/>
                     <meta name="twitter:card" content="summary_large_image"/>
                     <meta name="twitter:site" content="@typitap"/>
-
                     <meta property="og:site_name" content="typitap"/>
                     <meta property="og:locale" content="en_US"/>
                     <meta property="og:title" content="typitap.com - online typing game. Test your typing skills and race real people"/>
@@ -93,11 +86,10 @@ class Base extends Component {
                     <meta property="og:url" content="https://typitap.com"/>
                     <meta property="og:image" content="http://typitap.com/static/images/seo/og_image.png"/>
                     <meta property="og:image:secure_url" content="https://typitap.com/static/images/seo/og_image.png" />
-
                     <meta name="google-site-verification" content="EccaHwv8owB_y6gXjiAHn_3GwbEzLabBiTORkhd17TY" />
                 </Helmet>
 
-                {showEmptyBase ? "" : (<Navbar/>)}
+                {showEmptyBase ? "" : (<Navbar menu={ Constants.MENU_TREE }/>)}
 
                 <div id="react-container" className="main-content">
                     { showEmptyBase ? "" : (<AlertBar/>) }

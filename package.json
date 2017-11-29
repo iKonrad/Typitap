@@ -13,7 +13,7 @@
     "url": "git@github.com:iKonrad/Typitap.git"
   },
   "dependencies": {
-    "bootstrap-sass": "^3.3.7",
+    "bootstrap": "^4.0.0-beta.2",
     "chartist": "^0.11.0",
     "crypto-js": "^3.1.9-1",
     "expose-loader": "^0.7.1",
@@ -30,7 +30,6 @@
     "query-string": "^4.3.4",
     "react": "^15.5.4",
     "react-autosuggest": "^9.0.1",
-    "react-bootstrap": "^0.31.0",
     "react-chartist": "^0.13.0",
     "react-dom": "^15.5.4",
     "react-ga": "^2.2.0",
@@ -43,6 +42,7 @@
     "react-spinkit": "^3.0.0",
     "react-table": "^6.0.5",
     "react-timeago": "3.2.1",
+    "reactstrap": "^4.8.0",
     "reapop": "^1.1.1",
     "reapop-theme-wybo": "^0.4.1",
     "redux": "^3.6.0",

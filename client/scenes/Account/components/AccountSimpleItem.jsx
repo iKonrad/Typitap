@@ -68,14 +68,14 @@ class AccountSimpleItem extends React.Component {
                 <input type="text"
                        ref={`field-${this.props.name}`} name={this.props.name}
                        defaultValue={ this.props.user.data[this.props.name] }
-                       placeholder={`Enter new ${this.props.name}`} className="form-control control-small"/>
+                       placeholder={`Enter new ${this.props.name}`} className="form-control form-control--sm"/>
             );
         } else if (this.props.type === "textarea") {
             return (
                 <textarea type={ this.props.name === "Password" ? "password" : "text" }
                           ref={`field-${this.props.name}`} name={this.props.name}
                           defaultValue={ this.props.user.data[this.props.name] }
-                          placeholder={`Enter new ${this.props.name}`} className="form-control control-small"
+                          placeholder={`Enter new ${this.props.name}`} className="form-control form-control--sm"
                           style={{height: "50px", resize: "none", width: "100%"}}></textarea>
 
             );
@@ -84,7 +84,7 @@ class AccountSimpleItem extends React.Component {
                 <input type="password"
                        ref={`field-${this.props.name}`} name={this.props.name}
                        defaultValue={ this.props.user.data[this.props.name] }
-                       placeholder={`Enter new ${this.props.name}`} className="form-control control-small"/>
+                       placeholder={`Enter new ${this.props.name}`} className="form-control form-control--sm"/>
             );
         } else if (this.props.type === "select" && this.props.options !== undefined && this.props.options.length > 0) {
 
@@ -97,7 +97,7 @@ class AccountSimpleItem extends React.Component {
             return (
                 <select ref={`field-${this.props.name}`} defaultValue={ this.props.user.data[this.props.name] }
                         name={this.props.name} placeholder={`Select your ${this.props.name}`}
-                        className="form-control control-small">
+                        className="form-control form-control--sm">
                     { renderOptions(this.props.options) }
                 </select>
             );
@@ -161,11 +161,11 @@ class AccountSimpleItem extends React.Component {
         return (
             <div className="account__item">
                 <div className="row">
-                    <div className="col col-xs-12 col-sm-5">
+                    <div className="col-12 col-sm-5">
                         <div className="account__item__label">{ label }</div>
                         <div className="account__item__value">{ this.renderField() }</div>
                     </div>
-                    <div className="col col-xs-12 col-sm-7 text-right" style={{paddingTop: "10px"}}>
+                    <div className="col-12 col-sm-7 text-right" style={{paddingTop: "10px"}}>
                         { this.renderEditButton() }
                     </div>
                 </div>

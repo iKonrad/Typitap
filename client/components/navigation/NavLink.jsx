@@ -17,9 +17,9 @@ export default class NavLink extends PureComponent {
 
         if (this.props.type === 'button') {
             return (
-                <li className={className}>
+                <li className={`nav-item ` + className}>
                     <div className="navbar-btn">
-                        <Link {...this.props} className='btn btn-secondary btn-round'>
+                        <Link {...this.props} type={``} className='btn btn-primary' role="button">
                             {this.props.children}
                         </Link>
                     </div>
@@ -27,7 +27,7 @@ export default class NavLink extends PureComponent {
             );
         } else {
             return (
-                <li className={className}>
+                <li className={`nav-item ` + className}>
                     <Link {...this.props}>
                         {this.props.children}
                     </Link>

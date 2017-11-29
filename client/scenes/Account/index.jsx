@@ -10,8 +10,8 @@ class Account extends Component {
             <div className="account">
                 <div className="container">
                     <div className="row">
-                        <div className="col col-xs-12 col-md-3"><Sidebar /></div>
-                        <div className="col col-xs-12 col-md-9">{ this.props.children }</div>
+                        <div className="col-12 col-md-3"><Sidebar /></div>
+                        <div className="col-12 col-md-9">{ this.props.children }</div>
                     </div>
                 </div>
             </div>

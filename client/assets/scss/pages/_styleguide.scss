@@ -1,0 +1,51 @@
+.color-tile {
+  box-shadow: 0 2px 7px 1px rgba(188,188,188,0.50);
+  border-radius: 8px;
+  height: 80px;
+  display: block;
+  @include transition();
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &--primary {
+    background-color: $brand-primary;
+  }
+
+  &--secondary {
+    background-color: $brand-secondary;
+  }
+
+  &--light-shades {
+    background-color: $brand-light-shades;
+  }
+
+  &--dark-shades {
+    background-color: $brand-dark-shades;
+  }
+
+  &--light-accent {
+    background-color: $brand-light-accent;
+  }
+
+  &--dark-accent {
+    background-color: $brand-dark-accent;
+  }
+
+  &--success {
+    background-color: $brand-success;
+  }
+
+  &--danger {
+    background-color: $brand-danger;
+  }
+
+  &--info {
+    background-color: $brand-info;
+  }
+
+  &--warning {
+    background-color: $brand-warning;
+  }
+}

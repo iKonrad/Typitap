@@ -1,16 +1,5 @@
-
-/* Brand colors */
-$jet: rgba(49, 62, 80, 1);
-$red: rgba(244, 96, 54, 1);
-$yellow: rgba(231, 226, 71, 1);
-$green: #80C31C;
-$dark-grey: #303030;
-$light-grey: #EFEFEF;
-$teal: #50E3C2;
-
-
 // greens
-$turquoise-200:     #1abc9c;
+$turquoise-200: #1abc9c;
 
 $green-200: #2ecc71;
 $green-100: lighten($green-200, 15%);
@@ -19,98 +8,84 @@ $green-400: darken($green-200, 30%);
 $green-500: darken($green-200, 45%);
 
 // blues
-$blue-200:    #3498db;
-$blue-100:    lighten($blue-200, 10%);
-$blue-300:    darken($blue-200, 15%);
-$blue-400:    darken($blue-200, 30%);
-$blue-500:    darken($blue-200, 45%);
+$blue-200: #3498db;
+$blue-100: lighten($blue-200, 10%);
+$blue-300: darken($blue-200, 15%);
+$blue-400: darken($blue-200, 30%);
+$blue-500: darken($blue-200, 45%);
 
-
-$navy-300:    #34495e;
-$navy-400:    darken($navy-300, 15%);
-$navy-500:    darken($navy-300, 30%);
-
+$navy-300: #34495e;
+$navy-400: darken($navy-300, 15%);
+$navy-500: darken($navy-300, 30%);
 
 // purples
-$purple-200:      #774a8a;
-$purple-300:      darken($purple-200, 15%);
-$purple-400:      darken($purple-200, 20%);
-$purple-500:      darken($purple-200, 30%);
-
+$purple-200: #774a8a;
+$purple-300: darken($purple-200, 15%);
+$purple-400: darken($purple-200, 20%);
+$purple-500: darken($purple-200, 30%);
 
 // oranges
-$yellow-200:     #f1c40f;
-$yellow-100:     lighten($yellow-200, 10%);
-$yellow-300:     darken($yellow-200, 15%);
-$yellow-400:     darken($yellow-200, 30%);
+$yellow-200: #f1c40f;
+$yellow-100: lighten($yellow-200, 10%);
+$yellow-300: darken($yellow-200, 15%);
+$yellow-400: darken($yellow-200, 30%);
 $yellow-500: #d08c26;
-$orange-200:        #FFB718;
+$orange-200: #FFB718;
 $orange-100: lighten($orange-200, 5%);
 $orange-300: darken($orange-200, 5%);
-$orange-400:        #f39c12;
-$orange-500:       #d35400;
+$orange-400: #f39c12;
+$orange-500: #d35400;
 
 // reds
-$red-300:      #e74c3c;
-$red-400:   #c0392b;
-$red-500:   darken($red-400, 15%);
+$red-300: #e74c3c;
+$red-400: #c0392b;
+$red-500: darken($red-400, 15%);
 
 // grays
-$clouds:        #ecf0f1;
-$silver:        #bdc3c7;
-$concrete:      #95a5a6;
-$asbestos:      #7f8c8d;
+$clouds: #ecf0f1;
+$silver: #bdc3c7;
+$concrete: #95a5a6;
+$asbestos: #7f8c8d;
 
-$grey-700: darken($dark-grey, 10%);
-$grey-600: darken($dark-grey, 5%);
-$grey-500: $dark-grey;
-$grey-450: lighten($dark-grey, 15%);
-$grey-400: lighten($dark-grey, 30%);
+$gray-base: #000 !default;
+$gray-darker: lighten($gray-base, 13.5%) !default; // #222
+$gray-dark: #7b8a8b !default; // #333
+$gray: #95a5a6 !default; // #555
+$gray-light: #b4bcc2 !default; // #999
+$gray-lighter: #ecf0f1 !default; // #eee
+
+$grey-700: darken($gray-base, 10%);
+$grey-600: darken($gray-base, 5%);
+$grey-500: $gray-base;
+$grey-450: lighten($gray-base, 15%);
+$grey-400: lighten($gray-base, 30%);
 $grey-350: $asbestos;
 $grey-300: $concrete;
 $grey-200: $silver;
-$grey-150: lighten($dark-grey, 73%);
+$grey-150: lighten($gray-base, 73%);
 $grey-100: $clouds;
 $grey-050: lighten($clouds, 4%);
 $grey-030: lighten($clouds, 5%);
 
 
-$gray-base:              #000 !default;
-$gray-darker:            lighten($gray-base, 13.5%) !default; // #222
-$gray-dark:              #7b8a8b !default;   // #333
-$gray:                   #95a5a6 !default; // #555
-$gray-light:             #b4bcc2 !default;   // #999
-$gray-lighter:           #ecf0f1 !default; // #eee
-
-//$brand-primary:         #2C3E50 !default;
-//$brand-success:         #8de552 !default;
-//$brand-info:            #3498DB !default;
-//$brand-warning:         #F39C12 !default;
-//$brand-danger:          #E74C3C !default;
-
-$brand-primary:         #774a8a !default;
-$brand-secondary:       #59c3c3 !default;
-$brand-success:         #8de552 !default;
-$brand-info:            $blue-100!default;
-$brand-warning:         #F39C12 !default;
-$brand-danger:          #F45B69 !default;
+$brand-primary: #64D88A !default;
+$brand-secondary: #FB8181 !default;
+$brand-success: #A3E762 !default;
+$brand-info: #85C9DC !default;
+$brand-warning: #F5A623 !default;
+$brand-danger: #F44336 !default;
 $brand-grey: #EBEBEB;
+$brand-dark-shades: #595489 !default;
+$brand-dark-accent: #9883DE !default;
+$brand-light-shades: #F8F9F8 !default;
+$brand-light-accent: $brand-secondary;
 
-
-
-$blue-follow: #50E3C2!default;
+$blue-follow: #50E3C2 !default;
 
 $kasia-pink: #FF80AB;
 
-
-
-
-$nav-color: $purple-200;
-
-
-
-
-
+$nav-color: $brand-dark-shades;
+$backround-gradient: linear-gradient(119deg, $brand-dark-shades 0%, #605b96 100%);
 /* SOCIAL */
 $twitter: #00aced;
 $facebook: #3b5998;

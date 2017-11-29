@@ -22,13 +22,13 @@ class ProfileInfo extends Component {
 
             <div className="row">
 
-                <div className="col col-xs-12 col-sm-3 col-md-3">
+                <div className="col-12 col-sm-3 col-md-3">
                     <div className="profile-page__picture">
                         <Gravatar email={this.props.user.Email} size={120} className="img-circle"/>
                     </div>
                 </div>
 
-                <div className="col col-xs-12 col-sm-3 col-md-5 profile-page__info__details">
+                <div className="col-12 col-sm-3 col-md-5 profile-page__info__details">
                     <UserLevel level={this.props.user.Level} exp={this.props.user.Exp} next={this.props.user.NextExp}
                                levelName={this.props.user.LevelName}/>
                     <p className="profile-page__info__name">{this.props.user.Name}</p>
@@ -36,7 +36,7 @@ class ProfileInfo extends Component {
                 </div>
 
                 <div
-                    className="col col-xs-12 col-sm-3 col-sm-offset-3 col-md-3 col-md-offset-1 profile-page__info__details--right">
+                    className="col-12 col-sm-3 col-sm-offset-3 col-md-3 col-md-offset-1 profile-page__info__details--right">
                     <div style={{
                         marginBottom: "10px",
                         marginTop: "-10px"

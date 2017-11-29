@@ -37,10 +37,11 @@
       width: 100%;
       margin: 10px 0;
 
-      @media screen and (min-width: $screen-sm-min) {
+      @include media-breakpoint-up(sm) {
         width: auto;
         margin: 5px 0 0 0;
       }
+
     }
   }
 

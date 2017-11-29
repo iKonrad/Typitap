@@ -68,7 +68,7 @@ class AdminText extends React.Component {
         if (this.state.id !== "" && this.state.id !== "new") {
             if (this.props.status !== 2) {
                 buttons.push(
-                    <div className="col col-md-6">
+                    <div className="col-md-6">
                         <div className="form-group">
                             <button type="submit" className="btn btn-success btn-block" onClick={ this.handleAcceptButtonClick.bind(this) }>Accept text</button>
                         </div>
@@ -77,7 +77,7 @@ class AdminText extends React.Component {
             }
             if (this.props.status !== 0) {
                 buttons.push(
-                    <div className="col col-md-6">
+                    <div className="col-md-6">
                         <div className="form-group">
                             <button type="submit" className="btn btn-danger btn-block" onClick={ this.handleRejectButtonClick.bind(this) }>{ this.props.status === 1 ? "Reject" : "Disable" } text</button>
                         </div>
@@ -126,14 +126,14 @@ class AdminText extends React.Component {
             return (
                 <div>
                     <div className="row">
-                        <div className="col col-xs-12">
+                        <div className="col">
                             <h1><Link to="/admin/texts" className="btn btn-circle btn-outline btn-pink btn-sm"><i
                                 className="fa fa-chevron-left"></i></Link> {this.state.id === "new" ? "Add new text" : "Edit text"}
                             </h1>
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col col-md-8">
+                        <div className="col-md-8">
                             <Panel loaded={true}>
                                 <h4 className="text-bold">{this.state.id === "new" ? "" : "ID: " + this.props.adminText.data.Id}</h4>
                                 <p><strong>Status: </strong> { (() => {
@@ -183,7 +183,7 @@ class AdminText extends React.Component {
                                 { this.renderAcceptButton() }
                             </Panel>
                         </div>
-                        <div className="col col-md-4">
+                        <div className="col-md-4">
                             <Panel loaded={true}>
                                 { <TextStats text={ this.props.text } /> }
                             </Panel>
@@ -193,7 +193,7 @@ class AdminText extends React.Component {
             );
         } else {
             return (
-                <div className="text-center margin-top-5">
+                <div className="text-center mt-5">
                     <Spinner/>
                 </div>
             );

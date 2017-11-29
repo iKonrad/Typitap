@@ -70,9 +70,9 @@ class Profile extends Component {
             <div className="container profile-page">
                 <Helmet title={this.props.profile.user.Username + " game profile"} {...this.renderMetaTags()} />
                 <div className="row">
-                    <div className="col col-xs-12 col-md-8">
+                    <div className="col-12 col-md-8">
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Panel className="profile-page__info" loaded={this.props.profile.user !== undefined}>
                                     <ProfileInfo loggedIn={this.props.user.loggedIn}
                                                  user={this.props.profile.user}
@@ -82,13 +82,13 @@ class Profile extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Panel loaded={this.props.profile.stats !== undefined}><UserStats
                                     stats={this.props.profile.stats}/></Panel>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Panel
                                     title={`Comments (${ this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0 })`}
                                     loaded={true}>
@@ -102,26 +102,26 @@ class Profile extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col col-xs-12 col-md-4">
+                    <div className="col-12 col-md-4">
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Panel title="About" loaded={this.props.profile.user !== undefined}>
                                     <UserBio user={this.props.profile.user}/>
                                 </Panel>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Follow title="Followers" items={this.props.profile.follow.followers}/>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Follow title="Following" items={this.props.profile.follow.following}/>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Panel title="Recent games" loaded={this.props.profile.games !== undefined}>
                                     <RecentGames
                                         games={this.props.profile.games}

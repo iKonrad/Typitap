@@ -36,12 +36,12 @@ class UserBio extends React.Component {
     render() {
         return (
             <div>
-                <div className="col col-xs-12">
+                <div className="col">
                     <div className="row">
 
                     </div>
                 </div>
-                <div className="col col-xs-12">
+                <div className="col">
                     <div className="row">
                         { this.renderBio() }
                         { this.renderKeyboardField() }

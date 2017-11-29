@@ -53,11 +53,9 @@
       }
     }
 
-    @media screen and (min-width: $screen-sm-min) {
+    @include media-breakpoint-up(sm) {
       min-width: 500px;
     }
-
-
 
     span.word-error {
       text-decoration: underline;
@@ -89,7 +87,7 @@
       width: 60px;
       color: $grey-450;
       background: $grey-100;
-      border-radius: $border-radius-large;
+      border-radius: $border-radius-lg;
       padding: 3px 5px;
       margin: 0px 3px;
       text-align: center;
@@ -156,7 +154,7 @@
   .game__progress {
 
     &__name {
-      @include FontSourceSans();
+      @include FontNunito();
       color: $grey-400;
       &--left {
         @extend .text-muted;

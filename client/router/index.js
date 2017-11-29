@@ -9,17 +9,19 @@ import {createStore, setAsCurrentStore} from 'store/store';
 import { syncHistoryWithStore } from 'react-router-redux'
 import * as GaUtils from 'utils/gaUtils';
 
+
 // import ReactWastageMonitor from 'react-wastage-monitor';
 
 export function run() {
 
 
     require('jquery');
-    require('assets/libs/bootstrap-sass/assets/javascripts/bootstrap.js');
+    require('node_modules/bootstrap/dist/js/bootstrap.bundle.js');
 
 
     // init promise polyfill
     window.Promise = window.Promise || Promise;
+
     // init fetch polyfill
     window.self = window;
     require('whatwg-fetch');

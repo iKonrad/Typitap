@@ -42,7 +42,7 @@ class Dashboard extends Component {
     renderEmptyChartMessage() {
         return (
             <div className="row">
-                <div className="col col-xs-12 margin-top-2 text-center">
+                <div className="col-12 mt-2 text-center">
                     <div className="fa fa-frown-o fa-3x text-primary"></div>
                     <h4>No data to display</h4>
                     <p className="text-muted">You need to play for at least 3 days in a row for the chart to show</p>
@@ -100,9 +100,9 @@ class Dashboard extends Component {
         return (
             <div className="container profile-page">
                 <div className="row">
-                    <div className="col col-xs-12 col-md-8">
+                    <div className="col-12 col-md-8">
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Panel className="profile-page__info" loaded={ this.props.profile.user !== undefined && this.props.profile.stats }>
                                     <ProfileInfo user={ this.props.profile.user } stats={ this.props.profile.stats }
                                                  isDashboard={true}/>
@@ -111,33 +111,33 @@ class Dashboard extends Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Panel loaded={ this.props.profile.stats !== undefined }><UserStats
                                     stats={ this.props.profile.stats }/></Panel>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-xs-12">
+                            <div className="col">
                                 <Panel loaded={true} title="Progress Charts">
                                     { this.renderChart() }
                                 </Panel>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-xs-12">
+                            <div className="col">
                                 <Panel title="Activity feed" bodyClass="" loaded={ this.props.dashboard.feed !== undefined }><ActivityFeed
                                     feed={ this.props.dashboard.feed }/></Panel>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-xs-12">
+                            <div className="col">
                                 <Panel title="Your userboard" loaded={ this.props.user !== undefined && this.props.user.data !== undefined }>
                                     <UserboardSnippet user={ this.props.user.data } />
                                 </Panel>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-xs-12">
+                            <div className="col">
                                 <Panel title={ `Comments (${ this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0 })` } loaded={ true }>
                                     <Comments
                                         comments={ this.props.profile.comments }
@@ -149,28 +149,28 @@ class Dashboard extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col col-xs-12 col-md-4">
+                    <div className="col-12 col-md-4">
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Panel title="About" loaded={ this.props.user !== undefined && this.props.user.data !== undefined }>
                                     <UserBio user={ this.props.user.data } />
                                 </Panel>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Follow title="Followers"
                                         items={ this.props.profile.follow.followers }/>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Follow title="Following"
                                         items={ this.props.profile.follow.following }/>
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col col-xs-12">
+                            <div className="col">
                                 <Panel title="Recent games" bodyClass="" loaded={ this.props.profile.games !== undefined }><RecentGames
                                     onMore={ this.handleFetchMoreRecentGames.bind(this) }
                                     games={ this.props.profile.games }/></Panel>

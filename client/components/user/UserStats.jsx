@@ -22,7 +22,7 @@ class UserStats extends Component {
             return (
                 <div>
                     <div className="row">
-                        <div className="col col-xs-12">
+                        <div className="col">
                             <div className="pull-left">
                                 <StatsBadge key={ `user-stat-wpm` } type="wpm" label="wpm" value={ items["wpm"] }/>
                                 <StatsBadge key={ `user-stat-accuracy` } type="accuracy" label="accuracy" value={ items["accuracy"] + "%" }/>
@@ -38,7 +38,7 @@ class UserStats extends Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col col-xs-12">
+                        <div className="col">
                             <div className="text-small text-muted">
                                 These stats refresh every hour
                             </div>
