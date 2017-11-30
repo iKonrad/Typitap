@@ -1,0 +1,18 @@
+.card {
+  background: $white;
+  box-shadow: 2px 2px 0 0 rgba(196,196,196,0.50);
+  border-radius: 5px;
+  border: none;
+  margin: $grid-gutter-width 0;
+
+  &-title {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  &-subtitle {
+    font-size: 16px;
+    @extend .text-muted;
+    font-weight: 500;
+  }
+}

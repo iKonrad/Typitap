@@ -7,9 +7,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import * as AppActions from 'store/ducks/appModule';
-import * as PlayActions from './ducks/playModule';
+import * as LobbyActions from './ducks/lobbyModule';
 import TopChart from 'components/app/TopChart';
-import Panel from 'components/app/Panel';
+import Card from 'components/app/Card';
 import ActivityFeed from 'components/app/ActivityFeed';
 import {resolveAll} from 'utils/jsUtils';
 import UserSearch from 'components/app/UserSearch';
@@ -21,7 +21,7 @@ import * as GameEngine from "#app/utils/gameEngine";
 import Helmet from 'react-helmet';
 import LanguageSwitcher from './components/LanguageSwitcher'
 
-class Play extends Component {
+class Lobby extends Component {
 
     constructor(props) {
         super(props);
@@ -35,7 +35,7 @@ class Play extends Component {
     static clientInit({store, nextState, replaceState, callback}) {
         resolveAll([
             store.dispatch(AppActions.fetchChartsData()),
-            store.dispatch(PlayActions.fetchGlobalFeed())
+            store.dispatch(LobbyActions.fetchGlobalFeed())
         ], callback);
     }
 
@@ -75,7 +75,7 @@ class Play extends Component {
             );
         }
         return (
-            <button className="btn btn-primary btn-block" onClick={this.handleOnlineButton.bind(this)}>Join online
+            <button className="btn btn-secondary btn-block" onClick={this.handleOnlineButton.bind(this)}>Join online
                 race</button>
         );
     }
@@ -131,16 +131,14 @@ class Play extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-12 col-md-8">
-                            <Panel title="Search for players" loaded={true}><UserSearch/></Panel>
-                            <Panel title="Recent news" subtitle="Recently completed games and achievements" bodyClass=""
-                                   loaded={this.props.play.feed !== undefined}><ActivityFeed
-                                feed={this.props.play.feed}/></Panel>
+                            <Card title="Recent news" subtitle="Recently completed games and achievements" bodyClass=""
+                                   loaded={this.props.lobby.feed !== undefined}><ActivityFeed
+                                feed={this.props.lobby.feed}/></Card>
                         </div>
                         <div className="col-12 col-md-4">
-                            {this.renderOnlineButton()}
-                            {this.renderOfflineButton()}
+                            <UserSearch/>
                             <div className="text-center mt-2">
-                                <button type="button" className="btn btn-link"
+                                <button type="button" className="btn btn-link btn-primary"
                                         onClick={this.openTutorial.bind(this)}>How to play?
                                 </button>
                             </div>
@@ -162,7 +160,6 @@ class Play extends Component {
                                 />
                             </div>
 
-
                             <TopChart name="month" title="Best of the month"/>
                         </div>
                     </div>
@@ -170,15 +167,14 @@ class Play extends Component {
             </div>
         );
     }
-
 }
 
 const mapStateToProps = (state) => {
     return {
         user: state.user,
-        play: state.play,
+        lobby: state.lobby,
         game: state.game,
     }
 };
 
-export default connect(mapStateToProps)(Play)
+export default connect(mapStateToProps)(Lobby)

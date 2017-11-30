@@ -64,7 +64,7 @@ class StyleguideColors extends React.Component {
                 <div className="row">
                     <div className="col">
                         <div className="color-tile color-tile--success"></div>
-                        <div className="mt-4"><code>#f44336</code></div>
+                        <div className="mt-4"><code>#92D850</code></div>
                         <h5>Success</h5>
                     </div>
                     <div className="col">

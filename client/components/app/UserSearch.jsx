@@ -129,20 +129,24 @@ class UserSearch extends React.Component {
             placeholder: "Search...",
             value,
             onChange: this.onChange,
-            className: `form-control ${ isLoading ? "form-control--loading" : "" }`,
+            className: `form-control form-control--white ${ isLoading ? "form-control--loading" : "" }`,
+            id: "user-suggestions"
         };
 
         return (
             <div>
-                <Autosuggest
-                    suggestions={suggestions}
-                    onSuggestionsFetchRequested={this.loadSuggestions.bind(this)}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    onSuggestionSelected={ this.onUserSelected.bind(this) }
-                    shouldRenderSuggestions={ this.shouldRenderSuggestions }
-                    getSuggestionValue={getSuggestionValue}
-                    renderSuggestion={renderSuggestion}
-                    inputProps={inputProps}/>
+                <div className="form-group mt-4">
+                    <label htmlFor="user-suggestions">Search for players</label>
+                    <Autosuggest
+                        suggestions={suggestions}
+                        onSuggestionsFetchRequested={this.loadSuggestions.bind(this)}
+                        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                        onSuggestionSelected={ this.onUserSelected.bind(this) }
+                        shouldRenderSuggestions={ this.shouldRenderSuggestions }
+                        getSuggestionValue={getSuggestionValue}
+                        renderSuggestion={renderSuggestion}
+                        inputProps={inputProps}/>
+                </div>
             </div>
         );
     }

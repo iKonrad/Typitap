@@ -2,11 +2,10 @@ import React from 'react';
 import {Route, IndexRoute, Redirect} from 'react-router';
 import Base from 'scenes/Base';
 import Auth from "scenes/Auth";
-import Home from 'scenes/Home';
 import Logout from 'scenes/Auth/scenes/Logout';
 import Activate from 'scenes/Auth/scenes/Activate';
 import EmailChange from 'scenes/Auth/scenes/EmailChange';
-import Play from 'scenes/Play';
+import Lobby from 'scenes/Lobby';
 import GameWindow from 'scenes/Game';
 import Account from 'scenes/Account';
 import AccountDetails from 'scenes/Account/scenes/AccountDetails';
@@ -24,6 +23,7 @@ import AdminTexts from 'scenes/Admin/scenes/AdminTexts';
 import NotFound from 'scenes/Errors/NotFound';
 import SubmitText from 'scenes/SubmitText';
 import FAQ from 'scenes/Static/FAQ';
+import Dashboard from 'scenes/Dashboard';
 
 import Styleguide from 'scenes/Styleguide/Base';
 import StyleguideHome from 'scenes/Styleguide/scenes/Home';
@@ -65,7 +65,8 @@ export default ({store, first}) => {
                 <Route path="styles/colors" component={ StyleguideColors } onEnter={w(StyleguideColors.clientInit)}/>
             </Route>
             <Route path="" component={Base}>
-                <IndexRoute component={Home} onEnter={w(Home.clientInit)} />
+                <IndexRoute component={Lobby} onEnter={w(Lobby.clientInit)} />
+                <Route path="/dashboard" component={Permissions.OnlyUsers(Dashboard)} onEnter={w(Dashboard.clientInit)} />
                 <Route path="/login" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)}/>
                 <Route path="/signup" emptyBase={true} component={Permissions.OnlyAnonymous(Auth)} onEnter={w(Auth.clientInit)}/>
 
@@ -76,7 +77,7 @@ export default ({store, first}) => {
                     <Route path="keyboard" component={Permissions.OnlyUsers(AccountDetails)} onEnter={w(AccountDetails.clientInit)} />
                 </Route>
 
-                <Route path="/play" component={Play} onEnter={w(Play.clientInit)} />
+                <Route path="/play" component={Lobby} onEnter={w(Lobby.clientInit)} />
                 <Route path="/play/game" component={GameWindow} onEnter={w(GameWindow.clientInit)} />
 
                 <Route path="/about" component={About} />

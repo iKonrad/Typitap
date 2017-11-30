@@ -9,7 +9,7 @@ const Input = ({input, label, type, meta: {touched, error}}) => {
             <label className="control-label" htmlFor={input.name}>{label}</label>
 
             <input {...input} placeholder={label} className="form-control" type={type}/>
-            {touched && error && <span className="form-control-error">{error}</span>}
+            {touched && error && <span className="form-control-message">{error}</span>}
 
         </div>
     );

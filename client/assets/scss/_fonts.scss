@@ -7,3 +7,8 @@
 @mixin FontNunito() {
   font-family: Nunito, 'sans-serif';
 }
+
+@mixin FontAwesomeIcon($code) {
+  font-family: "FontAwesome" !important;
+  content: $code;
+}

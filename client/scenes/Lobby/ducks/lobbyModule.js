@@ -1,5 +1,5 @@
-export const SET_GLOBAL_FEED = "@@play/SET_GLOBAL_FEED";
-export const SHOW_LANGUAGE_SWITCHER = "@@play/SHOW_LANGUAGE_SWITCHER";
+export const SET_GLOBAL_FEED = "@@lobby/SET_GLOBAL_FEED";
+export const SHOW_LANGUAGE_SWITCHER = "@@lobby/SHOW_LANGUAGE_SWITCHER";
 
 const initialState = {
     feed: [],

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import * as PlayActions from "#app/scenes/Play/ducks/playModule";
+import * as PlayActions from "#app/scenes/Lobby/ducks/lobbyModule";
 import * as GameActions from "store/ducks/gameModule";
 
 class LanguageSwitcher extends React.Component {
@@ -19,7 +19,7 @@ class LanguageSwitcher extends React.Component {
     }
 
     render() {
-        if (this.props.play.showLanguageSwitcher) {
+        if (this.props.lobby.showLanguageSwitcher) {
             return (
                 <div className="form-group">
                     <label>Language:</label>
@@ -42,7 +42,7 @@ class LanguageSwitcher extends React.Component {
 const mapStateToProps = (state) => {
     return {
         app: state.app,
-        play: state.play,
+        lobby: state.lobby,
         game: state.game,
     };
 };

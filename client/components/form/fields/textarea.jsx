@@ -9,7 +9,7 @@ const Textarea = ({input, label, placeholder, type, meta: {touched, error}}) => 
             <label className="control-label" htmlFor={input.name}>{label}</label>
 
             <textarea {...input} placeholder={placeholder || label} className="form-control" style={{resize: "vertical", minHeight: "140px"}} />
-            {touched && error && <span className="form-control-error">{error}</span>}
+            {touched && error && <span className="form-control-message">{error}</span>}
 
         </div>
     );

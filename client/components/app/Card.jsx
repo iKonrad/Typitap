@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Spinner from 'components/app/Spinner';
 
-class Panel extends Component {
+class Card extends Component {
     constructor(props) {
         super(props);
 
@@ -20,9 +20,9 @@ class Panel extends Component {
     renderTitle() {
         if (this.props.title !== undefined) {
             return (
-                <div className="panel-heading">
-                    <h3>{ this.props.title }</h3>
-                    <p>{ this.props.subtitle !== undefined ? this.props.subtitle : "" }</p>
+                <div>
+                    <h3 className="card-title">{ this.props.title }</h3>
+                    <h6 className="card-subtitle">{ this.props.subtitle !== undefined ? this.props.subtitle : "" }</h6>
                 </div>
             )
         }
@@ -46,9 +46,9 @@ class Panel extends Component {
         );
 
         return (
-            <div className={`panel panel-default ${this.props.className !== undefined ? this.props.className : ""}`}>
-                { this.renderTitle() }
-                <div className={ this.props.bodyClass !== undefined ? this.props.bodyClass : "panel-body" }>
+            <div className={`card ${this.props.className !== undefined ? this.props.className : ""}`}>
+                <div className={ this.props.bodyClass !== undefined ? this.props.bodyClass : "card-body" }>
+                    { this.renderTitle() }
                     { this.renderSpinner() }
                     { childrenWithProps }
                 </div>
@@ -57,4 +57,4 @@ class Panel extends Component {
     }
 }
 
-export default Panel;
+export default Card;

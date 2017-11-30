@@ -6,7 +6,7 @@ import UserStats from 'components/user/UserStats';
 import RecentGames from 'components/user/RecentGames';
 import Follow from 'components/user/UserFollow';
 import {push} from 'react-router-redux';
-import Panel from 'components/app/Panel';
+import Card from 'components/app/Card';
 import UserBio from 'components/user/UserBio';
 import Comments from 'components/app/Comments';
 import Helmet from 'react-helmet';
@@ -73,23 +73,23 @@ class Profile extends Component {
                     <div className="col-12 col-md-8">
                         <div className="row">
                             <div className="col">
-                                <Panel className="profile-page__info" loaded={this.props.profile.user !== undefined}>
+                                <Card className="profile-page__info" loaded={this.props.profile.user !== undefined}>
                                     <ProfileInfo loggedIn={this.props.user.loggedIn}
                                                  user={this.props.profile.user}
                                                  stats={this.props.profile.stats}/>
-                                </Panel>
+                                </Card>
 
                             </div>
                         </div>
                         <div className="row">
                             <div className="col">
-                                <Panel loaded={this.props.profile.stats !== undefined}><UserStats
-                                    stats={this.props.profile.stats}/></Panel>
+                                <Card loaded={this.props.profile.stats !== undefined}><UserStats
+                                    stats={this.props.profile.stats}/></Card>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col">
-                                <Panel
+                                <Card
                                     title={`Comments (${ this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0 })`}
                                     loaded={true}>
                                     <Comments
@@ -98,16 +98,16 @@ class Profile extends Component {
                                         page={this.props.profile.commentsPage}
                                         onPageChange={this.turnCommentsPage.bind(this)}
                                     />
-                                </Panel>
+                                </Card>
                             </div>
                         </div>
                     </div>
                     <div className="col-12 col-md-4">
                         <div className="row">
                             <div className="col">
-                                <Panel title="About" loaded={this.props.profile.user !== undefined}>
+                                <Card title="About" loaded={this.props.profile.user !== undefined}>
                                     <UserBio user={this.props.profile.user}/>
-                                </Panel>
+                                </Card>
                             </div>
                         </div>
                         <div className="row">
@@ -122,12 +122,12 @@ class Profile extends Component {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <Panel title="Recent games" loaded={this.props.profile.games !== undefined}>
+                                <Card title="Recent games" loaded={this.props.profile.games !== undefined}>
                                     <RecentGames
                                         games={this.props.profile.games}
                                         hideButton={true}
                                     />
-                                </Panel>
+                                </Card>
                             </div>
                         </div>
                     </div>

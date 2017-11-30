@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
-import Panel from 'components/app/Panel';
+import Card from 'components/app/Card';
 import * as SubmitTextActions from "scenes/SubmitText/ducks/submitTextModule";
 import Textarea from 'components/form/fields/textarea';
 import Input from 'components/form/fields/Input';
@@ -62,7 +62,7 @@ class SubmitText extends React.Component {
 
                 <div className="row">
                     <div className="col-md-8">
-                        <Panel loaded={true}>
+                        <Card loaded={true}>
                             <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
                                 <Field id="Text" name="Text" placeholder="Enter your text here" component={Textarea} className="form-control" label="Text"/>
                                 <div className="form-group">
@@ -99,12 +99,12 @@ class SubmitText extends React.Component {
                                             className="btn btn-primary btn-block">{submitting ? "Submitting..." : "Submit"}</button>
                                 </div>
                             </form>
-                        </Panel>
+                        </Card>
                     </div>
                     <div className="col-md-4">
-                        <Panel loaded={true} title="Text stats">
+                        <Card loaded={true} title="Text stats">
                             {<TextStats text={this.props.text}/>}
-                        </Panel>
+                        </Card>
                     </div>
                 </div>
             </div>

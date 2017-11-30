@@ -9,7 +9,7 @@ import * as DashboardActions from './ducks/dashboardModule';
 import Follow from 'components/user/UserFollow';
 import * as UserActions from 'store/ducks/userModule';
 import * as ProfileActions from 'store/ducks/profileModule';
-import Panel from 'components/app/Panel';
+import Card from 'components/app/Card';
 import { resolveAll } from 'utils/jsUtils';
 import UserboardSnippet from 'components/user/UserboardSnippet';
 import Comments from 'components/app/Comments';
@@ -103,58 +103,58 @@ class Dashboard extends Component {
                     <div className="col-12 col-md-8">
                         <div className="row">
                             <div className="col">
-                                <Panel className="profile-page__info" loaded={ this.props.profile.user !== undefined && this.props.profile.stats }>
+                                <Card className="profile-page__info" loaded={ this.props.profile.user !== undefined && this.props.profile.stats }>
                                     <ProfileInfo user={ this.props.profile.user } stats={ this.props.profile.stats }
                                                  isDashboard={true}/>
-                                </Panel>
+                                </Card>
 
                             </div>
                         </div>
                         <div className="row">
                             <div className="col">
-                                <Panel loaded={ this.props.profile.stats !== undefined }><UserStats
-                                    stats={ this.props.profile.stats }/></Panel>
+                                <Card loaded={ this.props.profile.stats !== undefined }><UserStats
+                                    stats={ this.props.profile.stats }/></Card>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col">
-                                <Panel loaded={true} title="Progress Charts">
+                                <Card loaded={true} title="Progress Charts">
                                     { this.renderChart() }
-                                </Panel>
+                                </Card>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col">
-                                <Panel title="Activity feed" bodyClass="" loaded={ this.props.dashboard.feed !== undefined }><ActivityFeed
-                                    feed={ this.props.dashboard.feed }/></Panel>
+                                <Card title="Activity feed" bodyClass="" loaded={ this.props.dashboard.feed !== undefined }><ActivityFeed
+                                    feed={ this.props.dashboard.feed }/></Card>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col">
-                                <Panel title="Your userboard" loaded={ this.props.user !== undefined && this.props.user.data !== undefined }>
+                                <Card title="Your userboard" loaded={ this.props.user !== undefined && this.props.user.data !== undefined }>
                                     <UserboardSnippet user={ this.props.user.data } />
-                                </Panel>
+                                </Card>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col">
-                                <Panel title={ `Comments (${ this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0 })` } loaded={ true }>
+                                <Card title={ `Comments (${ this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0 })` } loaded={ true }>
                                     <Comments
                                         comments={ this.props.profile.comments }
                                         id={ this.props.user.data.Id }
                                         page={ this.props.profile.commentsPage }
                                         onPageChange={ this.turnCommentsPage.bind(this) }
                                     />
-                                </Panel>
+                                </Card>
                             </div>
                         </div>
                     </div>
                     <div className="col-12 col-md-4">
                         <div className="row">
                             <div className="col">
-                                <Panel title="About" loaded={ this.props.user !== undefined && this.props.user.data !== undefined }>
+                                <Card title="About" loaded={ this.props.user !== undefined && this.props.user.data !== undefined }>
                                     <UserBio user={ this.props.user.data } />
-                                </Panel>
+                                </Card>
                             </div>
                         </div>
                         <div className="row">
@@ -171,9 +171,9 @@ class Dashboard extends Component {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <Panel title="Recent games" bodyClass="" loaded={ this.props.profile.games !== undefined }><RecentGames
+                                <Card title="Recent games" bodyClass="" loaded={ this.props.profile.games !== undefined }><RecentGames
                                     onMore={ this.handleFetchMoreRecentGames.bind(this) }
-                                    games={ this.props.profile.games }/></Panel>
+                                    games={ this.props.profile.games }/></Card>
                             </div>
                         </div>
                     </div>

@@ -40,10 +40,10 @@ class StyleguideBase extends React.Component {
                 <Navbar menu={ Constants.MENU_TREE }/>
 
                 <div id="react-container" className="main-content">
-                    <div className="mt-5">
+                    <div className="mt-5 mb-5">
                         { this.props.children }
                     </div>
-
+                    <Footer/>
                 </div>
 
 

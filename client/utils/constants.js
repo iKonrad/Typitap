@@ -53,8 +53,8 @@ export const MENU_TREE = [
         ]
     },
     {
-        label: 'Play',
+        label: 'Game Lobby',
         type: 'button',
-        url: '/play',
+        url: '/',
     },
 ];

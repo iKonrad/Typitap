@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form';
 import Input from 'components/form/fields/Input';
-import Panel from 'components/app/Panel';
+import Card from 'components/app/Card';
 import * as AdminTextActions from './ducks/adminTextModule';
 import Textarea from 'components/form/fields/textarea';
 import {Link} from 'react-router';
@@ -134,7 +134,7 @@ class AdminText extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col-md-8">
-                            <Panel loaded={true}>
+                            <Card loaded={true}>
                                 <h4 className="text-bold">{this.state.id === "new" ? "" : "ID: " + this.props.adminText.data.Id}</h4>
                                 <p><strong>Status: </strong> { (() => {
                                     let statuses = [this.props.isSubmitted ? "Rejected" : "Disabled", "Submitted", "Active"];
@@ -181,12 +181,12 @@ class AdminText extends React.Component {
                                     </div>
                                 </form>
                                 { this.renderAcceptButton() }
-                            </Panel>
+                            </Card>
                         </div>
                         <div className="col-md-4">
-                            <Panel loaded={true}>
+                            <Card loaded={true}>
                                 { <TextStats text={ this.props.text } /> }
-                            </Panel>
+                            </Card>
                         </div>
                     </div>
                 </div>
