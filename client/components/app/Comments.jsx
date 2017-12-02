@@ -75,7 +75,7 @@ class Comments extends React.Component {
             return (
                 <form onSubmit={ this.props.handleSubmit(this.handleSubmitComment.bind(this)) }>
                     <Field name="text" component={ Input } type="text" label="Add comment" placeholder=""  />
-                    <button type="submit" disabled={pristine || submitting} className="btn btn-secondary btn-outline btn-block">Add comment</button>
+                    <button type="submit" disabled={pristine || submitting} className="btn btn-primary btn-block">Add comment</button>
                 </form>
             );
         }

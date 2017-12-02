@@ -1,23 +1,25 @@
 /* Sticky footer styles
 -------------------------------------------------- */
 
-$footer-size: 650px;
+$footer-size-xs: 860px;
+$footer-size-sm: 500px;
+$footer-size-md: 260px;
 
 
 
-
-html { height: 100%; }
+html {
+  min-height: 100%;
+  position: relative;
+}
 body {
-  min-height:100%;
-  position:relative;
-  padding-bottom: $footer-size;
+  margin-bottom: $footer-size-xs;
 
   @include media-breakpoint-up(sm) {
-    padding-bottom: 350px;
+    margin-bottom: $footer-size-sm;
   }
 
   @include media-breakpoint-up(md) {
-    padding-bottom: 180px;
+    margin-bottom: $footer-size-md;
   }
 }
 
@@ -25,14 +27,14 @@ body {
 .footer {
   position: absolute;
   left: 0 ; right: 0; bottom: 0;
-  height: $footer-size;
+  height: $footer-size-xs;
 
   @include media-breakpoint-up(sm) {
-    height: 350px;
+    height: $footer-size-sm;
   }
 
   @include media-breakpoint-up(md) {
-    height: 180px;
+    height: $footer-size-md;
   }
 
   background-image: linear-gradient(-180deg, #3d3d3d 0%, #1E1E1E 100%);

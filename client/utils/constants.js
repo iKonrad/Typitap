@@ -14,7 +14,7 @@ export const MENU_TREE = [
     {
         label: 'My dashboard',
         type: 'link',
-        url: '/',
+        url: '/dashboard',
         authenticated: true,
     },
     {

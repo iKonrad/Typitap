@@ -43,19 +43,6 @@
       margin-bottom: 40px;
     }
   }
-
-  .feature-title {
-    &__icon {
-      display: inline-block;
-    }
-
-    &__text {
-      position: relative;
-      top: 20px;
-      left: 20px;
-      display: inline-block;
-    }
-  }
 }
 
 @keyframes animatedBackground {

@@ -1,59 +1,59 @@
 .profile-page {
-  padding-top: 40px;
+
+  &__wrapper {
+    padding: $grid-gutter-width;
+    margin: 0 (($grid-gutter-width / 2)) 0 ($grid-gutter-width / 2);
+    background: rgba($white, 0.2);
+    border-radius: 6px;
+  }
 
   &__picture {
-    height: 120px;
+    height: 150px;
     text-align: center;
     img {
-      min-height: 120px;
+      border-radius: 50%;
+      min-height: 150px;
+      box-shadow: 0 3px 4px 0 rgba(44,41,72,0.36);
     }
   }
 
   &__info {
     @include Font();
     &__name {
-      font-size: 24px;
-      font-weight: 500;
-      margin: 5px 0 0 0;
+      margin: 10px 0 0 0;
+      color: white;
+      text-shadow: $text-shadow-lg;
     }
 
     &__username {
-      font-size: 14px;
+      font-size: 16px;
+      font-style: italic;
       margin: -5px 0 5px 0;
       font-weight: 200;
-      color: $grey-200;
+      color: $grey-100;
+      text-shadow: $text-shadow-lg;
     }
 
     &__details {
       text-align: center;
-
-
-
-      @include media-breakpoint-up(sm) {
-        text-align: left;
-        margin-left: -30px;
-      }
       @include media-breakpoint-up(md) {
         text-align: left;
-        margin-left: -20px;
-      }
-      @include media-breakpoint-up(lg) {
-        text-align: left;
-        margin-left: -25px;
       }
     }
 
     &__details--right {
       text-align: center;
       font-weight: 300;
+      color: white;
 
-      margin-top: 40px;
-      @include media-breakpoint-up(sm) {
+      @include media-breakpoint-up(md) {
         text-align: right;
       }
 
       p {
         margin-bottom: 0px;
+        font-style: italic;
+        color: rgba($white, 0.9);
       }
 
     }

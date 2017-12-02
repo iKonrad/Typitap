@@ -15,11 +15,12 @@ import {resolveAll} from 'utils/jsUtils';
 import UserSearch from 'components/app/UserSearch';
 import TutorialModal from 'components/game/TutorialModal';
 import * as gaUtils from 'utils/gaUtils';
-import { Timeline } from 'react-twitter-widgets'
 import * as SocketActions from "#app/store/ducks/socketModule";
 import * as GameEngine from "#app/utils/gameEngine";
 import Helmet from 'react-helmet';
 import LanguageSwitcher from './components/LanguageSwitcher'
+import SocialCard from 'components/app/SocialCard';
+import WhySignUpSection from 'components/sections/WhySignUpSection';
 
 class Lobby extends Component {
 
@@ -30,7 +31,6 @@ class Lobby extends Component {
             showTutorial: false,
         }
     }
-
 
     static clientInit({store, nextState, replaceState, callback}) {
         resolveAll([
@@ -46,7 +46,6 @@ class Lobby extends Component {
             this.props.dispatch(SocketActions.joinRoom(true));
         }
     }
-
 
     handleOfflineButton() {
         GameEngine.resetGame();
@@ -70,7 +69,7 @@ class Lobby extends Component {
     renderOnlineButton() {
         if (this.props.game.room !== undefined && this.props.game.room.id !== "" && this.props.game.online) {
             return (
-                <button className="btn btn-outline btn-primary btn-block"
+                <button className="btn btn-default btn-block"
                         onClick={this.handleOnlineButton.bind(this)}>Leave online room</button>
             );
         }
@@ -82,88 +81,75 @@ class Lobby extends Component {
 
     renderOfflineButton() {
         return (
-            <button type="button" className="btn btn-default btn-block"
+            <button type="button" className="btn btn-white btn-outline btn-block"
                     onClick={this.handleOfflineButton.bind(this)}>Practice alone
             </button>
         );
     }
 
 
-
     getMetaTags() {
-        return  {
+        return {
             title: "Play online race",
         }
     }
 
     render() {
-
         return (
             <div className="page-play">
-                <div className="section section--gradient">
+                <div className="section section--pattern">
                     <div className="container">
                         <div className="row">
                             <div className="col-12">
                                 <h1 className="white">Join the race</h1>
-                                <p className="white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, tempore!</p>
+                                <p className="white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut,
+                                    tempore!</p>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-12 col-sm-12 col-md-8 col-lg-6">
                                 <div className="row">
                                     <div className="col-12 col-sm-6 mt-2">
-                                        { this.renderOnlineButton() }
+                                        {this.renderOnlineButton()}
                                     </div>
                                     <div className="col-12 col-sm-6 mt-2">
-                                        { this.renderOfflineButton() }
+                                        {this.renderOfflineButton()}
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-12">
+                                    <div className="col">
                                         <LanguageSwitcher/>
+                                    </div>
+                                    <div className="col">
+                                        <button type="button" className="btn btn-link btn-sm btn-white mt-2"
+                                                onClick={this.openTutorial.bind(this)}>How to play?
+                                        </button>
+                                        <TutorialModal open={this.state.showTutorial} closeModal={this.closeTutorial.bind(this)}/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <Helmet { ...this.getMetaTags() } />
+                <Helmet {...this.getMetaTags()} />
                 <div className="container">
                     <div className="row">
-                        <div className="col-12 col-md-8">
-                            <Card title="Recent news" subtitle="Recently completed games and achievements" bodyClass=""
-                                   loaded={this.props.lobby.feed !== undefined}><ActivityFeed
+                        <div className="col-12 col-lg-8 mb-4">
+                            <Card title="Recent news" subtitle="Recently completed games and achievements"
+                                  bodyClass="card-bi"
+                                  loaded={this.props.lobby.feed !== undefined}><ActivityFeed
                                 feed={this.props.lobby.feed}/></Card>
                         </div>
-                        <div className="col-12 col-md-4">
+                        <div className="col-12 col-lg-4 mb-4">
                             <UserSearch/>
-                            <div className="text-center mt-2">
-                                <button type="button" className="btn btn-link btn-primary"
-                                        onClick={this.openTutorial.bind(this)}>How to play?
-                                </button>
-                            </div>
-
-                            <TutorialModal open={this.state.showTutorial} closeModal={this.closeTutorial.bind(this)}/>
                             <TopChart name="today" title="Best today"/>
-
-                            <div className="mt-5">
-                                <Timeline
-                                    dataSource={{
-                                        sourceType: 'profile',
-                                        screenName: 'typitap'
-                                    }}
-                                    options={{
-                                        username: 'Typitap',
-                                        height: '600'
-                                    }}
-                                    onLoad={() => {}}
-                                />
-                            </div>
+                            <SocialCard/>
 
                             <TopChart name="month" title="Best of the month"/>
                         </div>
                     </div>
                 </div>
+                { this.props.user.loggedIn ? "" : <div className="section section--pattern"><WhySignUpSection/></div>}
             </div>
         );
     }

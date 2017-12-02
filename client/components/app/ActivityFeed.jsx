@@ -36,7 +36,7 @@ class ActivityFeed extends Component {
     render() {
         return (
 
-                <div id="feed" className="feed">
+                <div className="feed">
                     { this.renderItems() }
                 </div>
         );

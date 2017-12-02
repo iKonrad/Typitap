@@ -55,7 +55,7 @@ class RecentGames extends PureComponent {
     }
 
     render() {
-        return (<div>{this.renderItems()}</div>)
+        return (<div >{this.renderItems()}</div>)
     }
 }
 

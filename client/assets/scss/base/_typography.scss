@@ -1,42 +1,82 @@
 @mixin h1 {
   @include Font();
   font-weight: 800;
-  font-size: 48px;
+  font-size: 30px;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 36px;
+  }
+
+  @include media-breakpoint-up(md) {
+    font-size: 48px;
+  }
 }
 
 @mixin h2 {
   @include Font();
   font-weight: 800;
-  font-size: 42px;
+  font-size: 28px;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 36px;
+  }
+
+  @include media-breakpoint-up(md) {
+    font-size: 42px;
+  }
 }
 
 @mixin h3 {
   @include Font();
   font-weight: 800;
-  font-size: 36px;
+  font-size: 24px;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 32px;
+  }
+
+  @include media-breakpoint-up(md) {
+    font-size: 36px;
+  }
 }
 
 @mixin h4 {
   @include Font();
   font-weight: 800;
-  font-size: 30px;
+  font-size: 24px;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 28px;
+  }
+
+  @include media-breakpoint-up(md) {
+    font-size: 30px;
+  }
 }
 
 @mixin h5 {
   @include Font();
   font-weight: 800;
-  font-size: 26px;
+  font-size: 22px;
+
+  @include media-breakpoint-up(md) {
+    font-size: 26px;
+  }
 }
 
 @mixin h6 {
   @include Font();
   font-weight: 800;
-  font-size: 20px;
+  font-size: 18px;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 20px
+  }
 }
 
 
 h1, h2, h3, h4, h5 {
-  margin: 10px 0px 10px 0px;
+  margin: 0 0 10px 0;
 }
 
 h1 {
@@ -106,8 +146,12 @@ body {
 }
 
 a {
-  color: $brand-primary;
+  color: $brand-dark-shades;
   cursor: pointer;
+
+  &:hover {
+    color: lighten($brand-dark-shades, 5%);
+  }
 }
 
 p, a, em {
@@ -124,7 +168,7 @@ p, em {
 }
 
 strong {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .text-muted {

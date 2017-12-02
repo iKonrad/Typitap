@@ -20,7 +20,7 @@ class UserStats extends Component {
         if (items !== undefined && Object.keys(items).length > 0) {
 
             return (
-                <div>
+                <div className="mt-3">
                     <div className="row">
                         <div className="col">
                             <div className="pull-left">
@@ -34,13 +34,6 @@ class UserStats extends Component {
                                             value={ items["silverTrophies"] }/>
                                 <StatsBadge key={ `user-stat-bronzeTrophies` } type="bronzeTrophies"
                                             value={ items["bronzeTrophies"] }/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col">
-                            <div className="text-small text-muted">
-                                These stats refresh every hour
                             </div>
                         </div>
                     </div>

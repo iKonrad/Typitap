@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ResultRow from "./ResultRow";
-import { Link } from 'react-router';
+import {Link} from 'react-router';
+import Card from 'components/app/Card';
 
 class TopChart extends Component {
 
@@ -15,7 +16,9 @@ class TopChart extends Component {
 
             let items = chart.Items.map((item, index) => {
                 let userNameLink = <Link to={"/u/" + item.User.Username}>#{item.User.Username}</Link>;
-                return <ResultRow perfect={ item.Accuracy === 100 } key={ 'activity-item-' + index } date={ new Date(item.Created)} name={ userNameLink } score={ item.WPM } place={ index + 1 } resultId={ item.Id } />
+                return <ResultRow perfect={item.Accuracy === 100} key={'activity-item-' + index}
+                                  date={new Date(item.Created)} name={userNameLink} score={item.WPM} place={index + 1}
+                                  resultId={item.Id}/>
             });
 
             return items;
@@ -26,14 +29,16 @@ class TopChart extends Component {
     }
 
     render() {
-
-
+        if (this.props.app.charts === undefined || this.props.app.charts[this.props.name] === undefined || this.props.app.charts[this.props.name].Items.length === 0) {
+            return <div></div>
+        }
 
         return (
-            <div className="panel panel-default">
-                <div className="panel-heading"><h3>{this.props.title}</h3></div>
-                { this.renderItems(this.props.name) }
-            </div>
+            <Card title={this.props.title} loaded={true} >
+                <div className="result-rows">
+                    {this.renderItems(this.props.name)}
+                </div>
+            </Card>
         );
     }
 }

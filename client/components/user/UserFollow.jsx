@@ -1,5 +1,6 @@
 import React from 'react';
 import Item from './UserFollowItem';
+import Card from 'components/app/Card';
 
 class UserFollow extends React.Component {
 
@@ -20,16 +21,11 @@ class UserFollow extends React.Component {
 
     render() {
         return (
-            <div className="panel panel-default">
-                <div className="panel-heading">
-                    <h3>{ this.props.title } ({ this.props.items.length })</h3>
+            <Card title={`${ this.props.title } (${ this.props.items.length })`} loaded={true}>
+                <div className="row">
+                    { this.renderItems(this.props.items) }
                 </div>
-                <div className="panel-body">
-                    <div className="row">
-                        { this.renderItems(this.props.items) }
-                    </div>
-                </div>
-            </div>
+            </Card>
         );
     }
 }

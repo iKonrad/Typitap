@@ -47,7 +47,7 @@ class Card extends Component {
 
         return (
             <div className={`card ${this.props.className !== undefined ? this.props.className : ""}`}>
-                <div className={ this.props.bodyClass !== undefined ? this.props.bodyClass : "card-body" }>
+                <div className="card-body">
                     { this.renderTitle() }
                     { this.renderSpinner() }
                     { childrenWithProps }

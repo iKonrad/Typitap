@@ -17,7 +17,7 @@ class Profile extends Component {
     static clientInit({store, nextState, replaceState, callback}) {
 
         if (store.getState().user.loggedIn && (store.getState().user.data.Username === nextState.params.user)) {
-            store.dispatch(push("/"));
+            store.dispatch(push("/dashboard"));
         } else {
             store.dispatch(ProfileActions.resetUserProfile());
             store.dispatch(ProfileActions.fetchUserProfile(nextState.params.user))

@@ -49,10 +49,10 @@ class Navbar extends PureComponent {
         return (
             <nav className="navbar bg-faded navbar-expand-md">
                 <Link className="navbar-brand" to="/">
-                    <img src="/static/images/identity/typitap-logo-white@1.25x.png" alt=""/>
+                    <img src="/static/images/identity/typitap-logo-white.png" alt=""/>
                 </Link>
                 <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                    <i className="fa fa-bars"></i>
+                    <i className="fa fa-bars text-white"></i>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarText">
                     <ul className="navbar-nav ml-auto">

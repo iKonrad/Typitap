@@ -7,7 +7,7 @@ import {resolveAll} from 'utils/jsUtils';
 import * as LobbyActions from 'scenes/Lobby/ducks/lobbyModule';
 import Card from 'components/app/Card';
 import ActivityFeed from 'components/app/ActivityFeed';
-
+import WhySignUpSection from 'components/sections/WhySignUpSection';
 
 class Homepage extends Component {
 
@@ -225,43 +225,8 @@ class Homepage extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="section section--gradient">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col">
-                                <div className="row">
-                                    <div className="col-12 feature-title">
-                                        <div className="feature-title__icon">
-                                            <img src="/static/images/pages/homepage/icon-trophy.png" alt=""/>
-                                        </div>
-                                        <div className="feature-title__text">
-                                            <h2 className="white">Create account</h2>
-                                            <h5 className="white">It's free, forever.</h5>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col">
-                                        <ul className="feature-list feature-list--white">
-                                            <li>Stand out from the crowd and use custom username</li>
-                                            <li>Save all your game results</li>
-                                            <li>View & <strong>playback</strong> all your past games</li>
-                                            <li>Follow your <strong>friends</strong> and keep an eye on their
-                                                performance
-                                            </li>
-                                            <li>Track your performance on different keyboards</li>
-                                            <li>Climb to the TOP in <strong>charts</strong> and win prizes</li>
-                                            <li>Beautiful dashboard with <strong>stats</strong> and useful data</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
-                                <Link to="/signup" className="btn btn-secondary btn-round btn-block">Sign up</Link>
-                            </div>
-                        </div>
-                    </div>
+                <div className="section section--pattern">
+                    { this.props.user.loggedIn ? "" : <div className="section section--pattern"><WhySignUpSection/></div>}
                 </div>
             </div>
         );

@@ -8,15 +8,17 @@
 .result-badge {
 
   &.badge--wpm {
-    padding: 0px 5px 15px 5px;
+    padding: 3px 5px 18px 5px;
     background: $blue-200;
     color: white;
     position: relative;
     border-radius: 6px;
+    font-size: 18px;
+    font-weight: 600;
     cursor: default;
     width: 50px;
     text-align: center;
-    @include transition();
+    display: inline-block;
 
     &:hover {
       @include scale(1.1);
@@ -29,7 +31,7 @@
       content: 'wpm';
       position: absolute;
       left: 12px;
-      bottom: 2px;
+      bottom: 4px;
       font-size: 12px;
     }
   }
@@ -78,31 +80,4 @@
       color: $yellow-100;
     }
   }
-}
-
-#HW_badge_cont {
-  width: auto!important;
-  padding: 25px 15px 45px 30px;
-  &:before {
-    content: "Updates";
-    color: white;
-    width: 150px;
-    font-size: 17px;
-    transition: all 0.5s ease;
-    padding-top: 25px;
-    padding-bottom: 25px;
-  }
-
-  &:hover {
-    background-color: darken($nav-color, 5%);
-  }
-}
-
-#HW_badge {
-  left: 10px!important;
-  top: 30px!important;
-}
-
-.outercont .innercont .logItem {
-  border-left-color: $blue-200;
 }

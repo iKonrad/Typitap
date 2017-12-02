@@ -128,12 +128,12 @@ class OnlineRoomPanel extends React.Component {
         if (!this.props.game.started && !this.props.game.countdown) {
             if (this.props.game.room !== undefined && this.props.game.room.id !== "" && this.props.game.online) {
                 return (
-                    <button className="btn btn-white btn-block"
+                    <button className="btn btn-default btn-block"
                             onClick={this.handleJoinButtonClick.bind(this)}>Leave room</button>
                 );
             }
             return (
-                <button className="btn btn-success btn-block" onClick={this.handleJoinButtonClick.bind(this)}>Join
+                <button className="btn btn-secondary btn-block" onClick={this.handleJoinButtonClick.bind(this)}>Join
                     room</button>
             );
         }
@@ -189,11 +189,31 @@ class OnlineRoomPanel extends React.Component {
                             joined
                         </div>
                     </div>
-                    {this.renderPlayers()}
-                    {this.renderJoinButton()}
-                    {this.renderCountdown()}
-                    <div className="well">
-                        <p className="white">The game will start automatically when there are at least 2 players in the room. While you're waiting, you can also browse typitap or <strong>invite your friends</strong> to play with you.</p>
+
+                    <div className="row">
+                        <div className="col">
+                            {this.renderPlayers()}
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col">
+                            {this.renderJoinButton()}
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col">
+                            {this.renderCountdown()}
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col">
+                            <div className="well">
+                                <p className="white">The game will start automatically when there are at least 2 players in the room. While you're waiting, you can also browse typitap or <strong>invite your friends</strong> to play with you.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

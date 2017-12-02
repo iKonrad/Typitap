@@ -4,7 +4,7 @@
   &__progress {
     width: 100%;
     background-color: $grey-100;
-    border-radius: 0;
+    border-radius: 2px;
     height: 5px;
     margin-bottom: 6px;
     .progress-bar {
@@ -26,21 +26,24 @@
 
   &__name {
     display: inline-block;
-    font-size: 18px;
+    font-size: 16px;
     position: relative;
     top: 3px;
+    color: $brand-light-shades;
+    text-shadow: $text-shadow-lg;
     span {
       font-weight: 700;
     }
   }
 
   &__points {
-    color: $teal;
+    color: $brand-light-shades;
     display: inline-block;
     position: relative;
     top: 3px;
     font-size: 18px;
     margin-left: 5px;
+
   }
 
 }

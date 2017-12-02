@@ -43,7 +43,7 @@ class UserLevel extends React.Component {
 
         if (this.state.exp !== undefined && this.state.next !== undefined) {
             return (
-                <div className="user-level__progress">
+                <div className="user-level__progress progress">
                     <div
                         className="progress-bar"
                         role="progressbar"

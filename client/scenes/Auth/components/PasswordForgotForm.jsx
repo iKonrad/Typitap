@@ -5,6 +5,7 @@ import Input from 'components/form/fields/Input';
 import { Link } from 'react-router';
 import Notifications from 'utils/notifications';
 import Helmet from 'react-helmet';
+import Card from 'components/app/Card';
 
 class PasswordForgotForm extends Component {
 
@@ -20,30 +21,30 @@ class PasswordForgotForm extends Component {
         const { handleSubmit, pristine, reset, submitting } = this.props;
         return (
             <div className="">
-                <Helmet title="Forgot password" />
-                <div className="panel panel-default card-login">
-                    <div className="panel-heading">
-                        <h3>Forgot password</h3>
-                    </div>
-                    <div className="panel-body">
-                        <p>Provide your e-mail address and we'll send you a link to reset your password</p>
+                <Card loaded={true}>
+                    <Helmet title="Forgot password" />
+                    <div className="card-login">
+                        <h3 className="card-title">Forgot password</h3>
+                        <h5 className="card-subtitle mb-3">Provide your e-mail address and we'll send you a link to reset your password</h5>
                         <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
                             <Field name="email" component={ Input } type="email" label="E-mail"/>
-                            <div className="form-group">
-                                <button type="submit" disabled={pristine || submitting} className="btn btn-primary btn-block">Reset Password</button>
+                            <div className="form-group row">
+                                <div className="col">
+                                    <button type="submit" disabled={pristine || submitting} className="btn btn-primary btn-block">Reset Password</button>
+                                </div>
                             </div>
                         </form>
                     </div>
-                    <div className="panel-footer">
-                        <div className="row">
-                            <div className="col">
-                                <div className="pull-left">
-                                    <Link to="/login">Log in</Link>
-                                </div>
-                                <div className="pull-right">
-                                    <Link to="/signup">Create account</Link>
-                                </div>
-                            </div>
+                </Card>
+                <div className="row auth__links">
+                    <div className="col">
+                        <div className="text-left">
+                            <Link className="btn btn-link btn-white btn-primary btn-block" to="/login">Log in</Link>
+                        </div>
+                    </div>
+                    <div className="col">
+                        <div className="text-right">
+                            <Link className="btn btn-link btn-white btn-primary btn-block" to="/signup">Create account</Link>
                         </div>
                     </div>
                 </div>

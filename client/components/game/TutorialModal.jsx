@@ -13,7 +13,7 @@ class TutorialModal extends React.Component {
 
     render() {
         return (
-            <div>modal</div>
+            <div></div>
         );
     }
 
