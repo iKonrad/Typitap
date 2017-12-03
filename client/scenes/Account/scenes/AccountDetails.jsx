@@ -12,8 +12,8 @@ class Details extends React.Component {
     render() {
         return (
             <div className="details-page">
-                <div className="panel panel-default">
-                    <div className="panel-body">
+                <div className="card">
+                    <div className="card-body">
                         <SimpleItem name="Name" />
                         <SimpleItem name="Email" />
                         <SimpleItem name="Password" type="password"/>

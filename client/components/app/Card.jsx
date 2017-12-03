@@ -17,6 +17,14 @@ class Card extends Component {
         this.setState(state);
     }
 
+    componentWillReceiveProps(newProps) {
+        if (newProps.loaded !== undefined && newProps.loaded !== this.props.loaded) {
+            let state = this.state;
+            state.loaded = newProps.loaded;
+            this.setState(state);
+        }
+    }
+
     renderTitle() {
         if (this.props.title !== undefined) {
             return (
@@ -29,9 +37,9 @@ class Card extends Component {
         return "";
     }
 
-    renderSpinner() {
+    renderContent(content) {
         if (this.state.loaded) {
-            return "";
+            return content;
         } else {
             return <Spinner />;
         }
@@ -49,8 +57,7 @@ class Card extends Component {
             <div className={`card ${this.props.className !== undefined ? this.props.className : ""}`}>
                 <div className="card-body">
                     { this.renderTitle() }
-                    { this.renderSpinner() }
-                    { childrenWithProps }
+                    { this.renderContent(childrenWithProps) }
                 </div>
             </div>
         );

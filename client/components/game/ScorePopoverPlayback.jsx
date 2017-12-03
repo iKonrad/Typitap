@@ -47,9 +47,6 @@ class ScorePopoverPlayback extends React.Component {
     }
 
     togglePlayback() {
-
-
-
         if (this.state.playback.length === 0 && !this.state.loading) {
             let state = this.state;
             state.loading = true;
@@ -66,7 +63,6 @@ class ScorePopoverPlayback extends React.Component {
                 this.start();
             }
         }
-
     }
 
     fetchPlaybackData() {

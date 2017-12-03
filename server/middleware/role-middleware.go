@@ -42,7 +42,7 @@ func CheckRoleHandler(next echo.HandlerFunc) echo.HandlerFunc {
 
 				if loggedIn.(bool) {
 					if user.Username == username {
-						return c.Redirect(http.StatusMovedPermanently, "/")
+						return c.Redirect(http.StatusMovedPermanently, "/dashboard")
 					}
 				}
 			}

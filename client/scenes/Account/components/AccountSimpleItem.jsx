@@ -21,12 +21,13 @@ class AccountSimpleItem extends React.Component {
             return (
                 <div>
                     <form onSubmit={this.handleSubmit.bind(this)}>
-                        <div className="input-group">
-                            { this.renderInput() }
-                            <span className="input-group-btn">
-                            <button type="submit"
-                                    className={`btn btn-primary btn-${this.props.type !== undefined && this.props.type === "textarea" ? "lg" : "sm"}`}>Save</button>
-                        </span>
+                        <div className="form-group">
+                            <div className="input-group">
+                                { this.renderInput() }
+                                <span className="input-group-btn">
+                                <button type="submit" className={`btn btn-primary btn-${this.props.type !== undefined && this.props.type === "textarea" ? "lg" : "sm"}`}>Save</button>
+                            </span>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -68,7 +69,7 @@ class AccountSimpleItem extends React.Component {
                 <input type="text"
                        ref={`field-${this.props.name}`} name={this.props.name}
                        defaultValue={ this.props.user.data[this.props.name] }
-                       placeholder={`Enter new ${this.props.name}`} className="form-control form-control--sm"/>
+                       placeholder={`Enter new ${this.props.name}`} className="form-control"/>
             );
         } else if (this.props.type === "textarea") {
             return (
@@ -84,7 +85,7 @@ class AccountSimpleItem extends React.Component {
                 <input type="password"
                        ref={`field-${this.props.name}`} name={this.props.name}
                        defaultValue={ this.props.user.data[this.props.name] }
-                       placeholder={`Enter new ${this.props.name}`} className="form-control form-control--sm"/>
+                       placeholder={`Enter new ${this.props.name}`} className="form-control"/>
             );
         } else if (this.props.type === "select" && this.props.options !== undefined && this.props.options.length > 0) {
 
@@ -133,7 +134,7 @@ class AccountSimpleItem extends React.Component {
         if (this.props.account.details[this.props.name].open) {
             return "";
         } else {
-            return (<button className=" account__item__button btn btn-primary btn-sm btn-outline"
+            return (<button className=" account__item__button btn btn-primary btn-xs btn-outline"
                             onClick={ this.toggleButton.bind(this) }>{ this.props.name !== "Password" ? "Edit" : "Change Password" }</button>);
         }
     }
@@ -166,7 +167,7 @@ class AccountSimpleItem extends React.Component {
                         <div className="account__item__value">{ this.renderField() }</div>
                     </div>
                     <div className="col-12 col-sm-7 text-right" style={{paddingTop: "10px"}}>
-                        { this.renderEditButton() }
+                            { this.renderEditButton() }
                     </div>
                 </div>
             </div>

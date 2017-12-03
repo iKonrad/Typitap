@@ -51,7 +51,7 @@ $check-size: 25px;
     color: $grey-400;
     font-weight: 600;
     position: relative;
-    border: none;
+    border: 2px solid transparent;
     webkit-appearance:none;
     -moz-appearance:none;
     appearance:none;
@@ -92,7 +92,7 @@ $check-size: 25px;
   }
 
   select.form-control {
-    height: 50px!important;
+    height: 50px !important;
   }
 
   &--error {

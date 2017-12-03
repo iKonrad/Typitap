@@ -20,7 +20,7 @@ class GameWindow extends Component {
         return (
             <div className="container" style={{marginTop: "40px"}}>
                 <div className="row">
-                    <div className="col-12 col-md-8 col-md-offset-2" >
+                    <div className="col-12 col-md-8 mx-auto mb-5" >
                         <Game online={ this.props.game.online } />
                     </div>
                 </div>

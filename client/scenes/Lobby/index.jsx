@@ -13,7 +13,6 @@ import Card from 'components/app/Card';
 import ActivityFeed from 'components/app/ActivityFeed';
 import {resolveAll} from 'utils/jsUtils';
 import UserSearch from 'components/app/UserSearch';
-import TutorialModal from 'components/game/TutorialModal';
 import * as gaUtils from 'utils/gaUtils';
 import * as SocketActions from "#app/store/ducks/socketModule";
 import * as GameEngine from "#app/utils/gameEngine";
@@ -119,12 +118,6 @@ class Lobby extends Component {
                                 <div className="row">
                                     <div className="col">
                                         <LanguageSwitcher/>
-                                    </div>
-                                    <div className="col">
-                                        <button type="button" className="btn btn-link btn-sm btn-white mt-2"
-                                                onClick={this.openTutorial.bind(this)}>How to play?
-                                        </button>
-                                        <TutorialModal open={this.state.showTutorial} closeModal={this.closeTutorial.bind(this)}/>
                                     </div>
                                 </div>
                             </div>

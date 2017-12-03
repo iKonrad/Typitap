@@ -30,8 +30,8 @@ class Game extends Component {
         return (
             <div id="game" className="game">
                 <GamePlayerList/>
-                <div className="panel panel-default">
-                    <div className="panel-body">
+                <div className="card">
+                    <div className="card-body">
                         <GameBar/>
                         {this.renderMain()}
                     </div>

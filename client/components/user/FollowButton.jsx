@@ -29,9 +29,9 @@ class FollowButton extends React.Component {
                     let state = this.state;
                     if (!this.state.following) {
                         state.following = true;
-                        state.blocked = true;
+                        // We'll disable blocking the follow button until it's misused
+                        // state.blocked = true;
                         FollowUtils.followUser();
-
                     } else {
                         state.following = false;
                         FollowUtils.unfollowUser();
@@ -49,7 +49,7 @@ class FollowButton extends React.Component {
                 <div>
                     <button
                         onClick={ this.handleFollow.bind(this) }
-                        className={`btn btn-follow btn-xs ${ this.state.following ? "btn-follow--following" : "" }`}
+                        className={`btn btn-xs ${ this.state.following ? "btn-white btn-outline" : "btn-secondary" }`}
                     >
                         <i className="fa fa-thumbs-o-up"></i>
                         { this.state.following ? 'following' : 'follow' }

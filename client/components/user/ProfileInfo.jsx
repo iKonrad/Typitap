@@ -12,15 +12,19 @@ class ProfileInfo extends Component {
     }
 
     renderAnonMessage() {
-        return <p><Link to="/login">Log in</Link> to follow</p>;
+
+        // debugger;
+        let query = {};
+        if (typeof window !== "undefined" && window.location !== undefined) {
+            query.redirect = window.location.pathname;
+        }
+
+        return <p><Link to={{pathname: `/login`, query}} className="text-white">Log in</Link> to follow</p>;
     }
 
 
     render() {
-
         return (
-
-
                 <div className="section section--pattern">
                     <div className="container">
                         <div className="row">
@@ -34,7 +38,7 @@ class ProfileInfo extends Component {
                                     <div className="col-12 col-md-9 col-lg-6 profile-page__info__details">
                                         <h3 className="profile-page__info__name">{this.props.user.Name}</h3>
                                         <p className="profile-page__info__username">#{this.props.user.Username}</p>
-                                        <UserLevel level={this.props.user.Level} exp={this.props.user.Exp} next={this.props.user.NextExp}
+                                        <UserLevel light={true} level={this.props.user.Level} exp={this.props.user.Exp} next={this.props.user.NextExp}
                                                    levelName={this.props.user.LevelName}/>
                                     </div>
                                     <div className="col-12 col-lg-3 col-md-offset-1 profile-page__info__details--right">
@@ -42,7 +46,7 @@ class ProfileInfo extends Component {
                                             marginBottom: "10px",
                                             marginTop: "-10px"
                                         }}>{this.props.loggedIn || this.props.isDashboard ? this.renderButton() : this.renderAnonMessage()}</div>
-                                        <p>Joined: <TimeAgo date={this.props.user.Created}/></p>
+                                        <p>Joined: { this.props.user.Created !== undefined && this.props.user.Created !== "" ? <TimeAgo date={this.props.user.Created}/> : "" }</p>
                                         <p><strong>{this.props.stats !== undefined ? this.props.stats.gamesPlayed : "-"} </strong>
                                             games played</p>
                                     </div>

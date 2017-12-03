@@ -78,7 +78,7 @@ class PlayerList extends Component {
                 <div className="" key="progress-player">
                     <div className="game__progress__name"><strong>{ this.props.socket.identifier }</strong> (you)</div>
                     <div className="progress">
-                        <div className="progress-bar progress-bar-success" role="progressbar" aria-valuenow={ current } aria-valuemin="0" aria-valuemax={ words } style={{ 'width': ((current / words) * 100) + '%' }}>
+                        <div className="progress-bar progress-bar--blue" role="progressbar" aria-valuenow={ current } aria-valuemin="0" aria-valuemax={ words } style={{ 'width': ((current / words) * 100) + '%' }}>
                         </div>
                     </div>
                     { this.renderPlace(place) }

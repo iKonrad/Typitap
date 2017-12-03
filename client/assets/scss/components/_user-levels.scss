@@ -29,21 +29,33 @@
     font-size: 16px;
     position: relative;
     top: 3px;
-    color: $brand-light-shades;
-    text-shadow: $text-shadow-lg;
+    color: $brand-dark-shades;
     span {
       font-weight: 700;
     }
   }
 
   &__points {
-    color: $brand-light-shades;
     display: inline-block;
     position: relative;
-    top: 3px;
-    font-size: 18px;
+    top: 1px;
+    font-size: 12px;
     margin-left: 5px;
+    padding: 5px;
+    @extend .badge;
+    background-color: $brand-secondary;
+    color: white;
+  }
 
+  &--light {
+    .user-level__name {
+      color: $brand-light-shades;
+      text-shadow: $text-shadow-lg;
+    }
+
+    .user-level__points {
+      color: $brand-light-shades;
+    }
   }
 
 }

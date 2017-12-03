@@ -54,9 +54,6 @@ $button-xs-padding: 2px 5px 1px 5px;
       background-color: $color;
       color: white;
     }
-    &:focus, &:active {
-      color: white;
-    }
 
     &:active {
       transform: translateY(0);
@@ -87,6 +84,14 @@ $button-xs-padding: 2px 5px 1px 5px;
   border-left: 2px solid transparent;
   border-top: 2px solid transparent;
 
+
+  &:not(.btn-circle) {
+    i.fa {
+      margin-right: 15px;
+    }
+  }
+
+
   &:focus {
     outline: none;
   }
@@ -109,11 +114,23 @@ $button-xs-padding: 2px 5px 1px 5px;
   &.btn-sm {
     padding: $button-sm-padding;
     position: relative;
+
+    &:not(.btn-circle) {
+      i.fa {
+        margin-right: 10px;
+      }
+    }
   }
 
   &.btn-xs {
     padding: $button-xs-padding;
     font-size: 12px;
+
+    &:not(.btn-circle) {
+      i.fa {
+        margin-right: 5px;
+      }
+    }
   }
 
   &.btn-xxl {

@@ -15,7 +15,6 @@ import * as jsUtils from 'utils/jsUtils';
 class Profile extends Component {
 
     static clientInit({store, nextState, replaceState, callback}) {
-
         if (store.getState().user.loggedIn && (store.getState().user.data.Username === nextState.params.user)) {
             store.dispatch(push("/dashboard"));
         } else {
@@ -67,28 +66,19 @@ class Profile extends Component {
 
     render() {
         return (
-            <div className="container profile-page">
+            <div className="profile-page">
+                <ProfileInfo loggedIn={this.props.user.loggedIn}
+                             user={this.props.profile.user}
+                             stats={this.props.profile.stats}/>
                 <Helmet title={this.props.profile.user.Username + " game profile"} {...this.renderMetaTags()} />
-                <div className="row">
-                    <div className="col-12 col-md-8">
-                        <div className="row">
-                            <div className="col">
-                                <Card className="profile-page__info" loaded={this.props.profile.user !== undefined}>
-                                    <ProfileInfo loggedIn={this.props.user.loggedIn}
-                                                 user={this.props.profile.user}
-                                                 stats={this.props.profile.stats}/>
-                                </Card>
 
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <Card loaded={this.props.profile.stats !== undefined}><UserStats
-                                    stats={this.props.profile.stats}/></Card>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12 col-md-8">
+                                <Card title="Stats" subtitle="These stats refresh every hour"
+                                      loaded={this.props.profile.stats !== undefined && this.props.profile.stats !== null}>
+                                    <UserStats stats={this.props.profile.stats}/>
+                                </Card>
                                 <Card
                                     title={`Comments (${ this.props.profile.comments !== undefined ? this.props.profile.comments.length : 0 })`}
                                     loaded={true}>
@@ -99,36 +89,21 @@ class Profile extends Component {
                                         onPageChange={this.turnCommentsPage.bind(this)}
                                     />
                                 </Card>
-                            </div>
                         </div>
-                    </div>
-                    <div className="col-12 col-md-4">
-                        <div className="row">
-                            <div className="col">
-                                <Card title="About" loaded={this.props.profile.user !== undefined}>
-                                    <UserBio user={this.props.profile.user}/>
-                                </Card>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <Follow title="Followers" items={this.props.profile.follow.followers}/>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <Follow title="Following" items={this.props.profile.follow.following}/>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <Card title="Recent games" loaded={this.props.profile.games !== undefined}>
-                                    <RecentGames
-                                        games={this.props.profile.games}
-                                        hideButton={true}
-                                    />
-                                </Card>
-                            </div>
+                        <div className="col-12 col-md-4">
+                            <Card title="Recent games" loaded={this.props.profile.games !== undefined}>
+                                <div className="result-rows">
+                                    <RecentGames games={this.props.profile.games} hideButton={true} />
+                                </div>
+                            </Card>
+
+                            <Card title="About" loaded={this.props.profile.user !== undefined}>
+                                <UserBio user={this.props.profile.user}/>
+                            </Card>
+
+                            <Follow title="Followers" items={this.props.profile.follow.followers}/>
+
+                            <Follow title="Following" items={this.props.profile.follow.following}/>
                         </div>
                     </div>
                 </div>
