@@ -101,7 +101,7 @@ var config = {
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader?mimetype=application/octet-stream"},
             {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader"},
         ],
-        noParse: /\/node_modules\/reactstrap-tether\/dist\/tether.js/,
+        noParse: path.join(__dirname, 'node_modules/reactstrap-tether/dist/js/tether.js'),
     },
     resolve: {
         extensions: ['', '.js', '.jsx', '.css'],
