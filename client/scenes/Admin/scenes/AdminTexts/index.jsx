@@ -112,6 +112,7 @@ class AdminTexts extends React.Component {
     render() {
         return (
             <div>
+                <h1>Texts</h1>
                 <div className="row">
                     <div className="col-12 mb-2">
                         <Link to="/admin/texts/new" className="btn btn-circle btn-pink"><i className="fa fa-plus text-white white"></i></Link>

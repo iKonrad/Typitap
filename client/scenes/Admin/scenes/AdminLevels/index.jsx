@@ -79,6 +79,7 @@ class AdminLevels extends React.Component {
     render() {
         return (
             <div>
+                <h1>Levels</h1>
                 { this.renderTable() }
             </div>
         )
