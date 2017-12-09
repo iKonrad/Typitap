@@ -14,6 +14,10 @@ import (
 const TEXT_MIN_LENGTH = 160
 const TEXT_MAX_LENGTH = 240
 
+const STATUS_DISABLED = 0
+const STATUS_SUBMITTED = 1
+const STATUS_ACTIVE = 2
+
 func GetText(textId string) (entities.GameText, bool) {
 	resp, err := r.Table("game_texts").Get(textId).Merge(func(p r.Term) interface{} {
 		return map[string]interface{}{

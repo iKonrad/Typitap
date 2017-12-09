@@ -77,7 +77,7 @@ export default ({store, first}) => {
                     <Route path="keyboard" component={Permissions.OnlyUsers(AccountDetails)} onEnter={w(AccountDetails.clientInit)} />
                 </Route>
 
-                <Route path="/play" component={Lobby} onEnter={w(Lobby.clientInit)} />
+                <Route path="/" component={Lobby} onEnter={w(Lobby.clientInit)} />
                 <Route path="/play/game" component={GameWindow} onEnter={w(GameWindow.clientInit)} />
 
                 <Route path="/about" component={About} />

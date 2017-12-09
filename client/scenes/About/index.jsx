@@ -25,6 +25,13 @@ class Homepage extends Component {
         ], callback)
     }
 
+    static serverInit(response, params, store) {
+        return [
+            store.dispatch(AppActions.fetchChartsData()),
+            store.dispatch(LobbyActions.fetchGlobalFeed()),
+        ]
+    }
+
     componentDidMount() {
         let state = this.state;
         state.loaded = true;
@@ -46,37 +53,56 @@ class Homepage extends Component {
 
         return (
             <div id="homepage">
-                <div className="banner-wrapper">
-                    <div className="banner">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-12 text-center">
-                                    <div className="row">
-
-                                        <div className="col-12 text-center banner__content">
-                                            <div className="banner__title">
-                                                <img src="/static/images/identity/typitap-logo-white@1.5x.png"
-                                                     alt="Typitap.com logo"/>
-                                                <h1 style={{fontSize: "28px"}}>Ultimate online typing game</h1>
-                                            </div>
-                                            <div className="banner__buttons">
-
-                                                <Link to="/" className="btn btn-round btn-xxl btn-success">Enter
-                                                    the game</Link>
-
-                                                <div className="mt-4 mb-4 white">- or -</div>
-
-                                                <Link to="/signup" className="btn btn-round btn-outline btn-white">Create
-                                                    account</Link>
-                                            </div>
-                                        </div>
-                                    </div>
+                <div className="section section--pattern">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col">
+                                <div className="text-center">
+                                    <h1 className="white">Ultimate online typing game</h1>
+                                    <p className="white">Do you think you can type fast enough?</p>
                                 </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-xs-12 col-sm-8 col-md-4 mx-auto col-lg-3 mt-3">
+                                <a href="/" className="btn btn-block btn-secondary">Play the game</a>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-xs-12 col-sm-8 col-md-4 mx-auto col-lg-3 mt-3">
+                                <a href="/" className="btn btn-block btn-secondary btn-link btn-white">Create account</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="section section--dark">
+                <div className="container">
+                    <div className="section">
+
+                        <div className="row">
+                            <div className="col">
+                                <div className="text-center">
+                                    <h2>What is typitap?</h2>
+                                    <p>Typitap is an online typing game where players from the entire world compete with each other by re-typing text from the screen. If you enjoy typing on a keyboard, and wish to improve and monitor your typing skills, typitap is the game for you.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="row">
+                            <div className="col mx-auto">
+                                <div className="text-center mt-3">
+                                    <img src="/static/images/pages/about/demo.gif" className="img-fluid" alt=""/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col col-sm-8 col-md-4 col-lg-3 mx-auto">
+                                <Link to="/" className="btn btn-secondary btn-block">Join the game</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="section section--gradient">
                     <div className="container">
                         <div className="row text-center">
                             <div className="col-12 col-sm-6 col-md-3 ">
@@ -124,100 +150,20 @@ class Homepage extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="section section--white">
-                    <div className="container">
-                        <div className="row mb-8 text-center">
-                            <h2>What is typitap?</h2>
-                            <p>Typitap is an online typing game where players from the entire world compete with each
-                                other by re-typing text from the screen. If you enjoy typing on a keyboard, and wish
-                                to <strong>improve</strong> and <strong>monitor</strong> your typing skills, typitap is
-                                for you</p>
-                        </div>
-                        <div className="row mt-2">
-                            <div className="col-12 col-md-4">
-                                <div className="mt-7 mb-5">
-                                    <h2>Compete with real people</h2>
-                                    <p>Play with people from around the world and put your typing skills to the
-                                        test.</p>
-                                    <p>You can choose to play in <strong>online mode</strong> with people from around
-                                        the world, or <strong>practice</strong> to prepare your skills for the race.</p>
-                                </div>
-                            </div>
-                            <div className="col-12 col-md-7 col-md-offset-1 text-center">
-                                <img src="/static/images/pages/homepage/feature_1.jpg" className="img-mobile-stretch"
-                                     alt="Game screen"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="section section--grey">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-12 col-md-4">
-                                <div className="mt-7 mb-5">
-                                    <h2>View and replay your games</h2>
-                                    <p>You can browse through all your past games and replay them in real-time to see
-                                        how you performed. <strong>Just click on the result badge.</strong></p>
-                                    <p>Compare your speed with the best in typitap and find out how to improve your
-                                        typing skills</p>
-                                </div>
-                            </div>
-                            <div className="col-12 col-md-7 col-md-offset-1 text-center">
-                                <img src="/static/images/pages/homepage/feature_2.jpg" className="img-mobile-stretch"
-                                     alt="Game screen"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="section section--white">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-12 col-md-4">
-                                <div className="mt-7 mb-5">
-                                    <h2>Track your progress</h2>
-                                    <p>Monitor your performance with stunning charts and see how your typing speed and accuracy improve over time.</p>
-                                </div>
-                            </div>
-                            <div className="col-12 col-md-7 col-md-offset-1 text-center">
-                                <img src="/static/images/pages/homepage/feature_4.jpg" className="img-mobile-stretch mt-5"
-                                     alt="Game screen"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="section section--grey">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-12 col-md-4">
-                                <div className="mt-5 mb-3">
-                                    <h2>Shiny dashboard</h2>
-                                    <p>On your dashboard, you can check your <strong>stats</strong>, chat with others
-                                        and browse through past games.</p>
-                                    <p>Moreover, with our advanced <strong>leveling system</strong>, getting yourself
-                                        motivated has never been easier.</p>
-                                    <p>You can also <strong>follow your friends</strong> and stay up to date with their
-                                        most recent results.</p>
-                                </div>
-                            </div>
-                            <div className="col-12 col-md-7 col-md-offset-1 text-center">
-                                <img src="/static/images/pages/homepage/feature_3.jpg" className="img-mobile-stretch"
-                                     alt="Game screen"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div className="section section--light">
                     <div className="container">
                         <div className="row">
                             <div className="col">
                                 <h2>What's new?</h2>
                             </div>
-                            <div className="col-12 col-md-7 col-lg-8 mt-5">
+                        </div>
+                        <div className="row">
+                            <div className="col-12 col-lg-8 mt-5">
                                 <Card title="Recent news" bodyClass=""
                                        loaded={this.props.lobby.feed !== undefined}><ActivityFeed
                                     feed={this.props.lobby.feed}/></Card>
                             </div>
-                            <div className="col-12 col-md-5 col-lg-4 mt-5">
+                            <div className="col-12 col-lg-4 mt-5">
                                 <img style={{position: "absolute", right: "10px", zIndex: 2, top: "-40px"}}
                                      className="no-select no-drag" src="/static/images/pages/homepage/hint_arrow.png"/>
                                 <TopChart name="month" title={`TOP 10 of ${month}`}/>
@@ -226,7 +172,7 @@ class Homepage extends Component {
                     </div>
                 </div>
                 <div className="section section--pattern">
-                    { this.props.user.loggedIn ? "" : <div className="section section--pattern"><WhySignUpSection/></div>}
+                    <WhySignUpSection/>
                 </div>
             </div>
         );

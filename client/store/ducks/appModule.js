@@ -129,6 +129,7 @@ export function fetchChartsData() {
         }).then((response) => {
             return response.json();
         }).then((response) => {
+            console.log("RES", response);
             if (response.success) {
                 return dispatch({type: SET_CHARTS_DATA, charts: response.data});
             }

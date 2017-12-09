@@ -37,7 +37,7 @@ export function run() {
 
     render(
         <Provider store={store}>
-            <Router history={history}>{createRoutes({store, first: {time: true}})}</Router>
+            <Router onUpdate={() => window.scrollTo(0, 0)} history={history}>{createRoutes({store, first: {time: true}})}</Router>
         </Provider>,
         document.getElementById('app')
     );

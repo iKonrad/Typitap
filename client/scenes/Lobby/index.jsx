@@ -38,6 +38,13 @@ class Lobby extends Component {
         ], callback);
     }
 
+    static serverInit(response, params, store) {
+        return [
+            store.dispatch(AppActions.fetchChartsData()),
+            store.dispatch(LobbyActions.fetchGlobalFeed()),
+        ];
+    }
+
     handleOnlineButton() {
         GameEngine.resetGame();
         this.props.dispatch(AppActions.openOnlineSidebar());

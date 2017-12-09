@@ -21,7 +21,7 @@ class UserboardSnippet extends React.Component {
 
                 <div>
                     <a href={`${ JsUtils.getBaseUrl() }u/${this.props.user.Username}`}>
-                        <img className="img-responsive" src={`${ JsUtils.getBaseUrl() }userboards/${ this.props.user.Id }`} alt={`Typitap.com userboard for ${ this.props.user.Name }`} />
+                        <img className="img-fluid" src={`${ JsUtils.getBaseUrl() }userboards/${ this.props.user.Id }`} alt={`Typitap.com userboard for ${ this.props.user.Name }`} />
                     </a>
                 </div>
             </div>

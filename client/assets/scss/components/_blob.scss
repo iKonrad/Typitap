@@ -6,7 +6,7 @@
   }
 
   &__title {
-    @extend h3;
+    @extend h4;
   }
 
 
@@ -27,7 +27,6 @@
     font-weight: 300;
     font-size: 16px;
     line-height: 1.6;
-    letter-spacing: 1px;
     text-align: justify;
     min-height: 80px;
   }

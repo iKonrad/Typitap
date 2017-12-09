@@ -6,7 +6,7 @@ import { push } from 'react-router-redux';
 class GameControls extends Component {
 
     handleQuitGame() {
-        this.props.dispatch(push("/play"));
+        this.props.dispatch(push("/"));
     }
 
     render() {

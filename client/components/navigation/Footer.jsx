@@ -39,7 +39,6 @@ class Footer extends React.PureComponent {
                             <div className="col-12 col-sm-6 col-md-3 text-center" style={{minHeight: "150px"}}>
                                 <div className="text-right mt-4">
                                     <Link to="/login" className="btn btn-link btn-white btn-block mt-4">Log in</Link>
-                                    <Link to="/play" className="btn btn-link btn-white btn-block mt-1">Play</Link>
                                     <Link to="/faq" className="btn btn-link btn-white btn-block mt-1">FAQ</Link>
                                     <Link to="/submit-text" className="btn btn-link btn-white btn-block mt-1">Submit text</Link>
                                 </div>

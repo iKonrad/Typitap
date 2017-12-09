@@ -87,7 +87,7 @@
 
   .modal-body {
     .modal-alert {
-      margin: 0 -20px;
+      margin: 0 (($grid-gutter-width / 2) * -1);
       background-color: $grey-100;
       padding: 30px 20px;
       font-size: 18px;

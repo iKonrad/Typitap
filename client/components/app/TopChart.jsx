@@ -30,7 +30,7 @@ class TopChart extends Component {
 
     render() {
         if (this.props.app.charts === undefined || this.props.app.charts[this.props.name] === undefined || this.props.app.charts[this.props.name].Items === undefined || this.props.app.charts[this.props.name].Items.length === 0) {
-            return <div></div>
+            return <div>lol</div>
         }
 
         return (

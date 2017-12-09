@@ -55,7 +55,7 @@ class Game extends Component {
     componentDidMount() {
         // Check if the room ID has been passed over
         if (this.props.game.room.id === "") {
-            this.props.dispatch(push("/play"));
+            this.props.dispatch(push("/"));
             return;
         }
 
