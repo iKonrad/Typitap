@@ -108,8 +108,7 @@ class Lobby extends Component {
                         <div className="row">
                             <div className="col-12">
                                 <h1 className="white">Join the race</h1>
-                                <p className="white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut,
-                                    tempore!</p>
+                                <p className="white">You can join the online room and play online or practice on your own</p>
                             </div>
                         </div>
                         <div className="row">
