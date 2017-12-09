@@ -1,0 +1,226 @@
+$input-background-color: $brand-light-shades;
+$check-size: 25px;
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content
+  }
+  &:-moz-placeholder {
+    @content
+  }
+  &::-moz-placeholder {
+    @content
+  }
+  &:-ms-input-placeholder {
+    @content
+  }
+}
+
+@mixin inputAccent($color, $icon) {
+  .form-control {
+    border: 2px solid $color !important;
+
+    & + .form-control-icon {
+      display: block;
+      &:after {
+        @include FontAwesomeIcon($icon);
+        position: absolute;
+        right: 30px;
+        top: 92px;
+        font-size: 20px;
+        color: $color;
+      }
+    }
+  }
+
+  label {
+    color: $color;
+  }
+
+  .form-control-message {
+    color: $color;
+    @extend small;
+    font-weight: 600;
+  }
+}
+
+.form-group {
+  .form-control {
+    height: 50px;
+    padding: 11px 15px;
+    font-size: 16px;
+    color: $grey-400;
+    font-weight: 600;
+    position: relative;
+    border: 2px solid transparent;
+    webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+
+    background: $input-background-color;
+    border-radius: 6px;
+
+    &--white {
+      background-color: white;
+    }
+
+    &--sm {
+      height: 30px;
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+
+    &--loading {
+      background-image: url('/static/images/icons/loading.gif');
+      background-size: 22px;
+      background-position:right 15px center;
+      background-repeat: no-repeat;
+    }
+
+    &:active, &:focus {
+      background-color: darken($brand-light-shades, 1%);
+    }
+
+    @include placeholder() {
+      font-size: 16px;
+      color: $gray-400;
+      font-weight: 600;
+    }
+
+    & + .form-control-icon {
+      display: none;
+    }
+  }
+
+  select.form-control {
+    height: 50px !important;
+  }
+
+  &--error {
+    @include inputAccent($brand-danger, "\f00d");
+  }
+
+  &--success {
+    @include inputAccent($brand-success, "\f00c")
+  }
+}
+
+.form-check {
+  &--white {
+    .form-check-label {
+      &:before {
+        background: white;
+      }
+    }
+  }
+
+  &-input {
+    position: absolute; // take it out of document flow
+    opacity: 0; // hide it
+
+    & + label {
+      position: relative;
+      cursor: pointer;
+      margin: 5px 0;
+      padding-left: 37px;
+      @include no-drag();
+      @include no-select();
+
+      &:before {
+        background: $brand-light-shades;
+        box-shadow: 0 2px 0 0 rgba(202,202,202,0.50);
+        border-radius: 6px;
+        width: $check-size;
+        height: $check-size;
+        position: absolute;
+        left: 0;
+        content: "";
+        top: -3px;
+      }
+    }
+
+    &:not(:disabled) {
+      & + label {
+        &:hover {
+          &:before {
+            @include FontAwesomeIcon("\f00c");
+            color: lighten($brand-primary, 25%);
+            padding-top: 2px;
+            padding-left: 5px;
+            font-size: 16px;
+            background-color: darken($brand-light-shades, 2%);
+          }
+        }
+      }
+
+      &:checked {
+        & + label {
+          &:before {
+            @include FontAwesomeIcon("\f00c");
+            color: $brand-primary;
+            padding-top: 2px;
+            padding-left: 5px;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+
+    &:disabled {
+      & + label {
+        cursor: not-allowed;
+        &:before {
+          cursor: not-allowed;
+          background: darken($brand-light-shades, 4%);
+        }
+      }
+    }
+
+    &[type='radio'] {
+      & + label {
+        &:before {
+          border-radius: 50px;
+        }
+
+      }
+
+      &:not(:disabled) {
+        & + label {
+          &:hover {
+            &:before {
+              @include FontAwesomeIcon("\f111");
+              padding-top: 0px;
+              padding-left: 6px;
+            }
+          }
+        }
+
+        &:checked {
+          & + label {
+            &:before {
+              @include FontAwesomeIcon("\f111");
+              padding-top: 0px;
+              padding-left: 6px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+label {
+  margin-bottom: 2px;
+  font-weight: 600;
+  color: $gray-500;
+  font-size: 14px;
+}
+
+*:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: none!important;
+}
+

@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import Gravatar from 'components/user/Gravatar';
 import {push} from 'react-router-redux';
 import * as JsUtils from 'utils/jsUtils';
+import Card from 'components/app/Card';
 
 function getSuggestionValue(suggestion) {
     return suggestion.name;
@@ -129,21 +130,24 @@ class UserSearch extends React.Component {
             placeholder: "Search...",
             value,
             onChange: this.onChange,
-            className: `form-control ${ isLoading ? "control-loading" : "" }`,
+            className: `form-control ${ isLoading ? "form-control--loading" : "" }`,
+            id: "user-suggestions"
         };
 
         return (
-            <div>
-                <Autosuggest
-                    suggestions={suggestions}
-                    onSuggestionsFetchRequested={this.loadSuggestions.bind(this)}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    onSuggestionSelected={ this.onUserSelected.bind(this) }
-                    shouldRenderSuggestions={ this.shouldRenderSuggestions }
-                    getSuggestionValue={getSuggestionValue}
-                    renderSuggestion={renderSuggestion}
-                    inputProps={inputProps}/>
-            </div>
+            <Card title="Player search" loaded={true}>
+                <div className="form-group" style={{marginBottom: 0}}>
+                    <Autosuggest
+                        suggestions={suggestions}
+                        onSuggestionsFetchRequested={this.loadSuggestions.bind(this)}
+                        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                        onSuggestionSelected={ this.onUserSelected.bind(this) }
+                        shouldRenderSuggestions={ this.shouldRenderSuggestions }
+                        getSuggestionValue={getSuggestionValue}
+                        renderSuggestion={renderSuggestion}
+                        inputProps={inputProps}/>
+                </div>
+            </Card>
         );
     }
 }

@@ -12,26 +12,33 @@ class NotFound extends React.Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="col col-xs-8 col-xs-offset-2 margin-top-8">
-                        <div className="panel panel-default">
-                            <div className="panel-body">
-                                <div className="text-center margin-top-5 margin-bottom-5">
-
-                                    <div className="row">
-                                        <div className="col col-xs-12 col-md-4 col-md-offset-4">
-                                            <img width="100%" src="/static/images/pages/errors/image.png" />
+            <div className="error-page">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-8 mx-auto">
+                            <div className="card">
+                                <div className="card-body">
+                                    <div className="text-center">
+                                        <div className="row">
+                                            <div className="col-12 col-md-4 mx-auto">
+                                                <img className="img-fluid mt-5" src="/static/images/pages/errors/image.png"/>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col mt-4">
+                                                <h1>Page not found</h1>
+                                                <p>Ooops. The page you’re looking for has been moved or deleted.</p>
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col">
+                                                <Link to="/" className="btn btn-link btn-primary mt-5">Back to homepage</Link>
+                                            </div>
                                         </div>
                                     </div>
-                                    <h2 className="margin-top-6">Page not found</h2>
-                                    <p>Ooops. The page you’re looking for has been moved or deleted.</p>
-
-                                    <Link to="/" className="btn btn-link margin-top-5">Back to homepage</Link>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

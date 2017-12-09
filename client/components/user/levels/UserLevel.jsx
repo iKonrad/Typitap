@@ -10,24 +10,18 @@ class UserLevel extends React.Component {
             level: props.level,
             levelName: props.levelName,
         };
-
         this.state['points'] = props.points !== undefined ? props.points : 0;
-
     }
 
     componentWillReceiveProps(newProps) {
-
         let newState = {
             exp: newProps.exp,
             next: newProps.next,
             level: newProps.level,
             levelName: newProps.levelName,
         };
-
         newState['points'] = newProps.points !== undefined ? newProps.points : 0;
-
         this.setState(newState);
-
     }
 
 
@@ -40,10 +34,9 @@ class UserLevel extends React.Component {
     }
 
     renderProgress() {
-
         if (this.state.exp !== undefined && this.state.next !== undefined) {
             return (
-                <div className="user-level__progress">
+                <div className="user-level__progress progress">
                     <div
                         className="progress-bar"
                         role="progressbar"
@@ -55,13 +48,10 @@ class UserLevel extends React.Component {
                 </div>
             );
         }
-
         return (<div className="user-level__progress transparent"></div>);
-
     }
 
     renderPoints() {
-
         if (this.state.points > 0) {
             let string = "+" + this.state.points + " exp";
             if ((this.state.exp + this.state.points) > this.state.next) {
@@ -73,7 +63,7 @@ class UserLevel extends React.Component {
 
     render() {
         return (
-            <div className="user-level" style={{marginTop: "15px"}} title={`${this.state.exp} / ${ this.state.next }`}>
+            <div className={`user-level ${!!this.props.light ? "user-level--light" : ""}`} style={{marginTop: "15px"}} title={`${this.state.exp} / ${ this.state.next }`}>
                 { this.renderProgress() }
                 <div className="user-level__icon">
                     <img src={ this.getIconAddress() } alt=""/>

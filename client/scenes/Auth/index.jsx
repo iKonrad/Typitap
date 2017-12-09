@@ -4,8 +4,7 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import PasswordResetForm from './components/PasswordResetForm';
 import PasswordForgotForm from './components/PasswordForgotForm';
-
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 
 class Auth extends Component {
 
@@ -21,11 +20,11 @@ class Auth extends Component {
 
         if (this.props.route.path === '/signup') {
             return (
-                <SignupForm redirect={redirectLink} />
+                <SignupForm redirect={redirectLink}/>
             );
         } else if (this.props.route.path === '/login') {
             return (
-                <LoginForm redirect={ redirectLink } />
+                <LoginForm redirect={redirectLink}/>
             );
         } else if (this.props.route.path === '/auth/password/forgot') {
             return (
@@ -35,21 +34,22 @@ class Auth extends Component {
             let response = this.props.app.response;
             let isValid = response.success && response.valid;
             return (
-                <PasswordResetForm token={ this.props.params.token } isValid={ isValid }/>
+                <PasswordResetForm token={this.props.params.token} isValid={isValid}/>
             );
         }
     }
 
     render() {
         return (
-            <div className="auth">
-
-                <div className="auth__panel">
-                    <div className="text-center">
-                <Link to="/"><img src="/static/images/identity/typitap-logo@1.5x.png" alt="Typitap logo" /></Link>
-            </div>
-                { this.renderForm() }
-            </div>
+            <div className="auth container-fluid">
+                <div className="row">
+                    <div className="col-12 col-sm-8 col-md-6 col-lg-6 col-xl-3 col-xxl-3 mx-auto">
+                        <div className="text-center">
+                            <Link to="/"><img src="/static/images/identity/typitap-logo-white@1.25x.png" alt=""/></Link>
+                        </div>
+                        {this.renderForm()}
+                    </div>
+                </div>
             </div>
 
         );

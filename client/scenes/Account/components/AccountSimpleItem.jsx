@@ -21,12 +21,13 @@ class AccountSimpleItem extends React.Component {
             return (
                 <div>
                     <form onSubmit={this.handleSubmit.bind(this)}>
-                        <div className="input-group">
-                            { this.renderInput() }
-                            <span className="input-group-btn">
-                            <button type="submit"
-                                    className={`btn btn-primary btn-${this.props.type !== undefined && this.props.type === "textarea" ? "lg" : "sm"}`}>Save</button>
-                        </span>
+                        <div className="form-group">
+                            <div className="input-group">
+                                { this.renderInput() }
+                                <span className="input-group-btn">
+                                <button type="submit" className={`btn btn-primary btn-${this.props.type !== undefined && this.props.type === "textarea" ? "lg" : "sm"}`}>Save</button>
+                            </span>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -68,14 +69,14 @@ class AccountSimpleItem extends React.Component {
                 <input type="text"
                        ref={`field-${this.props.name}`} name={this.props.name}
                        defaultValue={ this.props.user.data[this.props.name] }
-                       placeholder={`Enter new ${this.props.name}`} className="form-control control-small"/>
+                       placeholder={`Enter new ${this.props.name}`} className="form-control"/>
             );
         } else if (this.props.type === "textarea") {
             return (
                 <textarea type={ this.props.name === "Password" ? "password" : "text" }
                           ref={`field-${this.props.name}`} name={this.props.name}
                           defaultValue={ this.props.user.data[this.props.name] }
-                          placeholder={`Enter new ${this.props.name}`} className="form-control control-small"
+                          placeholder={`Enter new ${this.props.name}`} className="form-control form-control--sm"
                           style={{height: "50px", resize: "none", width: "100%"}}></textarea>
 
             );
@@ -84,7 +85,7 @@ class AccountSimpleItem extends React.Component {
                 <input type="password"
                        ref={`field-${this.props.name}`} name={this.props.name}
                        defaultValue={ this.props.user.data[this.props.name] }
-                       placeholder={`Enter new ${this.props.name}`} className="form-control control-small"/>
+                       placeholder={`Enter new ${this.props.name}`} className="form-control"/>
             );
         } else if (this.props.type === "select" && this.props.options !== undefined && this.props.options.length > 0) {
 
@@ -97,7 +98,7 @@ class AccountSimpleItem extends React.Component {
             return (
                 <select ref={`field-${this.props.name}`} defaultValue={ this.props.user.data[this.props.name] }
                         name={this.props.name} placeholder={`Select your ${this.props.name}`}
-                        className="form-control control-small">
+                        className="form-control form-control--sm">
                     { renderOptions(this.props.options) }
                 </select>
             );
@@ -133,7 +134,7 @@ class AccountSimpleItem extends React.Component {
         if (this.props.account.details[this.props.name].open) {
             return "";
         } else {
-            return (<button className=" account__item__button btn btn-primary btn-sm btn-outline"
+            return (<button className=" account__item__button btn btn-primary btn-xs btn-outline"
                             onClick={ this.toggleButton.bind(this) }>{ this.props.name !== "Password" ? "Edit" : "Change Password" }</button>);
         }
     }
@@ -161,12 +162,12 @@ class AccountSimpleItem extends React.Component {
         return (
             <div className="account__item">
                 <div className="row">
-                    <div className="col col-xs-12 col-sm-5">
+                    <div className="col-12 col-sm-5">
                         <div className="account__item__label">{ label }</div>
                         <div className="account__item__value">{ this.renderField() }</div>
                     </div>
-                    <div className="col col-xs-12 col-sm-7 text-right" style={{paddingTop: "10px"}}>
-                        { this.renderEditButton() }
+                    <div className="col-12 col-sm-7 text-right" style={{paddingTop: "10px"}}>
+                            { this.renderEditButton() }
                     </div>
                 </div>
             </div>

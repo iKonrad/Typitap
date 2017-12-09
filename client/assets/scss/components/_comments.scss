@@ -41,10 +41,9 @@
     &__text {
       margin-bottom: 5px;
       font-size: 16px;
-      color: $grey-500;
       padding: 5px 0;
-      font-family: "Source Sans Pro", sans-serif;
-      font-weight: 300;
+      @include Font();
+      font-weight: 100;
     }
 
     &__created {

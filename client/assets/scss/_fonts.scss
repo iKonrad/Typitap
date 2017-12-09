@@ -1,21 +1,14 @@
-@import url('https://fonts.googleapis.com/css?family=Dosis:400,500');
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,600,600i,800,800i&subset=latin-ext');
 
-
-h1, h2, h3, h4, h5 {
-  font-family: Dosis, 'sans-serif';
-  margin: 10px 0px 10px 0px;
+@mixin Font() {
+  font-family: Nunito, sans-serif;
 }
 
-p, a, ul {
-  font-family: "Source Sans Pro", sans-serif;
+@mixin FontNunito() {
+  font-family: Nunito, 'sans-serif';
 }
 
-
-@mixin FontDosis() {
-  font-family: Dosis, 'sans-serif';
-}
-
-@mixin FontSourceSans() {
-  font-family: "Source Sans Pro", sans-serif;
+@mixin FontAwesomeIcon($code) {
+  font-family: "FontAwesome" !important;
+  content: $code;
 }

@@ -12,42 +12,50 @@ class ProfileInfo extends Component {
     }
 
     renderAnonMessage() {
-        return <p><Link to="/login">Log in</Link> to follow</p>;
+
+        // debugger;
+        let query = {};
+        if (typeof window !== "undefined" && window.location !== undefined) {
+            query.redirect = window.location.pathname;
+        }
+
+        return <p><Link to={{pathname: `/login`, query}} className="text-white">Log in</Link> to follow</p>;
     }
 
 
     render() {
-
         return (
+                <div className="section section--pattern">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col profile-page__wrapper">
+                                <div className="row">
+                                    <div className="col-12 col-md-3">
+                                        <div className="profile-page__picture">
+                                            <Gravatar email={this.props.user.Email} size={150} className="img-circle"/>
+                                        </div>
+                                    </div>
+                                    <div className="col-12 col-md-9 col-lg-6 profile-page__info__details">
+                                        <h3 className="profile-page__info__name">{this.props.user.Name}</h3>
+                                        <p className="profile-page__info__username">#{this.props.user.Username}</p>
+                                        <UserLevel light={true} level={this.props.user.Level} exp={this.props.user.Exp} next={this.props.user.NextExp}
+                                                   levelName={this.props.user.LevelName}/>
+                                    </div>
+                                    <div className="col-12 col-lg-3 col-md-offset-1 profile-page__info__details--right">
+                                        <div style={{
+                                            marginBottom: "10px",
+                                            marginTop: "-10px"
+                                        }}>{this.props.loggedIn || this.props.isDashboard ? this.renderButton() : this.renderAnonMessage()}</div>
+                                        <p>Joined: { this.props.user.Created !== undefined && this.props.user.Created !== "" ? <TimeAgo date={this.props.user.Created}/> : "" }</p>
+                                        <p><strong>{this.props.stats !== undefined ? this.props.stats.gamesPlayed : "-"} </strong>
+                                            games played</p>
+                                    </div>
+                                </div>
+                            </div>
 
-            <div className="row">
-
-                <div className="col col-xs-12 col-sm-3 col-md-3">
-                    <div className="profile-page__picture">
-                        <Gravatar email={this.props.user.Email} size={120} className="img-circle"/>
+                        </div>
                     </div>
                 </div>
-
-                <div className="col col-xs-12 col-sm-3 col-md-5 profile-page__info__details">
-                    <UserLevel level={this.props.user.Level} exp={this.props.user.Exp} next={this.props.user.NextExp}
-                               levelName={this.props.user.LevelName}/>
-                    <p className="profile-page__info__name">{this.props.user.Name}</p>
-                    <p className="profile-page__info__username">#{this.props.user.Username}</p>
-                </div>
-
-                <div
-                    className="col col-xs-12 col-sm-3 col-sm-offset-3 col-md-3 col-md-offset-1 profile-page__info__details--right">
-                    <div style={{
-                        marginBottom: "10px",
-                        marginTop: "-10px"
-                    }}>{this.props.loggedIn || this.props.isDashboard ? this.renderButton() : this.renderAnonMessage()}</div>
-                    <p>Joined <TimeAgo date={this.props.user.Created}/></p>
-                    <p>Played <strong>{this.props.stats !== undefined ? this.props.stats.gamesPlayed : "-"} </strong>
-                        games</p>
-                </div>
-
-            </div>
-
         );
     }
 }

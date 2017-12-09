@@ -1,0 +1,191 @@
+@mixin h1 {
+  @include Font();
+  font-weight: 800;
+  font-size: 30px;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 36px;
+  }
+
+  @include media-breakpoint-up(md) {
+    font-size: 48px;
+  }
+}
+
+@mixin h2 {
+  @include Font();
+  font-weight: 800;
+  font-size: 28px;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 36px;
+  }
+
+  @include media-breakpoint-up(md) {
+    font-size: 42px;
+  }
+}
+
+@mixin h3 {
+  @include Font();
+  font-weight: 800;
+  font-size: 24px;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 32px;
+  }
+
+  @include media-breakpoint-up(md) {
+    font-size: 36px;
+  }
+}
+
+@mixin h4 {
+  @include Font();
+  font-weight: 800;
+  font-size: 24px;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 28px;
+  }
+
+  @include media-breakpoint-up(md) {
+    font-size: 30px;
+  }
+}
+
+@mixin h5 {
+  @include Font();
+  font-weight: 800;
+  font-size: 22px;
+
+  @include media-breakpoint-up(md) {
+    font-size: 26px;
+  }
+}
+
+@mixin h6 {
+  @include Font();
+  font-weight: 800;
+  font-size: 18px;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 20px
+  }
+}
+
+
+h1, h2, h3, h4, h5 {
+  margin: 0 0 10px 0;
+}
+
+h1 {
+  @include h1();
+}
+
+h2 {
+  @include h2();
+}
+
+h3 {
+  @include h3();
+}
+
+h4 {
+  @include h4();
+}
+
+h5 {
+  @include h5();
+}
+
+h6 {
+  @include h6();
+}
+
+p, a, ul {
+  @include FontNunito();
+}
+
+body {
+  color: darken($brand-dark-shades, 10%);
+  font-family: Nunito, sans-serif !important;
+
+}
+
+.caption {
+  font-size: 16px;
+  color: $grey-300;
+}
+
+.text-md {
+  font-size: 1.1em;
+}
+
+.text-lg {
+  font-size: 1.2em;
+}
+
+.text-xl {
+  font-size: 1.4em;
+}
+
+.text-caption {
+  font-size: 1.05em;
+  color: $grey-300;
+  font-weight: 300;
+}
+
+
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  @include FontNunito();
+}
+
+.text-bold {
+  font-weight: 500;
+}
+
+a {
+  color: $brand-dark-shades;
+  cursor: pointer;
+
+  &:hover {
+    color: lighten($brand-dark-shades, 5%);
+  }
+}
+
+p, a, em {
+  font-size: 16px;
+}
+
+
+p, em {
+  font-weight: 300;
+}
+
+.white {
+  color: white;
+}
+
+strong {
+  font-weight: 600;
+}
+
+.text-muted {
+  color: $grey-200!important;
+}
+
+ul {
+  list-style-type: disc;
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  -webkit-padding-start: 40px;
+}
+
+code {
+  border-radius: 3px;
+  background-color: $brand-dark-shades;
+  color: white;
+}

@@ -68,7 +68,7 @@ class AdminLevels extends React.Component {
             );
         } else {
             return (
-                <div className="text-center margin-top-5">
+                <div className="text-center mt-5">
                     Loading data...
                 </div>
             );
@@ -79,6 +79,7 @@ class AdminLevels extends React.Component {
     render() {
         return (
             <div>
+                <h1>Levels</h1>
                 { this.renderTable() }
             </div>
         )

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
-import Panel from 'components/app/Panel';
+import Card from 'components/app/Card';
 import * as SubmitTextActions from "scenes/SubmitText/ducks/submitTextModule";
 import Textarea from 'components/form/fields/textarea';
 import Input from 'components/form/fields/Input';
@@ -52,8 +52,8 @@ class SubmitText extends React.Component {
         const {handleSubmit, pristine, reset, submitting} = this.props;
         return (
             <div className="container">
-                <div className="row margin-top-5">
-                    <div className="col col-xs-12">
+                <div className="row mt-5">
+                    <div className="col">
                         <h2>Submit your text</h2>
                         <p>Submit your text and we'll add it to game. We'll drop you an e-mail when your text is available to play.</p>
                         <p>Make sure your text isn't too long and doesn't have any extraordinary symbols (widely used symbols like commas, full-stops, colons etc. are accepted).</p>
@@ -61,8 +61,8 @@ class SubmitText extends React.Component {
                 </div>
 
                 <div className="row">
-                    <div className="col col-md-8">
-                        <Panel loaded={true}>
+                    <div className="col-md-8">
+                        <Card loaded={true}>
                             <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
                                 <Field id="Text" name="Text" placeholder="Enter your text here" component={Textarea} className="form-control" label="Text"/>
                                 <div className="form-group">
@@ -99,12 +99,12 @@ class SubmitText extends React.Component {
                                             className="btn btn-primary btn-block">{submitting ? "Submitting..." : "Submit"}</button>
                                 </div>
                             </form>
-                        </Panel>
+                        </Card>
                     </div>
-                    <div className="col col-md-4">
-                        <Panel loaded={true} title="Text stats">
+                    <div className="col-md-4">
+                        <Card loaded={true} title="Text stats">
                             {<TextStats text={this.props.text}/>}
-                        </Panel>
+                        </Card>
                     </div>
                 </div>
             </div>

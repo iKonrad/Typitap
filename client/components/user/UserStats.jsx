@@ -20,9 +20,9 @@ class UserStats extends Component {
         if (items !== undefined && Object.keys(items).length > 0) {
 
             return (
-                <div>
+                <div className="mt-3">
                     <div className="row">
-                        <div className="col col-xs-12">
+                        <div className="col">
                             <div className="pull-left">
                                 <StatsBadge key={ `user-stat-wpm` } type="wpm" label="wpm" value={ items["wpm"] }/>
                                 <StatsBadge key={ `user-stat-accuracy` } type="accuracy" label="accuracy" value={ items["accuracy"] + "%" }/>
@@ -34,13 +34,6 @@ class UserStats extends Component {
                                             value={ items["silverTrophies"] }/>
                                 <StatsBadge key={ `user-stat-bronzeTrophies` } type="bronzeTrophies"
                                             value={ items["bronzeTrophies"] }/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col col-xs-12">
-                            <div className="text-small text-muted">
-                                These stats refresh every hour
                             </div>
                         </div>
                     </div>

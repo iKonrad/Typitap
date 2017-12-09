@@ -180,7 +180,6 @@ func (r *Room) StartBotCountdown() {
 				// Sometimes use Sillyname and sometimes guest ID for extra randomness
 				useSillyName := rand.Intn(2)
 				botName := "guest-b" + strconv.Itoa(rand.Int())
-				log.Println("USESILLY", useSillyName)
 				if useSillyName == 1 {
 					botName = strings.ToLower(randomdata.SillyName())
 				}

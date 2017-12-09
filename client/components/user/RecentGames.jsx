@@ -9,6 +9,11 @@ class RecentGames extends PureComponent {
             if (this.props.games.length > 0) {
 
                 let items = this.props.games.map((item, index) => {
+
+                    if (item.session === undefined || item.session === null) {
+                        return;
+                    }
+
                     let isPerfect = 1;
                     if (item.mistakes !== undefined && item.mistakes !== null) {
                         isPerfect = Object.keys(item.mistakes).length < 1 ? 1 : 0
@@ -16,15 +21,14 @@ class RecentGames extends PureComponent {
                     return (
                         <ResultRow perfect={ isPerfect }
                                    key={ 'activity-item-' + index } date={ new Date(item.created) }
-                                   name={item.session.online ? "Online race" : "Offline race"} score={item.wpm} resultId={ item.id } />
+                                   name={!!item.session.online ? "Online race" : "Offline race"} score={item.wpm} resultId={ item.id } />
                     );
                 });
                 return items;
             }
-            return "";
         }
 
-        return "";
+        return <div className="text-muted mt-4 text-center">No games found</div>;
     }
 
     componentWillUpdate(newProps) {
@@ -55,7 +59,7 @@ class RecentGames extends PureComponent {
     }
 
     render() {
-        return (<div>{this.renderItems()}</div>)
+        return (<div >{this.renderItems()}</div>)
     }
 }
 

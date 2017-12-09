@@ -30,6 +30,10 @@ user_account:
   path: /account
   role: ROLE_USER
 
+user_dashboard:
+  path: /dashboard
+  role: ROLE_USER
+
 
 # INTERNAL API
 api_internal:

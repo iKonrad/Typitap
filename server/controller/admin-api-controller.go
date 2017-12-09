@@ -147,11 +147,19 @@ func (uc AdminAPIController) SaveText(c echo.Context) error {
 func (uc AdminAPIController) AcceptText(c echo.Context) error {
 	textId := c.Param("id")
 
+	// Get the text first to see if we should send a confirmation e-mail
+	text, ok := gametexts.GetText(textId)
+	if !ok {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"success": false,
+		})
+	}
+
 	updatedText := gametexts.UpdateText(textId, map[string]interface{}{
 		"Status": "2",
 	})
 
-	if updatedText.Id != "" && updatedText.User.Email != "" {
+	if updatedText.Id != "" && updatedText.User.Email != "" && text.Status == gametexts.STATUS_SUBMITTED {
 		mail.SendEmail(updatedText.User.Email, mail.TEMPLATE_TEXT_ACCEPTED, mail.TemplateTextAccepted(
 			updatedText.User.Name,
 			updatedText.User.Username,

@@ -9,6 +9,8 @@ import Notifications from 'utils/notifications';
 import * as socketActions from "store/ducks/socketModule";
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+import Card from 'components/app/Card';
+
 
 class SignupForm extends Component {
 
@@ -41,34 +43,35 @@ class SignupForm extends Component {
 
         return (
             <div className="">
-                <Helmet title="Sign up" />
-                <div className="panel panel-default card-login">
-                    <div className="panel-heading"><h3>Sign up</h3></div>
-                    <div className="panel-body">
-                        <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
+                <Card loaded={true}>
+                    <Helmet title="Sign up" />
+                    <div className="card-login">
+                        <h3 className="card-title">Sign up</h3>
 
-                            <Field name="username" component={ Input } type="text" label="Username"/>
-                            <Field name="email" component={ Input } type="text" label="E-mail"/>
-                            <Field name="name" component={ Input } type="text" label="Name"/>
-                            <Field name="password" component={ Input } type="password" label="Password"/>
+                            <form onSubmit={handleSubmit(this.handleSubmitForm.bind(this))}>
 
-                            <div className="form-group">
-                                <button type="submit" disabled={pristine || submitting}
-                                        className="btn btn-primary btn-block">Sign up
-                                </button>
-                            </div>
-                        </form>
+                                <Field name="username" component={ Input } type="text" label="Username"/>
+                                <Field name="email" component={ Input } type="text" label="E-mail"/>
+                                <Field name="name" component={ Input } type="text" label="Name"/>
+                                <Field name="password" component={ Input } type="password" label="Password"/>
+
+                                <div className="form-group">
+                                    <button type="submit" disabled={pristine || submitting}
+                                            className="btn btn-primary btn-block">Sign up
+                                    </button>
+                                </div>
+                            </form>
                     </div>
-                    <div className="panel-footer">
-                        <div className="row">
-                            <div className="col col-xs-12">
-                                <div className="pull-left">
-                                    <Link to="/login">Log in</Link>
-                                </div>
-                                <div className="pull-right">
-                                    <Link to="/auth/password/forgot">Forgot password?</Link>
-                                </div>
-                            </div>
+                </Card>
+                <div className="row auth__links">
+                    <div className="col">
+                        <div className="text-left">
+                            <Link className="btn btn-link btn-white btn-primary btn-block" to="/login">Log in</Link>
+                        </div>
+                    </div>
+                    <div className="col">
+                        <div className="text-right">
+                            <Link className="btn btn-link btn-white btn-primary btn-block" to="/auth/password/forgot">Forgot password?</Link>
                         </div>
                     </div>
                 </div>

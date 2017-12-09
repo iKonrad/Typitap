@@ -14,7 +14,7 @@ export const MENU_TREE = [
     {
         label: 'My dashboard',
         type: 'link',
-        url: '/',
+        url: '/dashboard',
         authenticated: true,
     },
     {
@@ -53,8 +53,8 @@ export const MENU_TREE = [
         ]
     },
     {
-        label: 'Play',
+        label: 'Game Lobby',
         type: 'button',
-        url: '/play',
+        url: '/',
     },
 ];

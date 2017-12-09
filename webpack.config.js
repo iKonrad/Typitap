@@ -100,7 +100,8 @@ var config = {
             {test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader?mimetype=application/font-woff"},
             {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader?mimetype=application/octet-stream"},
             {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader"},
-        ]
+        ],
+        noParse: path.join(__dirname, 'node_modules/reactstrap-tether/dist/js/tether.js'),
     },
     resolve: {
         extensions: ['', '.js', '.jsx', '.css'],
@@ -119,6 +120,7 @@ var config = {
             'scenes': path.join(__dirname, 'client/scenes'),
             'utils': path.join(__dirname, 'client/utils'),
             'store': path.join(__dirname, 'client/store'),
+            'node_modules': path.join(__dirname, 'node_modules'),
 
         }
     },

@@ -10,7 +10,8 @@ $sidebar-animation-duration: 0.15s;
   margin-top: -40px;
 
   /* Rectangle 3: */
-  background-image: linear-gradient(40deg, #592A78 6%, #7C569C 63%, #8A68AB 87%, #8A68AB 87%, #8A68AB 87%, #9272B3 100%);
+  //background-image: linear-gradient(40deg, #592A78 6%, #7C569C 63%, #8A68AB 87%, #8A68AB 87%, #8A68AB 87%, #9272B3 100%);
+  background: $backround-gradient;
   box-shadow: 0 2px 26px 2px rgba(58,58,58,0.5);
 
   z-index: 99999999;
@@ -22,9 +23,8 @@ $sidebar-animation-duration: 0.15s;
   &__handle {
     width: 70px;
     height: 70px;
-    background-color: #8160A1;
+    background-color: $brand-dark-shades;
     color: white;
-    transition: all $sidebar-animation-duration ease-in-out;
 
     a {
       color: white;
@@ -43,7 +43,7 @@ $sidebar-animation-duration: 0.15s;
     }
 
     &:hover {
-      background-color: lighten(#8160A1, 5%);
+      background-color: lighten($brand-dark-shades, 5%);
     }
 
     .badge {

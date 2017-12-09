@@ -9,8 +9,8 @@ import socketReducer from './socketModule';
 import accountReducer from './accountModule';
 import profileReducer from './profileModule';
 
-import dashboardReducer from 'scenes/Home/scenes/Dashboard/ducks/dashboardModule';
-import playReducer from 'scenes/Play/ducks/playModule';
+import dashboardReducer from 'scenes/Dashboard/ducks/dashboardModule';
+import playReducer from 'scenes/Lobby/ducks/lobbyModule';
 import adminTextReducer from 'scenes/Admin/scenes/AdminText/ducks/adminTextModule';
 import submitTextReducer from 'scenes/SubmitText/ducks/submitTextModule';
 
@@ -26,7 +26,7 @@ export default combineReducers({
     socket: socketReducer,
     account: accountReducer,
     profile: profileReducer,
-    play: playReducer,
+    lobby: playReducer,
     adminText: adminTextReducer,
     submitText: submitTextReducer,
 });

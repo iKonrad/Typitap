@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Modal from 'react-bootstrap/lib/Modal';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import UserLevel from 'components/user/levels/UserLevel';
 import StatsBadge from 'components/user/UserStatsBadge';
 import * as GameUtils from 'utils/gameUtils';
@@ -51,38 +51,47 @@ class GameResultModal extends Component {
         }
 
         return (
-            <Modal show={this.state.open} className="game-result">
+            <Modal isOpen={this.state.open} className="game-result">
                 <Helmet { ...metaTags } />
-                <Modal.Header>
-                    <Modal.Title>
+                <ModalHeader>
                         Game completed!
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                </ModalHeader>
+                <ModalBody>
                     <div className="row">
-                        <div className="col col-xs-12">
+                        <div className="col">
                             { this.renderPlayers() }
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col col-xs-12">
+                        <div className="col">
                             { this.renderUserLevel() }
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col col-xs-12">
+                        <div className="col">
                             { this.renderStats() }
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col col-xs-12">
+                        <div className="col">
                             { this.renderAffiliateProduct() }
                         </div>
                     </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    { this.renderButtons() }
-                </Modal.Footer>
+                    <div className="row">
+                        <div className="col">
+                            <button className="btn mt-4 btn-primary btn-block" onClick={ this.handleBack.bind(this) }>Back to lobby
+                            </button>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            <div className="mt-2 text-right">
+                                <button onClick={ this.handleCloseModal.bind(this) } className="btn btn-link btn-primary">Close window
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ModalBody>
             </Modal>
         );
     }
@@ -92,9 +101,9 @@ class GameResultModal extends Component {
         if (Object.keys(product).length < 1 || product.images === undefined) {
             return <span></span>;
         }
-        return (<div className="margin-top-4 game-result__affiliate">
+        return (<div className="mt-4 game-result__affiliate">
             <div className="game-result__affiliate__button">
-                <a href={ product.url } target="_blank" className="btn btn-sm btn-secondary btn-outline btn-block">Get on Amazon</a>
+                <a href={ product.url } target="_blank" className="btn btn-sm btn-secondary btn-block">Get on Amazon</a>
             </div>
             <div className="game-result__affiliate__image"><img src={ product.images.SmallImage.URL } alt="" /></div>
             <div className="game-result__affiliate__caption">You've just typed a text from:</div>
@@ -134,9 +143,9 @@ class GameResultModal extends Component {
 
         return (
             <div className="game-result__share">
-                <FacebookShareButton style={{marginBottom: 0}} className="btn btn-sm btn-facebook" title={ title } quote={ description }
+                <FacebookShareButton style={{marginBottom: 0}} className="btn btn-xs btn-facebook" title={ title } quote={ description }
                                      picture={ image } url={ url } children="Share on Facebook"/>
-                <TwitterShareButton style={{marginBottom: 0}} className="btn btn-sm btn-twitter" title={ title } via="typitap"
+                <TwitterShareButton style={{marginBottom: 0}} className="btn btn-xs btn-twitter" title={ title } via="typitap"
                                     url={ url } children="Share on Twitter"/>
             </div>
         );
@@ -201,7 +210,7 @@ class GameResultModal extends Component {
         if (wpmMessage !== "") {
             return  (
                 <div style={{textAlign: "center"}}>
-                    <div className="label label-success">{ wpmMessage }</div>
+                    <div className="badge badge-success">{ wpmMessage }</div>
                 </div>
             );
         }
@@ -212,7 +221,7 @@ class GameResultModal extends Component {
         if (accuracyMessage !== "") {
             return  (
                 <div style={{textAlign: "center"}}>
-                    <div className="label label-info">{ accuracyMessage }</div>
+                    <div className="badge badge-info">{ accuracyMessage }</div>
                 </div>
             );
         }
@@ -240,30 +249,6 @@ class GameResultModal extends Component {
                             value={ Object.keys(this.props.game.mistakes).length }/>
             </div>
         </div>
-    }
-
-    renderButtons() {
-        return (
-            <div>
-                <div className="row" style={{marginTop: "-20px"}}>
-                    <div className="col col-xs-12 text-left margin-bottom-2">
-                        <button className="btn btn-primary btn-block" onClick={ this.handleBack.bind(this) }>Back to lobby
-                        </button>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col col-xs-12 col-md-9">
-                        { this.renderShareButtons() }
-                    </div>
-                    <div className="col col-xs-12 col-md-3">
-                        <div className="margin-top-3">
-                            <button onClick={ this.handleCloseModal.bind(this) } className="btn btn-link">Close window
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
     }
 
 }

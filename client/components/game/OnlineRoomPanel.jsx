@@ -128,12 +128,12 @@ class OnlineRoomPanel extends React.Component {
         if (!this.props.game.started && !this.props.game.countdown) {
             if (this.props.game.room !== undefined && this.props.game.room.id !== "" && this.props.game.online) {
                 return (
-                    <button className="btn btn-white btn-block"
+                    <button className="btn btn-default btn-block"
                             onClick={this.handleJoinButtonClick.bind(this)}>Leave room</button>
                 );
             }
             return (
-                <button className="btn btn-success btn-block" onClick={this.handleJoinButtonClick.bind(this)}>Join
+                <button className="btn btn-secondary btn-block" onClick={this.handleJoinButtonClick.bind(this)}>Join
                     room</button>
             );
         }
@@ -176,9 +176,9 @@ class OnlineRoomPanel extends React.Component {
                     { this.renderPlayersCountBadge() }
                     <div className="fa fa-flag-checkered fa-2x"></div>
                 </div>
-                <div className="col col-xs-12">
+                <div className="col">
                     <div className="text-center white">
-                        <h3 className="white margin-top-4">Online Room</h3>
+                        <h3 className="white mt-4">Online Room</h3>
                         { this.state.language !== "EN" ? <p><strong>Language:</strong> <div className={`flag flag-${ this.state.language.toLowerCase() }`} style={{position: "relative", top: "6px", margin: "0px 3px"}}></div>{ this.state.language }</p> : "" }
                         <div style={{maxWidth: "60px", marginLeft: "auto", marginRight: "auto"}}>
                             <hr/>
@@ -189,11 +189,31 @@ class OnlineRoomPanel extends React.Component {
                             joined
                         </div>
                     </div>
-                    {this.renderPlayers()}
-                    {this.renderJoinButton()}
-                    {this.renderCountdown()}
-                    <div className="well">
-                        <p className="white">The game will start automatically when there are at least 2 players in the room. While you're waiting, you can also browse typitap or <strong>invite your friends</strong> to play with you.</p>
+
+                    <div className="row">
+                        <div className="col">
+                            {this.renderPlayers()}
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col">
+                            {this.renderJoinButton()}
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col">
+                            {this.renderCountdown()}
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col">
+                            <div className="well">
+                                <p className="white">The game will start automatically when there are at least 2 players in the room. While you're waiting, you can also browse typitap or <strong>invite your friends</strong> to play with you.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

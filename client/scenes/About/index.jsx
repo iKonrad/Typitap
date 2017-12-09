@@ -1,29 +1,191 @@
-import React from 'react';
-import { Component } from 'react';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router';
+import * as AppActions from 'store/ducks/appModule';
+import TopChart from 'components/app/TopChart';
+import {resolveAll} from 'utils/jsUtils';
+import * as LobbyActions from 'scenes/Lobby/ducks/lobbyModule';
+import Card from 'components/app/Card';
+import ActivityFeed from 'components/app/ActivityFeed';
+import WhySignUpSection from 'components/sections/WhySignUpSection';
 
-class About extends Component {
+class Homepage extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            loaded: false,
+        }
+    }
+
+    static clientInit({store, nextState, replaceState, callback}) {
+        resolveAll([
+            store.dispatch(AppActions.fetchChartsData()),
+            store.dispatch(LobbyActions.fetchGlobalFeed()),
+        ], callback)
+    }
+
+    static serverInit(response, params, store) {
+        return [
+            store.dispatch(AppActions.fetchChartsData()),
+            store.dispatch(LobbyActions.fetchGlobalFeed()),
+        ]
+    }
+
+    componentDidMount() {
+        let state = this.state;
+        state.loaded = true;
+        this.setState(state);
+    }
+
+    delayGenerator({line, lineIdx, character, charIdx, defDelayGenerator}) {
+        if (character === "." || character === "?" || character === "!") {
+            return 60;
+        } else {
+            return 10;
+        }
+    }
 
     render() {
+
+        let date = new Date();
+        let month = date.toLocaleString("en-us", {month: "long"});
+
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="col col-xs-12 margin-top-5">
-                        <h1>What is typitap?</h1>
-                        <p>Typitap is an online typing game, where players can compete with each other and improve their typing skills.</p>
-                        <p></p>
-                        <h3 className="margin-top-4">Who am I?</h3>
-                        <p>My name's Konrad and I've been developing typitap since October 2016. I'm a full-time web developer at The Drum, where primarily I code things in PHP and Javascript. In my spare time I build some side projects, and typitap is one of them.</p>
-                        <p>Typitap has been built on a quite unusal stack. The game engine and server has been written in golang, and front-end is built with React.js.</p>
-                        <p>Why typitap? I've finished a Game design course at Glasgow Caledonian University and building games always had been a great fun for me. I enjoy programming, but also a design part of creating games, so a web-based game seemed like a perfect fit for the next project.
-                            I hope you enjoyed typitap - if you want to drop me a line, send some feedback or have some ideas to add to the game, feel free to let me know via e-mail or twitter.</p>
-
-
-                        <p>~Konrad Jarosinski</p>
+            <div id="homepage">
+                <div className="section section--pattern">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col">
+                                <div className="text-center">
+                                    <h1 className="white">Ultimate online typing game</h1>
+                                    <p className="white">Do you think you can type fast enough?</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-xs-12 col-sm-8 col-md-4 mx-auto col-lg-3 mt-3">
+                                <a href="/" className="btn btn-block btn-secondary">Play the game</a>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-xs-12 col-sm-8 col-md-4 mx-auto col-lg-3 mt-3">
+                                <a href="/" className="btn btn-block btn-secondary btn-link btn-white">Create account</a>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div className="container">
+                    <div className="section">
+
+                        <div className="row">
+                            <div className="col">
+                                <div className="text-center">
+                                    <h2>What is typitap?</h2>
+                                    <p>Typitap is an online typing game where players from the entire world compete with each other by re-typing text from the screen. If you enjoy typing on a keyboard, and wish to improve and monitor your typing skills, typitap is the game for you.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="row">
+                            <div className="col mx-auto">
+                                <div className="text-center mt-3">
+                                    <img src="/static/images/pages/about/demo.gif" className="img-fluid" alt=""/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col col-sm-8 col-md-4 col-lg-3 mx-auto">
+                                <Link to="/" className="btn btn-secondary btn-block">Join the game</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="section section--gradient">
+                    <div className="container">
+                        <div className="row text-center">
+                            <div className="col-12 col-sm-6 col-md-3 ">
+                                <div className="blob">
+                                    <div className="blob__icon">
+                                        <img src="/static/images/pages/homepage/icon-globe.png" alt="Icon Globe"/>
+                                    </div>
+
+                                    <h2 className="blob__title">Compete and race with real people</h2>
+                                    <p className="blob__text">Jump into the race track with people from around the
+                                        entire world and challenge your typing skills.</p>
+                                </div>
+
+                            </div>
+                            <div className="col-12 col-sm-6 col-md-3">
+                                <div className="blob">
+                                    <div className="blob__icon">
+                                        <img src="/static/images/pages/homepage/icon-trophy.png" alt="Icon Trophy"/>
+                                    </div>
+                                    <h2 className="blob__title">Climb the ladder to the top</h2>
+                                    <p className="blob__text">Make your way to the very top of the
+                                        <strong>typitap</strong> charts and show off your progress</p>
+                                </div>
+                            </div>
+                            <div className="col-12 col-sm-6 col-md-3">
+                                <div className="blob">
+                                    <div className="blob__icon">
+                                        <img src="/static/images/pages/homepage/icon-chart.png" alt="Icon Chart"/>
+                                    </div>
+                                    <h2 className="blob__title">Track your typing skills progress</h2>
+                                    <p className="blob__text">Make use of the <strong>stunning charts</strong> to keep
+                                        track on your progress and see how you perform on a long term basis</p>
+                                </div>
+                            </div>
+                            <div className="col-12 col-sm-6 col-md-3">
+                                <div className="blob">
+                                    <div className="blob__icon">
+                                        <img src="/static/images/pages/homepage/icon-comment.png" alt="Icon Comment"/>
+                                    </div>
+                                    <h2 className="blob__title">Socialize and compare</h2>
+                                    <p className="blob__text">Follow your friends and stay up to date with their
+                                        recent results and never miss out a tiny detail.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="section section--light">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col">
+                                <h2>What's new?</h2>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12 col-lg-8 mt-5">
+                                <Card title="Recent news" bodyClass=""
+                                       loaded={this.props.lobby.feed !== undefined}><ActivityFeed
+                                    feed={this.props.lobby.feed}/></Card>
+                            </div>
+                            <div className="col-12 col-lg-4 mt-5">
+                                <img style={{position: "absolute", right: "10px", zIndex: 2, top: "-40px"}}
+                                     className="no-select no-drag" src="/static/images/pages/homepage/hint_arrow.png"/>
+                                <TopChart name="month" title={`TOP 10 of ${month}`}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="section section--pattern">
+                    <WhySignUpSection/>
                 </div>
             </div>
         );
     }
+
 }
 
-export default About;
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.user,
+        lobby: state.lobby,
+    }
+};
+
+export default connect(mapStateToProps)(Homepage);

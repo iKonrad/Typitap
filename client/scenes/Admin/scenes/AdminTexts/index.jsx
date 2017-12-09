@@ -101,7 +101,7 @@ class AdminTexts extends React.Component {
             );
         } else {
             return (
-                <div className="text-center margin-top-5">
+                <div className="text-center mt-5">
                     <Spinner />
                 </div>
             );
@@ -112,8 +112,9 @@ class AdminTexts extends React.Component {
     render() {
         return (
             <div>
+                <h1>Texts</h1>
                 <div className="row">
-                    <div className="col col-xs-12 margin-bottom-2">
+                    <div className="col-12 mb-2">
                         <Link to="/admin/texts/new" className="btn btn-circle btn-pink"><i className="fa fa-plus text-white white"></i></Link>
                     </div>
                 </div>

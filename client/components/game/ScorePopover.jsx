@@ -39,7 +39,7 @@ class ScorePopover extends React.Component {
 
     renderResults() {
         return (
-            <div className="margin-top-3">
+            <div className="mt-3">
                 <div className="pull-left">
                     <StatsBadge key={ `result-place` } type="transparent" label={ this.state.data.Place > 0 ? (this.state.data.Place + " place") : "Offline game" }
                                 value={ this.state.data.Place > 0 ? <i className="fa fa-trophy"></i> : "-" }/>
@@ -63,12 +63,12 @@ class ScorePopover extends React.Component {
             return (
                 <div>
                     <div className="row">
-                        <div className="col col-xs-12">
+                        <div className="col">
                             <ScorePopoverPlayback resultId={ this.props.resultId } text={ this.state.data.Session.Text.Text } mistakes={ this.state.data.Mistakes } />
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col col-xs-12">
+                        <div className="col">
                             { this.renderResults() }
                         </div>
                     </div>

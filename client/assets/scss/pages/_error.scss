@@ -1,0 +1,10 @@
+.error-page {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-image: url("/static/images/pages/lobby/background.png");
+
+  @include media-breakpoint-up(sm) {
+    padding-top: 160px;
+  }
+}

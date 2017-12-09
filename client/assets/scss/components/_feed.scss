@@ -1,15 +1,22 @@
-#feed {
+@mixin feedIcon($color, $icon) {
+  background-color: $color;
+  &:after {
+    content: $icon;
+  }
+}
+
+.feed {
+  margin: 10px ($card-spacer-x * -1);
 
   .activity {
     padding: 25px;
-    border-bottom: 1px solid $grey-050;
-  transition: all 0.3s ease;
-    &:hover {
-      background-color: $grey-050;
-    }
 
     &:last-of-type {
       border-bottom: none;
+    }
+
+    &:nth-child(even) {
+      background-color: $brand-light-shades;
     }
 
     &__icon {
@@ -27,54 +34,36 @@
       }
 
       &--offline-race {
-        background-color: $grey-300;
-        &:after {
-          content: "\f11e";
-
-        }
+        @include feedIcon(#8ee0e6, "\f024");
       }
+
       &--online-race {
-        background-color: $brand-secondary;
-        &:after {
-          content: "\f11e";
-        }
+        @include feedIcon($brand-secondary, "\f024");
       }
 
       &--follow {
-        background-color: $blue-200;
-        &:after {
-          content: "\f087";
-        }
+        @include feedIcon($blue-200, "\f087");
       }
 
       &--follow-you {
-        background-color: $green-200;
-        &:after {
-          content: "\f087";
-        }
+        @include feedIcon($green-200, "\f087");
       }
 
       &--player-chart {
-        background-color: $yellow-200;
-        &:after {
-          content: "\f091";
-        }
+        @include feedIcon($yellow-200, "\f091");
       }
-
-
     }
 
     &__text {
       font-size: 16px;
-      color: $grey-500;
-      a {
-        color: $grey-500;
+      * {
+        font-size: 16px;
       }
     }
 
     &__date {
-      font-size: 14px;
-      color: $grey-200;
+      font-size: 12px;
+      color: $grey-150;
     }
   }
 
