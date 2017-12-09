@@ -113,7 +113,7 @@ class GameResultModal extends Component {
     }
 
     handleBack() {
-        this.props.dispatch(push("/play"));
+        this.props.dispatch(push("/"));
     }
 
     handleCloseModal() {
