@@ -29,28 +29,28 @@
         position: relative;
         top: 9px;
         text-align: center;
-        font-family: "FontAwesome";
+        font-family: "Font Awesome 5 Regular";
         color: white;
       }
 
       &--offline-race {
-        @include feedIcon(#8ee0e6, "\f024");
+        @include feedIcon(#8ee0e6, "\f0f3");
       }
 
       &--online-race {
-        @include feedIcon($brand-secondary, "\f024");
+        @include feedIcon($brand-secondary, "\f0f3");
       }
 
       &--follow {
-        @include feedIcon($blue-200, "\f087");
+        @include feedIcon($blue-200, "\f0f3");
       }
 
       &--follow-you {
-        @include feedIcon($green-200, "\f087");
+        @include feedIcon($green-200, "\f0f3");
       }
 
       &--player-chart {
-        @include feedIcon($yellow-200, "\f091");
+        @include feedIcon($yellow-200, "\f0f3");
       }
     }
 

@@ -20,6 +20,7 @@ import Helmet from 'react-helmet';
 import LanguageSwitcher from './components/LanguageSwitcher'
 import SocialCard from 'components/app/SocialCard';
 import WhySignUpSection from 'components/sections/WhySignUpSection';
+import Icon from '@fortawesome/react-fontawesome'
 
 class Lobby extends Component {
 
@@ -109,6 +110,15 @@ class Lobby extends Component {
                             <div className="col-12">
                                 <h1 className="white">Join the race</h1>
                                 <p className="white">You can join the online room and play online or practice on your own</p>
+                                <div className="row">
+                                    <div className="col">
+                                        l
+                                        <Icon icon={["far", "bell"]} />
+                                        <Icon icon={["fab", "facebook"]} />
+                                        <Icon icon={["fas", "bell"]} />
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className="row">
