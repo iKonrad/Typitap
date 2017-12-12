@@ -4,6 +4,7 @@
 
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import Icon from '@fortawesome/react-fontawesome';
 
 class PlayerList extends Component {
 
@@ -50,7 +51,7 @@ class PlayerList extends Component {
             return (
                 <div className="progress__result__wrapper">
                     <div className="progress__result">
-                        <i className={ "fa fa-trophy progress__result__icon place-" + place }> </i>
+                        <Icon icon={['fas', 'trophy']} className={"progress__result__icon place-" + place } />
                     </div>
                 </div>
             );
@@ -69,7 +70,8 @@ class PlayerList extends Component {
 
         let place = 0;
         if (this.props.game.room.players !== undefined && this.props.game.room.players[this.props.socket.identifier] !== undefined) {
-            place = this.props.game.room.players[this.props.socket.identifier].place;
+            place = this.props.game.room.players[this.props.
+                socket.identifier].place;
         }
 
         return(
