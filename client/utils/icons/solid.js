@@ -10,6 +10,8 @@ import faBug from '@fortawesome/fontawesome-pro-solid/faBug'
 import faGlobe from '@fortawesome/fontawesome-pro-solid/faGlobe'
 import faChartLine from '@fortawesome/fontawesome-pro-solid/faChartLine'
 import faCommentAlt from '@fortawesome/fontawesome-pro-solid/faCommentAlt'
+import faPlay from '@fortawesome/fontawesome-pro-solid/faPlay';
+import faStop from '@fortawesome/fontawesome-pro-solid/faStop';
 
 let solidIcons = [
     faBell,
@@ -24,6 +26,8 @@ let solidIcons = [
     faGlobe,
     faChartLine,
     faCommentAlt,
+    faStop,
+    faPlay,
 ]
 
 export default solidIcons;

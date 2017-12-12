@@ -9,7 +9,7 @@ class Spinner extends React.Component {
     render() {
         return (
             <div className="spinner">
-                <Icon icon={['fos', 'cog']} spin />
+                <Icon icon={['fas', 'cog']} spin />
             </div>
         );
     }

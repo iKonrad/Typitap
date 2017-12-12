@@ -2,6 +2,7 @@ import React from 'react';
 import * as GameUtils from 'utils/gameUtils';
 import ReactDOMServer from 'react-dom/server';
 import * as gaUtils from 'utils/gaUtils';
+import Icon from '@fortawesome/react-fontawesome';
 
 let playTimeout;
 
@@ -18,6 +19,8 @@ class ScorePopoverPlayback extends React.Component {
             playText: "",
             time: 0,
         }
+
+        this.togglePlaybackFunc = this.togglePlayback.bind(this);
     }
 
     renderText() {
@@ -39,10 +42,10 @@ class ScorePopoverPlayback extends React.Component {
 
     renderPlayButton() {
         if (this.state.playing) {
-            return <i className="fa fa-stop" onClick={ this.togglePlayback.bind(this) }></i>;
+            return <Icon icon={['fas', 'stop']} onClick={ this.togglePlaybackFunc }/>;
         }
 
-        return <i className="fa fa-play" onClick={ this.togglePlayback.bind(this) }></i>;
+        return <Icon icon={['fas', 'play']} onClick={ this.togglePlaybackFunc }/>;
 
     }
 
