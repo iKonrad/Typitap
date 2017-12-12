@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import {Link, Router} from 'react-router'
 import {connect} from 'react-redux';
 import NavLink from './NavLink';
-
+import Icon from '@fortawesome/react-fontawesome';
 
 class Navbar extends PureComponent {
 
@@ -52,7 +52,7 @@ class Navbar extends PureComponent {
                     <img src="/static/images/identity/typitap-logo-white.png" alt=""/>
                 </Link>
                 <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                    <i className="fa fa-bars text-white"></i>
+                    <Icon icon={['far', 'bars']} className="white" />
                 </button>
                 <div className="collapse navbar-collapse" id="navbarText">
                     <ul className="navbar-nav ml-auto">

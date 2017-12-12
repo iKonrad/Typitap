@@ -5,6 +5,7 @@ import faCheck from '@fortawesome/fontawesome-pro-regular/faCheck'
 import faSpinnerThird from '@fortawesome/fontawesome-pro-regular/faSpinnerThird'
 import faStopwatch from '@fortawesome/fontawesome-pro-regular/faStopwatch'
 import faBug from '@fortawesome/fontawesome-pro-regular/faBug'
+import faBars from '@fortawesome/fontawesome-pro-regular/faBars'
 
 let regularIcons = [
     faBell,
@@ -14,6 +15,7 @@ let regularIcons = [
     faStopwatch,
     faSpinnerThird,
     faCheck,
+    faBars,
 ];
 
 export default regularIcons;
