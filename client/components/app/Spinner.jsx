@@ -1,5 +1,5 @@
 import React from 'react';
-import Animation from 'react-spinkit';
+import Icon from '@fortawesome/react-fontawesome';
 
 class Spinner extends React.Component {
     constructor(props) {
@@ -9,7 +9,7 @@ class Spinner extends React.Component {
     render() {
         return (
             <div className="spinner">
-                <Animation name="pacman" color="#59c3c3" fadeIn="quarter" />
+                <Icon icon={['fos', 'cog']} spin />
             </div>
         );
     }

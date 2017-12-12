@@ -22,12 +22,13 @@ class UserStats extends Component {
             return (
                 <div className="mt-3">
                     <div className="row">
-                        <div className="col">
-                            <div className="pull-left">
+                        <div className="col-12">
+                            <div className="float-left">
                                 <StatsBadge key={ `user-stat-wpm` } type="wpm" label="wpm" value={ items["wpm"] }/>
                                 <StatsBadge key={ `user-stat-accuracy` } type="accuracy" label="accuracy" value={ items["accuracy"] + "%" }/>
                             </div>
-                            <div className="pull-right">
+
+                            <div className="float-right">
                                 <StatsBadge key={ `user-stat-goldenTrophies` } type="goldenTrophies"
                                             value={ items["goldenTrophies"] }/>
                                 <StatsBadge key={ `user-stat-silverTrophies` } type="silverTrophies"

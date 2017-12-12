@@ -27,32 +27,10 @@
   }
 
   .badge-icon {
-    font-family: "FontAwesome", sans-serif;
-    font-size: 22px;
     opacity: 0;
     color: white;
-    margin-top: -6px;
-  }
-
-  .badge-trophy {
-    @extend .badge-icon;
-    &:after {
-      content: "\f091";
-    }
-  }
-
-  .badge-time {
-    @extend .badge-icon;
-    &:after {
-      content: "\f017";
-    }
-  }
-
-  .badge-mistakes {
-    @extend .badge-icon;
-    &:after {
-      content: "\f188";
-    }
+    margin-top: -3px;
+    font-size: 18px;
   }
 
 
@@ -106,11 +84,11 @@
     }
   }
 
-  &.badge-mistakes {
+  &.badge-bug {
     @extend .badge-grey;
   }
 
-  &.badge-time {
+  &.badge-stopwatch {
     @extend .badge-grey;
   }
 

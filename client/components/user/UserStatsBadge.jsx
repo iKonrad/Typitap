@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from '@fortawesome/react-fontawesome';
 
 class UserStatsBadge extends React.Component {
     constructor(props) {
@@ -13,11 +14,9 @@ class UserStatsBadge extends React.Component {
 
         if (type !== undefined) {
             if (['goldenTrophies', 'silverTrophies', 'bronzeTrophies'].indexOf(type) > -1) {
-                return (
-                    <div className="badge-trophy"></div>
-                );
+                return <div className="badge-icon"><Icon icon={['fas', 'trophy']} className="badge-icon" /></div>
             } else {
-                return <div className={`badge-${type}`}></div>;
+                return <Icon icon={['far', this.props.type]} className="badge-icon" />;
             }
         } else {
             return "";

@@ -20,6 +20,7 @@ import Helmet from 'react-helmet';
 import LanguageSwitcher from './components/LanguageSwitcher'
 import SocialCard from 'components/app/SocialCard';
 import WhySignUpSection from 'components/sections/WhySignUpSection';
+import Icon from '@fortawesome/react-fontawesome'
 
 class Lobby extends Component {
 

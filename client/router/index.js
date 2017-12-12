@@ -18,6 +18,12 @@ export function run() {
     require('jquery');
     require('node_modules/bootstrap/dist/js/bootstrap.bundle.js');
 
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+
+    // Add entire styles or individual icons
+
 
     // init promise polyfill
     window.Promise = window.Promise || Promise;

@@ -547,7 +547,7 @@ func (r *Room) handlePlayerCompleted(identifier string, mistakes map[string]int,
 			}
 
 			// Add global activity for the /play page
-			if r.nextPlace == 1 && len(r.Players) > 1 {
+			if r.nextPlace == 1 && (len(r.Players) + len(r.Bots)) > 1 {
 				if madeToChart {
 					feed.SendGlobalActivity(feed.Activities.PlayerMakesToTopChart(user.Username, wpm))
 				} else {

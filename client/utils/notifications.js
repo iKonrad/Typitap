@@ -11,6 +11,7 @@ class Notifications {
             title: `Error`,
             message: message,
             status: 'error',
+            icon: 'bell',
         })
     }
 

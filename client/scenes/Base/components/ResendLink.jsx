@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Notifications from 'utils/notifications';
+import Icon from '@fortawesome/react-fontawesome';
 
 class ResendLink extends React.Component {
     constructor(props) {
@@ -48,12 +49,12 @@ class ResendLink extends React.Component {
     renderLink() {
         if (!this.state.linkResent) {
             if (!this.state.loading) {
-                return <button className="btn btn-link" onClick={ this.handleResendLink.bind(this) }>Resend link</button>
+                return <button className="btn btn-link btn-sm btn-white" onClick={ this.handleResendLink.bind(this) }>Resend link</button>
             } else {
-                return "Loading...";
+                return <span><Icon icon={['fas', 'cog']} spin /> Loading...</span>;
             }
         } else {
-            return <span>Link sent!</span>
+            return <span><Icon icon={['far', 'check']} /> Link sent!</span>
         }
     }
 
