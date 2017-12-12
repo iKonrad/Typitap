@@ -4,6 +4,7 @@ import Spinner from 'components/app/Spinner';
 import StatsBadge from 'components/user/UserStatsBadge';
 import * as GameUtils from 'utils/gameUtils';
 import ScorePopoverPlayback from './ScorePopoverPlayback';
+import Icon from '@fortawesome/react-fontawesome';
 
 class ScorePopover extends React.Component {
 
@@ -40,18 +41,18 @@ class ScorePopover extends React.Component {
     renderResults() {
         return (
             <div className="mt-3">
-                <div className="pull-left">
+                <div className="float-left">
                     <StatsBadge key={ `result-place` } type="transparent" label={ this.state.data.Place > 0 ? (this.state.data.Place + " place") : "Offline game" }
-                                value={ this.state.data.Place > 0 ? <i className="fa fa-trophy"></i> : "-" }/>
+                                value={ this.state.data.Place > 0 ? <Icon icon={['fas', 'trophy']} /> : "-" }/>
                     <StatsBadge key={ `result-wpm` } type="wpm" label="wpm"
                                 value={ this.state.data.WPM }/>
                     <StatsBadge key={ `result-accuracy` } type="accuracy" label="accuracy"
                                 value={ this.state.data.Accuracy + "%" }/>
                 </div>
-                <div className="pull-right">
-                    <StatsBadge key={ `result-time` } type="time"
+                <div className="float-right">
+                    <StatsBadge key={ `result-time` } type="stopwatch"
                                 value={ GameUtils.formatTime(this.state.data.Time) }/>
-                    <StatsBadge key={ `result-mistakes` } type="mistakes"
+                    <StatsBadge key={ `result-mistakes` } type="bug"
                                 value={ Object.keys(this.state.data.Mistakes).length }/>
                 </div>
             </div>

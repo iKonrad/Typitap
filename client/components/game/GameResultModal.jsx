@@ -11,6 +11,7 @@ import {push} from 'react-router-redux';
 import {Link} from 'react-router';
 import Helmet from 'react-helmet';
 import * as jsUtil from 'utils/jsUtils';
+import Icon from '@fortawesome/react-fontawesome';
 
 import {ShareButtons, ShareCounts, generateShareIcon} from 'react-share';
 
@@ -171,12 +172,12 @@ class GameResultModal extends Component {
                 let player = players[playerId];
                 return <div className="game-result__players__player" key={`player-${playerId}`}>
 
-                    { (i + 1) <= 3 ? <i className={`fa fa-trophy place-${ i + 1 }`}></i> : <i className={`fa`}></i>}
+                    { (i + 1) <= 3 ? <Icon icon={['fas', 'trophy']} className={`place-${ i + 1}`} /> : ""}
 
                     <div>{i + 1}.</div>
 
                     { player.place !== undefined && player.place > 0 ? player.identifier : player.left ? (
-                        <span className='text-muted'>Player left</span>) : (<i className="fa fa-spinner fa-spin"></i>
+                        <span className='text-muted'>Player left</span>) : (<Icon icon={['far', 'spinner-third']} spin />
                     )}
 
                     { player.place !== undefined && player.place > 0 ? <span className="game-result__players__player__wpm"> ({ player.wpm } wpm)</span> : "" }
@@ -229,7 +230,7 @@ class GameResultModal extends Component {
 
     renderStats() {
         return <div className="game-result__stats">
-            <div className="pull-left">
+            <div className="float-left">
                 <div style={{display: "inline-block"}}>
                     <StatsBadge key={ `result-wpm` } type="wpm" label="wpm"
                                 value={ this.props.game.wpm }/>
@@ -242,10 +243,10 @@ class GameResultModal extends Component {
                 </div>
 
             </div>
-            <div className="pull-right">
-                <StatsBadge key={ `result-time` } type="time"
+            <div className="float-right">
+                <StatsBadge key={ `result-time` } type="stopwatch"
                             value={ GameUtils.formatTime(this.props.game.time) }/>
-                <StatsBadge key={ `result-mistakes` } type="mistakes"
+                <StatsBadge key={ `result-mistakes` } type="bug"
                             value={ Object.keys(this.props.game.mistakes).length }/>
             </div>
         </div>
