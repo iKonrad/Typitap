@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from '@fortawesome/react-fontawesome';
 
 class Alert extends React.Component {
     constructor(props) {
@@ -8,9 +9,9 @@ class Alert extends React.Component {
     renderIcon(type) {
         switch(type) {
             case 'error':
-                return  <i className="fa fa-exclamation-circle"></i>;
+                return  <Icon icon={['far', 'exclamation-circle']} size="2x" />;
             case 'warning':
-                return <i className="fa fa-exclamation-triangle"></i>;
+                return <Icon icon={['far', 'exclamation-triangle']} size="2x" />;
         }
 
         return <i className="fa fa-check"></i>;
@@ -20,12 +21,15 @@ class Alert extends React.Component {
         return (
             <div className={`alert-bar alert-bar--${this.props.type !== undefined ? this.props.type : "success"}`}>
                 <div className="container">
-
-                    <div className="alert-bar__icon">
-                        { this.renderIcon(this.props.type) }
-                    </div>
-                    <div className="alert-bar__message">
-                        { this.props.children}
+                    <div className="row">
+                        <div className="col">
+                            <div className="alert-bar__icon">
+                                { this.renderIcon(this.props.type) }
+                            </div>
+                            <div className="alert-bar__message">
+                                { this.props.children}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

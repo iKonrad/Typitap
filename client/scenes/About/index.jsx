@@ -8,6 +8,7 @@ import * as LobbyActions from 'scenes/Lobby/ducks/lobbyModule';
 import Card from 'components/app/Card';
 import ActivityFeed from 'components/app/ActivityFeed';
 import WhySignUpSection from 'components/sections/WhySignUpSection';
+import Icon from '@fortawesome/react-fontawesome';
 
 class Homepage extends Component {
 
@@ -65,12 +66,12 @@ class Homepage extends Component {
                         </div>
                         <div className="row">
                             <div className="col-xs-12 col-sm-8 col-md-4 mx-auto col-lg-3 mt-3">
-                                <a href="/" className="btn btn-block btn-secondary">Play the game</a>
+                                <Link to="/" className="btn btn-block btn-secondary">Play the game</Link>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-xs-12 col-sm-8 col-md-4 mx-auto col-lg-3 mt-3">
-                                <a href="/" className="btn btn-block btn-secondary btn-link btn-white">Create account</a>
+                                <Link to="/signup" className="btn btn-block btn-secondary btn-link btn-white">Create account</Link>
                             </div>
                         </div>
                     </div>
@@ -108,7 +109,7 @@ class Homepage extends Component {
                             <div className="col-12 col-sm-6 col-md-3 ">
                                 <div className="blob">
                                     <div className="blob__icon">
-                                        <img src="/static/images/pages/homepage/icon-globe.png" alt="Icon Globe"/>
+                                        <Icon icon={['fas', 'globe']} size="5x" fixed-width />
                                     </div>
 
                                     <h2 className="blob__title">Compete and race with real people</h2>
@@ -120,7 +121,7 @@ class Homepage extends Component {
                             <div className="col-12 col-sm-6 col-md-3">
                                 <div className="blob">
                                     <div className="blob__icon">
-                                        <img src="/static/images/pages/homepage/icon-trophy.png" alt="Icon Trophy"/>
+                                        <Icon icon={['fas', 'trophy']} size="5x" fixed-width />
                                     </div>
                                     <h2 className="blob__title">Climb the ladder to the top</h2>
                                     <p className="blob__text">Make your way to the very top of the
@@ -130,7 +131,7 @@ class Homepage extends Component {
                             <div className="col-12 col-sm-6 col-md-3">
                                 <div className="blob">
                                     <div className="blob__icon">
-                                        <img src="/static/images/pages/homepage/icon-chart.png" alt="Icon Chart"/>
+                                        <Icon icon={['fas', 'chart-line']} size="5x" fixed-width />
                                     </div>
                                     <h2 className="blob__title">Track your typing skills progress</h2>
                                     <p className="blob__text">Make use of the <strong>stunning charts</strong> to keep
@@ -140,7 +141,7 @@ class Homepage extends Component {
                             <div className="col-12 col-sm-6 col-md-3">
                                 <div className="blob">
                                     <div className="blob__icon">
-                                        <img src="/static/images/pages/homepage/icon-comment.png" alt="Icon Comment"/>
+                                        <Icon icon={['fas', 'comment-alt']} size="5x" fixed-width />
                                     </div>
                                     <h2 className="blob__title">Socialize and compare</h2>
                                     <p className="blob__text">Follow your friends and stay up to date with their

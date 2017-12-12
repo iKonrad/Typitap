@@ -5,6 +5,7 @@ import * as AppActions from 'store/ducks/appModule';
 import * as GameEngine from 'utils/gameEngine';
 import * as SocketActions from "#app/store/ducks/socketModule";
 import * as GameActions from 'store/ducks/gameModule';
+import Icon from '@fortawesome/react-fontawesome';
 
 class OnlineRoomPanel extends React.Component {
 
@@ -174,7 +175,7 @@ class OnlineRoomPanel extends React.Component {
                  style={{marginTop: (this.state.scroll) + "px"}}>
                 <div className="fixed-sidebar__handle" onClick={this.toggleSidebar.bind(this)}>
                     { this.renderPlayersCountBadge() }
-                    <div className="fa fa-flag-checkered fa-2x"></div>
+                    <Icon icon={['fas', 'flag-checkered']} size="2x" />
                 </div>
                 <div className="col">
                     <div className="text-center white">

@@ -1,8 +1,8 @@
-@mixin feedIcon($color, $icon) {
-  background-color: $color;
-  &:after {
-    content: $icon;
-  }
+@mixin feedIcon($color) {
+  position: relative;
+  top: 11px;
+  font-size: 18px;
+  color: $color;
 }
 
 .feed {
@@ -24,33 +24,42 @@
       height: 40px;
       border-radius: 50%;
       text-align: center;
-      &:after {
-        font-size: 18px;
-        position: relative;
-        top: 9px;
-        text-align: center;
-        font-family: "Font Awesome 5 Regular";
-        color: white;
+      background-color: white;
+      box-shadow: 0 0px 20px 2px #e4e4e4;
+
+
+      .fa-trophy-alt {
+        @include feedIcon($yellow-200);
       }
 
-      &--offline-race {
-        @include feedIcon(#8ee0e6, "\f0f3");
+      .fa-trophy {
+        @include feedIcon($orange-200);
       }
 
-      &--online-race {
-        @include feedIcon($brand-secondary, "\f0f3");
+
+      .fa-thumbs-up {
+        @include feedIcon($green-200);
+        top: 10px;
       }
 
-      &--follow {
-        @include feedIcon($blue-200, "\f0f3");
+      .fa-flag {
+        @include feedIcon($brand-secondary);
+        top: 10px;
+      }
+      .fa-flag-checkered {
+        @include feedIcon($brand-secondary);
+        top: 10px;
+      }
+      .fa-follow {
+        @include feedIcon($blue-200);
       }
 
-      &--follow-you {
-        @include feedIcon($green-200, "\f0f3");
+      .fa-follow-you {
+        @include feedIcon($green-200);
       }
 
-      &--player-chart {
-        @include feedIcon($yellow-200, "\f0f3");
+      .fa-player-chart {
+        @include feedIcon($yellow-200);
       }
     }
 

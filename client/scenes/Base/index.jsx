@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as Constants from 'utils/constants';
 import Navbar from 'components/navigation/Navbar';
-import NotificationsSystem from 'reapop';
-import theme from 'reapop-theme-wybo';
+import NotificationsSystem from 'components/app/CustomNotificationSystem';
 import * as socketActions from 'store/ducks/socketModule';
 import AlertBar from './components/AlertBar';
 import Footer from 'components/navigation/Footer';
@@ -50,7 +49,7 @@ class Base extends Component {
 
     launchNotifications() {
         if (this.state.loaded) {
-            return <NotificationsSystem theme={theme}/>
+            return <NotificationsSystem />
         }
     }
 

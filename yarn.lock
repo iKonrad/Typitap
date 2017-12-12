@@ -4383,15 +4383,6 @@ react-side-effect@^1.1.0:
     exenv "^1.2.1"
     shallowequal "^1.0.1"
 
-react-spinkit@3.0.0:
-  version "3.0.0"
-  resolved "https://npm.fontawesome.com/64D46090-0829-4324-992F-A5CDCC742666/react-spinkit/-/react-spinkit-3.0.0.tgz#31fdaf4e18177766c57d1b1f3330290f8492a85a"
-  dependencies:
-    classnames "^2.2.3"
-    loaders.css "^0.1.2"
-    object-assign "^4.1.0"
-    prop-types "^15.5.8"
-
 react-table@6.0.5:
   version "6.0.5"
   resolved "https://npm.fontawesome.com/64D46090-0829-4324-992F-A5CDCC742666/react-table/-/react-table-6.0.5.tgz#8a0e034e36304722447aed91cb7c069b640d035d"

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Icon from '@fortawesome/react-fontawesome';
 
 class Footer extends React.PureComponent {
     constructor(props) {
@@ -23,9 +24,9 @@ class Footer extends React.PureComponent {
                             </div>
                             <div className="col-12 col-sm-6 col-md-3 text-center" style={{minHeight: "150px"}}>
                                 <div style={{marginTop: "120px"}}>
-                                    <a target="_blank" style={{marginLeft: "10px"}} href="https://www.facebook.com/typitap" className="btn btn-white btn-outline btn-circle"><i className="fa fa-facebook"></i></a>
-                                    <a target="_blank" style={{marginLeft: "10px"}} href="https://twitter.com/typitap" className="btn btn-white btn-outline btn-circle"><i className="fa fa-twitter"></i></a>
-                                    <a target="_blank" style={{marginLeft: "10px"}} href="https://plus.google.com/b/115496080103251519478/115496080103251519478" className="btn btn-white btn-outline btn-circle"><i className="fa fa-google-plus"></i></a>
+                                    <a target="_blank" style={{marginLeft: "10px"}} href="https://www.facebook.com/typitap" className="btn btn-white btn-outline btn-circle"><Icon icon={['fab', 'facebook-f']}/></a>
+                                    <a target="_blank" style={{marginLeft: "10px"}} href="https://twitter.com/typitap" className="btn btn-white btn-outline btn-circle"><Icon icon={['fab', 'twitter']}/></a>
+                                    <a target="_blank" style={{marginLeft: "10px"}} href="https://plus.google.com/b/115496080103251519478/115496080103251519478" className="btn btn-white btn-outline btn-circle"><Icon icon={['fab', 'google-plus-g']}/></a>
                                 </div>
                             </div>
                             <div className="col-12 col-sm-6 col-md-3 text-center" style={{minHeight: "150px"}}>

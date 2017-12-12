@@ -13,22 +13,23 @@ class UserBio extends React.Component {
     }
 
     renderKeyboardField() {
-        if ( this.props.user.Keyboard !== "") {
-            return <p><strong>Keyboard: </strong>{this.props.user.Keyboard }</p>
+        if (this.props.user.Keyboard !== "") {
+            return <p><strong>Keyboard: </strong>{this.props.user.Keyboard}</p>
         }
         return "";
     }
 
     renderLayoutField() {
         if (this.props.user.KeyboardLayout !== 0) {
-            return <p><strong>Keyboard Layout: </strong>{ UserUtils.getKeyboardForId(this.props.user.KeyboardLayout).name }</p>
+            return <p><strong>Keyboard
+                Layout: </strong>{UserUtils.getKeyboardForId(this.props.user.KeyboardLayout).name}</p>
         }
         return "";
     }
 
     renderBio() {
         if (this.props.user.Bio !== "") {
-            return <p>{ this.props.user.Bio }</p>
+            return <p>{this.props.user.Bio}</p>
         }
         return <p className="text-muted">This user didn't write any bio.</p>
     }
@@ -36,16 +37,19 @@ class UserBio extends React.Component {
     render() {
         return (
             <div>
-                <div className="col">
-                    <div className="row">
-
+                <div className="row">
+                    <div className="col">
+                        {this.renderBio()}
                     </div>
                 </div>
-                <div className="col">
-                    <div className="row">
-                        { this.renderBio() }
-                        { this.renderKeyboardField() }
-                        { this.renderLayoutField() }
+                <div className="row">
+                    <div className="col">
+                        {this.renderKeyboardField()}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        {this.renderLayoutField()}
                     </div>
                 </div>
             </div>
