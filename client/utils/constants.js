@@ -23,11 +23,6 @@ export const MENU_TREE = [
         url: 'https://blog.typitap.com',
     },
     {
-        label: 'Community',
-        type: 'href',
-        url: 'http://community.typitap.com',
-    },
-    {
         label: '%%Name%%',
         type: 'dropdown',
         url: '#',
